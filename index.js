@@ -116,7 +116,7 @@ bot.on('message', async (message) => {
 			"fields": [
 			//------------------------------
 			{
-			"name": "ROBOT",
+			"name": "BOT",
 			"value": "``aide`` | ``ping``",
 			"inline": false
 			},
@@ -177,50 +177,41 @@ bot.on('message', async (message) => {
 
 		if (arene_choixUser == 1 || arene_choixUser == 2 || arene_choixUser == 3){
 
-				    if (arene_choixUser == 1 && arene_choixEnemy == 1) //Masse VS Masse
-				    {
+				    if (arene_choixUser == 1 && arene_choixEnemy == 1) { //Masse VS Masse
 				    	message.channel.send("Vous utilisez la **masse**.\n**L'ennemi aussi !**\n*Match nul...*");
 				    }
-		    		if (arene_choixUser == 1 && arene_choixEnemy == 2) //Masse VS Tomahawk
-		    		{
+		    		if (arene_choixUser == 1 && arene_choixEnemy == 2) { //Masse VS Tomahawk
 		    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise la tomahawk !**\n*Vous gagnez !*");
 		    			//Faire que le mec gagne de l'xp
 		    		}
-		    		if (arene_choixUser == 1 && arene_choixEnemy == 3) //Masse VS Lance
-		    		{
+		    		if (arene_choixUser == 1 && arene_choixEnemy == 3) { //Masse VS Lance
 		    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise la lance !**\n*Vous perdez...*");
 		    			//Faire que le mec perd de l'xp
 		    		}
 
 
-		    		if (arene_choixUser == 2 && arene_choixEnemy == 1) //Tomahawk VS Masse
-		    		{
+		    		if (arene_choixUser == 2 && arene_choixEnemy == 1) { //Tomahawk VS Masse
 		    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi utilise la masse !**\n*Vous perdez...*");
 		    			//Faire que le mec perd de l'xp
 		    		}
-		    		if (arene_choixUser == 2 && arene_choixEnemy == 2) //Tomahawk VS Tomahawk
-		    		{
+		    		if (arene_choixUser == 2 && arene_choixEnemy == 2) { //Tomahawk VS Tomahawk
 		    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi aussi !**\n*Match nul...*");
 		    		}
-		    		if (arene_choixUser == 2 && arene_choixEnemy == 3) //Tomahawk VS Lance
-		    		{
+		    		if (arene_choixUser == 2 && arene_choixEnemy == 3) { //Tomahawk VS Lance
 		    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi utilise la lance !**\n*Vous gagnez !*");
 		    			//Faire que le mec gagne de l'xp
 		    		}
 
 
-		    		if (arene_choixUser == 3 && arene_choixEnemy == 1) //Lance VS Masse
-		    		{
+		    		if (arene_choixUser == 3 && arene_choixEnemy == 1) { //Lance VS Masse
 		    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise la masse !**\n*Vous gagnez !*");
 		    			//Faire que le mec gagne de l'xp
 		    		}
-		    		if (arene_choixUser == 3 && arene_choixEnemy == 2) //Lance VS Tomahawk
-		    		{
+		    		if (arene_choixUser == 3 && arene_choixEnemy == 2) { //Lance VS Tomahawk
 		    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise la tomahawk !**\n*Vous perdez...*");
 		    			//Faire que le mec perd de l'xp
 		    		}
-		    		if (arene_choixUser == 3 && arene_choixEnemy == 3) //Lance VS Lance
-		    		{
+		    		if (arene_choixUser == 3 && arene_choixEnemy == 3) { //Lance VS Lance
 		    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi aussi !**\n*Match nul...*");
 		    		}
 		}
@@ -284,28 +275,13 @@ bot.on('message', async (message) => {
 							.setFooter(`____`)
 							message.channel.send(embed_or);*/
 
-		message.channel.send({embed: {
-			author: {
-			name: bot.on.username,
-			icon_url: bot.on.avatarURL
-			},
-			"plainText": "**Or dans la banque**",
-			"title": ":bank: **Or dans la banque** :bank:",
-			"color": 0xffd400,
-			"fields": [
-			//------------------------------
-			{
-			"name": "PERSONNELLE",
-			"value": "**" + or_usr + " $**",
-			"inline": false
-			},
-			{
-			"name": "COFFRE DE FACTION",
-			"value": "**NON DEFINI PD !**",
-			"inline": false
-			}
-					]
-			}});
+
+		let embed_or = new Discord.RichEmbed()
+							.setColor("#FFD400")
+							.setTitle(":bank: **Banque** :bank:")
+							.setDescription("**" + or_usr + " or**")
+
+							message.channel.send(embed_or);
 		});
 
 
