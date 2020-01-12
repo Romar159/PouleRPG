@@ -75,7 +75,7 @@ function Unix_timestamp(t) {
 
 bot.on('ready', function() {
 	bot.user.setActivity("PouleRPG | p<help")
-	console.log("bot 'PouleRPG' are connected sucessfully!")
+	console.log("bot 'PouleRPG' has been connected sucessfully!")
 	console.log("bot lancé le: " + new Date() + " ");
 
 	let InitializeVariable = 1;
@@ -484,9 +484,7 @@ bot.on('message', async (message) => {
 
 		 
 		 let or_add = or_usr + or_a_add;
-		 
 		 let nombre_de_miliseconde_entre_chaque_daily = 86400000; //24 Heures:: 86400000
-		 
 		 let difference_unix_time_en_milisecondes = unix_time_now - unix_time_in_file;
 		 
 		 
@@ -494,21 +492,16 @@ bot.on('message', async (message) => {
 		
 		let nombre_de_seconde_depuis_le_dernier_daily = Math.floor(difference_unix_time_en_milisecondes / 1000);
 		let nombre_de_miliseconde_depuis_le_dernier_daily = Math.floor(difference_unix_time_en_milisecondes);
-		
 		let temps_restant_avant_daily = (nombre_de_miliseconde_entre_chaque_daily / 1000) - nombre_de_seconde_depuis_le_dernier_daily; // ce qui fait donc 30 000 / 1000 fait donc 30 (secondes) donc 30 / par le nombre
 		let temps_restant_avant_daily_en_milisecondes = nombre_de_miliseconde_entre_chaque_daily - nombre_de_miliseconde_depuis_le_dernier_daily;
-		
 		let heures_a_attendre = (temps_restant_avant_daily / 60) / 24;
 		
-			if (temps_restant_avant_daily >= 0) // ca veut dire qu'il reste encore du temps avant de daily)
-			{
+			if (temps_restant_avant_daily >= 0) { // ca veut dire qu'il reste encore du temps avant de daily) 
 			message.channel.send("\n Il faut attendre encore: " + msToTime(temps_restant_avant_daily_en_milisecondes) + " avant d'avoir votre revenue."); /*Math.round((((temps_restant_avant_daily) / 60) / 24))*/
 			}
 			
-			if(difference_unix_time_en_milisecondes >= nombre_de_miliseconde_entre_chaque_daily){
-
-
-					console.log(or_add);
+			if(difference_unix_time_en_milisecondes >= nombre_de_miliseconde_entre_chaque_daily) {
+					//console.log(or_add);
 					buffer_thunas = 0;
 				if (or_add > max_banque_perso) {
 					
@@ -519,15 +512,19 @@ bot.on('message', async (message) => {
 					else if(message.member.roles.find(r => r.name === "Gamma")) { factionDe_Request = "Gamma"; 	 }
 					else if(message.member.roles.find(r => r.name === "Sigma")) { factionDe_Request = "Sigma";   }
 					else { }
+
 					if (factionDe_Request == "Epsilon") {
 						//ENVOIE DANS LE COFFRE DE EPSILON
 						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Epsilon." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+					
 					} else if (factionDe_Request == "Gamma") {
 						//ENVOIE DANS LE COFFRE DE EPSILON
 						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Gamma." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+					
 					} else if (factionDe_Request == "Sigma") {
 						//ENVOIE DANS LE COFFRE DE EPSILON
 						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Sigma." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+					
 					} else {
 					message.channel.send("Le surplus d'argent à été rendu à PouleRPG : -" + buffer_thunas + " or." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
 					}
