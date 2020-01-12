@@ -22,8 +22,15 @@ let MaitreFac_Epsilon;
 let MaitreFac_Gamma;
 let MaitreFac_Sigma;
 
+let factionDe_Request = "";
+let MaitreFac = "";
+
+
+
 let xp_level_up_required_BASE = 50; //nombre d'xp qu'il faut pour level de base (sans multiplicateur de level)
 
+
+let buffer_thunas;
 		
 
 //Fontions:
@@ -269,6 +276,7 @@ bot.on('message', async (message) => {
 
 		let or_a_add_first = 0;
 		let or_a_add = 0;
+		let max_banque_perso = 0;
 		
 		
 
@@ -286,90 +294,119 @@ bot.on('message', async (message) => {
 		 		//donner plus de thunas
 		 	if (message.guild.members.get(message.author.id).roles.exists('id','445253268176633891')) {
 		 		or_a_add = 1;
+		 		max_banque_perso = 5;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253591465328660')) {
 		 		or_a_add = 3;
+		 		max_banque_perso = 15;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253561648021514')) {
 		 		or_a_add = 4;
+		 		max_banque_perso = 40;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253809640308746')) {
 		 		or_a_add = 7;
+		 		max_banque_perso = 150;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257669918588948')) {
 		 		or_a_add = 15;
+		 		max_banque_perso = 300;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650832087993024522')) {
 		 		or_a_add = 22;
+		 		max_banque_perso = 500;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257144011587594')) {
 		 		or_a_add = 35;
+		 		max_banque_perso = 750;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','612469098466639893')) {
 		 		or_a_add = 70;
+		 		max_banque_perso = 1500;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650828967716192269')) {
 		 		or_a_add = 100;
+		 		max_banque_perso = 3000;
 		 	}
 
 		 } else { //si AUHTOR n'est pas maitre
 		 		//donner la thunas normale
 		 	if (message.guild.members.get(message.author.id).roles.exists('id','445253268176633891')) {
 		 		or_a_add = 1;
+		 		max_banque_perso = 5;
+		 	
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253591465328660')) {
 		 		or_a_add = 2;
+		 		max_banque_perso = 15;
 		 	}
+		 	
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253561648021514')) {
 		 		or_a_add = 3;
+		 		max_banque_perso = 40;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253809640308746')) {
+		 
 		 		or_a_add = 5;
+		 		max_banque_perso = 150;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257669918588948')) {
 		 		or_a_add = 10;
+		 		max_banque_perso = 300;
+		 	
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650832087993024522')) {
 		 		or_a_add = 15;
+		 		max_banque_perso = 500;
 		 	}
+		 	
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257144011587594')) {
 		 		or_a_add = 25;
+		 		max_banque_perso = 750;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','612469098466639893')) {
+		 
 		 		or_a_add = 50;
+		 		max_banque_perso = 1500;
+
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650828967716192269')) {
 		 		or_a_add = 85;
+		 		max_banque_perso = 3000;
+		 	
 		 	}
 		 }
 
 
 
-		 if (erreur) { // ca veut dire que l'utilisateur n'a pas de banque encore
+
+		if (erreur) { // ca veut dire que l'utilisateur n'a pas de banque encore
 
 		 	message.channel.send("Banque perso crée. (ce message apparait quand vous n'avez pas de banque perso)");
-		 	message.channel.send("+" + or_a_add + " or sur votre banque perso.");
+		 	
+		 	message.channel.send("+" + or_a_add + "/" + max_banque_perso + " or sur votre banque perso.");
 
-		 	fs.writeFile("json/or/or_" + id_usr + ".json", `
-			{ 
-				"or": ` + or_a_add + `,
-				"date": ` + unix_time_now + `
-			}`, function(err) {
+			 	fs.writeFile("json/or/or_" + id_usr + ".json", `
+				{ 
+					"or": ` + or_a_add + `,
+					"date": ` + unix_time_now + `,
+					"maxbanque": ` + max_banque_perso + `
+				}`, function(err) {
 
-			    if(err) {
-			        return console.log(err);
-			    }
+				    if(err) {
+				        return console.log(err);
+				    }
 
-		    	console.log("The file was saved!");
-			}); 
+			    	console.log("The file was saved!");
+				}); 
 
 		 	return; // and continue
-		 }
+		}
 
 
-		  	Maitre_Epsilon = message.guild.roles.get('445617906072682514').members.map(m=>m.user.id);
-			Maitre_Gamma = message.guild.roles.get('445617908903706624').members.map(m=>m.user.id);
-			Maitre_Sigma = message.guild.roles.get('445617911747313665').members.map(m=>m.user.id);
+		Maitre_Epsilon = message.guild.roles.get('445617906072682514').members.map(m=>m.user.id);
+		Maitre_Gamma = message.guild.roles.get('445617908903706624').members.map(m=>m.user.id);
+		Maitre_Sigma = message.guild.roles.get('445617911747313665').members.map(m=>m.user.id);
 
 
 
@@ -423,11 +460,38 @@ bot.on('message', async (message) => {
 			}
 			
 			if(difference_unix_time_en_milisecondes >= nombre_de_miliseconde_entre_chaque_daily){
-					 
-					 fs.writeFile("json/or/or_" + id_usr + ".json", `
+
+
+					console.log(or_add);
+					buffer_thunas = 0;
+				if (or_add > max_banque_perso) {
+					
+					buffer_thunas = or_add - max_banque_perso; //contient le surplus d'or
+					or_add = or_add - buffer_thunas; //enlève le surplus à l'or final
+
+					if(message.member.roles.find(r => r.name === "Epsilon")) { factionDe_Request = "Epsilon"; }
+					else if(message.member.roles.find(r => r.name === "Gamma")) { factionDe_Request = "Gamma"; 	 }
+					else if(message.member.roles.find(r => r.name === "Sigma")) { factionDe_Request = "Sigma";   }
+					else { }
+					if (factionDe_Request == "Epsilon") {
+						//ENVOIE DANS LE COFFRE DE EPSILON
+						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Epsilon." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+					} else if (factionDe_Request == "Gamma") {
+						//ENVOIE DANS LE COFFRE DE EPSILON
+						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Gamma." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+					} else if (factionDe_Request == "Sigma") {
+						//ENVOIE DANS LE COFFRE DE EPSILON
+						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Sigma." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+					} else {
+					message.channel.send("Le surplus d'argent à été rendu à PouleRPG : -" + buffer_thunas + " or." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+					}
+				}
+
+			fs.writeFile("json/or/or_" + id_usr + ".json", `
 			{ 
 				"or": ` + or_add + `,
-				"date": ` + unix_time_now + `
+				"date": ` + unix_time_now + `,
+				"maxbanque": ` + max_banque_perso + `
 			}`, function(err) {
 			    if(err) {
 			        return console.log(err);
@@ -439,14 +503,13 @@ bot.on('message', async (message) => {
 
 
 
-			 message.channel.send("+" + or_a_add + " or sur votre banque perso. Vous avez maintenant: " + or_add + " or dans votre banque perso.");
+			 message.channel.send("+" + (or_a_add - buffer_thunas) + " or. Vous avez maintenant: " + or_add + "/" + max_banque_perso + " or dans votre banque perso.");
 
 			} else {
 				
 				//message.channel.send("MORT");
 			}
 		});
-
 	} // FIN DAILY
 
 
@@ -503,8 +566,8 @@ bot.on('message', async (message) => {
 
 			 const args = message.content.slice(prefix.length + 25 ).split(' ');
 			 let money_demandee = args;
-			 let factionDe_Request = "";
-			 let MaitreFac = "";
+			 factionDe_Request = "";
+			 MaitreFac = "";
 
 			 let Maitre_Epsilon = message.guild.roles.get('445617906072682514').members.map(m=>m.user.id);
 			 let Maitre_Gamma = message.guild.roles.get('445617908903706624').members.map(m=>m.user.id);
@@ -523,7 +586,6 @@ bot.on('message', async (message) => {
 			 if (factionDe_Request == "Sigma") 	 { MaitreFac = message.guild.roles.get('445617911747313665').members.map(m=>m.user.id); }
 			
 			message.channel.send("DEBUG/Votre Maitre de Faction est : " + MaitreFac);
-
 
 		if (MaitreFac) {
 
