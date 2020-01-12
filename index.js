@@ -88,8 +88,8 @@ bot.on('message', async message => {
     if (message.content === prefix + "ping") {
         // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
         // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
-        const m = await message.channel.send(":ping_pong: Calcul en cours...");
-        m.edit( ":ping_pong: " + `${m.createdTimestamp - message.createdTimestamp}ms`);
+        const m = await message.channel.send("Calcul en cours...");
+        m.edit( ":ping_pong: | Pong!\nTemps de réponse : **" + `${m.createdTimestamp - message.createdTimestamp}ms` + "**");
     }
 
 
@@ -103,47 +103,35 @@ bot.on('message', async (message) => {
 
 
 
-	if (message.content === prefix + "help" || message.content === prefix + "HELP" ||  message.content === prefix + "aide" || message.content === prefix + "AIDE") {
+	if (message.content === prefix + "help" ||  message.content === prefix + "aide") {
 
 		message.channel.send({embed: {
 			author: {
 			name: bot.on.username,
 			icon_url: bot.on.avatarURL
 			},
-			"plainText": "***Commande de PouleRPG***",
-			"title": "***Commande de PouleRPG***",
+			"plainText": "**Commandes de PouleRPG**",
+			"title": ":chicken: **Commandes de PouleRPG** :chicken:",
 			"color": 0xc86400,
 			"fields": [
+			//------------------------------
 			{
-			"name": "__**BOT**__",
-			"value": "______________",
+			"name": "ROBOT",
+			"value": "``aide`` | ``ping``",
 			"inline": false
 			},
+			//------------------------------
 			{
-			"name": "help / aide :question: ",
-			"value": "Affiche cette page d'aide",
-			"inline": true
-			},
-			{
-			"name": "ping  :ping_pong: ",
-			"value": "Temps de retour",
-			"inline": true
-			},
-			{
-			"name": "__**Expedition**__",
-			"value": "______________",
+			"name": "STATS PERSONNELLES",
+			"value": "``or`` | ``xp``",
 			"inline": false
 			},
+			//------------------------------
 			{
-			"name": "__**Combat**__",
-			"value": "______________",
+			"name": "COMBAT",
+			"value": "``arene``",
 			"inline": false
 			},
-			{
-			"name": "arene/a :crossed_swords: ",
-			"value": "(1 / m / masse ; 2 / t / tomahawk ; 3 / l / lance)",
-			"inline": true
-			}
 					] 
 		}});
 	}
@@ -167,7 +155,7 @@ bot.on('message', async (message) => {
 
     /// Arène (genre pierre feuille ciseaux)
 
-    if (message.content.startsWith(prefix + 'arene ') || message.content.startsWith(prefix + 'a ')) {
+    if (message.content.startsWith(prefix + 'arene ')) {
     	// 1: Pierre ; 2: Feuille; 3: ciseaux
     	let arene_choixEnemy = entierAleatoire(1,3);
     	console.log(arene_choixEnemy);
@@ -187,19 +175,54 @@ bot.on('message', async (message) => {
 			message.channel.send("Mauvaise synthaxe. Vous devez choisir entre \"masse\", \"tomahawk\", \"lance\" ('p<help arene' pour plus de précisions)");
 		}
 
-		if (arene_choixUser == 1 || arene_choixUser == 2 || arene_choixUser == 3) {
+		if (arene_choixUser == 1 || arene_choixUser == 2 || arene_choixUser == 3){
 
-				    if (arene_choixUser == 1 && arene_choixEnemy == 1) message.channel.send("L'ennemi utilise la masse : Match Nul");
-		    		if (arene_choixUser == 1 && arene_choixEnemy == 2) message.channel.send("L'ennemi utilise la tomahawk : L'ennemi Gagne");
-		    		if (arene_choixUser == 1 && arene_choixEnemy == 3) message.channel.send("L'ennemi utilise la lance : Vous gagnez");
+				    if (arene_choixUser == 1 && arene_choixEnemy == 1) //Masse VS Masse
+				    {
+				    	message.channel.send("Vous utilisez la **masse**.\n**L'ennemi aussi !**\n*Match nul...*");
+				    }
+		    		if (arene_choixUser == 1 && arene_choixEnemy == 2) //Masse VS Tomahawk
+		    		{
+		    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise la tomahawk !**\n*Vous gagnez !*");
+		    			//Faire que le mec gagne de l'xp
+		    		}
+		    		if (arene_choixUser == 1 && arene_choixEnemy == 3) //Masse VS Lance
+		    		{
+		    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise la lance !**\n*Vous perdez...*");
+		    			//Faire que le mec perd de l'xp
+		    		}
 
-		    		if (arene_choixUser == 2 && arene_choixEnemy == 1) message.channel.send("L'ennemi utilise la masse : Vous gagnez");
-		    		if (arene_choixUser == 2 && arene_choixEnemy == 2) message.channel.send("L'ennemi utilise la tomahawk : Match Nul");
-		    		if (arene_choixUser == 2 && arene_choixEnemy == 3) message.channel.send("L'ennemi utilise la lance : L'ennemi Gagne");
 
-		    		if (arene_choixUser == 3 && arene_choixEnemy == 1) message.channel.send("L'ennemi utilise la masse : L'ennemi Gagne");
-		    		if (arene_choixUser == 3 && arene_choixEnemy == 2) message.channel.send("L'ennemi utilise la tomahawk : Vous gagnez");
-		    		if (arene_choixUser == 3 && arene_choixEnemy == 3) message.channel.send("L'ennemi utilise la lance : Match Nul");
+		    		if (arene_choixUser == 2 && arene_choixEnemy == 1) //Tomahawk VS Masse
+		    		{
+		    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi utilise la masse !**\n*Vous perdez...*");
+		    			//Faire que le mec perd de l'xp
+		    		}
+		    		if (arene_choixUser == 2 && arene_choixEnemy == 2) //Tomahawk VS Tomahawk
+		    		{
+		    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi aussi !**\n*Match nul...*");
+		    		}
+		    		if (arene_choixUser == 2 && arene_choixEnemy == 3) //Tomahawk VS Lance
+		    		{
+		    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi utilise la lance !**\n*Vous gagnez !*");
+		    			//Faire que le mec gagne de l'xp
+		    		}
+
+
+		    		if (arene_choixUser == 3 && arene_choixEnemy == 1) //Lance VS Masse
+		    		{
+		    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise la masse !**\n*Vous gagnez !*");
+		    			//Faire que le mec gagne de l'xp
+		    		}
+		    		if (arene_choixUser == 3 && arene_choixEnemy == 2) //Lance VS Tomahawk
+		    		{
+		    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise la tomahawk !**\n*Vous perdez...*");
+		    			//Faire que le mec perd de l'xp
+		    		}
+		    		if (arene_choixUser == 3 && arene_choixEnemy == 3) //Lance VS Lance
+		    		{
+		    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi aussi !**\n*Match nul...*");
+		    		}
 		}
 
 			 		/* Masse = pierre
@@ -254,14 +277,37 @@ bot.on('message', async (message) => {
 		//message.channel.send(`or de ${message.author} :`);
 		//message.channel.send(or_usr);
 
-		let embed_or = new Discord.RichEmbed()
+		/*let embed_or = new Discord.RichEmbed()     //-> VRAIE TRUC OR
 							.setColor('#FFD400')
 							.setTitle('Or dans votre banque perso')
 							.addField("``" + or_usr + "``")
 							.setFooter(`____`)
-							message.channel.send(embed_or);
+							message.channel.send(embed_or);*/
 
+		message.channel.send({embed: {
+			author: {
+			name: bot.on.username,
+			icon_url: bot.on.avatarURL
+			},
+			"plainText": "**Or dans la banque**",
+			"title": ":bank: **Or dans la banque** :bank:",
+			"color": 0xffd400,
+			"fields": [
+			//------------------------------
+			{
+			"name": "PERSONNELLE",
+			"value": "**" + or_usr + " $**",
+			"inline": false
+			},
+			{
+			"name": "COFFRE DE FACTION",
+			"value": "**NON DEFINI PD !**",
+			"inline": false
+			}
+					]
+			}});
 		});
+
 
 	} //FIN or
 
