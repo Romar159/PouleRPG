@@ -1,4 +1,4 @@
-const Discord = require('discord.js'), bot = new Discord.Client()
+﻿const Discord = require('discord.js'), bot = new Discord.Client()
 const ajax = require("ajax");
 const fs = require("fs");
 const mkdirp = require("mkdirp");
@@ -460,24 +460,23 @@ bot.on('message', async (message) => {
 
 		 
 		 let or_add = or_usr + or_a_add;
-		 let msToWaitToDaily = 86400000; //24 Heures:: 86400000
-		 let diffUnixInMS = unix_time_now - unix_time_in_file;
+		 let nombre_de_miliseconde_entre_chaque_daily = 86400000; //24 Heures:: 86400000
+		 let difference_unix_time_en_milisecondes = unix_time_now - unix_time_in_file;
 		 
 		 
-		 
-		// message.channel.send("unix_time_file: " + unix_time_in_file + "\n unix_time_now: " + unix_time_now + "\n unix_time_difference" + diffUnixInMS);
+		// message.channel.send("unix_time_file: " + unix_time_in_file + "\n unix_time_now: " + unix_time_now + "\n unix_time_difference" + difference_unix_time_en_milisecondes);
 		
-		let secondSinceLastDaily = Math.floor(diffUnixInMS / 1000);
-		let msSinceLastDaily = Math.floor(diffUnixInMS);
-		let timeLastB4Daily = (msToWaitToDaily / 1000) - secondSinceLastDaily; // ce qui fait donc 30 000 / 1000 fait donc 30 (secondes) donc 30 / par le nombre
-		let timeLastInMS = msToWaitToDaily - msSinceLastDaily;
-		let hourToWait = (timeLastB4Daily / 60) / 24;
+		let nombre_de_seconde_depuis_le_dernier_daily = Math.floor(difference_unix_time_en_milisecondes / 1000);
+		let nombre_de_miliseconde_depuis_le_dernier_daily = Math.floor(difference_unix_time_en_milisecondes);
+		let temps_restant_avant_daily = (nombre_de_miliseconde_entre_chaque_daily / 1000) - nombre_de_seconde_depuis_le_dernier_daily; // ce qui fait donc 30 000 / 1000 fait donc 30 (secondes) donc 30 / par le nombre
+		let temps_restant_avant_daily_en_milisecondes = nombre_de_miliseconde_entre_chaque_daily - nombre_de_miliseconde_depuis_le_dernier_daily;
+		let heures_a_attendre = (temps_restant_avant_daily / 60) / 24;
 		
-			if (timeLastB4Daily >= 0) { // ca veut dire qu'il reste encore du temps avant de daily) 
-			message.channel.send("\n Il faut attendre encore: " + msToTime(timeLastInMS) + " avant d'avoir votre revenue."); /*Math.round((((timeLastB4Daily) / 60) / 24))*/
+			if (temps_restant_avant_daily >= 0) { // ca veut dire qu'il reste encore du temps avant de daily) 
+			message.channel.send("\n Il faut attendre encore: " + msToTime(temps_restant_avant_daily_en_milisecondes) + " avant d'avoir votre revenue."); /*Math.round((((temps_restant_avant_daily) / 60) / 24))*/
 			}
 			
-			if(diffUnixInMS >= msToWaitToDaily) {
+			if(difference_unix_time_en_milisecondes >= nombre_de_miliseconde_entre_chaque_daily) {
 					//console.log(or_add);
 					buffer_thunas = 0;
 				if (or_add > max_banque_perso) {
@@ -695,57 +694,5 @@ bot.on('message', async (message) => {
 		message.channel.send("POULET")
 		}
 	}*/
-
-
-	if (message.content.startsWith(prefix + "point venitienne ")) { //Seul le romar peut exécuter cette commande, c'est un privilège que de recevoir un point vénitienne, elle permet simplement de donner un point venitienne lorsque le romar approuve quelque chose, nottament une blague. 
-			let contenu_json;
-		if (message.mentions.users.first().id) {
-			if (message.author.id == "421400262423347211") {
-				message.channel.send("Point venitienne accordé !");
-				let id_selection = message.mentions.users.first().id;
-
-				
-
-					let id_usr = message.author.id;
-
-					if (fs.existsSync('json/ven/ven_' + id_selection + '.json')) { //si le fichier de l'utilisateur existe déjà
-				    		fs.readFile('json/ven/ven_' + id_selection + '.json', function(erreur, file) {
-			   				
-			   				let veni_json = JSON.parse(file)
-			   				let pts_veni_total = veni_json.ptsveni + 1;
-			   				contenu_json = '{' + '\n' + ' \"ptsveni\" : ' + pts_veni_total + '\n' + '}';
-
-			   				fs.writeFile('json/ven/ven_' + id_selection + '.json', contenu_json, function(erreur) { 
-					    		if (erreur) {
-								        console.log(erreur)
-								    }
-					    		})
-			   				})
-
-
-				    	
-				    	
-					} else { //si le fichier de l'utilisateur n'existe pas
-						 contenu_json = '{' + '\n' + ' \"ptsveni\" : 1 ' + '\n' + '}';							
-
-							//let data_write = JSON.stringify(contenu_json)
-							
-							fs.writeFile('json/ven/ven_' + id_selection + '.json', contenu_json, function(erreur) {
-							    if (erreur) {
-							        console.log(erreur)
-							    }
-							})
-					}
-
-
-
-			} else {
-				message.channel.send("Vous n'êtes pas la venitienne, vous ne pouvez donc pas accorder de \"points venitienne\"");
-			}
-		} else {
-			message.channel.send("Invalid User");
-		}
-		
-	}
 
 });
