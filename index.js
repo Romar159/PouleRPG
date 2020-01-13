@@ -458,7 +458,10 @@ bot.on('message', async (message) => {
 
 
 
-		 
+		 //or_add : C'est l'or total à ajouter
+		 //or_usr : C'est l'or se trouvant déjà sur le compte de l'utilisateur
+		 //or_a_add : C'est l'or du daily à ajouter
+		 // le calcul étant: or déjà aquis + or gagné par ce daily = or total donc or_add
 		 let or_add = or_usr + or_a_add;
 		 let msToWaitToDaily = 86400000; //24 Heures:: 86400000
 		 let diffUnixInMS = unix_time_now - unix_time_in_file;
