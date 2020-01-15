@@ -102,8 +102,10 @@ bot.on('message', async message => {
 bot.on('message', async (message) => {
 
 
+//BIG BIG PARTIE DE L'EMBED HELP
 
-	if (message.content === prefix + "help" ||  message.content === prefix + "aide") {
+
+	if (message.content === prefix + "aide" ||  message.content === prefix + "help") {
 
 		message.channel.send({embed: {
 			author: {
@@ -132,9 +134,59 @@ bot.on('message', async (message) => {
 			"value": "``arene``",
 			"inline": false
 			},
+			{
+			"name": "INFOS SUPPLÉMENTAIRES",
+			"value": "**Faites ``p<aide [commande]`` ou ``p<help [commande]`` pour plus de détails sur une certaine commande.**",
+			"inline": false
+			},
+			{
+			"name": "EXEMPLES",
+			"value": "``p<aide or\np<help arene``",
+			"inline": false
+			},
 					] 
 		}});
 	}
+
+	if (message.content === prefix + "aide aide" || message.content === prefix + "help aide" || message.content === prefix + "aide help" || message.content === prefix + "help help") {
+		let embed_aide_aide = new Discord.RichEmbed()
+							.setColor("#C86400")
+							.setTitle(":grey_question: Aide - aide/help :grey_question:")
+							.setDescription("La commande ``aide`` ou ``help`` affiche la page d'aide ou permet d'avoir plus de précisions sur une commande, voici comment l'utiliser :\n``p<aide`` | ``p<aide [commande]``\n``p<help`` | ``p<help [commande]``")
+
+							message.channel.send(embed_aide_aide);
+    }
+
+    if (message.content === prefix + "aide ping" || message.content === prefix + "help ping") {
+		let embed_aide_ping = new Discord.RichEmbed()
+							.setColor("#C86400")
+							.setTitle(":grey_question: Aide - ping :ping_pong:")
+							.setDescription("La commande ``ping`` calcule le temps de réponse du bot et l'affiche, voici comment l'utiliser :\n``p<ping``")
+
+							message.channel.send(embed_aide_ping);
+    }
+
+    if (message.content === prefix + "aide arene" || message.content === prefix + "help arene") {
+		let embed_aide_arene = new Discord.RichEmbed()
+							.setColor("#C86400")
+							.setTitle(":grey_question: Aide -  :crossed_swords:")
+							.setDescription("La commande ``arene`` permet de faire un combat dans l'arène contre le bot pour gagner de l'expérience, vous pouvez choisir entre 3 armes, la **masse** avec ``p<arene masse`` ou ``p<arene m``, la **tomahawk** avec ``p<arene tomahawk`` ou ``p<arene t``, ou la **lance** avec ``p<arene lance`` ou ``p<arene l``, voici qui l'emporte sur qui :\nLa masse -> la tomahawk\nLa tomahawk -> la lance\nLa lance -> la masse\nLe combat se fait comme un chifoumi. Voici comment l'utiliser :\n``p<arene [arme]``")
+
+							message.channel.send(embed_aide_arene);
+	}
+
+    /*if (message.content === prefix + "aide X" || message.content === prefix + "help X") {
+		let embed_aide_X = new Discord.RichEmbed()
+							.setColor("#C86400")
+							.setTitle(":grey_question: Aide - X :X:")
+							.setDescription("La commande ``X`` ou ``p<X`` XXX, voici comment l'utiliser :\n``p<X\np<X``")
+
+							message.channel.send(embed_aide_X);
+    } Sert de modèle!*/
+
+
+//FIN DU BIG BIG EMBED HELP
+
 
 	if (message.content === prefix + "function test") {
 		message.channel.send(msToTime(56856745));
@@ -168,18 +220,18 @@ bot.on('message', async (message) => {
 
     		
 
-		if (arene_choixUser == "masse" || arene_choixUser == "1" || arene_choixUser == "m") { arene_choixUser = 1; }
-		else if (arene_choixUser == "tomahawk" || arene_choixUser == "2" || arene_choixUser == "t") { arene_choixUser = 2; }
-		else if (arene_choixUser == "lance" || arene_choixUser == "3" || arene_choixUser == "l") { arene_choixUser = 3; }
+		if (arene_choixUser == "masse" || arene_choixUser == "m") { arene_choixUser = 1; }
+		else if (arene_choixUser == "tomahawk" || arene_choixUser == "t") { arene_choixUser = 2; }
+		else if (arene_choixUser == "lance" || arene_choixUser == "l") { arene_choixUser = 3; }
 		else {
 			message.channel.send("Mauvaise synthaxe. Vous devez choisir entre \"masse\", \"tomahawk\", \"lance\" ('p<help arene' pour plus de précisions)");
 		}
 
 		if (arene_choixUser == 1 || arene_choixUser == 2 || arene_choixUser == 3){
 
-				    if (arene_choixUser == 1 && arene_choixEnemy == 1) { //Masse VS Masse
+				if (arene_choixUser == 1 && arene_choixEnemy == 1) { //Masse VS Masse
 				    	message.channel.send("Vous utilisez la **masse**.\n**L'ennemi aussi !**\n*Match nul...*");
-				    }
+				}
 		    		if (arene_choixUser == 1 && arene_choixEnemy == 2) { //Masse VS Tomahawk
 		    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise la tomahawk !**\n*Vous gagnez !*");
 		    			//Faire que le mec gagne de l'xp
