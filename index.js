@@ -1,4 +1,4 @@
-const Discord = require('discord.js'), bot = new Discord.Client()
+﻿const Discord = require('discord.js'), bot = new Discord.Client()
 const ajax = require("ajax");
 const fs = require("fs");
 const mkdirp = require("mkdirp");
@@ -700,9 +700,82 @@ bot.on('message', async (message) => {
 			message.channel.send("Invalid User");
 		}
 		
-	} //Fin point venitienne
+	} //Fin retrait point venitienne
 
-});
+		if (message.content.startsWith(prefix + "retrait point venitienne ")) { //Seul le romar peut exécuter cette commande, c'est un privilège que de recevoir un point vénitienne, elle permet simplement de donner un point venitienne lorsque le romar approuve quelque chose, nottament une blague. 
+			let contenu_json;
+		if (message.mentions.users.first().id) {
+			if (message.author.id == "421400262423347211") {
+				message.channel.send("Point venitienne retiré !");
+				let id_selection = message.mentions.users.first().id;
+
+				
+
+					let id_usr = message.author.id;
+
+					if (fs.existsSync('json/ven/ven_' + id_selection + '.json')) { //si le fichier de l'utilisateur existe déjà
+				    		fs.readFile('json/ven/ven_' + id_selection + '.json', function(erreur, file) {
+			   				
+			   				let veni_json = JSON.parse(file)
+			   				let pts_veni_total = veni_json.ptsveni - 1;
+			   				contenu_json = '{' + '\n' + ' \"ptsveni\" : ' + pts_veni_total + '\n' + '}';
+
+			   				fs.writeFile('json/ven/ven_' + id_selection + '.json', contenu_json, function(erreur) { 
+					    		if (erreur) {
+								        console.log(erreur)
+								    }
+					    		})
+			   				})
+
+
+				    	
+				    	
+					} else { //si le fichier de l'utilisateur n'existe pas
+						 contenu_json = '{' + '\n' + ' \"ptsveni\" : -1 ' + '\n' + '}';							
+
+							//let data_write = JSON.stringify(contenu_json)
+							
+							fs.writeFile('json/ven/ven_' + id_selection + '.json', contenu_json, function(erreur) {
+							    if (erreur) {
+							        console.log(erreur)
+							    }
+							})
+					}
+
+
+
+			} else {
+				message.channel.send("Vous n'êtes pas la venitienne, vous ne pouvez donc pas accorder de \"points venitienne\"");
+			}
+		} else {
+			message.channel.send("Invalid User");
+		}
+		
+	} //Fin retrait point venitienne
+
+	if (message.content === prefix + "mes beaux points venitienne") { //voir ses points venitienne
+
+		let id_usr = message.author.id;
+
+		if (fs.existsSync('json/ven/ven_' + id_usr + '.json')) { //si le fichier de l'utilisateur existe déjà
+	    		fs.readFile('json/ven/ven_' + id_usr + '.json', function(erreur, file) {
+   				
+   				let veni_json = JSON.parse(file)
+   				let pts_veni_total = veni_json.ptsveni;
+   				
+   				message.channel.send("Vous avez : " + pts_veni_total + " points venitienne.");
+   				
+   				})
+	    	
+		} else { //si le fichier de l'utilisateur n'existe pas
+				message.channel.send("Vous avez : 0 points venitienne.");
+		}
+	} //Fin de la commande pour voir points venitienne
+
+
+	//if (message.channel.send(prefix + ""))
+
+}); //Fin MAIN bot
 
 
 
