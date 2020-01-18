@@ -20,7 +20,8 @@ let bot_version = "0.1";
 
 let MaitreFac_Epsilon;
 let MaitreFac_Gamma;
-let MaitreFac_Sigma;
+let MaitreFac_Zeta;
+let MaitreFac_Omega;
 
 let factionDe_Request = "";
 let MaitreFac = "";
@@ -85,12 +86,12 @@ bot.on('ready', function() {
 
 bot.on('message', async message => {
 
-    if (message.content === prefix + "ping") {
+    if (message.content === prefix + "ping") { //début ping (le code n'est pas du romar, il est trouvé sur internet)
         // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
         // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
         const m = await message.channel.send("Calcul en cours...");
         m.edit( ":ping_pong: | Pong!\nTemps de réponse : **" + `${m.createdTimestamp - message.createdTimestamp}ms` + "**");
-    }
+    } //Fin ping
 
 
     
@@ -188,39 +189,23 @@ bot.on('message', async (message) => {
 //FIN DU BIG BIG EMBED HELP
 
 
-	if (message.content === prefix + "function test") {
-		message.channel.send(msToTime(56856745));
-		message.channel.send(entierAleatoire(1, 10));
-		message.channel.send(Unix_timestamp(56856745));
-    }
 
-
-    if (message.content === prefix + 'mention') {
-        let user = message.author.id;
-        message.channel.send(user);
-        message.channel.send("tmp");
-    }
-
+	//Heu qu'est-ce que j'ai chier ici ? C'est quoi ce bordel xD Je le laisse si c'est là c'est que ça doit être utile mais je vois pas pourquoi xD
     const args = message.content.slice(prefix.length).split(' ');
 	const command = args.shift().toLowerCase();
 
 
-    /// Arène (genre pierre feuille ciseaux)
 
-    if (message.content.startsWith(prefix + 'arene ')) {
-    	// 1: Pierre ; 2: Feuille; 3: ciseaux
+    if (message.content.startsWith(prefix + 'arene ')) { //DEBUT ARENE 
     	let arene_choixEnemy = entierAleatoire(1,3);
-    	console.log(arene_choixEnemy);
+    	console.log("arene_choixEnemy: " + arene_choixEnemy); //TEMP
 
     	let arene_choixUser = args[0].toLowerCase();
 
-    	console.log(arene_choixUser);
+    	console.log("arene_choixUser: " + arene_choixUser); //TEMP
 
 
-
-    		
-
-		if (arene_choixUser == "masse" || arene_choixUser == "m") { arene_choixUser = 1; }
+			 if (arene_choixUser == "masse" || arene_choixUser == "m") { arene_choixUser = 1; }
 		else if (arene_choixUser == "tomahawk" || arene_choixUser == "t") { arene_choixUser = 2; }
 		else if (arene_choixUser == "lance" || arene_choixUser == "l") { arene_choixUser = 3; }
 		else {
@@ -229,59 +214,44 @@ bot.on('message', async (message) => {
 
 		if (arene_choixUser == 1 || arene_choixUser == 2 || arene_choixUser == 3){
 
-				if (arene_choixUser == 1 && arene_choixEnemy == 1) { //Masse VS Masse
-				    	message.channel.send("Vous utilisez la **masse**.\n**L'ennemi aussi !**\n*Match nul...*");
-				}
-		    		if (arene_choixUser == 1 && arene_choixEnemy == 2) { //Masse VS Tomahawk
-		    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise la tomahawk !**\n*Vous gagnez !*");
-		    			//Faire que le mec gagne de l'xp
-		    		}
-		    		if (arene_choixUser == 1 && arene_choixEnemy == 3) { //Masse VS Lance
-		    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise la lance !**\n*Vous perdez...*");
-		    			//Faire que le mec perd de l'xp
-		    		}
+			if (arene_choixUser == 1 && arene_choixEnemy == 1) { //Masse VS Masse
+			    	message.channel.send("Vous utilisez la **masse**.\n**L'ennemi aussi !**\n*Match nul...*");
+			}
+    		if (arene_choixUser == 1 && arene_choixEnemy == 2) { //Masse VS Tomahawk
+    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise la tomahawk !**\n*Vous gagnez !*");
+    			//Faire que le mec gagne de l'xp
+    		}
+    		if (arene_choixUser == 1 && arene_choixEnemy == 3) { //Masse VS Lance
+    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise la lance !**\n*Vous perdez...*");
+    			//Faire que le mec perd de l'xp
+    		}
 
 
-		    		if (arene_choixUser == 2 && arene_choixEnemy == 1) { //Tomahawk VS Masse
-		    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi utilise la masse !**\n*Vous perdez...*");
-		    			//Faire que le mec perd de l'xp
-		    		}
-		    		if (arene_choixUser == 2 && arene_choixEnemy == 2) { //Tomahawk VS Tomahawk
-		    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi aussi !**\n*Match nul...*");
-		    		}
-		    		if (arene_choixUser == 2 && arene_choixEnemy == 3) { //Tomahawk VS Lance
-		    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi utilise la lance !**\n*Vous gagnez !*");
-		    			//Faire que le mec gagne de l'xp
-		    		}
+    		if (arene_choixUser == 2 && arene_choixEnemy == 1) { //Tomahawk VS Masse
+    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi utilise la masse !**\n*Vous perdez...*");
+    			//Faire que le mec perd de l'xp
+    		}
+    		if (arene_choixUser == 2 && arene_choixEnemy == 2) { //Tomahawk VS Tomahawk
+    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi aussi !**\n*Match nul...*");
+    		}
+    		if (arene_choixUser == 2 && arene_choixEnemy == 3) { //Tomahawk VS Lance
+    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi utilise la lance !**\n*Vous gagnez !*");
+    			//Faire que le mec gagne de l'xp
+    		}
 
 
-		    		if (arene_choixUser == 3 && arene_choixEnemy == 1) { //Lance VS Masse
-		    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise la masse !**\n*Vous gagnez !*");
-		    			//Faire que le mec gagne de l'xp
-		    		}
-		    		if (arene_choixUser == 3 && arene_choixEnemy == 2) { //Lance VS Tomahawk
-		    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise la tomahawk !**\n*Vous perdez...*");
-		    			//Faire que le mec perd de l'xp
-		    		}
-		    		if (arene_choixUser == 3 && arene_choixEnemy == 3) { //Lance VS Lance
-		    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi aussi !**\n*Match nul...*");
-		    		}
+    		if (arene_choixUser == 3 && arene_choixEnemy == 1) { //Lance VS Masse
+    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise la masse !**\n*Vous gagnez !*");
+    			//Faire que le mec gagne de l'xp
+    		}
+    		if (arene_choixUser == 3 && arene_choixEnemy == 2) { //Lance VS Tomahawk
+    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise la tomahawk !**\n*Vous perdez...*");
+    			//Faire que le mec perd de l'xp
+    		}
+    		if (arene_choixUser == 3 && arene_choixEnemy == 3) { //Lance VS Lance
+    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi aussi !**\n*Match nul...*");
+    		}
 		}
-
-			 		/* Masse = pierre
-			    	Tomahawk = ciseaux
-			    	Lance = feuille */
-
-			    	// A la place de pierre, feuille, ciseaux:
-
-			    	// ATTAQUE : pierre
-			    	// DEFENSSE : feuille
-			    	// PERCÉE : ciseaux
-
-			    	// ATTAQUE > BRISE DEF
-			    	// PERCÉE > DEFENSE
-			    	// DEFENSE > ATTAQUE
-
 	} ///FIN ARENE
     	
 
@@ -317,15 +287,7 @@ bot.on('message', async (message) => {
 		 or_usr = or_usr.or;
 
 
-		//message.channel.send(`or de ${message.author} :`);
-		//message.channel.send(or_usr);
-
-		/*let embed_or = new Discord.RichEmbed()     //-> VRAIE TRUC OR
-							.setColor('#FFD400')
-							.setTitle('Or dans votre banque perso')
-							.addField("``" + or_usr + "``")
-							.setFooter(`____`)
-							message.channel.send(embed_or);*/
+		
 
 
 		let embed_or = new Discord.RichEmbed()
@@ -360,11 +322,12 @@ bot.on('message', async (message) => {
 
 			let Maitre_Epsilon = message.guild.roles.get('445617906072682514').members.map(m=>m.user.id);
 			let Maitre_Gamma = message.guild.roles.get('445617908903706624').members.map(m=>m.user.id);
-			let Maitre_Sigma = message.guild.roles.get('445617911747313665').members.map(m=>m.user.id);
+			let Maitre_Zeta = message.guild.roles.get('445617911747313665').members.map(m=>m.user.id);
+			let Maitre_Omega = message.guild.roles.get('665340068046831646').members.map(m=>m.user.id);
 
 			
 
-		if (message.author.id == Maitre_Epsilon || message.author.id == Maitre_Gamma || message.author.id == Maitre_Sigma) { //si l'author est maitre
+		if (message.author.id == Maitre_Epsilon || message.author.id == Maitre_Gamma || message.author.id == Maitre_Zeta || message.author.id == MaitreFac_Omega) { //si l'author est maitre
 		 		//donner plus de thunas
 		 	if (message.guild.members.get(message.author.id).roles.exists('id','445253268176633891')) {
 		 		or_a_add = 1;
@@ -480,7 +443,8 @@ bot.on('message', async (message) => {
 
 		Maitre_Epsilon = message.guild.roles.get('445617906072682514').members.map(m=>m.user.id);
 		Maitre_Gamma = message.guild.roles.get('445617908903706624').members.map(m=>m.user.id);
-		Maitre_Sigma = message.guild.roles.get('445617911747313665').members.map(m=>m.user.id);
+		Maitre_Zeta = message.guild.roles.get('445617911747313665').members.map(m=>m.user.id);
+		Maitre_Omega = message.guild.roles.get('665340068046831646').members.map(m=>m.user.id);
 
 
 
@@ -542,7 +506,8 @@ bot.on('message', async (message) => {
 
 					if(message.member.roles.find(r => r.name === "Epsilon")) { factionDe_Request = "Epsilon"; }
 					else if(message.member.roles.find(r => r.name === "Gamma")) { factionDe_Request = "Gamma"; 	 }
-					else if(message.member.roles.find(r => r.name === "Sigma")) { factionDe_Request = "Sigma";   }
+					else if(message.member.roles.find(r => r.name === "Zeta")) { factionDe_Request = "Zeta";   }
+					else if(message.member.roles.find(r => r.name === "Omega")) { factionDe_Request = "Omega";   }
 					else { }
 
 					if (factionDe_Request == "Epsilon") {
@@ -553,10 +518,13 @@ bot.on('message', async (message) => {
 						//ENVOIE DANS LE COFFRE DE EPSILON
 						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Gamma." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
 					
-					} else if (factionDe_Request == "Sigma") {
+					} else if (factionDe_Request == "Zeta") {
 						//ENVOIE DANS LE COFFRE DE EPSILON
-						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Sigma." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Zeta." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
 					
+					} else if (factionDe_Request == "Omega") {
+
+						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Omega." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
 					} else {
 					message.channel.send("Le surplus d'argent à été rendu à PouleRPG : -" + buffer_thunas + " or." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
 					}
@@ -582,7 +550,7 @@ bot.on('message', async (message) => {
 
 			} else {
 				
-				//message.channel.send("MORT");
+				//message.channel.send("MORT"); //Message d'erreur
 			}
 		});
 	} // FIN DAILY
@@ -605,30 +573,38 @@ bot.on('message', async (message) => {
 	        message.channel.send(ListEmbed); 
 	} 
 
-	if (message.content === prefix + "list sigma") {
+	if (message.content === prefix + "list zeta" || message.content === prefix + "list zêta") {
 		const ListEmbed = new Discord.RichEmbed()
-            .setTitle('Membres de la faction Sigma')
+            .setTitle('Membres de la faction Zêta')
             .setDescription(message.guild.roles.get('415947455582961686').members.map(m=>m.user.tag).join('\n'));
         message.channel.send(ListEmbed); 
 	} 
 
-	
+	if (message.content === prefix + "list omega" || message.content === prefix + "list oméga") {
+		const ListEmbed = new Discord.RichEmbed()
+            .setTitle('Membres de la faction Oméga')
+            .setDescription(message.guild.roles.get('665340021640921099').members.map(m=>m.user.tag).join('\n'));
+        message.channel.send(ListEmbed);
+
+	}
 
 	if (message.content === prefix + "list factions") {
 		let list_epsilon = message.guild.roles.get('415947454626660366').members.map(m=>m.user.tag).join('\n')
-		let list_sigma = message.guild.roles.get('415947455582961686').members.map(m=>m.user.tag).join('\n')
+		let list_zeta = message.guild.roles.get('415947455582961686').members.map(m=>m.user.tag).join('\n')
 		let list_Gamma = message.guild.roles.get('415947456342130699').members.map(m=>m.user.tag).join('\n')
+		let list_Omega = message.guild.roles.get('665340021640921099').members.map(m=>m.user.tag).join('\n')
 		const ListEmbed = new Discord.RichEmbed()
             .setTitle('Membres des factions')
-            .setDescription("**Epsilon**\n\n" + list_epsilon + "\n\n**Gamma**\n\n" + list_Gamma + "\n\n**Sigma**\n\n" + list_sigma + "\n");
-        message.channel.send(ListEmbed); 
+            .setDescription("**Epsilon**\n\n" + list_epsilon + "\n\n**Zêta**\n\n" + list_zeta + "\n\n**Gamma**\n\n" + list_Gamma + "\n\n**Oméga**\n\n" + list_Omega + "\n");
+        message.channel.send(ListEmbed);
+
+
+ 
 	}
-	///RAJOUTER ABSOLUMENT LA LISTE DES MAITRE A LA FIN AUSSI !!!
 
 
 
-
-//HELP
+//SERT D'EXEMPLE
     /*if(message.content === prefix + "list") {
         const ListEmbed = new Discord.RichEmbed()
             .setTitle('Users with the go4 role:')
@@ -636,75 +612,6 @@ bot.on('message', async (message) => {
         message.channel.send(ListEmbed);                    
     }*/
     		
-	if (message.content.startsWith(prefix + "DemandeDeThuneASonMaitre ")) { // Verifier le role du mec qui fait la commande, par exemple si il est Gamma faire la verification par role de qui est le maitre prendre son id et envoyer le message au maitre
-
-
-			 const args = message.content.slice(prefix.length + 25 ).split(' ');
-			 let money_demandee = args;
-			 factionDe_Request = "";
-			 MaitreFac = "";
-
-			 let Maitre_Epsilon = message.guild.roles.get('445617906072682514').members.map(m=>m.user.id);
-			 let Maitre_Gamma = message.guild.roles.get('445617908903706624').members.map(m=>m.user.id);
-			 let Maitre_Sigma = message.guild.roles.get('445617911747313665').members.map(m=>m.user.id);
-
-
-			 if(message.member.roles.find(r => r.name === "Epsilon")) { factionDe_Request = "Epsilon"; }
-			 else if(message.member.roles.find(r => r.name === "Gamma")) { factionDe_Request = "Gamma"; 	 }
-			 else if(message.member.roles.find(r => r.name === "Sigma")) { factionDe_Request = "Sigma";   }
-			 else { message.channel.send("Vous n'avez aucune faction.") }
-
-			 message.channel.send("DEBUG/Vous êtes dans : " + factionDe_Request);
-
-			 if (factionDe_Request == "Epsilon") { MaitreFac = message.guild.roles.get('445617906072682514').members.map(m=>m.user.id); }
-			 if (factionDe_Request == "Gamma") 	 { MaitreFac = message.guild.roles.get('445617908903706624').members.map(m=>m.user.id); }
-			 if (factionDe_Request == "Sigma") 	 { MaitreFac = message.guild.roles.get('445617911747313665').members.map(m=>m.user.id); }
-			
-			message.channel.send("DEBUG/Votre Maitre de Faction est : " + MaitreFac);
-
-		if (MaitreFac) {
-
-			bot.fetchUser(MaitreFac ,false).then(user => {
-	        user.send(`${message.author} vous demande ${money_demandee} or du coffre de faction, Acceptez-Vous ?`) 
-	        .then(function (message) {
-              message.react("✅")
-              message.react("❌")
-              /*message.pin()
-              message.delete()*/
-
-            }).catch(function() {
-              //Something
-             });
-
-
-        });
-
-
-		const filter = (reaction, user) => { //IL FAUT QUE CA FASSE QUELQUE CHOSE QUAND ON REAGIT !
-                return [':white_check_mark:', ':x:'].includes(reaction.emoji.name) && user.id === message.author.id;
-            };
-
-            message.awaitReactions(filter, { max: 1, time: 14400000/*4h*/, errors: ['time'] })
-            .then(collected => {
-                const reaction = collected.first();
-
-                if (reaction.emoji.name === ':white_check_mark:') {
-                    message.reply('Oui');
-                } else {
-                    message.reply('Non');
-            
-                }    
-            })
-            .catch(collected => {
-            message.reply('Délai de demande expiré');
-            });
-
-			
-
-			
-			//MaitreFac.send(`${message.author} vous demande 5 milliards de thunas ? Acceptez-Vous ?`);
-	    } //FIN TEST SI ON EST DANS UNE FAC
-	}	//FIN COMMANDE DEMANDE DE THUNE AU MAITRE
 
 	if (message.content === prefix + "xp") { //permet de voir son xp
 		let id_usr = message.author.id;
@@ -743,15 +650,7 @@ bot.on('message', async (message) => {
 	}
 
 
-//ICI C'EST POUR SAVOIR SI LE AUTHOR IL A LE ROLE CHOISIT !
-	/*if (message.content === prefix + "DEV/ROLE") {
-		if (message.guild.members.get(message.author.id).roles.exists('id','415947455582961686')) {
-		///Code here
-		message.channel.send("POULET")
-		}
-	}*/
-
-
+	//CE CODE CI-DESSOUS EST DEGEULASSE OUI MAIS OSEF. :)
 	if (message.content.startsWith(prefix + "point venitienne ")) { //Seul le romar peut exécuter cette commande, c'est un privilège que de recevoir un point vénitienne, elle permet simplement de donner un point venitienne lorsque le romar approuve quelque chose, nottament une blague. 
 			let contenu_json;
 		if (message.mentions.users.first().id) {
@@ -801,6 +700,104 @@ bot.on('message', async (message) => {
 			message.channel.send("Invalid User");
 		}
 		
-	}
+	} //Fin point venitienne
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+//NOTES ET BOUTS DE CODE PRATIQUES : 
+
+
+/* VALUE ITEMS ARENA
+Masse = pierre
+Tomahawk = ciseaux
+Lance = feuille 
+*/
+
+
+
+
+/* SAVOIR LE MAITRE DE FAC ET LA FACTION DE L'UTILISATEUR
+
+
+factionDe_Request = "";
+			 MaitreFac = "";
+
+			 let Maitre_Epsilon = message.guild.roles.get('445617906072682514').members.map(m=>m.user.id);
+			 let Maitre_Gamma = message.guild.roles.get('445617908903706624').members.map(m=>m.user.id);
+			 let Maitre_Zeta = message.guild.roles.get('445617911747313665').members.map(m=>m.user.id);
+			 let Maitre_Omega = message.guild.roles.get('667906833255628800').members.map(m=>m.user.id);
+
+
+			 if(message.member.roles.find(r => r.name === "Epsilon")) { factionDe_Request = "Epsilon"; }
+			 else if(message.member.roles.find(r => r.name === "Gamma")) { factionDe_Request = "Gamma"; }	 }
+			 else if(message.member.roles.find(r => r.name === "Zeta")) { factionDe_Request = "Zeta";   }
+			 else if(message.member.roles.find(r => r.name === "Omega")) { factionDe_Request = "Omega"; }
+			 else { message.channel.send("Vous n'avez aucune faction.") }
+
+			 message.channel.send("DEBUG/Vous êtes dans : " + factionDe_Request);
+
+			 if (factionDe_Request == "Epsilon") { MaitreFac = message.guild.roles.get('445617906072682514').members.map(m=>m.user.id); }
+			 if (factionDe_Request == "Gamma") 	 { MaitreFac = message.guild.roles.get('445617908903706624').members.map(m=>m.user.id); }
+			 if (factionDe_Request == "Zeta") 	 { MaitreFac = message.guild.roles.get('445617911747313665').members.map(m=>m.user.id); }
+			 if (factionDe_Request == "Omega") 	 { MaitreFac = message.guild.roles.get('667906833255628800').members.map(m=>m.user.id); }
+
+			message.channel.send("DEBUG/Votre Maitre de Faction est : " + MaitreFac);
+
+*/
+
+
+
+
+/* ARGUMENTS DE COMMANDES:
+
+			 let args = message.content.slice(prefix.length + 25 ).split(' ');
+			 let money_demandee = args;
+
+*/
+
+//EMBED OR ANCIEN
+//
+//message.channel.send(`or de ${message.author} :`);
+		//message.channel.send(or_usr);
+
+		/*let embed_or = new Discord.RichEmbed()     //-> VRAIE TRUC OR
+							.setColor('#FFD400')
+							.setTitle('Or dans votre banque perso')
+							.addField("``" + or_usr + "``")
+							.setFooter(`____`)
+							message.channel.send(embed_or);*/
+
+
+/* TESTS FONCTIONS
+	if (message.content === prefix + "function test") {
+		message.channel.send(msToTime(56856745));
+		message.channel.send(entierAleatoire(1, 10));
+		message.channel.send(Unix_timestamp(56856745));
+    }
+*/
+
+/* TEST MENTION
+    if (message.content === prefix + 'mention') {
+        let user = message.author.id;
+        message.channel.send(user);
+        message.channel.send("tmp");
+    } */
+
+//ICI C'EST POUR SAVOIR SI LE AUTHOR IL A LE ROLE CHOISIT !
+	/*if (message.content === prefix + "DEV/ROLE") {
+		if (message.guild.members.get(message.author.id).roles.exists('id','415947455582961686')) {
+		///Code here
+		message.channel.send("POULET")
+		}
+	}*/
