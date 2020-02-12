@@ -15,7 +15,8 @@ bot.login(config.token);
 
 let prefix = ("p<");
 
-let bot_version = "0.1";
+let bot_version = "0.2.1";
+let bot_lignes = "1219";
 
 
 let MaitreFac_Epsilon;
@@ -25,6 +26,8 @@ let MaitreFac_Omega;
 
 let factionDe_Request = "";
 let MaitreFac = "";
+
+const talkedRecently_arene = new Set();
 
 
 
@@ -101,6 +104,14 @@ bot.on('message', async message => {
 //Main
 
 bot.on('message', async (message) => {
+
+	if (message.content.startsWith(prefix)) {
+		if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760") {
+		}
+		else {
+			return;
+		}
+	}
 
 
 //BIG BIG PARTIE DE L'EMBED HELP
@@ -188,70 +199,111 @@ bot.on('message', async (message) => {
 
 //FIN DU BIG BIG EMBED HELP
 
+/*
+	if (message.content === prefix + "dev") {
+
+		if (talkedRecently.has(message.author.id)) {
+	            message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
+	    } else {
+
+	           // the user can type the command ... your command code goes here :)
+	           message.channel.send("TEST")
+
+	        // Adds the user to the set so that they can't talk for a minute
+	        talkedRecently.add(message.author.id);
+	        setTimeout(() => {
+	          // Removes the user from the set after a minute
+	          talkedRecently.delete(message.author.id);
+	        }, 6000);
+	    }
+
+	} */
 
 
-	//Heu qu'est-ce que j'ai chier ici ? C'est quoi ce bordel xD Je le laisse si c'est là c'est que ça doit être utile mais je vois pas pourquoi xD
+
+	if (message.content === prefix + "botinfos") {
+		message.channel.send("Version : " + bot_version + "\nLignes : " + bot_lignes + "\nDevs : programmation : Romar1 ; Design Graphique : DraxyDow\n");
+	}
+
+	//Heu qu'est-ce que j'ai chier ici ? C'est quoi ce bordel xD Je le laisse si c'est là c'est que ça doit être utile mais je vois pas pourquoi xD -r
     const args = message.content.slice(prefix.length).split(' ');
 	const command = args.shift().toLowerCase();
 
 
 
-    if (message.content.startsWith(prefix + 'arene ')) { //DEBUT ARENE 
-    	let arene_choixEnemy = entierAleatoire(1,3);
-    	console.log("arene_choixEnemy: " + arene_choixEnemy); //TEMP
+    if (message.content.startsWith(prefix + 'arene ')) { //DEBUT ARENE ///FAIT LE COULDOWN de 1 minute, et le fait qu'on gagne de l'xp (aléatoire entre 1 et 3 un truc commas), DE PLUS fait le système qui calcul l'xp de la pleb dans la commande p<xp (en gros, au lieu de verifier le level dxp des cons à chaques fois, là ça permet de verifier le level uniquement quand on fait la commande "xp", ça allègera le bot, et c'est pas très handicappant que le con ne soit pas avertit qu'il level up, ça osef !!)
+    	
+    	if (talkedRecently_arene.has(message.author.id)) {
+	            message.channel.send("Il faut attendre 1 minute, avant de pouvoir re rentrer dans l'arène. - " + message.author);
+	    } else {
 
-    	let arene_choixUser = args[0].toLowerCase();
-
-    	console.log("arene_choixUser: " + arene_choixUser); //TEMP
+	          
 
 
-			 if (arene_choixUser == "masse" || arene_choixUser == "m") { arene_choixUser = 1; }
-		else if (arene_choixUser == "tomahawk" || arene_choixUser == "t") { arene_choixUser = 2; }
-		else if (arene_choixUser == "lance" || arene_choixUser == "l") { arene_choixUser = 3; }
-		else {
-			message.channel.send("Mauvaise synthaxe. Vous devez choisir entre \"masse\", \"tomahawk\", \"lance\" ('p<help arene' pour plus de précisions)");
-		}
 
-		if (arene_choixUser == 1 || arene_choixUser == 2 || arene_choixUser == 3){
+	    	let arene_choixEnemy = entierAleatoire(1,3);
+	    	console.log("arene_choixEnemy: " + arene_choixEnemy); //TEMP
 
-			if (arene_choixUser == 1 && arene_choixEnemy == 1) { //Masse VS Masse
-			    	message.channel.send("Vous utilisez la **masse**.\n**L'ennemi aussi !**\n*Match nul...*");
+	    	let arene_choixUser = args[0].toLowerCase();
+
+	    	console.log("arene_choixUser: " + arene_choixUser); //TEMP
+
+
+				 if (arene_choixUser == "masse" || arene_choixUser == "m") { arene_choixUser = 1; }
+			else if (arene_choixUser == "tomahawk" || arene_choixUser == "t") { arene_choixUser = 2; }
+			else if (arene_choixUser == "lance" || arene_choixUser == "l") { arene_choixUser = 3; }
+			else {
+				message.channel.send("Mauvaise synthaxe. Vous devez choisir entre \"masse\", \"tomahawk\", \"lance\" ('p<help arene' pour plus de précisions)");
 			}
-    		if (arene_choixUser == 1 && arene_choixEnemy == 2) { //Masse VS Tomahawk
-    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise la tomahawk !**\n*Vous gagnez !*");
-    			//Faire que le mec gagne de l'xp
-    		}
-    		if (arene_choixUser == 1 && arene_choixEnemy == 3) { //Masse VS Lance
-    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise la lance !**\n*Vous perdez...*");
-    			//Faire que le mec perd de l'xp
-    		}
+
+			if (arene_choixUser == 1 || arene_choixUser == 2 || arene_choixUser == 3){
+
+				if (arene_choixUser == 1 && arene_choixEnemy == 1) { //Masse VS Masse
+				    	message.channel.send("Vous utilisez la **masse**.\n**L'ennemi aussi !**\n*Match nul...*");
+				}
+	    		if (arene_choixUser == 1 && arene_choixEnemy == 2) { //Masse VS Tomahawk
+	    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise la tomahawk !**\n*Vous gagnez !*");
+	    			//Faire que le mec gagne de l'xp
+	    		}
+	    		if (arene_choixUser == 1 && arene_choixEnemy == 3) { //Masse VS Lance
+	    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise la lance !**\n*Vous perdez...*");
+	    			//Faire que le mec perd de l'xp
+	    		}
 
 
-    		if (arene_choixUser == 2 && arene_choixEnemy == 1) { //Tomahawk VS Masse
-    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi utilise la masse !**\n*Vous perdez...*");
-    			//Faire que le mec perd de l'xp
-    		}
-    		if (arene_choixUser == 2 && arene_choixEnemy == 2) { //Tomahawk VS Tomahawk
-    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi aussi !**\n*Match nul...*");
-    		}
-    		if (arene_choixUser == 2 && arene_choixEnemy == 3) { //Tomahawk VS Lance
-    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi utilise la lance !**\n*Vous gagnez !*");
-    			//Faire que le mec gagne de l'xp
-    		}
+	    		if (arene_choixUser == 2 && arene_choixEnemy == 1) { //Tomahawk VS Masse
+	    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi utilise la masse !**\n*Vous perdez...*");
+	    			//Faire que le mec perd de l'xp
+	    		}
+	    		if (arene_choixUser == 2 && arene_choixEnemy == 2) { //Tomahawk VS Tomahawk
+	    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi aussi !**\n*Match nul...*");
+	    		}
+	    		if (arene_choixUser == 2 && arene_choixEnemy == 3) { //Tomahawk VS Lance
+	    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi utilise la lance !**\n*Vous gagnez !*");
+	    			//Faire que le mec gagne de l'xp
+	    		}
 
 
-    		if (arene_choixUser == 3 && arene_choixEnemy == 1) { //Lance VS Masse
-    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise la masse !**\n*Vous gagnez !*");
-    			//Faire que le mec gagne de l'xp
-    		}
-    		if (arene_choixUser == 3 && arene_choixEnemy == 2) { //Lance VS Tomahawk
-    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise la tomahawk !**\n*Vous perdez...*");
-    			//Faire que le mec perd de l'xp
-    		}
-    		if (arene_choixUser == 3 && arene_choixEnemy == 3) { //Lance VS Lance
-    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi aussi !**\n*Match nul...*");
-    		}
-		}
+	    		if (arene_choixUser == 3 && arene_choixEnemy == 1) { //Lance VS Masse
+	    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise la masse !**\n*Vous gagnez !*");
+	    			//Faire que le mec gagne de l'xp
+	    		}
+	    		if (arene_choixUser == 3 && arene_choixEnemy == 2) { //Lance VS Tomahawk
+	    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise la tomahawk !**\n*Vous perdez...*");
+	    			//Faire que le mec perd de l'xp
+	    		}
+	    		if (arene_choixUser == 3 && arene_choixEnemy == 3) { //Lance VS Lance
+	    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi aussi !**\n*Match nul...*");
+	    		}
+			}
+
+			// Adds the user to the set so that they can't talk for a minute
+	        talkedRecently_arene.add(message.author.id);
+	        setTimeout(() => {
+	          // Removes the user from the set after a minute
+	          talkedRecently_arene.delete(message.author.id);
+	        }, 60000);
+	    }
 	} ///FIN ARENE
     	
 
@@ -550,7 +602,7 @@ bot.on('message', async (message) => {
 
 			} else {
 				
-				//message.channel.send("MORT"); //Message d'erreur
+				//message.channel.send("ERROR"); //Message d'erreur
 			}
 		});
 	} // FIN DAILY
@@ -597,9 +649,6 @@ bot.on('message', async (message) => {
             .setTitle('Membres des factions')
             .setDescription("**Epsilon**\n\n" + list_epsilon + "\n\n**Zêta**\n\n" + list_zeta + "\n\n**Gamma**\n\n" + list_Gamma + "\n\n**Oméga**\n\n" + list_Omega + "\n");
         message.channel.send(ListEmbed);
-
-
- 
 	}
 
 
@@ -643,11 +692,47 @@ bot.on('message', async (message) => {
 		}
 	}
 
+		if (message.content.startsWith(prefix + "xp ")) { //permet de voir l'xp de quelqu'un
+		let id_usr = message.mentions.users.first().id;
+
+
+		if (fs.existsSync('json/xp/xp_' + id_usr + '.json')) { //si le fichier xp de l'utilisateur existe déjà
+	    	fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
+			   	let json_xp = JSON.parse(fichier)
+			   	let xp_level_up_required = xp_level_up_required_BASE * json_xp.xplevel;
+				message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
+			})
+		} else { //si le fichier xp de l'utilisateur n'existe pas
+				message.channel.send(`XP de <@${id_usr}> : 0/${xp_level_up_required_BASE} | Level : 1`);
+		}
+	}
+
 	
 
-	if (message.content === prefix + "J'adore Le Poulet") {
-		message.channel.send("MOI AUZZIIII J'ADORE LE POUUULLEEET <:OMEGA_GRAS:655795195417460756> ")
+	if (message.content === "J'adore le poulet") { //Une commande useless
+		let poulet_ran = entierAleatoire(1, 5);
+
+		switch (poulet_ran) {
+			case 1: 
+			message.channel.send("MOI AUZZIIII J'ADORE LE POUUULLEEET <:OMEGA_GRAS:655795195417460756> ")
+			break;
+			case 2:
+			message.channel.send("AH NAN MAIS OUÉÉÉÉ, NAN MAIS LE **POULET** QUOIIII !!!")
+			case 3:
+			message.channel.send("SERIEUX ? TOI AUSSI <:OMEGA_GRAS:655795195417460756>")
+			break;
+			case 4:
+			message.channel.send("OUI ! ET HEUREUSEMENT !! <:BORDEL:597940572556099604> ")
+			break;
+			case 5:
+			message.channel.send("Moi je vie poulet.")
+			break;
+
+		}	
 	}
+
+
+
 
 
 	//CE CODE CI-DESSOUS EST DEGEULASSE OUI MAIS OSEF. :)
@@ -772,8 +857,243 @@ bot.on('message', async (message) => {
 		}
 	} //Fin de la commande pour voir points venitienne
 
+	if (message.content.startsWith(prefix +"romarin ") || message.content === prefix + "romarin dra" || message.content === prefix + "romarin rom") {
 
-	//if (message.channel.send(prefix + ""))
+
+		let contenu_json;		
+		let id_selection;
+
+			if (message.content === prefix + "romarin dra") {
+				id_selection = '211911771433205760';
+
+			} else if (message.content === prefix + "romarin rom") {
+				id_selection = '421400262423347211';
+
+			} else {
+				id_selection = message.mentions.users.first().id;
+			}
+
+		let id_usr = message.author.id;
+
+		if (fs.existsSync('json/romarin/romarin_' + id_selection + '.json')) { //si le fichier de l'utilisateur existe déjà
+		    		fs.readFile('json/romarin/romarin_' + id_selection + '.json', function(erreur, file) {
+	   				
+	   				let romarin_json = JSON.parse(file)
+	   				let romarin_total = romarin_json.romarin + 1;
+	   				contenu_json = '{' + '\n' + ' \"romarin\" : ' + romarin_total + '\n' + '}';
+
+
+	   				fs.writeFile('json/romarin/romarin_' + id_selection + '.json', contenu_json, function(erreur) { 
+			    		if (erreur) {
+						        console.log(erreur)
+						    }
+			    		})
+	   				})
+
+			} else { //si le fichier de l'utilisateur n'existe pas
+				 contenu_json = '{' + '\n' + ' \"romarin\" : 1 ' + '\n' + '}';							
+
+					fs.writeFile('json/romarin/romarin_' + id_selection + '.json', contenu_json, function(erreur) {
+					    if (erreur) {
+					        console.log(erreur)
+					    }
+					})
+			}
+
+
+
+
+
+
+
+
+
+
+
+
+			if (fs.existsSync('json/romarin/romarin_' + id_usr + '.json')) { //si le fichier de l'utilisateur existe déjà
+		    		fs.readFile('json/romarin/romarin_' + id_usr + '.json', function(erreur, file) {
+	   				
+	   				let romarin_json = JSON.parse(file)
+	   				let romarin_total = romarin_json.romarin;
+
+	   				message.channel.send("Romarin envoyé à ce con :) \n par contre vous, vous avez reçu : " + romarin_total + " romarin");
+	   				
+	   				})
+
+		    		
+
+			} else { //si le fichier de l'utilisateur n'existe pas
+				 contenu_json = '{' + '\n' + ' \"romarin\" : 0 ' + '\n' + '}';							
+
+					fs.writeFile('json/romarin/romarin_' + id_usr + '.json', contenu_json, function(erreur) {
+					    if (erreur) {
+					        console.log(erreur)
+					    }
+					})
+
+					fs.readFile('json/romarin/romarin_' + id_usr + '.json', function(erreur, file) {
+	   				
+	   				let romarin_json = JSON.parse(file)
+	   				let romarin_total = romarin_json.romarin;
+
+	   				message.channel.send("Romarin envoyé à ce con :) \n par contre vous, vous avez reçu : " + romarin_total + " romarin");
+	   				
+	   				})
+	   				
+			}
+		} //fin p<romarin
+
+
+	if (message.content === prefix + "mon beau romarin") { //voir son romarin
+
+		let id_usr = message.author.id;
+
+		if (fs.existsSync('json/romarin/romarin_' + id_usr + '.json')) { //si le fichier de l'utilisateur existe déjà
+	    		fs.readFile('json/romarin/romarin_' + id_usr + '.json', function(erreur, file) {
+					
+					let romarin_json = JSON.parse(file)
+					let romarin_total = romarin_json.romarin;
+					
+					message.channel.send("Vous avez : " + romarin_total + " romarin");
+					
+					})
+	    	
+		} else { //si le fichier de l'utilisateur n'existe pas
+				message.channel.send("Vous avez : 0 romarin.");
+		}
+	} //Fin de la commande pour voir points venitienne
+
+
+	if (message.content.startsWith(prefix + "retrait or ")) { //permet de retirer de la thunes à quelqu'un (nottament lors d'un enffrain aux lois)
+		if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760 ") {
+			let id_usr_ret_or = message.mentions.users.first().id;
+
+		let id_user_or = message.author.id;
+		let or_usr = 0;
+
+		let mention = message.mentions.users.first();
+
+
+		let args = message.content.slice(prefix.length + 16 + id_usr_ret_or.length).split(' ');
+
+
+		let or_a_retirer = args;
+
+		console.log("args : " + args);
+
+		or_a_retirer = 0 - or_a_retirer; //exemple : or_a_retirer=22 : là ça fera -22 (0 - 22(or_a_retirer) = -22)
+
+		console.log("or à retirer : " + or_a_retirer)
+
+
+		fs.readFile('json/or/or_' + id_usr_ret_or +'.json', 'utf8', function (erreur, donnees)
+		{
+			if (erreur) {
+			 	
+			 fs.writeFile("json/or/or_" + id_usr_ret_or + ".json", `
+				{ 
+					"or": ${or_a_retirer},
+					"date": 0
+				}`, function(err) {
+			    if(err) {
+			        return console.log(err);
+			    }
+
+			    	console.log("The file was saved!");
+				});
+
+			 	return; // and continue
+			 } 
+			 let or_usr = JSON.parse(donnees);
+			 console.log(or_usr.or);
+			 or_usr = or_usr.or; 
+
+			 let date_file = or_usr.date;
+
+			 console.log("date_file : " + or_usr.date);
+
+			 fs.writeFile("json/or/or_" + id_usr_ret_or + ".json", `
+				{ 
+					"or": ${or_usr - or_a_retirer},
+					"date": ${date_file}
+				}`, function(err) {
+			    if(err) {
+			        return console.log(err);
+			    }
+
+			    	console.log("The file was saved!");
+				});
+
+			});
+		}
+	}
+
+	//Connerie : mini jeu phrases :
+
+	if (message.content === prefix + "phrase")
+	{
+
+		let loopCasio = true;
+		//Personne, action, objet, lieu, temps
+		let personne = [`Barack Obama`, `Donald Trump`, `Une tortue de mer`, `Un poulet`, `Romar1`, `Noctali`, `Zheo`, `DraxyCUL`, `La Vénitienne`, `PouleRPG`, `Dieu Poulet`, `Jérémy`, `Les Zêtas`, `Le Maître Gamma`, `Le frère con`];
+		let action   = [`mange`, `vend`, `détruit`, `fait disparaître`, `lance`, `consomme`, `découpe lentement`, `donne`, `rage à cause (d')`];
+		let objet    = [`une pomme`, `un radiateur`, `une ampoule`, `une vitre`, `du poulet`, `des grilles pain`, `un nouveau née`, `des points venitienne`, `la loi paragraphe 4, sous-tiret 2, alinéa 1`, `une arme de destruction massive`, `la boite de jeu de "Link faces to evil"`, `les recettes de cuisine de Noctali`, `des funérailles`, `un banc de messe`, `une porte d'église`, `un bénitier`, `des produits illicites`, `un cercueil`];
+		let objet2   = [`une aiguille`, `un couteau`, `du taboulé`, `du chocolat dessus`, `de la confiture`, `une anguille`, `un frigo`, `du rhum`, `de l'alcool`, `la daronne de Draxy`, `un verre`];
+		let conjCoord= [`avec`, `dans`];
+		let lieu     = [`à Londre`, `à Stockholm`, `en nouvelle Zélande`, `dans son salon`, `dans la cuisine du voisin`, `sur l'Empire Du Poulet`, `dehors`, `au ministère de la justice`, `dans une église`, `dans la cave`, `dans un laboratoire`, `dans une maison close`, `dans l'espace`, `dans la chambre de Zheo`, `dans un cimetière`, `à un mariage`, `dans la cathédrale Dieu Poulet`, `dans un karaoké`];
+		let temps    = [`à 23h30`, `le lundi matin`, `avant son travail`, `après le déjeuner`, `à minuit`];
+
+		let minCasionostPhrase = 0;
+
+		while(loopCasio)
+		{
+			let MAXCasionostPhrase = personne.length - 1;
+			console.log(MAXCasionostPhrase);
+			let choix_personne = entierAleatoire(minCasionostPhrase, MAXCasionostPhrase);
+			//message.channel.send("Choix Personne: " + choix_personne);
+
+			MAXCasionostPhrase = action.length - 1;
+			console.log(MAXCasionostPhrase);
+			let choix_action   = entierAleatoire(minCasionostPhrase, MAXCasionostPhrase);
+			//message.channel.send("Choix Action: " + choix_action);
+
+			MAXCasionostPhrase = objet.length  - 1;
+			console.log(MAXCasionostPhrase);
+			let choix_objet    = entierAleatoire(minCasionostPhrase, MAXCasionostPhrase);
+			//message.channel.send("Choix objet: " + choix_objet);
+			
+			MAXCasionostPhrase = conjCoord.length  - 1;
+			console.log(MAXCasionostPhrase);
+			let choix_conjCoord= entierAleatoire(minCasionostPhrase, MAXCasionostPhrase);
+			//message.channel.send("Choix objet: " + choix_objet);
+			
+			MAXCasionostPhrase = objet2.length  - 1;
+			console.log(MAXCasionostPhrase);
+			let choix_objet2   = entierAleatoire(minCasionostPhrase, MAXCasionostPhrase);
+			//message.channel.send("Choix objet: " + choix_objet);
+
+			MAXCasionostPhrase = lieu.length  - 1;
+			console.log(MAXCasionostPhrase);
+			let choix_lieu     = entierAleatoire(minCasionostPhrase, MAXCasionostPhrase);
+			//message.channel.send("Choix lieu: " + choix_lieu);
+
+			MAXCasionostPhrase = temps.length  - 1;
+			console.log(MAXCasionostPhrase);
+			let choix_temps    = entierAleatoire(minCasionostPhrase, MAXCasionostPhrase);
+			//message.channel.send("Choix temps: " + choix_temps);
+
+			if (personne[choix_personne] != undefined || action[choix_action] != undefined || objet[choix_objet] != undefined || conjCoord[choix_conjCoord] != undefined || objet2[choix_objet2] != undefined || lieu[choix_lieu] != undefined || temps[choix_temps] != undefined)
+			{
+				message.channel.send(`${personne[choix_personne]} ${action[choix_action]} ${objet[choix_objet]} ${conjCoord[choix_conjCoord]} ${objet2[choix_objet2]} ${lieu[choix_lieu]} ${temps[choix_temps]}`);
+				loopCasio = false;
+			} else {
+				console.log("On continue y'a un undefined dans la phrase (casionost phrase)");
+			}
+		}
+	}
+
+
 
 }); //Fin MAIN bot
 
@@ -867,10 +1187,33 @@ factionDe_Request = "";
         message.channel.send("tmp");
     } */
 
-//ICI C'EST POUR SAVOIR SI LE AUTHOR IL A LE ROLE CHOISIT !
+//ICI C'EST POUR SAVOIR SI LE AUTHOR IL A LE ROLE CHOISIT ! (entre autre savoir sa faction)
 	/*if (message.content === prefix + "DEV/ROLE") {
 		if (message.guild.members.get(message.author.id).roles.exists('id','415947455582961686')) {
 		///Code here
 		message.channel.send("POULET")
 		}
 	}*/
+
+
+/// LE COULDOWN GRAVE BIEN FAIT (il faut juste ajouter une variable genre "talkedRecently = new Set()" en gros (voir en haut du code))
+
+/*
+	if (message.content === prefix + "dev") {
+
+		if (talkedRecently.has(message.author.id)) {
+	            message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
+	    } else {
+
+	           // the user can type the command ... your command code goes here :)
+	           message.channel.send("TEST")
+
+	        // Adds the user to the set so that they can't talk for a minute
+	        talkedRecently.add(message.author.id);
+	        setTimeout(() => {
+	          // Removes the user from the set after a minute
+	          talkedRecently.delete(message.author.id);
+	        }, 6000);
+	    }
+
+	} */
