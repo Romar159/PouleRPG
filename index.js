@@ -76,6 +76,53 @@ function Unix_timestamp(t) {
 	return hr+ ':' + m.substr(-2) + ':' + s.substr(-2);   // UTILITÉ NON TROUVÉ: (je crois que: retourne sous la forme d'un Date, le temps passé en paramètres (milisecondes))
 }
 
+function addXp(id_usr, xpToAdd) {
+	if (fs.existsSync('json/xp/xp_' + id_usr + '.json')) { //si le fichier xp de l'utilisateur existe déjà, dans tous les cas ça le créer.
+    	fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
+		   	let json_xp = JSON.parse(fichier)
+		   	let xp_level_a_add;
+		  	
+		  	let xp_a_add = json_xp.xp + xpToAdd;
+
+		  	let xplevel_avant_ajout = json_xp.xplevel;
+
+		  	console.log(xplevel_avant_ajout);
+		  	console.log(json_xp.xp);
+
+		  	xp_level_a_add = xplevel_avant_ajout;
+
+		  	let xp_level_up_required = xp_level_up_required_BASE * json_xp.xplevel; //xp qu'il faut pour monter de level, si on est level 1 : 50xp (1x50), level 2 : 100 (2x50) etc.
+
+		  	if (json_xp.xp >= xp_level_up_required) {
+		  		console.log("xplevel_avant_ajout : " + xplevel_avant_ajout);
+		  		xp_level_a_add = xplevel_avant_ajout + 1;
+		  		xp_a_add = json_xp.xp - xp_level_up_required;
+		  		console.log("xp_a_add quand on dépasse de level : " + xp_a_add);
+
+		  	}
+
+		  	fs.writeFile("json/xp/xp_" + id_usr + ".json", `
+				{ 
+					"xp": ` + xp_a_add + `,
+					"xplevel": ` + xp_level_a_add + `
+				}`, function(err) {
+
+				    if(err) {
+				        return console.log(err);
+				    }
+
+			    	console.log("The file was saved!");
+				}); 
+			
+
+		})
+	}
+}
+
+function remXp(id_usr, xpToRem) {
+
+}
+
 
 bot.on('ready', function() {
 	bot.user.setActivity("PouleRPG | p<help")
@@ -106,7 +153,7 @@ bot.on('message', async message => {
 bot.on('message', async (message) => {
 
 	if (message.content.startsWith(prefix)) {
-		if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760") {
+		if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760" || message.author.id === "379299399316144128") {
 		}
 		else {
 			return;
@@ -220,6 +267,12 @@ bot.on('message', async (message) => {
 	} */
 
 
+	if (message.content === prefix + "addxp1") { ///IL Y A UN BUG ICI !! Il faut refaire le addxp1 pour mettre à jour le level up, et une fois passé level 2 on peut plus augmenter d'xp !
+		let id_usr = message.author.id;
+		addXp(id_usr, 75);
+		message.channel.send("Success")
+		addXp(id_usr, 0);
+	}
 
 	if (message.content === prefix + "botinfos") {
 		message.channel.send("Version : " + bot_version + "\nLignes : " + bot_lignes + "\nDevs : programmation : Romar1 ; Design Graphique : DraxyDow\n");
@@ -238,6 +291,8 @@ bot.on('message', async (message) => {
 	    } else {
 
 	          
+	    	let win_arene = 0; // 0 loose ; 1 : Win : 2 : match nul
+
 
 
 
@@ -259,41 +314,58 @@ bot.on('message', async (message) => {
 			if (arene_choixUser == 1 || arene_choixUser == 2 || arene_choixUser == 3){
 
 				if (arene_choixUser == 1 && arene_choixEnemy == 1) { //Masse VS Masse
-				    	message.channel.send("Vous utilisez la **masse**.\n**L'ennemi aussi !**\n*Match nul...*");
+				    message.channel.send("Vous utilisez la **masse**.\n**L'ennemi aussi !**\n*Match nul...*");
+				    win_arene = 2;
 				}
 	    		if (arene_choixUser == 1 && arene_choixEnemy == 2) { //Masse VS Tomahawk
 	    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise la tomahawk !**\n*Vous gagnez !*");
 	    			//Faire que le mec gagne de l'xp
+	    			win_arene = 1;
 	    		}
 	    		if (arene_choixUser == 1 && arene_choixEnemy == 3) { //Masse VS Lance
 	    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise la lance !**\n*Vous perdez...*");
 	    			//Faire que le mec perd de l'xp
+	    			win_arene = 0;
 	    		}
 
 
 	    		if (arene_choixUser == 2 && arene_choixEnemy == 1) { //Tomahawk VS Masse
 	    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi utilise la masse !**\n*Vous perdez...*");
 	    			//Faire que le mec perd de l'xp
+	    			win_arene = 0;
 	    		}
 	    		if (arene_choixUser == 2 && arene_choixEnemy == 2) { //Tomahawk VS Tomahawk
 	    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi aussi !**\n*Match nul...*");
+	    			win_arene = 2;
 	    		}
 	    		if (arene_choixUser == 2 && arene_choixEnemy == 3) { //Tomahawk VS Lance
 	    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi utilise la lance !**\n*Vous gagnez !*");
 	    			//Faire que le mec gagne de l'xp
+	    			win_arene = 1;
 	    		}
 
 
 	    		if (arene_choixUser == 3 && arene_choixEnemy == 1) { //Lance VS Masse
 	    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise la masse !**\n*Vous gagnez !*");
 	    			//Faire que le mec gagne de l'xp
+	    			win_arene = 1;
 	    		}
 	    		if (arene_choixUser == 3 && arene_choixEnemy == 2) { //Lance VS Tomahawk
 	    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise la tomahawk !**\n*Vous perdez...*");
 	    			//Faire que le mec perd de l'xp
+	    			win_arene = 0;
 	    		}
 	    		if (arene_choixUser == 3 && arene_choixEnemy == 3) { //Lance VS Lance
 	    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi aussi !**\n*Match nul...*");
+	    			win_arene = 2;
+	    		}
+
+	    		if (win_arene == 0) { // Si on a perdu
+	    			message.channel.send("-1 xp");
+	    		} else if (win_arene == 1) { // Si on a win
+	    			message.channel.send("+2 xp");
+	    		} else if (win_arene == 2) {
+	    			message.channel.send("+0 xp")
 	    		}
 			}
 
@@ -302,7 +374,7 @@ bot.on('message', async (message) => {
 	        setTimeout(() => {
 	          // Removes the user from the set after a minute
 	          talkedRecently_arene.delete(message.author.id);
-	        }, 60000);
+	        }, 1);
 	    }
 	} ///FIN ARENE
     	
@@ -703,7 +775,7 @@ bot.on('message', async (message) => {
 				message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
 			})
 		} else { //si le fichier xp de l'utilisateur n'existe pas
-				message.channel.send(`XP de <@${id_usr}> : 0/${xp_level_up_required_BASE} | Level : 1`);
+				//message.channel.send(`XP de <@${id_usr}> : 0/${xp_level_up_required_BASE} | Level : 1`);
 		}
 	}
 
@@ -1040,13 +1112,13 @@ bot.on('message', async (message) => {
 
 		let loopCasio = true;
 		//Personne, action, objet, lieu, temps
-		let personne = [`Barack Obama`, `Donald Trump`, `Une tortue de mer`, `Un poulet`, `Romar1`, `Noxali`, `Zheo`, `DraxyCUL`, `La Vénitienne`, `PouleRPG`, `Dieu Poulet`, `Jérémy`, `Les Zêtas`, `Le Maître Gamma`, `Le frère con`, `Hitler`, `Une enfant`, `Un psychopathe`, `Un entraineur`, `Un juge`, `Le procureur`, `Donald`, `Picsou`, `Romar1`]; //personnage
-		let action   = [`mange`, `vend`, `détruit`, `fait disparaître`, `lance`, `consomme`, `découpe lentement`, `donne`, `rage à cause (d')`, `pénètre`, `regarde`, `écoute`, `à une relation incestueuse avec`, `juge`, `se procure`, `fait un rite satanique avec`, `s'entraine avec`, `poste`, `chante avec`]; //action
-		let objet    = [`une pomme`, `un radiateur`, `une ampoule`, `une vitre`, `du poulet`, `des grilles pain`, `un nouveau née`, `des points venitienne`, `la loi paragraphe 4, sous-tiret 2, alinéa 1`, `une arme de destruction massive`, `la boite de jeu de "Link faces to evil"`, `les recettes de cuisine de Noxali`, `des funérailles`, `un banc de messe`, `une porte d'église`, `un bénitier`, `des produits illicites`, `un cercueil`, `un film`, `une série`, `un enfant`, `de la musique`, `un hentai`, `un mouton`, `un boeuf`, `un mandat`, `une vidéo virale`]; //objet1
-		let objet2   = [`une aiguille`, `un couteau`, `du taboulé`, `du chocolat dessus`, `de la confiture`, `une anguille`, `un frigo`, `du rhum`, `de l'alcool`, `la daronne de Draxy`, `un verre`, `Zheo`, `le curé`, `des enfants`, `un cheval`, `un veau`]; //objet2
-		let conjCoord= [`avec`, `dans`]; //conjonction
-		let lieu     = [`à Londre`, `à Stockholm`, `en nouvelle Zélande`, `dans son salon`, `dans la cuisine du voisin`, `sur l'Empire Du Poulet`, `dehors`, `au ministère de la justice`, `dans une église`, `dans la cave`, `dans un laboratoire`, `dans une maison close`, `dans l'espace`, `dans la chambre de Zheo`, `dans un cimetière`, `à un mariage`, `dans la cathédrale Dieu Poulet`, `dans un karaoké`, `dans un centre commercial`, `dans les toilettes`, `dans un cinéma`, `au Super U du coin`, `au journal`, `au japon`, `sur Snapchat`, `sur Twitter`, `sur un mur`, `sur Pinterest`, `dans une série original Netflix`]; //lieu
-		let temps    = [`à 23h30`, `le lundi matin`, `avant son travail`, `après le déjeuner`, `à minuit`, `à l'heure de la sieste`, `la veille`, `au goûter`, `pendant sa douche`, `à l'heure de manger`, `pendant le repas`, `à la Repä`, `pendant le Goc International`, `à l'ouverture des jeux olympiques`, `pendant la 3ème guerre mondiale`, `au claire de lune`, `au moment où l'astre stellaire n'est plus visible que de moitié`]; //temps
+		let personne = [`Barack Obama`, `Donald Trump`, `Une tortue de mer`, `Un poulet`, `Romar1`, `Noxali`, `Zheo`, `DraxyCUL`, `La Vénitienne`, `PouleRPG`, `Dieu Poulet`, `Jérémy`, `Les Zêtas`, `Le Maître Gamma`, `Le frère con`, `Hitler`, `Une enfant`, `Un psychopathe`, `Un entraineur`, `Un juge`, `Le procureur`, `Donald`, `Picsou`, `Romar1`, `Chveux Vert`, `PD3`, `Bordel`, `Princesseuh`, `DarkDavy`, `Damben`, `Dark`, `Darky`, `BanjoBoi`, `KriixMerde`, `TetreMerde`, `Tatsumakmerde`, `Romar la pute de luxe`, `Les Epsilon`, `Un pokémon`, `Des animaux de la ferme`, `Un chat`, `Un chien`, `Une souris`, `Un animal`, `Emmanuel Macron`, `Kim Jong-Un`, `Un dictateur`]; //personnage
+		let action   = [`mange`, `vend`, `détruit`, `fait disparaître`, `lance`, `consomme`, `découpe lentement`, `donne`, `rage à cause (d')`, `pénètre`, `regarde`, `écoute`, `à une relation incestueuse avec`, `juge`, `se procure`, `fait un rite satanique avec`, `s'entraine avec`, `poste`, `chante avec`, `théorise`, `réfléchit à ne pas cheat avec`, `envoie un cookie`, `prie`, `meurt à cause (d')`, `fait chier`, `hack les logs (d')`, `a claqué`, `rit de`, `fait apparaître`, `dors grâce à`, `bois`, `fait la lessive pour`, `fait à manger à`, `fait le ménage pour`, `insulte`, `crie`]; //action
+		let objet    = [`une pomme`, `un radiateur`, `une ampoule`, `une vitre`, `du poulet`, `des grilles pain`, `un nouveau née`, `des points venitienne`, `la loi paragraphe 4, sous-tiret 2, alinéa 1`, `une arme de destruction massive`, `la boite de jeu de "Link faces to evil"`, `les recettes de cuisine de Noxali`, `des funérailles`, `un banc de messe`, `une porte d'église`, `un bénitier`, `des produits illicites`, `un cercueil`, `un film`, `une série`, `un enfant`, `de la musique`, `un hentai`, `un mouton`, `un boeuf`, `un mandat`, `une vidéo virale`, `un ralentisseur de type "dos d'âne"`, `la loi paragraphe 4, sous-tiret 3, alinéa 1`, `une porte`, `un fruit`, `une armes blanches`, `un jeu Nintendo`, `une boîte en carton`, `une voiture`, `un panneau`, `un tableau`, `une craie`, `un feutre`, `un crayon de papier`, `un crayon de couleur`, `une contravention`, `un film`, `un film pegi 18`, `un ordinateur`, `un téléphone`, `un crayon de bois`, `un critérium`]; //objet1
+		let objet2   = [`une aiguille`, `un couteau`, `du taboulé`, `du chocolat`, `de la confiture`, `une anguille`, `un frigo`, `du rhum`, `de l'alcool`, `la daronne de Draxy`, `un verre`, `Zheo`, `le curé`, `des enfants`, `un cheval`, `un veau`]; //objet2
+		let conjCoord= [`avec`]; //conjonction
+		let lieu     = [`à Londres`, `à Stockholm`, `en nouvelle Zélande`, `dans son salon`, `dans la cuisine du voisin`, `sur l'Empire Du Poulet`, `dehors`, `au ministère de la justice`, `dans une église`, `dans la cave`, `dans un laboratoire`, `dans une maison close`, `dans l'espace`, `dans la chambre de Zheo`, `dans un cimetière`, `à un mariage`, `dans la cathédrale Dieu Poulet`, `dans un karaoké`, `dans un centre commercial`, `dans les toilettes`, `dans un cinéma`, `au Super U du coin`, `au journal`, `au japon`, `sur Snapchat`, `sur Twitter`, `sur un mur`, `sur Pinterest`]; //lieu
+		let temps    = [`à 23h30`, `le lundi matin`, `avant son travail`, `après le déjeuner`, `à minuit`, `à l'heure de la sieste`, `au goûter`, `pendant sa douche`, `à l'heure de manger`, `pendant le repas`, `à la Repä`, `pendant le Goc International`, `à l'ouverture des jeux olympiques`, `pendant la 3ème guerre mondiale`, `au claire de lune`, `au moment où l'astre stellaire n'est plus visible que de moitié`]; //temps
 
 		let minCasionostPhrase = 0;
 
