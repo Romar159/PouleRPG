@@ -5,12 +5,19 @@ const mkdirp = require("mkdirp");
 const snekfetch = require("snekfetch");
 const http = require("http");
 const https = require("https");
+let crypto = require('crypto');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
+const hash = crypto.createHash('md5')
+	.update('password')
+	.digest('hex')
 
 const config = require("./data/config.json");
 
 bot.login(config.token);
+
+let DraxyEmpereurID = 211911771433205760;
+let RomarEmpereurID = 421400262423347211;
 
 
 let prefix = ("p<");
@@ -76,22 +83,102 @@ function Unix_timestamp(t) {
 	return hr+ ':' + m.substr(-2) + ':' + s.substr(-2);   // UTILITÉ NON TROUVÉ: (je crois que: retourne sous la forme d'un Date, le temps passé en paramètres (milisecondes))
 }
 
+
+
 function addXp(id_usr, xpToAdd) {
+
+	let xp_a_ecrire;
+	let xp_level_a_ecrire;
+
+	let xp_necess_pour_up; //le nombre d'xp qui faut pour level up à l'utilisateur !
+
+	let json_xp;
+	let xp_b4; //contient l'xp avant d'en ajouté !
+	let xplevel_b4; //contient le level d'xp avant d'en ajouté !
+
+
+	if (fs.existsSync('json/xp/xp_' + id_usr + '.json')) { //si le fichier xp de l'utilisateur existe déjà
+
+	} else { //si le fichier xp de l'utilisateur n'existe pas
+		xp_a_ecrire = 0;
+		xp_level_a_ecrire = 1;
+		console.log("addXp Function : LE FICHIER EXISTE PAS !!")
+		fs.writeFile(`json/xp/xp_${id_usr}.json`, `
+				{ 
+					"xp": ` + xp_a_ecrire + `,
+					"xplevel": ` + xp_level_a_ecrire + `
+				}`, 
+		function(err) {
+
+			if(err) {
+			    return console.log(err);
+			}
+			console.log("The file was saved!");
+		}); 
+	}
+
+	//maintenant on à forcément un fichier à traiter, soit il existait déjà et donc on l'utilise, soit on le crée en initialisant ses valeurs au minimum.
+
+	fs.readFile(`json/xp/xp_${id_usr}.json`, function(erreur, fichier) {
+
+		json_xp = JSON.parse(fichier);
+
+		xp_b4 = json_xp.xp;
+		xplevel_b4 = json_xp.xplevel;
+
+		
+		xp_necess_pour_up = xp_level_up_required_BASE * xplevel_b4; //le calcul basique du nombre d'xp nécéssaire pour lvl up, le level d'xp * le nombre d'xp qu'il faut pour level up au niveau 1 (actuellement '50')
+
+
+		xp_a_ecrire = xp_b4 + xpToAdd; //Ici on prend l'xp qu'est dans le fichier, et on lui ajoute le nombre défini dans les paramètres de la fonction
+		xp_level_a_ecrire = xplevel_b4; // de base on prend le lvl écrit dans le fichier, et après on test si on doit lvl up
+
+		if (xp_a_ecrire >= xp_necess_pour_up) { //test si on doit level up (NOTA_BENE: **on pourrait faire une fonction pour test**)
+			xp_a_ecrire = xp_a_ecrire - xp_necess_pour_up; //on retire le nombre d'xp en trop, pour avoir juste ce qui dépassait, et donc ce qu'il faut mettre au level suivant (exemple le level 1 est à 50 xp nécéssaire, si on à 75 d'xp alors ça met ce chiffre à 25 et on sera au level 2 avec 25 xp)
+			xp_level_a_ecrire = xplevel_b4 + 1;
+		}
+
+		//maintenant on à le xplevel à écrire, et l'xp à écrire aussi, on peut écrire tout ça dans le fichier utilisateur :
+
+		fs.writeFile(`json/xp/xp_${id_usr}.json`, `
+				{ 
+					"xp": ` + xp_a_ecrire + `,
+					"xplevel": ` + xp_level_a_ecrire + `
+				}`, 
+		function(err) {
+
+			if(err) {
+			    return console.log(err);
+			}
+			console.log("The file was saved!");
+		}); 
+	})
+}
+
+
+
+function addXp2(id_usr, xpToAdd) {
+	let json_xp
+	let xp_a_add;
+	let xp_level_a_add;
+	let xplevel_avant_ajout;
+	let xp_level_up_required;
+
 	if (fs.existsSync('json/xp/xp_' + id_usr + '.json')) { //si le fichier xp de l'utilisateur existe déjà, dans tous les cas ça le créer.
     	fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
-		   	let json_xp = JSON.parse(fichier)
-		   	let xp_level_a_add;
+		   	json_xp = JSON.parse(fichier)
+		   	
 		  	
-		  	let xp_a_add = json_xp.xp + xpToAdd;
+		  	xp_a_add = json_xp.xp + xpToAdd;
 
-		  	let xplevel_avant_ajout = json_xp.xplevel;
+		  	xplevel_avant_ajout = json_xp.xplevel;
 
 		  	console.log(xplevel_avant_ajout);
 		  	console.log(json_xp.xp);
 
 		  	xp_level_a_add = xplevel_avant_ajout;
 
-		  	let xp_level_up_required = xp_level_up_required_BASE * json_xp.xplevel; //xp qu'il faut pour monter de level, si on est level 1 : 50xp (1x50), level 2 : 100 (2x50) etc.
+		  	xp_level_up_required = xp_level_up_required_BASE * json_xp.xplevel; //xp qu'il faut pour monter de level, si on est level 1 : 50xp (1x50), level 2 : 100 (2x50) etc.
 
 		  	if (json_xp.xp >= xp_level_up_required) {
 		  		console.log("xplevel_avant_ajout : " + xplevel_avant_ajout);
@@ -101,7 +188,12 @@ function addXp(id_usr, xpToAdd) {
 
 		  	}
 
-		  	fs.writeFile("json/xp/xp_" + id_usr + ".json", `
+		  	
+			
+
+		})
+
+    fs.writeFile("json/xp/xp_" + id_usr + ".json", `
 				{ 
 					"xp": ` + xp_a_add + `,
 					"xplevel": ` + xp_level_a_add + `
@@ -113,14 +205,76 @@ function addXp(id_usr, xpToAdd) {
 
 			    	console.log("The file was saved!");
 				}); 
-			
-
-		})
 	}
 }
 
 function remXp(id_usr, xpToRem) {
+	let xp_a_ecrire;
+	let xp_level_a_ecrire;
 
+	let xp_necess_pour_up; //le nombre d'xp qui faut pour level up à l'utilisateur !
+
+	let json_xp;
+	let xp_b4; //contient l'xp avant d'en ajouté !
+	let xplevel_b4; //contient le level d'xp avant d'en ajouté !
+
+
+	if (fs.existsSync('json/xp/xp_' + id_usr + '.json')) { //si le fichier xp de l'utilisateur existe déjà
+
+	} else { //si le fichier xp de l'utilisateur n'existe pas
+		xp_a_ecrire = 0;
+		xp_level_a_ecrire = 1;
+		console.log("addXp Function : LE FICHIER EXISTE PAS !!")
+		fs.writeFile(`json/xp/xp_${id_usr}.json`, `
+				{ 
+					"xp": ` + xp_a_ecrire + `,
+					"xplevel": ` + xp_level_a_ecrire + `
+				}`, 
+		function(err) {
+
+			if(err) {
+			    return console.log(err);
+			}
+			console.log("The file was saved!");
+		}); 
+	}
+
+	//maintenant on à forcément un fichier à traiter, soit il existait déjà et donc on l'utilise, soit on le crée en initialisant ses valeurs au minimum.
+
+	fs.readFile(`json/xp/xp_${id_usr}.json`, function(erreur, fichier) {
+
+		json_xp = JSON.parse(fichier);
+
+		xp_b4 = json_xp.xp;
+		xplevel_b4 = json_xp.xplevel;
+
+		
+		xp_necess_pour_up = xp_level_up_required_BASE * xplevel_b4; //le calcul basique du nombre d'xp nécéssaire pour lvl up, le level d'xp * le nombre d'xp qu'il faut pour level up au niveau 1 (actuellement '50')
+
+
+		xp_a_ecrire = xp_b4 - xpToAdd; //Ici on prend l'xp qu'est dans le fichier, et on lui ajoute le nombre défini dans les paramètres de la fonction
+		xp_level_a_ecrire = xplevel_b4; // de base on prend le lvl écrit dans le fichier, et après on test si on doit lvl up
+
+		if (xp_a_ecrire <= xp_necess_pour_up) { //test si on doit level up (NOTA_BENE: **on pourrait faire une fonction pour test**)
+			xp_a_ecrire = xp_a_ecrire - xp_necess_pour_up; //on retire le nombre d'xp en trop, pour avoir juste ce qui dépassait, et donc ce qu'il faut mettre au level suivant (exemple le level 1 est à 50 xp nécéssaire, si on à 75 d'xp alors ça met ce chiffre à 25 et on sera au level 2 avec 25 xp)
+			xp_level_a_ecrire = xplevel_b4 - 1;
+		}
+
+		//maintenant on à le xplevel à écrire, et l'xp à écrire aussi, on peut écrire tout ça dans le fichier utilisateur :
+
+		fs.writeFile(`json/xp/xp_${id_usr}.json`, `
+				{ 
+					"xp": ` + xp_a_ecrire + `,
+					"xplevel": ` + xp_level_a_ecrire + `
+				}`, 
+		function(err) {
+
+			if(err) {
+			    return console.log(err);
+			}
+			console.log("The file was saved!");
+		}); 
+	})
 }
 
 
@@ -153,9 +307,10 @@ bot.on('message', async message => {
 bot.on('message', async (message) => {
 
 	if (message.content.startsWith(prefix)) {
-		if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760" || message.author.id === "379299399316144128") {
+		if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760") {
 		}
 		else {
+			message.channel.send("Vous n'avez pas la permission requise pour utiliser le bot.")
 			return;
 		}
 	}
@@ -269,9 +424,14 @@ bot.on('message', async (message) => {
 
 	if (message.content === prefix + "addxp1") { ///IL Y A UN BUG ICI !! Il faut refaire le addxp1 pour mettre à jour le level up, et une fois passé level 2 on peut plus augmenter d'xp !
 		let id_usr = message.author.id;
-		addXp(id_usr, 75);
+		addXp(id_usr, 250);
 		message.channel.send("Success")
-		addXp(id_usr, 0);
+	}
+
+	if (message.content === prefix + "remxp1") { ///IL Y A UN BUG ICI !! Il faut refaire le addxp1 pour mettre à jour le level up, et une fois passé level 2 on peut plus augmenter d'xp !
+		let id_usr = message.author.id;
+		remXp(id_usr, 1);
+		message.channel.send("Success")
 	}
 
 	if (message.content === prefix + "botinfos") {
@@ -713,6 +873,12 @@ bot.on('message', async (message) => {
 	}
 
 	if (message.content === prefix + "list factions") {
+		
+		let idE = 0;
+		let idZ = 0; 
+		let idG = 0;
+		let idO = 0;
+
 		let list_epsilon = message.guild.roles.get('415947454626660366').members.map(m=>m.user.tag).join('\n')
 		let list_zeta = message.guild.roles.get('415947455582961686').members.map(m=>m.user.tag).join('\n')
 		let list_Gamma = message.guild.roles.get('415947456342130699').members.map(m=>m.user.tag).join('\n')
@@ -744,16 +910,30 @@ bot.on('message', async (message) => {
 				message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
 			})
 		} else { //si le fichier xp de l'utilisateur n'existe pas
-				let contenu_json = '{' + '\n' + ' \"xp\" : 0, ' + '\n' + ' \"xplevel\" : 1' + '\n' + '}';
+				//let contenu_json = '{' + '\n' + ' \"xp\" : 0, ' + '\n' + ' \"xplevel\" : 1' + '\n' + '}';
 				
 
 				//let data_write = JSON.stringify(contenu_json)
 				
-				fs.writeFile('json/xp/xp_' + id_usr + '.json', contenu_json, function(erreur) {
+				fs.writeFile('json/xp/xp_' + id_usr + '.json', `
+					{
+						"xp" : 0,
+						"xplevel" : 1
+					}
+
+					`, function(erreur) {
 				    if (erreur) {
 				        console.log(erreur)
 				    }
+
+				    fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
+			   	let json_xp = JSON.parse(fichier)
+			   	let xp_level_up_required = xp_level_up_required_BASE * json_xp.xplevel;
+				message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
+			})
 				})
+
+			
 
 	/*
 	{
@@ -775,6 +955,7 @@ bot.on('message', async (message) => {
 				message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
 			})
 		} else { //si le fichier xp de l'utilisateur n'existe pas
+				message.channel.send("Cet utilisateur n'a aucune xp");
 				//message.channel.send(`XP de <@${id_usr}> : 0/${xp_level_up_required_BASE} | Level : 1`);
 		}
 	}
@@ -1102,8 +1283,135 @@ bot.on('message', async (message) => {
 	}
 
 	if (message.content.startsWith("Bonne nuit")) {
+		
 		message.channel.send("BONNE NUUIIIT :))")
 	}
+
+
+	if (message.content.startsWith(prefix + "crypt ")) {
+
+
+
+		let arguments1 = message.content.slice(prefix.length).trim().split(/ +/g);
+		let password = arguments1[0];
+		let text = message.content.slice(prefix.length + 6 + arguments1[0].length);
+
+/*
+		// On définit notre algorithme de cryptage
+		let algorithm = 'aes256';
+
+		// Notre clé de chiffrement, elle est souvent générée aléatoirement mais elle doit être la même pour le décryptage
+		//password = 'l5JmP+G0/1zB%;r8B8?2?2pcqGcL^3';
+
+		// On crypte notre texte
+		let cipher = crypto.createCipher(algorithm,password);
+		let crypted = cipher.update(text,'utf8','hex');
+		crypted += cipher.final('hex');
+		*/
+
+		const cipher = crypto.createCipher('aes192', password);  
+		let encrypted = cipher.update(text, 'utf8', 'hex');  
+		encrypted += cipher.final('hex');  
+
+
+		message.channel.send(" message crypté est : " + encrypted);
+
+		message.delete();
+		
+	}
+
+
+
+	if (message.content.startsWith(prefix + "decrypt ")) {
+
+		let arguments1 = message.content.slice(prefix.length).trim().split(/ +/g);
+		let password = arguments1[0];
+		let text = message.content.slice(prefix.length + 8 + arguments1[0].length);
+
+		text = "2fb688d5c7ddcdcaf23e8637187cb054";
+		password = "PD";
+
+		const decipher = crypto.createDecipher('aes192', password);  
+		
+		let decrypted = decipher.update(text, 'hex', 'utf8');  
+		decrypted += decipher.final('utf8');  
+
+
+		message.channel.send(" message crypté est : " + decrypted);
+
+	}
+
+	if (message.content === prefix + "DEV encrypt") {
+		const algorithm = 'aes-192-cbc';
+		const password = 'PASSWORD';
+		const text = "DES POULETS"
+		const key = crypto.scryptSync(password, text, 24);
+		const cipher = crypto.createCipher(algorithm, key);
+
+		let encrypted = '';
+		let encSize = encrypted.length;
+		cipher.on('readable', () => {
+			let chunk;
+			while (null !== (chunk = cipher.read())) {
+				encrypted += chunk.toString('hex');
+			}
+			message.channel.send("ENCRYPTED: " + encrypted);
+
+		});
+		cipher.on('end', () => console.log(encrypted));
+
+		cipher.write('some clear text data');
+		cipher.end;
+	}
+
+	if (message.content === prefix + "DEV decrypt") {
+		const algorithm = 'aes-192-cbc';
+		const password = 'PASSWORD';
+		const text = "DES POULETS";
+		const key = crypto.scryptSync(password, text, 24);
+		const decipher = crypto.createDecipher(algorithm, key);
+
+		let decrypted = '';
+
+		decipher.on('readable', () => {
+			let chunk2;
+			while (null !== (chunk2 = decipher.read())) {
+				decrypted += chunk2.toString('hex');
+				message.channel.send("DECRYPTED1: " + decrypted);
+
+
+			}
+			message.channel.send("DECRYPTED2: " + decrypted);
+
+		});
+		decipher.on('end', () => console.log(decrypted));
+
+			message.channel.send("DECRYPTED3: " + decrypted);
+
+		const encrypted = '2c647413e5dd31febb3bbc141bf41c81';
+		decipher.write(encrypted, 'hex');
+				message.channel.send("DECRYPTED4: " + decrypted);
+
+		decipher.end;
+				message.channel.send("DECRYPTED5: " + decrypted);
+
+
+
+
+
+
+	}
+
+
+	//DEV
+	if (message.content.startsWith(prefix + "multipleargs ")) {
+		let args5 = message.content.slice(prefix.length).trim().split(/ +/g);
+		message.channel.send(args5 + `<-args5 ; \n ${args[0]}, ${args[1]}`);
+	}
+
+
+
+
 
 	//Connerie : mini jeu phrases :
 
@@ -1112,8 +1420,8 @@ bot.on('message', async (message) => {
 
 		let loopCasio = true;
 		//Personne, action, objet, lieu, temps
-		let personne = [`Barack Obama`, `Donald Trump`, `Une tortue de mer`, `Un poulet`, `Romar1`, `Noxali`, `Zheo`, `DraxyCUL`, `La Vénitienne`, `PouleRPG`, `Dieu Poulet`, `Jérémy`, `Les Zêtas`, `Le Maître Gamma`, `Le frère con`, `Hitler`, `Une enfant`, `Un psychopathe`, `Un entraineur`, `Un juge`, `Le procureur`, `Donald`, `Picsou`, `Romar1`, `Chveux Vert`, `PD3`, `Bordel`, `Princesseuh`, `DarkDavy`, `Damben`, `Dark`, `Darky`, `BanjoBoi`, `KriixMerde`, `TetreMerde`, `Tatsumakmerde`, `Romar la pute de luxe`, `Les Epsilon`, `Un pokémon`, `Des animaux de la ferme`, `Un chat`, `Un chien`, `Une souris`, `Un animal`, `Emmanuel Macron`, `Kim Jong-Un`, `Un dictateur`]; //personnage
-		let action   = [`mange`, `vend`, `détruit`, `fait disparaître`, `lance`, `consomme`, `découpe lentement`, `donne`, `rage à cause (d')`, `pénètre`, `regarde`, `écoute`, `à une relation incestueuse avec`, `juge`, `se procure`, `fait un rite satanique avec`, `s'entraine avec`, `poste`, `chante avec`, `théorise`, `réfléchit à ne pas cheat avec`, `envoie un cookie`, `prie`, `meurt à cause (d')`, `fait chier`, `hack les logs (d')`, `a claqué`, `rit de`, `fait apparaître`, `dors grâce à`, `bois`, `fait la lessive pour`, `fait à manger à`, `fait le ménage pour`, `insulte`, `crie`]; //action
+		let personne = [`Barack Obama`, `Donald Trump`, `Une tortue de mer`, `Un poulet`, `Romar1`, `Noxali`, `Zheo`, `DraxyCUL`, `La Vénitienne`, `PouleRPG`, `Dieu Poulet`, `Jérémy`, `Les Zêtas`, `Le Maître Gamma`, `Le frère con`, `Hitler`, `Une enfant`, `Un psychopathe`, `Un entraineur`, `Un juge`, `Le procureur`, `Donald`, `Picsou`, `Romar1`, `Chveux Vert`, `PD3`, `Bordel`, `Princesseuh`, `DarkDavy`, `Damben`, `Dark`, `Darky`, `BanjoBoi`, `KriixMerde`, `TetreMerde`, `Tatsumakmerde`, `Romar la pute de luxe`, `Les Epsilon`, `Un pokémon`, `Des animaux de la ferme`, `Un chat`, `Un chien`, `Une souris`, `Un animal`, `Emmanuel Macron`, `Kim Jong-Un`, `Un dictateur`, `Gigi`]; //personnage
+		let action   = [`mange`, `vend`, `détruit`, `fait disparaître`, `lance`, `consomme`, `découpe lentement`, `donne`, `rage à cause (d')`, `pénètre`, `regarde`, `écoute`, `à une relation incestueuse avec`, `juge`, `se procure`, `fait un rite satanique avec`, `s'entraine avec`, `poste`, `chante avec`, `théorise`, `réfléchit à ne pas cheat avec`, `envoie un cookie à`, `prie`, `meurt à cause (d')`, `fait chier`, `hack les logs (d')`, `a claqué`, `rit de`, `fait apparaître`, `dors grâce à`, `bois`, `fait la lessive pour`, `fait à manger à`, `fait le ménage pour`, `insulte`, `crie`]; //action
 		let objet    = [`une pomme`, `un radiateur`, `une ampoule`, `une vitre`, `du poulet`, `des grilles pain`, `un nouveau née`, `des points venitienne`, `la loi paragraphe 4, sous-tiret 2, alinéa 1`, `une arme de destruction massive`, `la boite de jeu de "Link faces to evil"`, `les recettes de cuisine de Noxali`, `des funérailles`, `un banc de messe`, `une porte d'église`, `un bénitier`, `des produits illicites`, `un cercueil`, `un film`, `une série`, `un enfant`, `de la musique`, `un hentai`, `un mouton`, `un boeuf`, `un mandat`, `une vidéo virale`, `un ralentisseur de type "dos d'âne"`, `la loi paragraphe 4, sous-tiret 3, alinéa 1`, `une porte`, `un fruit`, `une armes blanches`, `un jeu Nintendo`, `une boîte en carton`, `une voiture`, `un panneau`, `un tableau`, `une craie`, `un feutre`, `un crayon de papier`, `un crayon de couleur`, `une contravention`, `un film`, `un film pegi 18`, `un ordinateur`, `un téléphone`, `un crayon de bois`, `un critérium`]; //objet1
 		let objet2   = [`une aiguille`, `un couteau`, `du taboulé`, `du chocolat`, `de la confiture`, `une anguille`, `un frigo`, `du rhum`, `de l'alcool`, `la daronne de Draxy`, `un verre`, `Zheo`, `le curé`, `des enfants`, `un cheval`, `un veau`]; //objet2
 		let conjCoord= [`avec`]; //conjonction
@@ -1167,7 +1475,67 @@ bot.on('message', async (message) => {
 				console.log("On continue y'a un undefined dans la phrase (casionost phrase)");
 			}
 		}
+	} //Fin du p<phrase
+
+
+	if (message.content === prefix + "DEV ROLE") {
+		
+		//message.mentions.users.first().addRole('415947454626660366'); //ajoute Epsilon 
 	}
+
+
+
+	if (message.content.startsWith(prefix + "randomFaction ")) { //l'original
+		console.log("Commande exécutée.");
+		if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760") {
+			console.log("Commande exécutée. -> Admin Test Passé");
+			let args3 = message.content.slice(prefix.length + 14); //.split(' ');
+			let id_mention = message.mentions.users.first().id;
+			let member = message.mentions.members.first();
+
+			let fac = entierAleatoire(1, 4);
+
+			switch(fac) {
+				case 1:
+				message.channel.send(`<@${id_mention}> va dans : Epsilon`);
+				member.addRole('415947454626660366'); //ajoute Epsilon 
+				break;
+				case 2:
+				message.channel.send(`<@${id_mention}> va dans : Zêta`);
+				member.addRole('415947455582961686'); //ajoute Epsilon 
+				break;
+				case 3:
+				message.channel.send(`<@${id_mention}> va dans : Gamma`);
+				member.addRole('415947456342130699'); //ajoute Epsilon 
+				break;
+				case 4:
+				message.channel.send(`<@${id_mention}> va dans : Oméga`);
+				member.addRole('665340021640921099'); //ajoute Epsilon 
+				break;
+			}
+			console.log("Commande exécutée. -> Admin Test Passé -> switch effectué");
+		} else {
+			message.channel.send("Cette commande est réservée aux Empereurs.");
+			console.log("Commande exécutée. -> Admin Test Refusé");
+		}
+	}
+
+
+
+	//Guerres :
+
+	if (message.content === prefix + "startWar ") {
+		if (message.author.id == DraxyEmpereurID || message.author.id == RomarEmpereurID) {
+		}
+	}
+
+
+
+
+
+
+
+
 
 
 
