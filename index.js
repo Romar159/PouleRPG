@@ -22,8 +22,8 @@ let RomarEmpereurID = 421400262423347211;
 
 let prefix = ("p<");
 
-let bot_version = "0.2.1";
-let bot_lignes = "1223";
+let bot_version = "0.2.2";
+let bot_lignes = "1666";
 
 
 let MaitreFac_Epsilon;
