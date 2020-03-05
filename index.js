@@ -445,7 +445,7 @@ bot.on('message', async (message) => {
 
 
     if (message.content.startsWith(prefix + 'arene ')) { //DEBUT ARENE ///FAIT LE COULDOWN de 1 minute, et le fait qu'on gagne de l'xp (aléatoire entre 1 et 3 un truc commas), DE PLUS fait le système qui calcul l'xp de la pleb dans la commande p<xp (en gros, au lieu de verifier le level dxp des cons à chaques fois, là ça permet de verifier le level uniquement quand on fait la commande "xp", ça allègera le bot, et c'est pas très handicappant que le con ne soit pas avertit qu'il level up, ça osef !!)
-    	
+    	let id_usr = message.author.id;
     	if (talkedRecently_arene.has(message.author.id)) {
 	            message.channel.send("Il faut attendre 1 minute, avant de pouvoir re rentrer dans l'arène. - " + message.author);
 	    } else {
@@ -522,10 +522,13 @@ bot.on('message', async (message) => {
 
 	    		if (win_arene == 0) { // Si on a perdu
 	    			message.channel.send("-1 xp");
+				addXp(id_usr, -1);
 	    		} else if (win_arene == 1) { // Si on a win
 	    			message.channel.send("+2 xp");
+				addXp(id_usr, 2);
 	    		} else if (win_arene == 2) {
-	    			message.channel.send("+0 xp")
+	    			message.channel.send("+0 xp");
+				addXp(id_usr, 0);
 	    		}
 			}
 
@@ -534,7 +537,7 @@ bot.on('message', async (message) => {
 	        setTimeout(() => {
 	          // Removes the user from the set after a minute
 	          talkedRecently_arene.delete(message.author.id);
-	        }, 1);
+	        }, 60000);
 	    }
 	} ///FIN ARENE
     	
