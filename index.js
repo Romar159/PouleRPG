@@ -23,7 +23,7 @@ let RomarEmpereurID = 421400262423347211;
 let prefix = ("p<");
 
 let bot_version = "0.2.2";
-let bot_lignes = "1666";
+let bot_lignes = "1681";
 
 
 let MaitreFac_Epsilon;
@@ -422,7 +422,7 @@ bot.on('message', async (message) => {
 	} */
 
 
-	if (message.content === prefix + "addxp1") { ///IL Y A UN BUG ICI !! Il faut refaire le addxp1 pour mettre à jour le level up, et une fois passé level 2 on peut plus augmenter d'xp !
+	/* if (message.content === prefix + "addxp1") { ///IL Y A UN BUG ICI !! Il faut refaire le addxp1 pour mettre à jour le level up, et une fois passé level 2 on peut plus augmenter d'xp !
 		let id_usr = message.author.id;
 		addXp(id_usr, 250);
 		message.channel.send("Success")
@@ -432,11 +432,14 @@ bot.on('message', async (message) => {
 		let id_usr = message.author.id;
 		remXp(id_usr, 1);
 		message.channel.send("Success")
-	}
+	} */
 
 	if (message.content === prefix + "botinfos") {
 		message.channel.send("Version : " + bot_version + "\nLignes : " + bot_lignes + "\nDevs : programmation : Romar1 ; Design Graphique : DraxyDow\n");
 	}
+
+	
+
 
 	//Heu qu'est-ce que j'ai chier ici ? C'est quoi ce bordel xD Je le laisse si c'est là c'est que ça doit être utile mais je vois pas pourquoi xD -r
     const args = message.content.slice(prefix.length).split(' ');
@@ -1113,177 +1116,10 @@ bot.on('message', async (message) => {
 		}
 	} //Fin de la commande pour voir points venitienne
 
-	if (message.content.startsWith(prefix +"romarin ") || message.content === prefix + "romarin dra" || message.content === prefix + "romarin rom") {
+	
 
 
-		let contenu_json;		
-		let id_selection;
-
-			if (message.content === prefix + "romarin dra") {
-				id_selection = '211911771433205760';
-
-			} else if (message.content === prefix + "romarin rom") {
-				id_selection = '421400262423347211';
-
-			} else {
-				id_selection = message.mentions.users.first().id;
-			}
-
-		let id_usr = message.author.id;
-
-		if (fs.existsSync('json/romarin/romarin_' + id_selection + '.json')) { //si le fichier de l'utilisateur existe déjà
-		    		fs.readFile('json/romarin/romarin_' + id_selection + '.json', function(erreur, file) {
-	   				
-	   				let romarin_json = JSON.parse(file)
-	   				let romarin_total = romarin_json.romarin + 1;
-	   				contenu_json = '{' + '\n' + ' \"romarin\" : ' + romarin_total + '\n' + '}';
-
-
-	   				fs.writeFile('json/romarin/romarin_' + id_selection + '.json', contenu_json, function(erreur) { 
-			    		if (erreur) {
-						        console.log(erreur)
-						    }
-			    		})
-	   				})
-
-			} else { //si le fichier de l'utilisateur n'existe pas
-				 contenu_json = '{' + '\n' + ' \"romarin\" : 1 ' + '\n' + '}';							
-
-					fs.writeFile('json/romarin/romarin_' + id_selection + '.json', contenu_json, function(erreur) {
-					    if (erreur) {
-					        console.log(erreur)
-					    }
-					})
-			}
-
-
-
-
-
-
-
-
-
-
-
-
-			if (fs.existsSync('json/romarin/romarin_' + id_usr + '.json')) { //si le fichier de l'utilisateur existe déjà
-		    		fs.readFile('json/romarin/romarin_' + id_usr + '.json', function(erreur, file) {
-	   				
-	   				let romarin_json = JSON.parse(file)
-	   				let romarin_total = romarin_json.romarin;
-
-	   				message.channel.send("Romarin envoyé à ce con :) \n par contre vous, vous avez reçu : " + romarin_total + " romarin");
-	   				
-	   				})
-
-		    		
-
-			} else { //si le fichier de l'utilisateur n'existe pas
-				 contenu_json = '{' + '\n' + ' \"romarin\" : 0 ' + '\n' + '}';							
-
-					fs.writeFile('json/romarin/romarin_' + id_usr + '.json', contenu_json, function(erreur) {
-					    if (erreur) {
-					        console.log(erreur)
-					    }
-					})
-
-					fs.readFile('json/romarin/romarin_' + id_usr + '.json', function(erreur, file) {
-	   				
-	   				let romarin_json = JSON.parse(file)
-	   				let romarin_total = romarin_json.romarin;
-
-	   				message.channel.send("Romarin envoyé à ce con :) \n par contre vous, vous avez reçu : " + romarin_total + " romarin");
-	   				
-	   				})
-	   				
-			}
-		} //fin p<romarin
-
-
-	if (message.content === prefix + "mon beau romarin") { //voir son romarin
-
-		let id_usr = message.author.id;
-
-		if (fs.existsSync('json/romarin/romarin_' + id_usr + '.json')) { //si le fichier de l'utilisateur existe déjà
-	    		fs.readFile('json/romarin/romarin_' + id_usr + '.json', function(erreur, file) {
-					
-					let romarin_json = JSON.parse(file)
-					let romarin_total = romarin_json.romarin;
-					
-					message.channel.send("Vous avez : " + romarin_total + " romarin");
-					
-					})
-	    	
-		} else { //si le fichier de l'utilisateur n'existe pas
-				message.channel.send("Vous avez : 0 romarin.");
-		}
-	} //Fin de la commande pour voir points venitienne
-
-
-	if (message.content.startsWith(prefix + "retrait or ")) { //permet de retirer de la thunes à quelqu'un (nottament lors d'un enffrain aux lois)
-		if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760 ") {
-			let id_usr_ret_or = message.mentions.users.first().id;
-
-		let id_user_or = message.author.id;
-		let or_usr = 0;
-
-		let mention = message.mentions.users.first();
-
-
-		let args = message.content.slice(prefix.length + 16 + id_usr_ret_or.length).split(' ');
-
-
-		let or_a_retirer = args;
-
-		console.log("args : " + args);
-
-		or_a_retirer = 0 - or_a_retirer; //exemple : or_a_retirer=22 : là ça fera -22 (0 - 22(or_a_retirer) = -22)
-
-		console.log("or à retirer : " + or_a_retirer)
-
-
-		fs.readFile('json/or/or_' + id_usr_ret_or +'.json', 'utf8', function (erreur, donnees)
-		{
-			if (erreur) {
-			 	
-			 fs.writeFile("json/or/or_" + id_usr_ret_or + ".json", `
-				{ 
-					"or": ${or_a_retirer},
-					"date": 0
-				}`, function(err) {
-			    if(err) {
-			        return console.log(err);
-			    }
-
-			    	console.log("The file was saved!");
-				});
-
-			 	return; // and continue
-			 } 
-			 let or_usr = JSON.parse(donnees);
-			 console.log(or_usr.or);
-			 or_usr = or_usr.or; 
-
-			 let date_file = or_usr.date;
-
-			 console.log("date_file : " + or_usr.date);
-
-			 fs.writeFile("json/or/or_" + id_usr_ret_or + ".json", `
-				{ 
-					"or": ${or_usr - or_a_retirer},
-					"date": ${date_file}
-				}`, function(err) {
-			    if(err) {
-			        return console.log(err);
-			    }
-
-			    	console.log("The file was saved!");
-				});
-
-			});
-		}
-	}
+	
 
 	if (message.content.startsWith("Bonne nuit")) {
 		
@@ -1291,126 +1127,10 @@ bot.on('message', async (message) => {
 	}
 
 
-	if (message.content.startsWith(prefix + "crypt ")) {
+	
 
 
-
-		let arguments1 = message.content.slice(prefix.length).trim().split(/ +/g);
-		let password = arguments1[0];
-		let text = message.content.slice(prefix.length + 6 + arguments1[0].length);
-
-/*
-		// On définit notre algorithme de cryptage
-		let algorithm = 'aes256';
-
-		// Notre clé de chiffrement, elle est souvent générée aléatoirement mais elle doit être la même pour le décryptage
-		//password = 'l5JmP+G0/1zB%;r8B8?2?2pcqGcL^3';
-
-		// On crypte notre texte
-		let cipher = crypto.createCipher(algorithm,password);
-		let crypted = cipher.update(text,'utf8','hex');
-		crypted += cipher.final('hex');
-		*/
-
-		const cipher = crypto.createCipher('aes192', password);  
-		let encrypted = cipher.update(text, 'utf8', 'hex');  
-		encrypted += cipher.final('hex');  
-
-
-		message.channel.send(" message crypté est : " + encrypted);
-
-		message.delete();
-		
-	}
-
-
-
-	if (message.content.startsWith(prefix + "decrypt ")) {
-
-		let arguments1 = message.content.slice(prefix.length).trim().split(/ +/g);
-		let password = arguments1[0];
-		let text = message.content.slice(prefix.length + 8 + arguments1[0].length);
-
-		text = "2fb688d5c7ddcdcaf23e8637187cb054";
-		password = "PD";
-
-		const decipher = crypto.createDecipher('aes192', password);  
-		
-		let decrypted = decipher.update(text, 'hex', 'utf8');  
-		decrypted += decipher.final('utf8');  
-
-
-		message.channel.send(" message crypté est : " + decrypted);
-
-	}
-
-	if (message.content === prefix + "DEV encrypt") {
-		const algorithm = 'aes-192-cbc';
-		const password = 'PASSWORD';
-		const text = "DES POULETS"
-		const key = crypto.scryptSync(password, text, 24);
-		const cipher = crypto.createCipher(algorithm, key);
-
-		let encrypted = '';
-		let encSize = encrypted.length;
-		cipher.on('readable', () => {
-			let chunk;
-			while (null !== (chunk = cipher.read())) {
-				encrypted += chunk.toString('hex');
-			}
-			message.channel.send("ENCRYPTED: " + encrypted);
-
-		});
-		cipher.on('end', () => console.log(encrypted));
-
-		cipher.write('some clear text data');
-		cipher.end;
-	}
-
-	if (message.content === prefix + "DEV decrypt") {
-		const algorithm = 'aes-192-cbc';
-		const password = 'PASSWORD';
-		const text = "DES POULETS";
-		const key = crypto.scryptSync(password, text, 24);
-		const decipher = crypto.createDecipher(algorithm, key);
-
-		let decrypted = '';
-
-		decipher.on('readable', () => {
-			let chunk2;
-			while (null !== (chunk2 = decipher.read())) {
-				decrypted += chunk2.toString('hex');
-				message.channel.send("DECRYPTED1: " + decrypted);
-
-
-			}
-			message.channel.send("DECRYPTED2: " + decrypted);
-
-		});
-		decipher.on('end', () => console.log(decrypted));
-
-			message.channel.send("DECRYPTED3: " + decrypted);
-
-		const encrypted = '2c647413e5dd31febb3bbc141bf41c81';
-		decipher.write(encrypted, 'hex');
-				message.channel.send("DECRYPTED4: " + decrypted);
-
-		decipher.end;
-				message.channel.send("DECRYPTED5: " + decrypted);
-
-
-
-
-
-
-	}
-
-
-	//DEV
-	if (message.content.startsWith(prefix + "multipleargs ")) {
-		let args5 = message.content.slice(prefix.length).trim().split(/ +/g);
-		message.channel.send(args5 + `<-args5 ; \n ${args[0]}, ${args[1]}`);
-	}
+	
 
 
 
@@ -1418,8 +1138,7 @@ bot.on('message', async (message) => {
 
 	//Connerie : mini jeu phrases :
 
-	if (message.content === prefix + "phrase")
-	{
+	if (message.content === prefix + "phrase") {
 
 		let loopCasio = true;
 		//Personne, action, objet, lieu, temps
@@ -1481,47 +1200,11 @@ bot.on('message', async (message) => {
 	} //Fin du p<phrase
 
 
-	if (message.content === prefix + "DEV ROLE") {
-		
-		//message.mentions.users.first().addRole('415947454626660366'); //ajoute Epsilon 
-	}
 
 
 
-	if (message.content.startsWith(prefix + "randomFaction ")) { //l'original
-		console.log("Commande exécutée.");
-		if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760") {
-			console.log("Commande exécutée. -> Admin Test Passé");
-			let args3 = message.content.slice(prefix.length + 14); //.split(' ');
-			let id_mention = message.mentions.users.first().id;
-			let member = message.mentions.members.first();
 
-			let fac = entierAleatoire(1, 4);
-
-			switch(fac) {
-				case 1:
-				message.channel.send(`<@${id_mention}> va dans : Epsilon`);
-				member.addRole('415947454626660366'); //ajoute Epsilon 
-				break;
-				case 2:
-				message.channel.send(`<@${id_mention}> va dans : Zêta`);
-				member.addRole('415947455582961686'); //ajoute Epsilon 
-				break;
-				case 3:
-				message.channel.send(`<@${id_mention}> va dans : Gamma`);
-				member.addRole('415947456342130699'); //ajoute Epsilon 
-				break;
-				case 4:
-				message.channel.send(`<@${id_mention}> va dans : Oméga`);
-				member.addRole('665340021640921099'); //ajoute Epsilon 
-				break;
-			}
-			console.log("Commande exécutée. -> Admin Test Passé -> switch effectué");
-		} else {
-			message.channel.send("Cette commande est réservée aux Empereurs.");
-			console.log("Commande exécutée. -> Admin Test Refusé");
-		}
-	}
+	
 
 
 
@@ -1539,6 +1222,338 @@ bot.on('message', async (message) => {
 
 
 
+
+
+	//Commandes admin :
+
+
+	if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760") {
+		
+		if (message.content === prefix + "add1Xp --me") {
+			let id_usr = message.author.id; 
+			addXp(id_usr, 1);
+		}
+
+		if (message.content.startsWith(prefix + "randomFaction ")) { 
+
+		
+			console.log("Commande exécutée.");
+			if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760") {
+				console.log("Commande exécutée. -> Admin Test Passé");
+				let args3 = message.content.slice(prefix.length + 14); //.split(' ');
+				let id_mention = message.mentions.users.first().id;
+				let member = message.mentions.members.first();
+
+				let fac = entierAleatoire(1, 4);
+
+				switch(fac) {
+					case 1:
+					message.channel.send(`<@${id_mention}> va dans : Epsilon`);
+					member.addRole('415947454626660366'); //ajoute Epsilon 
+					break;
+					case 2:
+					message.channel.send(`<@${id_mention}> va dans : Zêta`);
+					member.addRole('415947455582961686'); //ajoute Epsilon 
+					break;
+					case 3:
+					message.channel.send(`<@${id_mention}> va dans : Gamma`);
+					member.addRole('415947456342130699'); //ajoute Epsilon 
+					break;
+					case 4:
+					message.channel.send(`<@${id_mention}> va dans : Oméga`);
+					member.addRole('665340021640921099'); //ajoute Epsilon 
+					break;
+				}
+				console.log("Commande exécutée. -> Admin Test Passé -> switch effectué");
+			} else {
+				message.channel.send("Cette commande est réservée aux Empereurs.");
+				console.log("Commande exécutée. -> Admin Test Refusé");
+			}
+		}
+	}
+
+	//Commandes Dev :
+
+
+	if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760") {
+
+		if (message.content === prefix + "DEV ROLE") {
+			//message.mentions.users.first().addRole('415947454626660366'); //ajoute Epsilon 
+		}
+		
+		//DEV
+		if (message.content.startsWith(prefix + "multipleargs ")) {
+			let args5 = message.content.slice(prefix.length).trim().split(/ +/g);
+			message.channel.send(args5 + `<-args5 ; \n ${args[0]}, ${args[1]}`);
+		}
+
+		if (message.content.startsWith(prefix + "crypt ")) {
+
+
+
+			let arguments1 = message.content.slice(prefix.length).trim().split(/ +/g);
+			let password = arguments1[0];
+			let text = message.content.slice(prefix.length + 6 + arguments1[0].length);
+
+			/*
+			// On définit notre algorithme de cryptage
+			let algorithm = 'aes256';
+
+			// Notre clé de chiffrement, elle est souvent générée aléatoirement mais elle doit être la même pour le décryptage
+			//password = 'l5JmP+G0/1zB%;r8B8?2?2pcqGcL^3';
+
+			// On crypte notre texte
+			let cipher = crypto.createCipher(algorithm,password);
+			let crypted = cipher.update(text,'utf8','hex');
+			crypted += cipher.final('hex');
+			*/
+
+			const cipher = crypto.createCipher('aes192', password);  
+			let encrypted = cipher.update(text, 'utf8', 'hex');  
+			encrypted += cipher.final('hex');  
+
+
+			message.channel.send(" message crypté est : " + encrypted);
+
+			message.delete();
+			
+		}
+
+		if (message.content.startsWith(prefix + "decrypt ")) {
+
+			let arguments1 = message.content.slice(prefix.length).trim().split(/ +/g);
+			let password = arguments1[0];
+			let text = message.content.slice(prefix.length + 8 + arguments1[0].length);
+
+			text = "2fb688d5c7ddcdcaf23e8637187cb054";
+			password = "PD";
+
+			const decipher = crypto.createDecipher('aes192', password);  
+			
+			let decrypted = decipher.update(text, 'hex', 'utf8');  
+			decrypted += decipher.final('utf8');  
+
+
+			message.channel.send(" message crypté est : " + decrypted);
+
+		}
+
+		if (message.content === prefix + "DEV encrypt") {
+			const algorithm = 'aes-192-cbc';
+			const password = 'PASSWORD';
+			const text = "DES POULETS"
+			const key = crypto.scryptSync(password, text, 24);
+			const cipher = crypto.createCipher(algorithm, key);
+
+			let encrypted = '';
+			let encSize = encrypted.length;
+			cipher.on('readable', () => {
+				let chunk;
+				while (null !== (chunk = cipher.read())) {
+					encrypted += chunk.toString('hex');
+				}
+				message.channel.send("ENCRYPTED: " + encrypted);
+
+			});
+			cipher.on('end', () => console.log(encrypted));
+
+			cipher.write('some clear text data');
+			cipher.end;
+		}
+
+		if (message.content === prefix + "DEV decrypt") {
+			const algorithm = 'aes-192-cbc';
+			const password = 'PASSWORD';
+			const text = "DES POULETS";
+			const key = crypto.scryptSync(password, text, 24);
+			const decipher = crypto.createDecipher(algorithm, key);
+
+			let decrypted = '';
+
+			decipher.on('readable', () => {
+				let chunk2;
+				while (null !== (chunk2 = decipher.read())) {
+					decrypted += chunk2.toString('hex');
+					message.channel.send("DECRYPTED1: " + decrypted);
+
+
+				}
+				message.channel.send("DECRYPTED2: " + decrypted);
+
+			});
+			decipher.on('end', () => console.log(decrypted));
+
+				message.channel.send("DECRYPTED3: " + decrypted);
+
+			const encrypted = '2c647413e5dd31febb3bbc141bf41c81';
+			decipher.write(encrypted, 'hex');
+					message.channel.send("DECRYPTED4: " + decrypted);
+
+			decipher.end;
+					message.channel.send("DECRYPTED5: " + decrypted);
+		}
+
+		if (message.content.startsWith(prefix + "retrait or ")) { //permet de retirer de la thunes à quelqu'un (nottament lors d'un enffrain aux lois)
+			if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760 ") {
+				let id_usr_ret_or = message.mentions.users.first().id;
+
+			let id_user_or = message.author.id;
+			let or_usr = 0;
+
+			let mention = message.mentions.users.first();
+
+
+			let args = message.content.slice(prefix.length + 16 + id_usr_ret_or.length).split(' ');
+
+
+			let or_a_retirer = args;
+
+			console.log("args : " + args);
+
+			or_a_retirer = 0 - or_a_retirer; //exemple : or_a_retirer=22 : là ça fera -22 (0 - 22(or_a_retirer) = -22)
+
+			console.log("or à retirer : " + or_a_retirer)
+
+
+			fs.readFile('json/or/or_' + id_usr_ret_or +'.json', 'utf8', function (erreur, donnees)
+			{
+				if (erreur) {
+				 	
+				 fs.writeFile("json/or/or_" + id_usr_ret_or + ".json", `
+					{ 
+						"or": ${or_a_retirer},
+						"date": 0
+					}`, function(err) {
+				    if(err) {
+				        return console.log(err);
+				    }
+
+				    	console.log("The file was saved!");
+					});
+
+				 	return; // and continue
+				 } 
+				 let or_usr = JSON.parse(donnees);
+				 console.log(or_usr.or);
+				 or_usr = or_usr.or; 
+
+				 let date_file = or_usr.date;
+
+				 console.log("date_file : " + or_usr.date);
+
+				 fs.writeFile("json/or/or_" + id_usr_ret_or + ".json", `
+					{ 
+						"or": ${or_usr - or_a_retirer},
+						"date": ${date_file}
+					}`, function(err) {
+				    if(err) {
+				        return console.log(err);
+				    }
+
+				    	console.log("The file was saved!");
+					});
+
+				});
+			}
+		}
+
+		if (message.content.startsWith(prefix +"romarin ") || message.content === prefix + "romarin dra" || message.content === prefix + "romarin rom") {
+
+
+			let contenu_json;		
+			let id_selection;
+
+			if (message.content === prefix + "romarin dra") {
+				id_selection = '211911771433205760';
+
+			} else if (message.content === prefix + "romarin rom") {
+				id_selection = '421400262423347211';
+
+			} else {
+				id_selection = message.mentions.users.first().id;
+			}
+
+			let id_usr = message.author.id;
+
+			if (fs.existsSync('json/romarin/romarin_' + id_selection + '.json')) { //si le fichier de l'utilisateur existe déjà
+		    		fs.readFile('json/romarin/romarin_' + id_selection + '.json', function(erreur, file) {
+	   				
+	   				let romarin_json = JSON.parse(file)
+	   				let romarin_total = romarin_json.romarin + 1;
+	   				contenu_json = '{' + '\n' + ' \"romarin\" : ' + romarin_total + '\n' + '}';
+
+
+	   				fs.writeFile('json/romarin/romarin_' + id_selection + '.json', contenu_json, function(erreur) { 
+			    		if (erreur) {
+						        console.log(erreur)
+						    }
+			    		})
+	   				})
+
+			} else { //si le fichier de l'utilisateur n'existe pas
+				 contenu_json = '{' + '\n' + ' \"romarin\" : 1 ' + '\n' + '}';							
+
+					fs.writeFile('json/romarin/romarin_' + id_selection + '.json', contenu_json, function(erreur) {
+					    if (erreur) {
+					        console.log(erreur)
+					    }
+					})
+			}
+
+
+			if (fs.existsSync('json/romarin/romarin_' + id_usr + '.json')) { //si le fichier de l'utilisateur existe déjà
+    			fs.readFile('json/romarin/romarin_' + id_usr + '.json', function(erreur, file) {
+				
+				let romarin_json = JSON.parse(file)
+				let romarin_total = romarin_json.romarin;
+
+				message.channel.send("Romarin envoyé à ce con :) \n par contre vous, vous avez reçu : " + romarin_total + " romarin");
+				
+				})
+
+		    		
+
+			} else { //si le fichier de l'utilisateur n'existe pas
+				 contenu_json = '{' + '\n' + ' \"romarin\" : 0 ' + '\n' + '}';							
+
+					fs.writeFile('json/romarin/romarin_' + id_usr + '.json', contenu_json, function(erreur) {
+					    if (erreur) {
+					        console.log(erreur)
+					    }
+					})
+
+					fs.readFile('json/romarin/romarin_' + id_usr + '.json', function(erreur, file) {
+	   				
+	   				let romarin_json = JSON.parse(file)
+	   				let romarin_total = romarin_json.romarin;
+
+	   				message.channel.send("Romarin envoyé à ce con :) \n par contre vous, vous avez reçu : " + romarin_total + " romarin");
+	   				
+	   				})
+		   				
+				}
+			} //fin p<romarin
+
+
+		if (message.content === prefix + "mon beau romarin") { //voir son romarin
+
+			let id_usr = message.author.id;
+
+			if (fs.existsSync('json/romarin/romarin_' + id_usr + '.json')) { //si le fichier de l'utilisateur existe déjà
+		    		fs.readFile('json/romarin/romarin_' + id_usr + '.json', function(erreur, file) {
+						
+						let romarin_json = JSON.parse(file)
+						let romarin_total = romarin_json.romarin;
+						
+						message.channel.send("Vous avez : " + romarin_total + " romarin");
+						
+						})
+		    	
+			} else { //si le fichier de l'utilisateur n'existe pas
+					message.channel.send("Vous avez : 0 romarin.");
+			}
+		} //Fin de la commande voir romarin
+	}
 
 
 
