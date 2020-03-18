@@ -22,8 +22,8 @@ let RomarEmpereurID = 421400262423347211;
 
 let prefix = ("p<");
 
-let bot_version = "0.2.2";
-let bot_lignes = "1681";
+let bot_version = "0.2.3";
+let bot_lignes = "1793";
 
 
 let MaitreFac_Epsilon;
@@ -85,7 +85,7 @@ function Unix_timestamp(t) {
 
 
 
-function addXp(id_usr, xpToAdd) {
+function addXp(id_usr, xpToAdd) { //Fonction permettant d'éditer l'XP d'un utilisateur : elle peut être utiliser pour retirer ou pour ajouter des points d'XP
 
 	let xp_a_ecrire;
 	let xp_level_a_ecrire;
@@ -99,23 +99,24 @@ function addXp(id_usr, xpToAdd) {
 
 	if (fs.existsSync('json/xp/xp_' + id_usr + '.json')) { //si le fichier xp de l'utilisateur existe déjà
 
-	} else { //si le fichier xp de l'utilisateur n'existe pas
-		xp_a_ecrire = 0;
-		xp_level_a_ecrire = 1;
-		console.log("addXp Function : LE FICHIER EXISTE PAS !!")
-		fs.writeFile(`json/xp/xp_${id_usr}.json`, `
-				{ 
-					"xp": ` + xp_a_ecrire + `,
-					"xplevel": ` + xp_level_a_ecrire + `
-				}`, 
-		function(err) {
+		} else { //si le fichier xp de l'utilisateur n'existe pas
+			xp_a_ecrire = 0;
+			xp_level_a_ecrire = 1;
+			console.log("addXp Function : LE FICHIER EXISTE PAS !!")
+			console.log("xp_a_ecrire :" + xp_a_ecrire + "\nxp_level_a_ecrire :" + xp_level_a_ecrire);
 
-			if(err) {
-			    return console.log(err);
-			}
-			console.log("The file was saved!");
-		}); 
-	}
+			fs.writeFileSync('json/xp/xp_' + id_usr + '.json', `
+					{
+						"xp" : 0,
+						"xplevel" : 1
+					}
+
+					`, function(erreur) {
+				    if (erreur) {
+				        console.log(erreur)
+				    }
+				});
+		}
 
 	//maintenant on à forcément un fichier à traiter, soit il existait déjà et donc on l'utilise, soit on le crée en initialisant ses valeurs au minimum.
 
@@ -138,6 +139,10 @@ function addXp(id_usr, xpToAdd) {
 			xp_level_a_ecrire = xplevel_b4 + 1;
 		}
 
+		if (xp_a_ecrire < 0 && xp_level_a_ecrire > 1) {
+			xp_a_ecrire = 0;
+		}
+
 		//maintenant on à le xplevel à écrire, et l'xp à écrire aussi, on peut écrire tout ça dans le fichier utilisateur :
 
 		fs.writeFile(`json/xp/xp_${id_usr}.json`, `
@@ -157,7 +162,7 @@ function addXp(id_usr, xpToAdd) {
 
 
 
-function addXp2(id_usr, xpToAdd) {
+function addXp2(id_usr, xpToAdd) { //Obsolète !
 	let json_xp
 	let xp_a_add;
 	let xp_level_a_add;
@@ -208,7 +213,7 @@ function addXp2(id_usr, xpToAdd) {
 	}
 }
 
-function remXp(id_usr, xpToRem) {
+function remXp(id_usr, xpToRem) { //Obsolète !
 	let xp_a_ecrire;
 	let xp_level_a_ecrire;
 
@@ -306,7 +311,7 @@ bot.on('message', async message => {
 
 bot.on('message', async (message) => {
 
-	if (message.content.startsWith(prefix)) {
+	if (message.content.startsWith(prefix)) { //Condition de développement -> permet de whitelist des utilisateurs
 		if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760") {
 		}
 		else {
@@ -384,7 +389,7 @@ bot.on('message', async (message) => {
 		let embed_aide_arene = new Discord.RichEmbed()
 							.setColor("#C86400")
 							.setTitle(":grey_question: Aide -  :crossed_swords:")
-							.setDescription("La commande ``arene`` permet de faire un combat dans l'arène contre le bot pour gagner de l'expérience, vous pouvez choisir entre 3 armes, la **masse** avec ``p<arene masse`` ou ``p<arene m``, la **tomahawk** avec ``p<arene tomahawk`` ou ``p<arene t``, ou la **lance** avec ``p<arene lance`` ou ``p<arene l``, voici qui l'emporte sur qui :\nLa masse -> la tomahawk\nLa tomahawk -> la lance\nLa lance -> la masse\nLe combat se fait comme un chifoumi. Voici comment l'utiliser :\n``p<arene [arme]``")
+							.setDescription("La commande ``arene`` permet de faire un combat dans l'arène contre le bot pour gagner de l'expérience, vous pouvez choisir entre 3 armes, la **masse** avec ``p<arene masse`` ou ``p<arene m``, le **tomahawk** avec ``p<arene tomahawk`` ou ``p<arene t``, ou la **lance** avec ``p<arene lance`` ou ``p<arene l``, voici qui l'emporte sur qui :\nLa masse -> le tomahawk\nLe tomahawk -> la lance\nLa lance -> la masse\nLe combat se fait comme un chifoumi. Voici comment l'utiliser :\n``p<arene [arme]``")
 
 							message.channel.send(embed_aide_arene);
 	}
@@ -399,43 +404,11 @@ bot.on('message', async (message) => {
     } Sert de modèle!*/
 
 
-//FIN DU BIG BIG EMBED HELP
+	//FIN DU BIG BIG EMBED HELP
 
-/*
-	if (message.content === prefix + "dev") {
-
-		if (talkedRecently.has(message.author.id)) {
-	            message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
-	    } else {
-
-	           // the user can type the command ... your command code goes here :)
-	           message.channel.send("TEST")
-
-	        // Adds the user to the set so that they can't talk for a minute
-	        talkedRecently.add(message.author.id);
-	        setTimeout(() => {
-	          // Removes the user from the set after a minute
-	          talkedRecently.delete(message.author.id);
-	        }, 6000);
-	    }
-
-	} */
-
-
-	/* if (message.content === prefix + "addxp1") { ///IL Y A UN BUG ICI !! Il faut refaire le addxp1 pour mettre à jour le level up, et une fois passé level 2 on peut plus augmenter d'xp !
-		let id_usr = message.author.id;
-		addXp(id_usr, 250);
-		message.channel.send("Success")
-	}
-
-	if (message.content === prefix + "remxp1") { ///IL Y A UN BUG ICI !! Il faut refaire le addxp1 pour mettre à jour le level up, et une fois passé level 2 on peut plus augmenter d'xp !
-		let id_usr = message.author.id;
-		remXp(id_usr, 1);
-		message.channel.send("Success")
-	} */
 
 	if (message.content === prefix + "botinfos") {
-		message.channel.send("Version : " + bot_version + "\nLignes : " + bot_lignes + "\nDevs : programmation : Romar1 ; Design Graphique : DraxyDow\n");
+		message.channel.send("Version : " + bot_version + "\nLignes : " + bot_lignes + "\nDevs : Programmation : Romar1 ; Design Graphique : DraxyDow\n");
 	}
 
 	
@@ -481,7 +454,7 @@ bot.on('message', async (message) => {
 				    win_arene = 2;
 				}
 	    		if (arene_choixUser == 1 && arene_choixEnemy == 2) { //Masse VS Tomahawk
-	    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise la tomahawk !**\n*Vous gagnez !*");
+	    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise le tomahawk !**\n*Vous gagnez !*");
 	    			//Faire que le mec gagne de l'xp
 	    			win_arene = 1;
 	    		}
@@ -493,16 +466,16 @@ bot.on('message', async (message) => {
 
 
 	    		if (arene_choixUser == 2 && arene_choixEnemy == 1) { //Tomahawk VS Masse
-	    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi utilise la masse !**\n*Vous perdez...*");
+	    			message.channel.send("Vous utilisez le **tomahawk**.\n**L'ennemi utilise la masse !**\n*Vous perdez...*");
 	    			//Faire que le mec perd de l'xp
 	    			win_arene = 0;
 	    		}
 	    		if (arene_choixUser == 2 && arene_choixEnemy == 2) { //Tomahawk VS Tomahawk
-	    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi aussi !**\n*Match nul...*");
+	    			message.channel.send("Vous utilisez le **tomahawk**.\n**L'ennemi aussi !**\n*Match nul...*");
 	    			win_arene = 2;
 	    		}
 	    		if (arene_choixUser == 2 && arene_choixEnemy == 3) { //Tomahawk VS Lance
-	    			message.channel.send("Vous utilisez la **tomahawk**.\n**L'ennemi utilise la lance !**\n*Vous gagnez !*");
+	    			message.channel.send("Vous utilisez le **tomahawk**.\n**L'ennemi utilise la lance !**\n*Vous gagnez !*");
 	    			//Faire que le mec gagne de l'xp
 	    			win_arene = 1;
 	    		}
@@ -514,7 +487,7 @@ bot.on('message', async (message) => {
 	    			win_arene = 1;
 	    		}
 	    		if (arene_choixUser == 3 && arene_choixEnemy == 2) { //Lance VS Tomahawk
-	    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise la tomahawk !**\n*Vous perdez...*");
+	    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise le tomahawk !**\n*Vous perdez...*");
 	    			//Faire que le mec perd de l'xp
 	    			win_arene = 0;
 	    		}
@@ -525,13 +498,13 @@ bot.on('message', async (message) => {
 
 	    		if (win_arene == 0) { // Si on a perdu
 	    			message.channel.send("-1 xp");
-				addXp(id_usr, -1);
+					addXp(id_usr, -1);
 	    		} else if (win_arene == 1) { // Si on a win
 	    			message.channel.send("+2 xp");
-				addXp(id_usr, 2);
+					addXp(id_usr, 2);
 	    		} else if (win_arene == 2) {
 	    			message.channel.send("+0 xp");
-				addXp(id_usr, 0);
+					addXp(id_usr, 0);
 	    		}
 			}
 
@@ -1206,14 +1179,100 @@ bot.on('message', async (message) => {
 
 	
 
+	if (message.content.startsWith(prefix + "requestWar ")) {
+		if(message.guild.members.get(message.author.id).roles.exists('id','445617906072682514')
+		 || message.guild.members.get(message.author.id).roles.exists('id','445617911747313665')
+		  || message.guild.members.get(message.author.id).roles.exists('id','445617908903706624')
+		   || message.guild.members.get(message.author.id).roles.exists('id','665340068046831646')) { //vérifie si l'utilisateur est maître de faction
+
+			let argsReqWar = "";
+			argsReqWar = message.content.slice(prefix.length + 11);
+			let facmaitre;
+
+			
+
+			if (argsReqWar == "Zêta" || argsReqWar == "Epsilon" || argsReqWar == "Gamma" || argsReqWar == "Oméga" || argsReqWar == "zêta" || argsReqWar == "zeta" || argsReqWar == "zêta" || argsReqWar == "oméga" || argsReqWar == "omega" || argsReqWar == "Omega") {
+			
+				if(message.guild.members.get(message.author.id).roles.exists('id','445617906072682514')) {
+					facmaitre = "Epsilon";
+				} else if (message.guild.members.get(message.author.id).roles.exists('id','445617911747313665')) {
+					facmaitre = "Zêta";
+				} else if (message.guild.members.get(message.author.id).roles.exists('id','445617908903706624')) {
+					facmaitre = "Gamma";
+				} else if (message.guild.members.get(message.author.id).roles.exists('id','665340068046831646')) {
+					facmaitre = "Oméga";
+				}
+
+				//message.channel.send(`Faction à attaquer : ${argsReqWar} ; Maître ${facmaitre}`);
+
+				//Ici envoyer un DM au romar et au Draxy.
+
+				message.guild.members.get("421400262423347211").send(`Le maître ${facmaitre} ainsi que sa faction, souhaite attaquer la faction ${argsReqWar}\nEn vu de votre position d'Empereur vous vous devez de vérifier le casus beli de la faction, et si cela est positif vous pourrez accepter et activer la guerre !`); //romar
+				message.guild.members.get("211911771433205760").send(`Faction à attaquer : ${argsReqWar} ; Maître ${facmaitre}`); //draxy
+				
+				//Plus un message expliquant que la décision se fera dans #conference de maître,
+				//et que le maître devra prouver son casus beli (au maître en question (avec un message.channel.send !))
+
+				let chanId = "616652710942343222";
+
+				message.channel.send(`Vous avez décidé d'attaquer la faction ${argsReqWar} ! \nPour éviter tout abus, les Empereurs doivent vérifier votre casus beli, la décision se fera dans <#` + chanId + `> ! \nveuillez patienter jusqu'à la réponse des Empereurs.`)
+
+			} else {
+				message.channel.send("Mauvaise Synthaxe -> La faction que vous souhaitez attaquer n'existe pas");
+				return;
+			}
+
+
+
+
+			
+		} else {
+			message.channel.send("Vous n'êtes pas maître de faction vous ne pouvez donc pas executer cette commande.");
+		}
+	}
+
 
 
 	//Guerres :
 
 	if (message.content === prefix + "startWar ") {
 		if (message.author.id == DraxyEmpereurID || message.author.id == RomarEmpereurID) {
+
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1232,6 +1291,26 @@ bot.on('message', async (message) => {
 		if (message.content === prefix + "add1Xp --me") {
 			let id_usr = message.author.id; 
 			addXp(id_usr, 1);
+		}
+
+		if (message.content.startsWith(prefix + "setXp ")) {
+			let argsAddXp = message.content.slice(prefix.length + 6 + 23)
+			message.channel.send("User: " + message.mentions.users.first() + "\nNombreXP: " + argsAddXp);
+
+			if (message.mentions.users.first() != undefined) {				
+				if (argsAddXp < 100) {				
+					if (argsAddXp >=100) {
+						message.channel.send("Valeur trop haute (MAX: 99)");
+					} else {
+						let xp = Number(argsAddXp);
+						addXp(message.mentions.users.first().id, xp)
+					}
+				} else {
+					message.channel.send("Erreur de synthaxe (p<setXp @USER XP) OU valeur trop haute (MAX: 99)");
+				}
+			} else {
+				message.channel.send("Utilisateur non défini -> Erreur synthaxe (p<setXp @USER XP)");
+			}
 		}
 
 		if (message.content.startsWith(prefix + "randomFaction ")) { 
@@ -1678,4 +1757,37 @@ factionDe_Request = "";
 	        }, 6000);
 	    }
 
+	} */
+
+
+		/*
+	if (message.content === prefix + "dev") {
+
+		if (talkedRecently.has(message.author.id)) {
+	            message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
+	    } else {
+
+	           // the user can type the command ... your command code goes here :)
+	           message.channel.send("TEST")
+
+	        // Adds the user to the set so that they can't talk for a minute
+	        talkedRecently.add(message.author.id);
+	        setTimeout(() => {
+	          // Removes the user from the set after a minute
+	          talkedRecently.delete(message.author.id);
+	        }, 6000);
+	    }
+
+	} */
+
+	/* if (message.content === prefix + "addxp1") { ///IL Y A UN BUG ICI !! Il faut refaire le addxp1 pour mettre à jour le level up, et une fois passé level 2 on peut plus augmenter d'xp !
+		let id_usr = message.author.id;
+		addXp(id_usr, 250);
+		message.channel.send("Success")
+	}
+
+	if (message.content === prefix + "remxp1") { ///IL Y A UN BUG ICI !! Il faut refaire le addxp1 pour mettre à jour le level up, et une fois passé level 2 on peut plus augmenter d'xp !
+		let id_usr = message.author.id;
+		remXp(id_usr, 1);
+		message.channel.send("Success")
 	} */
