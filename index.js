@@ -7,6 +7,7 @@ const http = require("http");
 const https = require("https");
 let crypto = require('crypto');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const wiki = require('wikijs').default;
 
 const hash = crypto.createHash('md5')
 	.update('password')
@@ -81,6 +82,14 @@ function Unix_timestamp(t) {
 	var m = "0" + dt.getMinutes();
 	var s = "0" + dt.getSeconds();
 	return hr+ ':' + m.substr(-2) + ':' + s.substr(-2);   // UTILITÉ NON TROUVÉ: (je crois que: retourne sous la forme d'un Date, le temps passé en paramètres (milisecondes))
+}
+
+
+function addOr(id_usr, orToAdd) { 
+
+// Faire en sorte que l'on ne puisse pas être en thune négative !!! 
+// (sinon on pourrait acheter n'importe quoi même si on est à -10000 ce serait comme de l'argent infini !)
+	let or_a_ecrire;
 }
 
 
@@ -285,6 +294,7 @@ function remXp(id_usr, xpToRem) { //Obsolète !
 
 bot.on('ready', function() {
 	bot.user.setActivity("PouleRPG | p<help")
+	bot.user.setStatus('dnd');
 	console.log("bot 'PouleRPG' has been connected sucessfully!")
 	console.log("bot lancé le: " + new Date() + " ");
 
@@ -319,6 +329,8 @@ bot.on('message', async (message) => {
 			return;
 		}
 	}
+
+
 
 
 //BIG BIG PARTIE DE L'EMBED HELP
@@ -1072,20 +1084,25 @@ bot.on('message', async (message) => {
 
 	if (message.content === prefix + "mes beaux points venitienne") { //voir ses points venitienne
 
-		let id_usr = message.author.id;
+		if (message.author.id === "421400262423347211") {
+			message.channel.send("Vous avez : ∞ points venitienne.");
 
-		if (fs.existsSync('json/ven/ven_' + id_usr + '.json')) { //si le fichier de l'utilisateur existe déjà
-	    		fs.readFile('json/ven/ven_' + id_usr + '.json', function(erreur, file) {
-   				
-   				let veni_json = JSON.parse(file)
-   				let pts_veni_total = veni_json.ptsveni;
-   				
-   				message.channel.send("Vous avez : " + pts_veni_total + " points venitienne.");
-   				
-   				})
-	    	
-		} else { //si le fichier de l'utilisateur n'existe pas
-				message.channel.send("Vous avez : 0 points venitienne.");
+		} else {
+			let id_usr = message.author.id;
+
+			if (fs.existsSync('json/ven/ven_' + id_usr + '.json')) { //si le fichier de l'utilisateur existe déjà
+		    		fs.readFile('json/ven/ven_' + id_usr + '.json', function(erreur, file) {
+	   				
+	   				let veni_json = JSON.parse(file)
+	   				let pts_veni_total = veni_json.ptsveni;
+	   				
+	   				message.channel.send("Vous avez : " + pts_veni_total + " points venitienne.");
+	   				
+	   				})
+		    	
+			} else { //si le fichier de l'utilisateur n'existe pas
+					message.channel.send("Vous avez : 0 points venitienne.");
+			}
 		}
 	} //Fin de la commande pour voir points venitienne
 
@@ -1172,7 +1189,27 @@ bot.on('message', async (message) => {
 		}
 	} //Fin du p<phrase
 
+	
 
+	if (message.content.startsWith(prefix + "info faction ")) {
+		let argsFac = message.content.slice(prefix.length + 13);
+		let factionExist = false;
+		let faction = ""
+
+		if (argsFac == "epsilon") {
+			factionExist = true;
+			faction = "Epsilon";
+		} else if (argsFac == "zeta") {
+			factionExist = true;
+			faction = "Zêta";
+		} else if (argsFac == "gamma") {
+			factionExist = true;
+			faction = "Gamma"
+		} else if (argsFac == "omega") {
+			factionExist = true;
+			faction = "Oméga";
+		}
+	}
 
 
 
@@ -1229,7 +1266,7 @@ bot.on('message', async (message) => {
 		} else {
 			message.channel.send("Vous n'êtes pas maître de faction vous ne pouvez donc pas executer cette commande.");
 		}
-	}
+	} // fin request war
 
 
 
@@ -1239,7 +1276,9 @@ bot.on('message', async (message) => {
 		if (message.author.id == DraxyEmpereurID || message.author.id == RomarEmpereurID) {
 
 		}
-	}
+	} // fin startWar
+
+
 
 
 
@@ -1349,7 +1388,7 @@ bot.on('message', async (message) => {
 				console.log("Commande exécutée. -> Admin Test Refusé");
 			}
 		}
-	}
+	} //Fin des commandes admin
 
 	//Commandes Dev :
 
@@ -1632,7 +1671,29 @@ bot.on('message', async (message) => {
 					message.channel.send("Vous avez : 0 romarin.");
 			}
 		} //Fin de la commande voir romarin
-	}
+
+
+		if (message.content.startsWith(prefix + "dit-moi tout wikimerde ")) {
+			let argsDmT = message.content.slice(prefix.length + 23);
+
+			if (argsDmT == undefined) {
+				message.channel.send("Erreur -> Aucune recherche.");
+				return;
+			} else {
+				//message.channel.send("argsDmT -> requête : " + argsDmT);
+				let data = "";
+
+			// Search here
+			wiki({ apiUrl: 'https://en.wikipedia.org/w/api.php' })
+	  			.page('chicken')
+	  			.then(page => page.html())
+	  			.then(data = console.log)
+
+	  			message.channel.send("data " + data);
+	 			//CHECK CA !
+			}
+		}
+	} // fin des commandes de dev
 
 
 
