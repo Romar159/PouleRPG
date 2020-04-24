@@ -6,6 +6,7 @@ const snekfetch = require("snekfetch");
 const http = require("http");
 const https = require("https");
 let crypto = require('crypto');
+let getRandomValues = require('get-random-values');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const wiki = require('wikijs').default;
 
@@ -23,8 +24,8 @@ let RomarEmpereurID = 421400262423347211;
 
 let prefix = ("p<");
 
-let bot_version = "0.2.3";
-let bot_lignes = "1793";
+let bot_version = "0.2.5";
+let bot_lignes = "2199";
 
 
 let MaitreFac_Epsilon;
@@ -34,6 +35,19 @@ let MaitreFac_Omega;
 
 let factionDe_Request = "";
 let MaitreFac = "";
+
+
+	let maxbanque_esclave = 5;
+	let maxbanque_paysan = 15;
+	let maxbanque_bourgeois = 40;
+	let maxbanque_courtisan = 150;
+	let maxbanque_baron = 300;
+	let maxbanque_compte = 500;
+	let maxbanque_marquis = 750;
+	let maxbanque_duc = 1500;
+	let maxbanque_vassal = 3000;
+
+
 
 const talkedRecently_arene = new Set();
 
@@ -46,6 +60,8 @@ let buffer_thunas;
 		
 
 //Fontions:
+
+
 
 function msToTime(duration) { //Permet de transformer des MS en heure humaine
   var milliseconds = parseInt((duration % 1000) / 100),
@@ -87,11 +103,133 @@ function Unix_timestamp(t) {
 
 function addOr(id_usr, orToAdd) { 
 
-// Faire en sorte que l'on ne puisse pas être en thune négative !!! 
-// (sinon on pourrait acheter n'importe quoi même si on est à -10000 ce serait comme de l'argent infini !)
-	let or_a_ecrire;
-}
+	// Faire en sorte que l'on ne puisse pas être en thune négative !!! 
+	// (sinon on pourrait acheter n'importe quoi même si on est à -10000 ce serait comme de l'argent infini !)
+	// Voir si on doit ou non (le truc qui empêche d'être au dessus de note bank max)
 
+	let or_a_ecrire; // Contient l'or total à ajouter
+	let or_in_json; // Contient l'or se trouvant dans le json
+	let max_bank; // Contient le niveau de bank max se trouvant dans le json
+	let date = 0; // Contient la date à écrire lorsque le fichier user n'existe pas
+
+	if (fs.existsSync('json/or/or_' + id_usr + ".json")) { // Le fichier user or existe, on pourra donc le traiter
+		//checkBankMax(id_usr);
+	} else { // le fichier n'existe pas, on le crée pour le traiter par la suite.
+		or_a_ecrire = 0;
+		max_bank = 0;
+
+		console.log("addOr function : LE FICHIER N'EXISTE PAS !");
+		console.log("or_a_ecrire : " + or_a_ecrire + "\nmax_bank : " + max_bank);
+
+		fs.writeFileSync('json/or/or_' + id_usr + '.json', `
+			{
+				"or": 0,
+				"date": 0,
+				"maxbanque": 5 
+			}
+				
+			`, function(error) {
+				if (error) {
+					console.log(error);
+				}
+			});
+
+	} // Fichier crée !
+
+	// On a forcément un fichier à traiter.
+
+	fs.readFile(`json/or/or_${id_usr}.json`, function(error, fichier) {
+		json_or = JSON.parse(fichier);
+
+		or_in_json = json_or.or;
+		max_bank = json_or.maxbanque;
+		date = json_or.date;
+
+		// Calcul de l'or passé en paramètres + or déjà présent ;
+
+		or_a_ecrire = or_in_json + orToAdd;
+
+		// Calcul du buffer -> Si l'or est suppérieur à la taille de la banque max, retirer l'argent en surplus
+		// et l'envoyer dans la banque de faction (une autre fonction sera call (celle pour ajouter de l'or dans 
+		// la banque de faction))
+
+		if (or_a_ecrire > max_bank) {
+
+			let buffer_thunas = 0;
+
+					buffer_thunas = or_a_ecrire - max_bank; //contient le surplus d'or
+					or_a_ecrire = or_a_ecrire - buffer_thunas; //enlève le surplus à l'or final
+
+					/* if(message.member.roles.find(r => r.name === "Epsilon")) { factionDe_Request = "Epsilon"; }
+					else if(message.member.roles.find(r => r.name === "Gamma")) { factionDe_Request = "Gamma"; 	 }
+					else if(message.member.roles.find(r => r.name === "Zeta")) { factionDe_Request = "Zeta";   }
+					else if(message.member.roles.find(r => r.name === "Omega")) { factionDe_Request = "Omega";   }
+					else { }
+
+					if (factionDe_Request == "Epsilon") {
+						//ENVOIE DANS LE COFFRE DE EPSILON
+						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Epsilon." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+						addOrFaction(1, buffer_thunas); // Envoie à epsilon du surplus d'or
+
+					} else if (factionDe_Request == "Gamma") {
+						//ENVOIE DANS LE COFFRE DE EPSILON
+						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Gamma." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+						addOrFaction(3, buffer_thunas); // Envoie à Gamma le surplus
+
+					} else if (factionDe_Request == "Zeta") {
+						//ENVOIE DANS LE COFFRE DE EPSILON
+						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Zeta." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+						addOrFaction(2, buffer_thunas); // Envoie à Zeta le surplus
+
+					} else if (factionDe_Request == "Omega") {
+
+						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Omega." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+						addOrFaction(4, buffer_thunas); // Envoie à Oméga le surplus
+
+					} else {
+						message.channel.send("Le surplus d'argent à été rendu à PouleRPG : -" + buffer_thunas + " or." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+					} */
+
+
+
+					// or_a_ecrire = max_bank;
+
+		}
+
+		if (or_a_ecrire < 0) {
+			or_a_ecrire = 0;
+		}
+
+		// écriture final dans le fichier.
+
+		// date ; max_bank : or_a_ecrire.
+
+		fs.writeFileSync('json/or/or_' + id_usr + '.json', `
+			{
+				"or": ` + or_a_ecrire + `,
+				"date": ` + date + `,
+				"maxbanque": ` + max_bank + ` 
+			}
+				
+			`, function(error) {
+				if (error) {
+					console.log(error);
+				}
+			});
+	})
+} // fin function addOre
+
+
+function addOrFaction(factionID, montant) {
+	// faction ID :
+
+	// Epsilon = 1
+	// Zêta = 2
+	// Gamma = 3
+	// Oméga = 4
+
+	// ecrire ici le montant dans le coffre de la faction choisit 
+}
 
 
 function addXp(id_usr, xpToAdd) { //Fonction permettant d'éditer l'XP d'un utilisateur : elle peut être utiliser pour retirer ou pour ajouter des points d'XP
@@ -111,7 +249,7 @@ function addXp(id_usr, xpToAdd) { //Fonction permettant d'éditer l'XP d'un util
 		} else { //si le fichier xp de l'utilisateur n'existe pas
 			xp_a_ecrire = 0;
 			xp_level_a_ecrire = 1;
-			console.log("addXp Function : LE FICHIER EXISTE PAS !!")
+			console.log("addXp Function : LE FICHIER EXISTE PAS !")
 			console.log("xp_a_ecrire :" + xp_a_ecrire + "\nxp_level_a_ecrire :" + xp_level_a_ecrire);
 
 			fs.writeFileSync('json/xp/xp_' + id_usr + '.json', `
@@ -291,10 +429,47 @@ function remXp(id_usr, xpToRem) { //Obsolète !
 	})
 }
 
+// Fin des fonctions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Début bot :
+
 
 bot.on('ready', function() {
 	bot.user.setActivity("PouleRPG | p<help")
-	bot.user.setStatus('dnd');
+	//bot.user.setStatus('dnd');
 	console.log("bot 'PouleRPG' has been connected sucessfully!")
 	console.log("bot lancé le: " + new Date() + " ");
 
@@ -312,6 +487,7 @@ bot.on('message', async message => {
         m.edit( ":ping_pong: | Pong!\nTemps de réponse : **" + `${m.createdTimestamp - message.createdTimestamp}ms` + "**");
     } //Fin ping
 
+    
 
     
 
@@ -606,85 +782,85 @@ bot.on('message', async (message) => {
 		 		//donner plus de thunas
 		 	if (message.guild.members.get(message.author.id).roles.exists('id','445253268176633891')) {
 		 		or_a_add = 1;
-		 		max_banque_perso = 5;
+		 		max_banque_perso = maxbanque_esclave;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253591465328660')) {
 		 		or_a_add = 3;
-		 		max_banque_perso = 15;
+		 		max_banque_perso = maxbanque_paysan;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253561648021514')) {
 		 		or_a_add = 4;
-		 		max_banque_perso = 40;
+		 		max_banque_perso = maxbanque_bourgeois;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253809640308746')) {
 		 		or_a_add = 7;
-		 		max_banque_perso = 150;
+		 		max_banque_perso = maxbanque_courtisan;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257669918588948')) {
 		 		or_a_add = 15;
-		 		max_banque_perso = 300;
+		 		max_banque_perso = maxbanque_baron;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650832087993024522')) {
 		 		or_a_add = 22;
-		 		max_banque_perso = 500;
+		 		max_banque_perso = maxbanque_compte;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257144011587594')) {
 		 		or_a_add = 35;
-		 		max_banque_perso = 750;
+		 		max_banque_perso = maxbanque_marquis;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','612469098466639893')) {
 		 		or_a_add = 70;
-		 		max_banque_perso = 1500;
+		 		max_banque_perso = maxbanque_duc;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650828967716192269')) {
 		 		or_a_add = 100;
-		 		max_banque_perso = 3000;
+		 		max_banque_perso = maxbanque_vassal;
 		 	}
 
 		 } else { //si AUHTOR n'est pas maitre
 		 		//donner la thunas normale
 		 	if (message.guild.members.get(message.author.id).roles.exists('id','445253268176633891')) {
 		 		or_a_add = 1;
-		 		max_banque_perso = 5;
+		 		max_banque_perso = maxbanque_esclave;
 		 	
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253591465328660')) {
 		 		or_a_add = 2;
-		 		max_banque_perso = 15;
+		 		max_banque_perso = maxbanque_paysan;
 		 	}
 		 	
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253561648021514')) {
 		 		or_a_add = 3;
-		 		max_banque_perso = 40;
+		 		max_banque_perso = maxbanque_bourgeois;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253809640308746')) {
 		 
 		 		or_a_add = 5;
-		 		max_banque_perso = 150;
+		 		max_banque_perso = maxbanque_courtisan;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257669918588948')) {
 		 		or_a_add = 10;
-		 		max_banque_perso = 300;
+		 		max_banque_perso = maxbanque_baron;
 		 	
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650832087993024522')) {
 		 		or_a_add = 15;
-		 		max_banque_perso = 500;
+		 		max_banque_perso = maxbanque_compte;
 		 	}
 		 	
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257144011587594')) {
 		 		or_a_add = 25;
-		 		max_banque_perso = 750;
+		 		max_banque_perso = maxbanque_marquis;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','612469098466639893')) {
 		 
 		 		or_a_add = 50;
-		 		max_banque_perso = 1500;
+		 		max_banque_perso = maxbanque_duc;
 
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650828967716192269')) {
 		 		or_a_add = 85;
-		 		max_banque_perso = 3000;
+		 		max_banque_perso = maxbanque_vassal;
 		 	
 		 	}
 		 }
@@ -1106,6 +1282,37 @@ bot.on('message', async (message) => {
 		}
 	} //Fin de la commande pour voir points venitienne
 
+	if (message.content.startsWith(prefix + "ses beaux points venitienne ")) { //voir ses points venitienne
+
+		let id_usr_selected = message.mentions.users.first().id;
+
+		if (id_usr_selected == undefined) {
+			message.channel.send("FATAL ERROR: Mention invalide");
+			return;
+		}
+
+		if (id_usr_selected === "421400262423347211") {
+			message.channel.send(`<@${id_usr_selected}> a : ∞ points venitienne.`);
+
+		} else {
+			
+
+			if (fs.existsSync('json/or/or_' + id_usr_selected + '.json')) { //si le fichier de l'utilisateur existe déjà
+		    		fs.readFile('json/or/or_' + id_usr_selected + '.json', function(erreur, file) {
+	   				
+	   				let veni_json = JSON.parse(file)
+	   				let pts_veni_total = veni_json.ptsveni;
+	   				
+	   				message.channel.send(`<@${id_usr_selected}> a : ` + pts_veni_total + " points venitienne.");
+	   				
+	   				})
+		    	
+			} else { //si le fichier de l'utilisateur n'existe pas
+					message.channel.send(`<@${id_usr_selected}> a : 0 points vénitienne.`);
+			}
+		}
+	} //Fin de la commande pour voir les points vénitienne de quelqu'un.
+
 	
 
 
@@ -1132,12 +1339,12 @@ bot.on('message', async (message) => {
 
 		let loopCasio = true;
 		//Personne, action, objet, lieu, temps
-		let personne = [`Barack Obama`, `Donald Trump`, `Une tortue de mer`, `Un poulet`, `Romar1`, `Noxali`, `Zheo`, `DraxyCUL`, `La Vénitienne`, `PouleRPG`, `Dieu Poulet`, `Jérémy`, `Les Zêtas`, `Le Maître Gamma`, `Le frère con`, `Hitler`, `Une enfant`, `Un psychopathe`, `Un entraineur`, `Un juge`, `Le procureur`, `Donald`, `Picsou`, `Romar1`, `Chveux Vert`, `PD3`, `Bordel`, `Princesseuh`, `DarkDavy`, `Damben`, `Dark`, `Darky`, `BanjoBoi`, `KriixMerde`, `TetreMerde`, `Tatsumakmerde`, `Romar la pute de luxe`, `Les Epsilon`, `Un pokémon`, `Des animaux de la ferme`, `Un chat`, `Un chien`, `Une souris`, `Un animal`, `Emmanuel Macron`, `Kim Jong-Un`, `Un dictateur`, `Gigi`]; //personnage
-		let action   = [`mange`, `vend`, `détruit`, `fait disparaître`, `lance`, `consomme`, `découpe lentement`, `donne`, `rage à cause (d')`, `pénètre`, `regarde`, `écoute`, `à une relation incestueuse avec`, `juge`, `se procure`, `fait un rite satanique avec`, `s'entraine avec`, `poste`, `chante avec`, `théorise`, `réfléchit à ne pas cheat avec`, `envoie un cookie à`, `prie`, `meurt à cause (d')`, `fait chier`, `hack les logs (d')`, `a claqué`, `rit de`, `fait apparaître`, `dors grâce à`, `bois`, `fait la lessive pour`, `fait à manger à`, `fait le ménage pour`, `insulte`, `crie`]; //action
-		let objet    = [`une pomme`, `un radiateur`, `une ampoule`, `une vitre`, `du poulet`, `des grilles pain`, `un nouveau née`, `des points venitienne`, `la loi paragraphe 4, sous-tiret 2, alinéa 1`, `une arme de destruction massive`, `la boite de jeu de "Link faces to evil"`, `les recettes de cuisine de Noxali`, `des funérailles`, `un banc de messe`, `une porte d'église`, `un bénitier`, `des produits illicites`, `un cercueil`, `un film`, `une série`, `un enfant`, `de la musique`, `un hentai`, `un mouton`, `un boeuf`, `un mandat`, `une vidéo virale`, `un ralentisseur de type "dos d'âne"`, `la loi paragraphe 4, sous-tiret 3, alinéa 1`, `une porte`, `un fruit`, `une armes blanches`, `un jeu Nintendo`, `une boîte en carton`, `une voiture`, `un panneau`, `un tableau`, `une craie`, `un feutre`, `un crayon de papier`, `un crayon de couleur`, `une contravention`, `un film`, `un film pegi 18`, `un ordinateur`, `un téléphone`, `un crayon de bois`, `un critérium`]; //objet1
-		let objet2   = [`une aiguille`, `un couteau`, `du taboulé`, `du chocolat`, `de la confiture`, `une anguille`, `un frigo`, `du rhum`, `de l'alcool`, `la daronne de Draxy`, `un verre`, `Zheo`, `le curé`, `des enfants`, `un cheval`, `un veau`]; //objet2
+		let personne = [`Chloé`, `Barack Obama`, `Donald Trump`, `Une tortue de mer`, `Un poulet`, `Romar1`, `Noxali`, `Zheo`, `DraxyCUL`, `La Vénitienne`, `PouleRPG`, `Dieu Poulet`, `Jérémy`, `Les Zêtas`, `Le Maître Gamma`, `Le frère con`, `Hitler`, `Une enfant`, `Un psychopathe`, `Un entraineur`, `Un juge`, `Le procureur`, `Donald`, `Picsou`, `Romar1`, `Chveux Vert`, `PD3`, `Bordel`, `Princesseuh`, `DarkDavy`, `Damben`, `Dark`, `Darky`, `BanjoBoi`, `KriixMerde`, `TetreMerde`, `Tatsumakmerde`, /*`Romar la pute de luxe`,*/ `Les Epsilon`, `Un pokémon`, /*`Des animaux de la ferme`*/, `Un chat`, `Un chien`, `Une souris`, `Un animal`, `Emmanuel Macron`, `Kim Jong-Un`, `Un dictateur`, `Gigi`]; //personnage
+		let action   = [`mange`, `vend`, `détruit`, `fait disparaître`, `lance`, `consomme`, `découpe lentement`, `donne`, `rage à cause (d')`, `pénètre`, `regarde`, `écoute`, /*`à une relation incestueuse avec`,*/ `juge`, `se procure`, `fait un rite satanique avec`, `s'entraine avec`, `poste`, `chante avec`, `théorise sur`, `réfléchit à ne pas cheat avec`, `envoie un cookie à`, `prie`, `meurt à cause (d')`, `fait chier`, `hack les logs (d')`, `a claqué`, `rit de`, `fait apparaître`, `dors grâce à`, `bois`, `fait la lessive pour`, `fait à manger à`, /*`fait le ménage pour`,*/ `insulte`, /*`crie`*/]; //action
+		let objet    = [`une pomme`, `un radiateur`, `une ampoule`, `une vitre`, `du poulet`, `des grilles pain`, `un nouveau née`, `des points venitienne`, `la loi paragraphe 4, sous-tiret 2, alinéa 1`, /*`une arme de destruction massive`,*/ `la boite de jeu de "Link faces to evil"`, `les recettes de cuisine de Noxali`, `des funérailles`, `un banc de messe`, `une porte d'église`, `un bénitier`, `des produits illicites`, `un cercueil`, /*`un film`, `une série`*/, `un enfant`, `de la musique`, `un hentai`, `un mouton`, `un boeuf`, `un mandat`, /*`une vidéo virale`*/, `un ralentisseur de type "dos d'âne"`, `la loi paragraphe 4, sous-tiret 3, alinéa 1`, `une porte`, `un fruit`, /*`une armes blanches`*/, `un jeu Nintendo`, `une boîte en carton`, `une voiture`, `un panneau`, `un tableau`, `une craie`, `un feutre`, `un crayon de couleur`, `une contravention`, `un film`]; //objet1
+		let objet2   = [/*`une aiguille`, */`un couteau`, `du taboulé`, `du chocolat`, `de la confiture`, /*`une anguille`,*/ `un frigo`, `du rhum`, `de l'alcool`, `la daronne de Draxy`, `un verre`, `Zheo`, `le curé`, `des enfants`, `un cheval`, `un veau`]; //objet2
 		let conjCoord= [`avec`]; //conjonction
-		let lieu     = [`à Londres`, `à Stockholm`, `en nouvelle Zélande`, `dans son salon`, `dans la cuisine du voisin`, `sur l'Empire Du Poulet`, `dehors`, `au ministère de la justice`, `dans une église`, `dans la cave`, `dans un laboratoire`, `dans une maison close`, `dans l'espace`, `dans la chambre de Zheo`, `dans un cimetière`, `à un mariage`, `dans la cathédrale Dieu Poulet`, `dans un karaoké`, `dans un centre commercial`, `dans les toilettes`, `dans un cinéma`, `au Super U du coin`, `au journal`, `au japon`, `sur Snapchat`, `sur Twitter`, `sur un mur`, `sur Pinterest`]; //lieu
+		let lieu     = [`à Londres`, `à Stockholm`, `en nouvelle Zélande`, `dans son salon`, `dans la cuisine du voisin`, `sur l'Empire Du Poulet`, `dehors`, /*`au ministère de la justice`,*/ `dans une église`, `dans la cave`, `dans un laboratoire`, `dans une maison close`, `dans l'espace`, `dans la chambre de Zheo`, `dans un cimetière`, `à un mariage`, `dans la cathédrale Dieu Poulet`, /*`dans un karaoké`,*/ `dans un centre commercial`, `dans les toilettes`, `dans un cinéma`, `au Super U du coin`, `à Auschwitz` /*`au journal`, `au japon`, `sur Snapchat`, `sur Twitter`, `sur un mur`, `sur Pinterest`*/]; //lieu
 		let temps    = [`à 23h30`, `le lundi matin`, `avant son travail`, `après le déjeuner`, `à minuit`, `à l'heure de la sieste`, `au goûter`, `pendant sa douche`, `à l'heure de manger`, `pendant le repas`, `à la Repä`, `pendant le Goc International`, `à l'ouverture des jeux olympiques`, `pendant la 3ème guerre mondiale`, `au claire de lune`, `au moment où l'astre stellaire n'est plus visible que de moitié`]; //temps
 
 		let minCasionostPhrase = 0;
@@ -1181,13 +1388,129 @@ bot.on('message', async (message) => {
 
 			if (personne[choix_personne] != undefined || action[choix_action] != undefined || objet[choix_objet] != undefined || conjCoord[choix_conjCoord] != undefined || objet2[choix_objet2] != undefined || lieu[choix_lieu] != undefined || temps[choix_temps] != undefined)
 			{
-				message.channel.send(`${personne[choix_personne]} ${action[choix_action]} ${objet[choix_objet]} ${conjCoord[choix_conjCoord]} ${objet2[choix_objet2]} ${lieu[choix_lieu]} ${temps[choix_temps]}`);
+				message.channel.send(`${personne[choix_personne]} ${action[choix_action]} ${objet[choix_objet]} ${conjCoord[choix_conjCoord]} ${objet2[choix_objet2]} ${lieu[choix_lieu]}`/*${temps[choix_temps]}`*/);
 				loopCasio = false;
 			} else {
 				console.log("On continue y'a un undefined dans la phrase (casionost phrase)");
 			}
 		}
 	} //Fin du p<phrase
+
+
+	if (message.content.startsWith(prefix + "random ")) {
+		let argsRandom = message.content.slice(prefix.length).trim().split(/ +/g);
+			//message.channel.send(argsRandom + `<-args5 ; \n ${args[0]}, ${args[1]}`);
+			let nbrAexe = args[2];
+			let minR = args[0];
+			let maxR = args[1];
+			let nombreRan = 0;
+
+			console.log(nbrAexe + "\n" + minR + "\n" + maxR)
+
+			for(i=1;i <= nbrAexe; i++) {
+				nombreRan = entierAleatoire(minR, maxR);
+				message.channel.send(nombreRan);
+				nombreRan = 0;
+			}
+			message.channel.send("END.")
+	}	
+
+	if (message.author.id === "159985870458322944") { // si un message est envoyé par mee6
+
+		let max_banque_perso = 0;
+
+		if (message.mentions.users.first() == undefined) { // Si le message de mee6 n'est pas un level up
+			
+			//message.channel.send("N'est pas un message mee6 valide pour le test !");
+			return;
+		} else {
+			//message.channel.send("Est un message mee6 valide pour le test !");
+			let id_usr2 = message.mentions.users.first().id;
+
+
+			if (message.guild.members.get(id_usr2).roles.exists('id','445253268176633891')) {
+		 		max_banque_perso = maxbanque_esclave;
+		 	}
+		 	else if (message.guild.members.get(id_usr2).roles.exists('id','445253591465328660')) {
+		 		max_banque_perso = maxbanque_paysan;
+		 	}
+		 	else if (message.guild.members.get(id_usr2).roles.exists('id','445253561648021514')) {
+		 		max_banque_perso = maxbanque_bourgeois;
+		 	}
+		 	else if (message.guild.members.get(id_usr2).roles.exists('id','445253809640308746')) {
+		 		max_banque_perso = maxbanque_courtisan;
+		 	}
+		 	else if (message.guild.members.get(id_usr2).roles.exists('id','445257669918588948')) {
+		 		max_banque_perso = maxbanque_baron;
+		 	}
+		 	else if (message.guild.members.get(id_usr2).roles.exists('id','650832087993024522')) {
+		 		max_banque_perso = maxbanque_compte;
+		 	}
+		 	else if (message.guild.members.get(id_usr2).roles.exists('id','445257144011587594')) {
+		 		max_banque_perso = maxbanque_marquis;
+		 	}
+		 	else if (message.guild.members.get(id_usr2).roles.exists('id','612469098466639893')) {
+		 		max_banque_perso = maxbanque_duc;
+		 	}
+		 	else if (message.guild.members.get(id_usr2).roles.exists('id','650828967716192269')) {
+		 		max_banque_perso = maxbanque_vassal;
+		 	}
+
+		 	// ecrire ICI DANS LE FICHIER OR si il existe, et si non le créer ! dans les deux cas on doit noter le maxbanque
+
+		 	let id_usr = message.mentions.users.first().id;
+		 	console.log(id_usr);
+
+		 	if (fs.existsSync('json/or/or_' + id_usr + '.json')) { //si le fichier de l'utilisateur existe déjà
+				    		fs.readFile('json/or/or_' + id_usr + '.json', function(erreur, file) {
+			   				
+			   				let or_json = JSON.parse(file);
+			   				let or_in_json = or_json.or;
+			   				let banquemax_in_json = or_json.maxbanque;
+			   				let date = or_json.date;
+
+			   			
+
+			   				fs.writeFile('json/or/or_' + id_usr + '.json', `
+
+			   					{
+			   						"or": ` + or_in_json + `,
+			   						"date": ` + date + `,
+			   						"maxbanque": ` + max_banque_perso + `
+			   					}
+			   					`, function(erreur) { 
+					    		if (erreur) {
+								        console.log(erreur)
+								    }
+					    		})
+			   				})
+
+
+				    	
+				    	
+					} else { //si le fichier de l'utilisateur n'existe pas
+						 				
+
+						let date = 0;
+						let or_in_json = 0;
+						
+						fs.writeFile('json/or/or_' + id_usr + '.json', `
+
+		   					{
+		   						"or": ` + or_in_json + `,
+		   						"date": ` + date + `,
+		   						"maxbanque" ` + max_banque_perso + `
+		   					}
+		   					`, function(erreur) { 
+				    		if (erreur) {
+							        console.log(erreur)
+							    }
+				    		})
+					}
+		 }
+
+
+	} // Fin du test de niveau de bank
 
 	
 
@@ -1209,7 +1532,11 @@ bot.on('message', async (message) => {
 			factionExist = true;
 			faction = "Oméga";
 		}
+
+		//Pour avoir son or, membres de l'armée etc... (garder privé la banque de faction -> vérifier si l'utilisateur est bien dans la faction, et dans ce cas lui envoyer en dm)
 	}
+
+
 
 
 
@@ -1272,8 +1599,63 @@ bot.on('message', async (message) => {
 
 	//Guerres :
 
-	if (message.content === prefix + "startWar ") {
+	if (message.content.startsWith(prefix + "startWar ")) {
 		if (message.author.id == DraxyEmpereurID || message.author.id == RomarEmpereurID) {
+
+			//Initialisation et tests :
+
+			let argsStartWar = message.content.slice(prefix.length).trim().split(/ +/g);
+
+			let firstFaction = args[0];
+			let secondFaction = args[1];
+			let faction1 = "";
+			let faction2 = "";
+			let factionExist = false;
+			let factionExist2 = false;
+
+			if (firstFaction == "epsilon" || firstFaction == "Epsilon") {
+				factionExist = true;
+				faction1 = "Epsilon";
+			} else if (firstFaction == "zeta" || firstFaction == "Zeta" || firstFaction == "zêta" || firstFaction == "Zêta") {
+				factionExist = true;
+				faction1 = "Zêta";
+			} else if (firstFaction == "gamma" || firstFaction == "Gamma") {
+				factionExist = true;
+				faction1 = "Gamma"
+			} else if (firstFaction == "omega" || firstFaction == "Omega" || firstFaction == "oméga" || firstFaction == "Oméga") {
+				factionExist = true;
+				faction1 = "Oméga";
+			}
+
+			if (secondFaction == "epsilon" || secondFaction == "Epsilon") {
+				factionExist2 = true;
+				faction2 = "Epsilon";
+			} else if (secondFaction == "zeta" || secondFaction == "Zeta" || secondFaction == "zêta" || secondFaction == "Zêta") {
+				factionExist2 = true;
+				faction2 = "Zêta";
+			} else if (secondFaction == "gamma" || secondFaction == "Gamma") {
+				factionExist2 = true;
+				faction2 = "Gamma"
+			} else if (secondFaction == "omega" || secondFaction == "Omega" || secondFaction == "oméga" || secondFaction == "Oméga") {
+				factionExist2 = true;
+				faction2 = "Oméga";
+			}
+
+
+			if (!factionExist || !factionExist2) {
+				message.channel.send("[ERROR] Faction innexistante.");
+				return;
+			}
+
+			if (faction1 == faction2 || faction2 == faction1) {
+				message.channel.send("[ERROR] Même nom");
+				return;
+			}
+
+			message.channel.send("Guerre opposant: " + faction1 + " et " + faction2);
+
+			// Fin initialisation
+
 
 		}
 	} // fin startWar
@@ -1352,6 +1734,18 @@ bot.on('message', async (message) => {
 			}
 		}
 
+		if (message.content.startsWith(prefix + "setOr ")) {
+			let argsAddOr = message.content.slice(prefix.length + 6 + 23);
+
+			if (message.mentions.users.first() != undefined) {	
+				let id_usr = message.mentions.users.first().id;
+				//let or = parseInt(argsAddOr, 10);
+				let or = argsAddOr;
+				console.log("OR : " + or);
+				addOr(id_usr, argsAddOr);	
+			}
+		}
+
 		if (message.content.startsWith(prefix + "randomFaction ")) { 
 
 		
@@ -1383,6 +1777,7 @@ bot.on('message', async (message) => {
 					break;
 				}
 				console.log("Commande exécutée. -> Admin Test Passé -> switch effectué");
+				message.delete();
 			} else {
 				message.channel.send("Cette commande est réservée aux Empereurs.");
 				console.log("Commande exécutée. -> Admin Test Refusé");
@@ -1693,6 +2088,82 @@ bot.on('message', async (message) => {
 	 			//CHECK CA !
 			}
 		}
+
+		if (message.content === prefix + "procGen") {
+			message.channel.send("Load Procedure ...");
+			message.channel.send("p<ping");
+			console.log("CONS: Load procedure ...");
+
+			let c1, c2, c3, c4, c5 = 0; 
+			//	*
+			// ***
+			//	*
+
+			c3 = entierAleatoire(0, 1) // 0 = void ; 1 = solid
+			console.log("Value SEED c3 = " + c3);
+
+			message.channel.send("VALUE : 0 : void | 1 : solid. \n\n SEED: " + c3);
+			message.channel.send("Loaded Variables ! \n Initialization ... ")
+
+			if (c3 == 0) {
+				c1 = 1; 
+				c5 = 1;
+				c2 = 0;
+				c4 = 0;
+
+			} else if (c3 == 1) {
+
+				c1 = 0;
+				c5 = 0;
+				c2 = 0;
+				c4 = 1;
+
+			}
+
+			message.channel.send("Drawing ...");
+			message.channel.send("." + c1 + "." + "\n " + c2 + c3 + c4 + "\n." + c5 + ".");
+			message.channel.send("END.")
+			
+		}
+
+		if (message.content === prefix + "testRan") {
+			let array = new Uint8Array(1);
+			getRandomValues(array);
+
+			message.channel.send("array : " + array);
+
+		}
+
+		if (message.content === prefix + "asyncTEST") {
+    	let m = await message.channel.send("Ouverture en cours ...");
+    	setTimeout( function() {m.edit({embed: {
+                    title: "TEST",
+                    color: 11027200,
+                    timestamp: new Date(),
+                    footer: {
+                        text: message.member.user.tag
+                    },
+                    fields: [
+                        {
+                            name: "TEST",
+                            value: "TEST",
+                        }
+                    ], 
+                    image: {
+              url: 'https://i.imgur.com/wSTFkRM.png',
+                }}})}, 10000);
+    	
+    	}
+
+    	if (message.content.startsWith(prefix + "DEV addOr ")) {
+    		let args = message.content.slice(prefix.length + 10);
+    		console.log("before parse: " + args);
+    		args = parseInt(args, 10); 
+    		console.log("after parse: " + args);
+
+    		addOr(message.author.id, args);
+    	}
+
 	} // fin des commandes de dev
 
 
