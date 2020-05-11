@@ -15,6 +15,7 @@ const hash = crypto.createHash('md5')
 	.digest('hex')
 
 const config = require("./data/config.json");
+let xpfile = require("./data/xpbase.json");
 
 bot.login(config.token);
 
@@ -24,8 +25,8 @@ let RomarEmpereurID = 421400262423347211;
 
 let prefix = ("p<");
 
-let bot_version = "0.2.5";
-let bot_lignes = "2199";
+let bot_version = "0.2.6";
+let bot_lignes = "2455";
 
 
 let MaitreFac_Epsilon;
@@ -37,15 +38,15 @@ let factionDe_Request = "";
 let MaitreFac = "";
 
 
-	let maxbanque_esclave = 5;
-	let maxbanque_paysan = 15;
-	let maxbanque_bourgeois = 40;
-	let maxbanque_courtisan = 150;
-	let maxbanque_baron = 300;
-	let maxbanque_compte = 500;
-	let maxbanque_marquis = 750;
-	let maxbanque_duc = 1500;
-	let maxbanque_vassal = 3000;
+	let maxbanque_esclave = 10;
+	let maxbanque_paysan = 35;
+	let maxbanque_bourgeois = 80;
+	let maxbanque_courtisan = 120;
+	let maxbanque_baron = 200;
+	let maxbanque_compte = 350;
+	let maxbanque_marquis = 550;
+	let maxbanque_duc = 800;
+	let maxbanque_vassal = 1000;
 
 
 
@@ -141,13 +142,20 @@ function addOr(id_usr, orToAdd) {
 	fs.readFile(`json/or/or_${id_usr}.json`, function(error, fichier) {
 		json_or = JSON.parse(fichier);
 
+		
 		or_in_json = json_or.or;
+		
+		console.log("or_in_json b4 parse -> " + or_in_json);
+		or_in_json = parseInt(or_in_json);
+		console.log("or_in_json after parse -> " + or_in_json);
+		orToAdd = parseInt(orToAdd);
+
 		max_bank = json_or.maxbanque;
 		date = json_or.date;
 
 		// Calcul de l'or passé en paramètres + or déjà présent ;
 
-		or_a_ecrire = or_in_json + orToAdd;
+		or_a_ecrire = orToAdd + or_in_json;
 
 		// Calcul du buffer -> Si l'or est suppérieur à la taille de la banque max, retirer l'argent en surplus
 		// et l'envoyer dans la banque de faction (une autre fonction sera call (celle pour ajouter de l'or dans 
@@ -221,18 +229,54 @@ function addOr(id_usr, orToAdd) {
 
 
 function addOrFaction(factionID, montant) {
+
+	
 	// faction ID :
 
 	// Epsilon = 1
 	// Zêta = 2
 	// Gamma = 3
 	// Oméga = 4
+	let faction;
 
-	// ecrire ici le montant dans le coffre de la faction choisit 
+	switch(factionID) {
+		case 1:
+			faction = "Epsilon";
+		break;
+		
+		case 2:
+			faction = "Zeta";
+		break;
+				
+		case 3:
+			faction = "Gamma";	
+		break;
+			
+		case 4:
+			faction = "Omega";
+		break;
+						
+	}
+
+	if (factionID > 4 || factionID < 1) {
+		console.log("FATAL ERROR[2]: FactionID is not valide.")
+		return;
+	}
+
+	let BankFile = require("./json/data_factions/" + faction + "/Banque_" + faction + ".json"); 
+
+	let total = montant + or.BankFile;
+
+	let Orbank = { 
+		or: total,
+	};
+	 
+	let data = JSON.stringify(Orbank);
+	fs.writeFileSync("./json/data_factions/" + faction + "/Banque_" + faction + ".json", data);
 }
 
 
-function addXp(id_usr, xpToAdd) { //Fonction permettant d'éditer l'XP d'un utilisateur : elle peut être utiliser pour retirer ou pour ajouter des points d'XP
+function addXpOLD(id_usr, xpToAdd) { //Fonction permettant d'éditer l'XP d'un utilisateur : elle peut être utiliser pour retirer ou pour ajouter des points d'XP
 
 	let xp_a_ecrire;
 	let xp_level_a_ecrire;
@@ -306,8 +350,6 @@ function addXp(id_usr, xpToAdd) { //Fonction permettant d'éditer l'XP d'un util
 		}); 
 	})
 }
-
-
 
 function addXp2(id_usr, xpToAdd) { //Obsolète !
 	let json_xp
@@ -429,6 +471,58 @@ function remXp(id_usr, xpToRem) { //Obsolète !
 	})
 }
 
+function addXp(id_usr, xpToAdd) { // Nouvelle fonction pour l'xp : idée d'amélioration par DraxyDow ; Dev : Romar1
+	xpfile = require("./json/xp/xp_" + id_usr);
+	let xp_init = xpfile.xp; // xp initiale de l'utilisateur (aka. xp dans le json avant ajout).
+	let xplvl_init = xpfile.xplevel;
+	console.log("xpinit: " + xp_init + "\nxplvlinit: " + xplvl_init); // Debug
+
+	// fonction & calculs
+
+	// ...
+
+	let experience = { 
+		xp: 25,
+		xplevel: 1
+	};
+	 
+	let data = JSON.stringify(experience);
+	fs.writeFileSync("./json/xp/xp_" + id_usr + ".json", data);
+}
+
+function viewFactionBank(factionID) {
+
+	let faction;
+
+	switch(factionID) {
+		case 1:
+			faction = "Epsilon";
+		break;
+		
+		case 2:
+			faction = "Zeta";
+		break;
+				
+		case 3:
+			faction = "Gamma";	
+		break;
+			
+		case 4:
+			faction = "Omega";
+		break;
+						
+	}
+
+	if (factionID > 4 || factionID < 1) {
+		console.log("FATAL ERROR[2]: FactionID is not valide.")
+		return;
+	}
+
+	if (factionID > 0 && factionID < 5) {
+		let BankFile = require("./json/data_factions/" + faction + "/Banque_" + faction + ".json"); 
+		return BankFile.or;
+	}
+}
 // Fin des fonctions
 
 
@@ -487,10 +581,6 @@ bot.on('message', async message => {
         m.edit( ":ping_pong: | Pong!\nTemps de réponse : **" + `${m.createdTimestamp - message.createdTimestamp}ms` + "**");
     } //Fin ping
 
-    
-
-    
-
 });
 
 //Main
@@ -505,6 +595,14 @@ bot.on('message', async (message) => {
 			return;
 		}
 	}
+
+	/*if (message.content === prefix + "tmpdev") {
+		//addXp(message.author.id, 1);
+		addOrFaction(1, -75);
+		message.channel.send("Success.");
+	} */
+
+	
 
 
 
@@ -789,31 +887,31 @@ bot.on('message', async (message) => {
 		 		max_banque_perso = maxbanque_paysan;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253561648021514')) {
-		 		or_a_add = 4;
+		 		or_a_add = 7;
 		 		max_banque_perso = maxbanque_bourgeois;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253809640308746')) {
-		 		or_a_add = 7;
+		 		or_a_add = 9;
 		 		max_banque_perso = maxbanque_courtisan;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257669918588948')) {
-		 		or_a_add = 15;
+		 		or_a_add = 12;
 		 		max_banque_perso = maxbanque_baron;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650832087993024522')) {
-		 		or_a_add = 22;
+		 		or_a_add = 17;
 		 		max_banque_perso = maxbanque_compte;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257144011587594')) {
-		 		or_a_add = 35;
+		 		or_a_add = 23;
 		 		max_banque_perso = maxbanque_marquis;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','612469098466639893')) {
-		 		or_a_add = 70;
+		 		or_a_add = 32;
 		 		max_banque_perso = maxbanque_duc;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650828967716192269')) {
-		 		or_a_add = 100;
+		 		or_a_add = 44;
 		 		max_banque_perso = maxbanque_vassal;
 		 	}
 
@@ -822,7 +920,6 @@ bot.on('message', async (message) => {
 		 	if (message.guild.members.get(message.author.id).roles.exists('id','445253268176633891')) {
 		 		or_a_add = 1;
 		 		max_banque_perso = maxbanque_esclave;
-		 	
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253591465328660')) {
 		 		or_a_add = 2;
@@ -830,36 +927,36 @@ bot.on('message', async (message) => {
 		 	}
 		 	
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253561648021514')) {
-		 		or_a_add = 3;
+		 		or_a_add = 5;
 		 		max_banque_perso = maxbanque_bourgeois;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253809640308746')) {
 		 
-		 		or_a_add = 5;
+		 		or_a_add = 6;
 		 		max_banque_perso = maxbanque_courtisan;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257669918588948')) {
-		 		or_a_add = 10;
+		 		or_a_add = 9;
 		 		max_banque_perso = maxbanque_baron;
 		 	
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650832087993024522')) {
-		 		or_a_add = 15;
+		 		or_a_add = 11;
 		 		max_banque_perso = maxbanque_compte;
 		 	}
 		 	
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257144011587594')) {
-		 		or_a_add = 25;
+		 		or_a_add = 16;
 		 		max_banque_perso = maxbanque_marquis;
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','612469098466639893')) {
 		 
-		 		or_a_add = 50;
+		 		or_a_add = 25;
 		 		max_banque_perso = maxbanque_duc;
 
 		 	}
 		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650828967716192269')) {
-		 		or_a_add = 85;
+		 		or_a_add = 35;
 		 		max_banque_perso = maxbanque_vassal;
 		 	
 		 	}
@@ -1287,7 +1384,7 @@ bot.on('message', async (message) => {
 		let id_usr_selected = message.mentions.users.first().id;
 
 		if (id_usr_selected == undefined) {
-			message.channel.send("FATAL ERROR: Mention invalide");
+			message.channel.send("FATAL ERROR[3]: Invalide Mention");
 			return;
 		}
 
@@ -1643,12 +1740,12 @@ bot.on('message', async (message) => {
 
 
 			if (!factionExist || !factionExist2) {
-				message.channel.send("[ERROR] Faction innexistante.");
+				message.channel.send("[ERROR] [4] Unknowed Faction");
 				return;
 			}
 
 			if (faction1 == faction2 || faction2 == faction1) {
-				message.channel.send("[ERROR] Même nom");
+				message.channel.send("[ERROR] [5] Same name");
 				return;
 			}
 
@@ -1659,6 +1756,15 @@ bot.on('message', async (message) => {
 
 		}
 	} // fin startWar
+
+
+	if (message.content === prefix + "pileouface") {
+		let ran = entierAleatoire(1, 2);
+		if (ran == 1)
+			message.channel.send("Pile");
+		if (ran == 2)
+			message.channel.send("Face");
+	}
 
 
 
@@ -1709,6 +1815,22 @@ bot.on('message', async (message) => {
 
 	if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760") {
 		
+		if (message.content.startsWith(prefix + "viewFactionBank ")) {
+			let id = message.content.slice(prefix.length + 16);
+	
+			if (id == undefined) {
+				message.channel.send("Error [1]");
+				return;
+			}
+			//message.channel.send("DEBUG: ID: " + id);
+			id = parseInt(id);
+			if (viewFactionBank(id) != undefined) {
+				message.channel.send("Or : " + viewFactionBank(id));
+			} else {
+				message.channel.send("Error [1] || Error [2]");
+			}
+		}
+
 		if (message.content === prefix + "add1Xp --me") {
 			let id_usr = message.author.id; 
 			addXp(id_usr, 1);
@@ -1735,14 +1857,22 @@ bot.on('message', async (message) => {
 		}
 
 		if (message.content.startsWith(prefix + "setOr ")) {
+			console.log("Message Original : " + message.content);
+
 			let argsAddOr = message.content.slice(prefix.length + 6 + 23);
+
+			console.log("Message slicé : " + argsAddOr);
 
 			if (message.mentions.users.first() != undefined) {	
 				let id_usr = message.mentions.users.first().id;
+				console.log("id_usr : " + id_usr);
 				//let or = parseInt(argsAddOr, 10);
 				let or = argsAddOr;
 				console.log("OR : " + or);
-				addOr(id_usr, argsAddOr);	
+				addOr(id_usr, or);	
+			} else {
+				message.channel.send("ERROR [1]: Synthaxe Error");
+				return;
 			}
 		}
 
