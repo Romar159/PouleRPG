@@ -1,0 +1,6 @@
+[0] : Unknow Error            -> Erreur inconnue (Solution: Contacter le développeur).
+[1] : Synthaxe Error          -> La synthaxe de la commande est incorrecte. (Raisons: arguments inversés | Orthographie) (Solutions: vérifier l'ordres et les paramètres | Vérifier l'Orthographie).
+[2] : FactionID is not valide -> L'identifiant de la faction est incorrecte. (Raisons: identifiant inexistant | Mauvais paramètre) (Solutions: vérifier l'identifiant | Vérifier l'ordres et les paramètres demandés). (Identifiants des factions: 1 Epsilon | 2 Zeta | 3 Gamma | 4 Omega)
+[3] : Invalide mention        -> La mention n'est pas valide. (Raisons: Mauvaise mention | Mauvais paramètre | Mauvaise orthographie) (Solutions: vérifier l'orthographie | vérifier l'ordre et les paramètres)
+[4] : Faction Unknowed        -> La faction demandé n'existe pas. (Raisons: Mauvaise Orthographie | Mauvais paramètre) (Solutions: vérifier l'orthographie | Vérifier l'ordre et les paramètres)
+[5] : Same name               -> Les paramètres sont similaires. (Raisons: les paramètres sont les mêmes mais ne le devraient pas.) (Solution: Vérifier les paramètres.)
