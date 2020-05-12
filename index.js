@@ -25,8 +25,8 @@ let RomarEmpereurID = 421400262423347211;
 
 let prefix = ("p<");
 
-let bot_version = "0.2.6";
-let bot_lignes = "2455";
+let bot_version = "0.2.7";
+let bot_lignes = "2473";
 
 
 let MaitreFac_Epsilon;
@@ -570,31 +570,37 @@ bot.on('ready', function() {
 	let InitializeVariable = 1;
 });
 
-//Ping
 
-bot.on('message', async message => {
 
-    if (message.content === prefix + "ping") { //début ping (le code n'est pas du romar, il est trouvé sur internet)
-        // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
-        // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
-        const m = await message.channel.send("Calcul en cours...");
-        m.edit( ":ping_pong: | Pong!\nTemps de réponse : **" + `${m.createdTimestamp - message.createdTimestamp}ms` + "**");
-    } //Fin ping
 
-});
 
 //Main
 
 bot.on('message', async (message) => {
 
+
+	// check permissions 
+
 	if (message.content.startsWith(prefix)) { //Condition de développement -> permet de whitelist des utilisateurs
 		if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760") {
+		}
+		else if (message.author.id === "624387170580561921") {
+			return;
 		}
 		else {
 			message.channel.send("Vous n'avez pas la permission requise pour utiliser le bot.")
 			return;
 		}
 	}
+
+	//Ping
+
+	if (message.content === prefix + "ping") { //début ping (le code n'est pas du romar, il est trouvé sur internet)
+        // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
+        // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
+        const m = await message.channel.send("Calcul en cours...");
+        m.edit( ":ping_pong: | Pong!\nTemps de réponse : **" + `${m.createdTimestamp - message.createdTimestamp}ms` + "**");
+    } //Fin ping
 
 	/*if (message.content === prefix + "tmpdev") {
 		//addXp(message.author.id, 1);
@@ -703,6 +709,8 @@ bot.on('message', async (message) => {
 	//Heu qu'est-ce que j'ai chier ici ? C'est quoi ce bordel xD Je le laisse si c'est là c'est que ça doit être utile mais je vois pas pourquoi xD -r
     const args = message.content.slice(prefix.length).split(' ');
 	const command = args.shift().toLowerCase();
+
+	// ce bordel sert à éviter le message.content === prefix + "command", dans chaques if, il suffit juste de "command === "commande"". Mais je ne l'utilise pas
 
 
 
@@ -1228,26 +1236,35 @@ bot.on('message', async (message) => {
 
 	
 
-	if (message.content === "J'adore le poulet") { //Une commande useless
+	if (message.content.startsWith("J'adore le poulet")) { //Une commande useless
 		let poulet_ran = entierAleatoire(1, 5);
+		let giga_gras = bot.emojis.find(emoji => emoji.name === "GIGA_GRAS");
+		let bordel = bot.emojis.find(emoji => emoji.name === "BORDEL");
 
 		switch (poulet_ran) {
 			case 1: 
-			message.channel.send("MOI AUZZIIII J'ADORE LE POUUULLEEET <:OMEGA_GRAS:655795195417460756> ")
+			message.channel.send(`MOI AUZZIIII J'ADORE LE POUUULLEEET ${giga_gras}`)
 			break;
 			case 2:
 			message.channel.send("AH NAN MAIS OUÉÉÉÉ, NAN MAIS LE **POULET** QUOIIII !!!")
+			break;
 			case 3:
-			message.channel.send("SERIEUX ? TOI AUSSI <:OMEGA_GRAS:655795195417460756>")
+			message.channel.send(`SERIEUX ? TOI AUSSI ${giga_gras}`)
 			break;
 			case 4:
-			message.channel.send("OUI ! ET HEUREUSEMENT !! <:BORDEL:597940572556099604> ")
+			message.channel.send(`OUI ! ET HEUREUSEMENT !! ${bordel}`)
 			break;
 			case 5:
 			message.channel.send("Moi je vie poulet.")
 			break;
-
 		}	
+	}
+
+	if (message.content.startsWith(prefix + "say")) {
+		//message.channel.send("Original : " + message.content);
+		let m = message.content.slice(5);
+		message.channel.send(m);
+		message.delete();
 	}
 
 
@@ -1301,7 +1318,7 @@ bot.on('message', async (message) => {
 				message.channel.send("Vous n'êtes pas la venitienne, vous ne pouvez donc pas accorder de \"points venitienne\"");
 			}
 		} else {
-			message.channel.send("Invalid User");
+			message.channel.send("ERROR [3]");
 		}
 		
 	} //Fin retrait point venitienne
@@ -1396,8 +1413,8 @@ bot.on('message', async (message) => {
 		} else {
 			
 
-			if (fs.existsSync('json/or/or_' + id_usr_selected + '.json')) { //si le fichier de l'utilisateur existe déjà
-		    		fs.readFile('json/or/or_' + id_usr_selected + '.json', function(erreur, file) {
+			if (fs.existsSync('json/ven/ven_' + id_usr_selected + '.json')) { //si le fichier de l'utilisateur existe déjà
+		    		fs.readFile('json/ven/ven_' + id_usr_selected + '.json', function(erreur, file) {
 	   				
 	   				let veni_json = JSON.parse(file)
 	   				let pts_veni_total = veni_json.ptsveni;
@@ -1412,15 +1429,14 @@ bot.on('message', async (message) => {
 		}
 	} //Fin de la commande pour voir les points vénitienne de quelqu'un.
 
-	
 
-
-	
 
 	if (message.content.startsWith("Bonne nuit")) {
 		
 		message.channel.send("BONNE NUUIIIT :))")
 	}
+
+	
 
 
 	
