@@ -98,7 +98,7 @@ function Unix_timestamp(t) {
 	var hr = dt.getHours();
 	var m = "0" + dt.getMinutes();
 	var s = "0" + dt.getSeconds();
-	return hr+ ':' + m.substr(-2) + ':' + s.substr(-2);   // UTILITÉ NON TROUVÉ: (je crois que: retourne sous la forme d'un Date, le temps passé en paramètres (milisecondes))
+	return hr+ ':' + m.substr(-2) + ':' + s.substr(-2);   // SI je me souviens bien : retourne sous la forme d'un Date, le temps passé en paramètres (milisecondes) -> ou plutôt le unix time en Date)
 }
 
 
@@ -106,7 +106,7 @@ function addOr(id_usr, orToAdd) {
 
 	// Faire en sorte que l'on ne puisse pas être en thune négative !!! 
 	// (sinon on pourrait acheter n'importe quoi même si on est à -10000 ce serait comme de l'argent infini !)
-	// Voir si on doit ou non (le truc qui empêche d'être au dessus de note bank max)
+	// Voir si on doit ou non (le truc qui empêche d'être au dessus de notre bank max)
 
 	let or_a_ecrire; // Contient l'or total à ajouter
 	let or_in_json; // Contient l'or se trouvant dans le json
@@ -709,7 +709,8 @@ bot.on('message', async (message) => {
     if (message.content.startsWith(prefix + 'arene ')) { //DEBUT ARENE ///FAIT LE COULDOWN de 1 minute, et le fait qu'on gagne de l'xp (aléatoire entre 1 et 3 un truc commas), DE PLUS fait le système qui calcul l'xp de la pleb dans la commande p<xp (en gros, au lieu de verifier le level dxp des cons à chaques fois, là ça permet de verifier le level uniquement quand on fait la commande "xp", ça allègera le bot, et c'est pas très handicappant que le con ne soit pas avertit qu'il level up, ça osef !!)
     	let id_usr = message.author.id;
     	if (talkedRecently_arene.has(message.author.id)) {
-	            message.channel.send("Il faut attendre 1 minute, avant de pouvoir re rentrer dans l'arène. - " + message.author);
+				message.channel.send("Il faut attendre 1 minute, avant de pouvoir re rentrer dans l'arène. - " + message.author);
+				
 	    } else {
 
 	          
@@ -731,6 +732,7 @@ bot.on('message', async (message) => {
 			else if (arene_choixUser == "lance" || arene_choixUser == "l") { arene_choixUser = 3; }
 			else {
 				message.channel.send("Mauvaise synthaxe. Vous devez choisir entre \"masse\", \"tomahawk\", \"lance\" ('p<help arene' pour plus de précisions)");
+				return;
 			}
 
 			if (arene_choixUser == 1 || arene_choixUser == 2 || arene_choixUser == 3){
