@@ -10,12 +10,13 @@ let getRandomValues = require('get-random-values');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const wiki = require('wikijs').default;
 
+
 const hash = crypto.createHash('md5')
 	.update('password')
 	.digest('hex')
 
 const config = require("./data/config.json");
-let xpfile = require("./data/xpbase.json");
+
 
 bot.login(config.token);
 
@@ -25,8 +26,8 @@ let RomarEmpereurID = 421400262423347211;
 
 let prefix = ("p<");
 
-let bot_version = "0.2.7";
-let bot_lignes = "2473";
+let bot_version = "0.3.0";
+let bot_lignes = "2561";
 
 
 let MaitreFac_Epsilon;
@@ -276,7 +277,7 @@ function addOrFaction(factionID, montant) {
 }
 
 
-function addXpOLD(id_usr, xpToAdd) { //Fonction permettant d'éditer l'XP d'un utilisateur : elle peut être utiliser pour retirer ou pour ajouter des points d'XP
+function addXpOLD(id_usr, xpToAdd) { //Obsolète ! ( ancienne fonction addXp -> avant équilibrage Draxy) //Fonction permettant d'éditer l'XP d'un utilisateur : elle peut être utiliser pour retirer ou pour ajouter des points d'XP
 
 	let xp_a_ecrire;
 	let xp_level_a_ecrire;
@@ -471,23 +472,68 @@ function remXp(id_usr, xpToRem) { //Obsolète !
 	})
 }
 
-function addXp(id_usr, xpToAdd) { // Nouvelle fonction pour l'xp : idée d'amélioration par DraxyDow ; Dev : Romar1
-	xpfile = require("./json/xp/xp_" + id_usr);
-	let xp_init = xpfile.xp; // xp initiale de l'utilisateur (aka. xp dans le json avant ajout).
-	let xplvl_init = xpfile.xplevel;
-	console.log("xpinit: " + xp_init + "\nxplvlinit: " + xplvl_init); // Debug
+function addXp(id_usr, xpToAdd) { // Nouvelle fonction pour l'xp : équilibrage par DraxyDow ; Dev : Romar1
+	//let xpfile = require("./json/xp/xp_" + id_usr);
 
-	// fonction & calculs
+	xpToAdd = parseInt(xpToAdd);
 
-	// ...
+	fs.readFile("./json/xp/xp_" + id_usr + ".json", function(error, file) {
 
-	let experience = { 
-		xp: 25,
-		xplevel: 1
-	};
-	 
-	let data = JSON.stringify(experience);
-	fs.writeFileSync("./json/xp/xp_" + id_usr + ".json", data);
+
+
+			
+			let xpfile = JSON.parse(file);
+
+			let xp_init = xpfile.xp; // xp initiale de l'utilisateur (aka. xp dans le json avant ajout).
+			let xplvl_init = xpfile.xplevel;
+
+			let xp_final;
+			let xplvl_final;
+			let xpmaxlvl_init; // contient le maximum d'xp de ce level initial; (550x / √x) - 200
+			//xp_init = xp_init - xpToAdd;
+			console.log("xpinit: " + xp_init + "\nxplvlinit: " + xplvl_init); // Debug
+
+			// fonction & calculs
+			xpmaxlvl_init = Math.round((550 * xplvl_init / Math.sqrt(xplvl_init))) - 200; // Xp nécéssaire pour le level up avant ajout d'xp
+			xp_final = xpToAdd + xp_init;
+			xplvl_final = xplvl_init;
+
+			if (xp_final > xpmaxlvl_init) { // vérifie le level up
+				xp_final = xp_final - xpmaxlvl_init;
+				xplvl_final = xplvl_init + 1;
+			}
+			//return xpmaxlvl_init;
+			
+			// ...
+
+			//xp_final = xp_final - xpToAdd;
+
+			let experience = { 
+				xp: xp_final,
+				xplevel: xplvl_final
+			};
+			 
+			let data = JSON.stringify(experience);
+			fs.writeFile("./json/xp/xp_" + id_usr + ".json", data, function(error) {
+				if (error) {
+					return console.log(error);
+				}
+			});
+			//xpfile = require("./data/xpbase.json");
+
+			if(error) {
+		 		return console.log(error);
+			}
+
+	});
+	
+}
+
+function getLvlUpReqXP(id_usr) {
+	let file = fs.readFileSync("./json/xp/xp_" + id_usr + ".json")
+	let xpfile = JSON.parse(file);
+
+	return Math.round((550 * xpfile.xplevel / Math.sqrt(xpfile.xplevel))) - 200;
 }
 
 function viewFactionBank(factionID) {
@@ -525,21 +571,16 @@ function viewFactionBank(factionID) {
 }
 // Fin des fonctions
 
+// function de dev :
 
+function addXpTMP(id_usr, montant) {
 
+	montant = parseInt(montant);
 
-
-
-
-
-
-
-
-
-
-
-
-
+	let thunedeja = 5;
+	let final = montant + thunedeja;
+	return final;
+}
 
 
 
@@ -602,12 +643,17 @@ bot.on('message', async (message) => {
         m.edit( ":ping_pong: | Pong!\nTemps de réponse : **" + `${m.createdTimestamp - message.createdTimestamp}ms` + "**");
     } //Fin ping
 
-	/*if (message.content === prefix + "tmpdev") {
-		//addXp(message.author.id, 1);
-		addOrFaction(1, -75);
+	if (message.content === prefix + "tmpdev") {
+		message.channel.send(addXp(message.author.id, 1));
+		//addOrFaction(1, -75);
 		message.channel.send("Success.");
-	} */
+	} 
 
+	if (message.content.startsWith(prefix + "tmpdev2 ")) {
+		let args = message.content.slice(prefix.length + 8);
+		let final = addXpTMP(message.author.id, args);
+		message.channel.send("FINAL: " + final);
+	}
 	
 
 
@@ -711,13 +757,26 @@ bot.on('message', async (message) => {
 	const command = args.shift().toLowerCase();
 
 	// ce bordel sert à éviter le message.content === prefix + "command", dans chaques if, il suffit juste de "command === "commande"". Mais je ne l'utilise pas
-
-
+	
 
     if (message.content.startsWith(prefix + 'arene ')) { //DEBUT ARENE ///FAIT LE COULDOWN de 1 minute, et le fait qu'on gagne de l'xp (aléatoire entre 1 et 3 un truc commas), DE PLUS fait le système qui calcul l'xp de la pleb dans la commande p<xp (en gros, au lieu de verifier le level dxp des cons à chaques fois, là ça permet de verifier le level uniquement quand on fait la commande "xp", ça allègera le bot, et c'est pas très handicappant que le con ne soit pas avertit qu'il level up, ça osef !!)
-    	let id_usr = message.author.id;
+		/*message.channel.send("Temporairement Désactivée");
+		return;*/
+
+		let couldown = 60000;
+		let startTimeMS = 0;
+		let timeout;
+		let tm = 0;
+	
+		let id_usr = message.author.id;
     	if (talkedRecently_arene.has(message.author.id)) {
 				message.channel.send("Il faut attendre 1 minute, avant de pouvoir re rentrer dans l'arène. - " + message.author);
+				
+				/*let final = 0;
+
+				message.channel.send("tm = " + tm);
+
+				message.channel.send("restant = " + final); */
 				
 	    } else {
 
@@ -793,23 +852,26 @@ bot.on('message', async (message) => {
 	    		}
 
 	    		if (win_arene == 0) { // Si on a perdu
-	    			message.channel.send("-1 xp");
-					addXp(id_usr, -1);
+	    			message.channel.send("-2 xp");
+					addXp(id_usr, -2);
 	    		} else if (win_arene == 1) { // Si on a win
+	    			message.channel.send("+7 xp\n+1 or");
+					addXp(id_usr, 7);
+					addOr(id_usr, 1);
+	    		} else if (win_arene == 2) {
 	    			message.channel.send("+2 xp");
 					addXp(id_usr, 2);
-	    		} else if (win_arene == 2) {
-	    			message.channel.send("+0 xp");
-					addXp(id_usr, 0);
 	    		}
 			}
 
 			// Adds the user to the set so that they can't talk for a minute
 	        talkedRecently_arene.add(message.author.id);
-	        setTimeout(() => {
+	        
+	      	 //startTimeMS = new Date().getTime();
+	         setTimeout(() => {
 	          // Removes the user from the set after a minute
 	          talkedRecently_arene.delete(message.author.id);
-	        }, 60000);
+	        }, couldown);
 	    }
 	} ///FIN ARENE
     	
@@ -1180,7 +1242,7 @@ bot.on('message', async (message) => {
 		if (fs.existsSync('json/xp/xp_' + id_usr + '.json')) { //si le fichier xp de l'utilisateur existe déjà
 	    	fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
 			   	let json_xp = JSON.parse(fichier)
-			   	let xp_level_up_required = xp_level_up_required_BASE * json_xp.xplevel;
+			   	let xp_level_up_required = getLvlUpReqXP(message.author.id);
 				message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
 			})
 		} else { //si le fichier xp de l'utilisateur n'existe pas
@@ -1202,7 +1264,7 @@ bot.on('message', async (message) => {
 
 				    fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
 			   	let json_xp = JSON.parse(fichier)
-			   	let xp_level_up_required = xp_level_up_required_BASE * json_xp.xplevel;
+			   	let xp_level_up_required = getLvlUpReqXP(message.author.id);
 				message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
 			})
 				})
@@ -1842,7 +1904,7 @@ bot.on('message', async (message) => {
 			}
 			//message.channel.send("DEBUG: ID: " + id);
 			id = parseInt(id);
-			if (viewFactionBank(id) != undefined) {
+			if (viewFactionBank(id) != null) {
 				message.channel.send("Or : " + viewFactionBank(id));
 			} else {
 				message.channel.send("Error [1] || Error [2]");
@@ -1854,7 +1916,7 @@ bot.on('message', async (message) => {
 			addXp(id_usr, 1);
 		}
 
-		if (message.content.startsWith(prefix + "setXp ")) {
+		if (message.content.startsWith(prefix + "setXpOBS ")) {
 			let argsAddXp = message.content.slice(prefix.length + 6 + 23)
 			message.channel.send("User: " + message.mentions.users.first() + "\nNombreXP: " + argsAddXp);
 
@@ -1888,6 +1950,32 @@ bot.on('message', async (message) => {
 				let or = argsAddOr;
 				console.log("OR : " + or);
 				addOr(id_usr, or);	
+			} else {
+				message.channel.send("ERROR [1]: Synthaxe Error");
+				return;
+			}
+		}
+
+		if (message.content.startsWith(prefix + "setXp ")) {
+			console.log("Message Original : " + message.content);
+
+			let argsAddXp = message.content.slice(prefix.length + 6 + 23);
+
+			console.log("Message slicé : " + argsAddXp);
+
+			if (message.mentions.users.first() != undefined) {
+				if (argsAddXp != undefined) {	
+					let id_usr = message.mentions.users.first().id;
+					console.log("id_usr : " + id_usr);
+					//let or = parseInt(argsAddOr, 10);
+					let xp = argsAddXp;
+					xp = parseInt(xp);
+					console.log("xp : " + xp);
+					addXp(id_usr, xp);	
+				} else {
+					message.channel.send("ERROR [6]: Invalide Arguments");
+					return;
+				}
 			} else {
 				message.channel.send("ERROR [1]: Synthaxe Error");
 				return;
