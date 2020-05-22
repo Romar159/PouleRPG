@@ -622,7 +622,7 @@ bot.on('message', async (message) => {
 
 	// check permissions 
 
-	if (message.content.startsWith(prefix)) { //Condition de développement -> permet de whitelist des utilisateurs
+	if (message.content.startsWith(prefix + "jieifheifheifheihfie")) { //Condition de développement -> permet de whitelist des utilisateurs
 		if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760") {
 		}
 		else if (message.author.id === "624387170580561921") {
@@ -1217,11 +1217,11 @@ bot.on('message', async (message) => {
 
 		let list_epsilon = message.guild.roles.get('415947454626660366').members.map(m=>m.user.tag).join('\n')
 		let list_zeta = message.guild.roles.get('415947455582961686').members.map(m=>m.user.tag).join('\n')
-		let list_Gamma = message.guild.roles.get('415947456342130699').members.map(m=>m.user.tag).join('\n')
-		let list_Omega = message.guild.roles.get('665340021640921099').members.map(m=>m.user.tag).join('\n')
+		let list_gamma = message.guild.roles.get('415947456342130699').members.map(m=>m.user.tag).join('\n')
+		let list_omega = message.guild.roles.get('665340021640921099').members.map(m=>m.user.tag).join('\n')
 		const ListEmbed = new Discord.RichEmbed()
             .setTitle('Membres des factions')
-            .setDescription("**Epsilon**\n\n" + list_epsilon + "\n\n**Zêta**\n\n" + list_zeta + "\n\n**Gamma**\n\n" + list_Gamma + "\n\n**Oméga**\n\n" + list_Omega + "\n");
+            .setDescription("**Epsilon**\n\n" + list_epsilon + "\n\n**Zêta**\n\n" + list_zeta + "\n\n**Gamma**\n\n" + list_gamma + "\n\n**Oméga**\n\n" + list_omega + "\n");
         message.channel.send(ListEmbed);
 	}
 
