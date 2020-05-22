@@ -26,7 +26,7 @@ let RomarEmpereurID = 421400262423347211;
 
 let prefix = ("p<");
 
-let bot_version = "0.3.0";
+let bot_version = "0.3.0.1";
 let bot_lignes = "2561";
 
 
