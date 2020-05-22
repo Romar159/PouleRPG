@@ -1,4 +1,4 @@
-﻿const Discord = require('discord.js'), bot = new Discord.Client()
+const Discord = require('discord.js'), bot = new Discord.Client()
 const ajax = require("ajax");
 const fs = require("fs");
 const mkdirp = require("mkdirp");
@@ -26,8 +26,8 @@ let RomarEmpereurID = 421400262423347211;
 
 let prefix = ("p<");
 
-let bot_version = "0.3.0.1";
-let bot_lignes = "2561";
+let bot_version = "0.3.1";
+let bot_lignes = "2604";
 
 
 let MaitreFac_Epsilon;
@@ -622,7 +622,7 @@ bot.on('message', async (message) => {
 
 	// check permissions 
 
-	if (message.content.startsWith(prefix + "jieifheifheifheihfie")) { //Condition de développement -> permet de whitelist des utilisateurs
+	if (message.content.startsWith(prefix)) { //Condition de développement -> permet de whitelist des utilisateurs
 		if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760") {
 		}
 		else if (message.author.id === "624387170580561921") {
@@ -633,6 +633,8 @@ bot.on('message', async (message) => {
 			return;
 		}
 	}
+
+	const emote_or = bot.emojis.find(emoji => emoji.name === "or");
 
 	//Ping
 
@@ -662,7 +664,8 @@ bot.on('message', async (message) => {
 //BIG BIG PARTIE DE L'EMBED HELP
 
 
-	if (message.content === prefix + "aide" ||  message.content === prefix + "help") {
+	if (message.content === prefix + "aide" ||  message.content === prefix + "help")
+	{
 
 		message.channel.send({embed: {
 			author: {
@@ -705,7 +708,8 @@ bot.on('message', async (message) => {
 		}});
 	}
 
-	if (message.content === prefix + "aide aide" || message.content === prefix + "help aide" || message.content === prefix + "aide help" || message.content === prefix + "help help") {
+	if (message.content === prefix + "aide aide" || message.content === prefix + "help aide" || message.content === prefix + "aide help" || message.content === prefix + "help help")
+	{
 		let embed_aide_aide = new Discord.RichEmbed()
 							.setColor("#C86400")
 							.setTitle(":grey_question: Aide - aide/help :grey_question:")
@@ -714,7 +718,8 @@ bot.on('message', async (message) => {
 							message.channel.send(embed_aide_aide);
     }
 
-    if (message.content === prefix + "aide ping" || message.content === prefix + "help ping") {
+    if (message.content === prefix + "aide ping" || message.content === prefix + "help ping")
+    {
 		let embed_aide_ping = new Discord.RichEmbed()
 							.setColor("#C86400")
 							.setTitle(":grey_question: Aide - ping :ping_pong:")
@@ -723,7 +728,8 @@ bot.on('message', async (message) => {
 							message.channel.send(embed_aide_ping);
     }
 
-    if (message.content === prefix + "aide arene" || message.content === prefix + "help arene") {
+    if (message.content === prefix + "aide arene" || message.content === prefix + "help arene")
+    {
 		let embed_aide_arene = new Discord.RichEmbed()
 							.setColor("#C86400")
 							.setTitle(":grey_question: Aide -  :crossed_swords:")
@@ -732,7 +738,8 @@ bot.on('message', async (message) => {
 							message.channel.send(embed_aide_arene);
 	}
 
-    /*if (message.content === prefix + "aide X" || message.content === prefix + "help X") {
+    /*if (message.content === prefix + "aide X" || message.content === prefix + "help X")
+    {
 		let embed_aide_X = new Discord.RichEmbed()
 							.setColor("#C86400")
 							.setTitle(":grey_question: Aide - X :X:")
@@ -770,7 +777,7 @@ bot.on('message', async (message) => {
 	
 		let id_usr = message.author.id;
     	if (talkedRecently_arene.has(message.author.id)) {
-				message.channel.send("Il faut attendre 1 minute, avant de pouvoir re rentrer dans l'arène. - " + message.author);
+				message.channel.send(":hourglass: **|** " + message.author + ", il vous faut attendre **1 minute** avant de pouvoir vous battre de nouveau dans l'arène !");
 				
 				/*let final = 0;
 
@@ -780,18 +787,46 @@ bot.on('message', async (message) => {
 				
 	    } else {
 
-	          
-	    	let win_arene = 0; // 0 loose ; 1 : Win : 2 : match nul
+	    	let arme_ennemi = "ABC"; //Change lorsque l'ennemi a une arme
 
-
-
-
-	    	let arene_choixEnemy = entierAleatoire(1,3);
-	    	console.log("arene_choixEnemy: " + arene_choixEnemy); //TEMP
+	    	let arene_choixEnnemy = entierAleatoire(1,3);
+	    	console.log("arene_choixEnnemy: " + arene_choixEnnemy); //TEMP
 
 	    	let arene_choixUser = args[0].toLowerCase();
 
 	    	console.log("arene_choixUser: " + arene_choixUser); //TEMP
+
+
+	    	if(arene_choixEnnemy == 1) {
+	    		arme_ennemi = "la masse";
+	    	}
+
+	    	if(arene_choixEnnemy == 2) {
+	    		arme_ennemi = "le tomahawk";
+	    	}
+
+	    	if(arene_choixEnnemy == 3) {
+	    		arme_ennemi = "la lance";
+	    	}
+
+
+	    	//EMBED
+			let embed_arene_victoire = new Discord.RichEmbed()
+
+					.setColor([200, 200, 200])
+					.setAuthor("Victoire !", message.author.displayAvatarURL)		//A VOIR AVEC LE ROMAR !!!
+					.setDescription("L'ennemi a utilisé " + arme_ennemi + ", vous le terrassez !\n**+7 XP ; +1** " + emote_or)
+
+			let embed_arene_matchnul = new Discord.RichEmbed()
+					.setColor([200, 200, 200])
+					.setAuthor("Match nul.", message.author.displayAvatarURL)
+					.setDescription("L'ennemi a utilisé " + arme_ennemi + ", c'est une égalité.\n**+2 XP**")
+					
+			let embed_arene_defaite = new Discord.RichEmbed()
+					.setColor([200, 200, 200])
+					.setAuthor("Défaite...", message.author.displayAvatarURL)
+					.setDescription("L'ennemi a utilisé " + arme_ennemi + ", vous vous faites éliminer...\n**-2 XP**")				
+
 
 
 				 if (arene_choixUser == "masse" || arene_choixUser == "m") { arene_choixUser = 1; }
@@ -802,65 +837,52 @@ bot.on('message', async (message) => {
 				return;
 			}
 
-			if (arene_choixUser == 1 || arene_choixUser == 2 || arene_choixUser == 3){
+			if (arene_choixUser == 1 || arene_choixUser == 2 || arene_choixUser == 3) {
 
-				if (arene_choixUser == 1 && arene_choixEnemy == 1) { //Masse VS Masse
-				    message.channel.send("Vous utilisez la **masse**.\n**L'ennemi aussi !**\n*Match nul...*");
-				    win_arene = 2;
+				if (arene_choixUser == 1 && arene_choixEnnemy == 1) { //Masse VS Masse - Match nul
+				    message.channel.send(embed_arene_matchnul);
+				    addXp(id_usr, 2);
 				}
-	    		if (arene_choixUser == 1 && arene_choixEnemy == 2) { //Masse VS Tomahawk
-	    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise le tomahawk !**\n*Vous gagnez !*");
-	    			//Faire que le mec gagne de l'xp
-	    			win_arene = 1;
-	    		}
-	    		if (arene_choixUser == 1 && arene_choixEnemy == 3) { //Masse VS Lance
-	    			message.channel.send("Vous utilisez la **masse**.\n**L'ennemi utilise la lance !**\n*Vous perdez...*");
-	    			//Faire que le mec perd de l'xp
-	    			win_arene = 0;
-	    		}
-
-
-	    		if (arene_choixUser == 2 && arene_choixEnemy == 1) { //Tomahawk VS Masse
-	    			message.channel.send("Vous utilisez le **tomahawk**.\n**L'ennemi utilise la masse !**\n*Vous perdez...*");
-	    			//Faire que le mec perd de l'xp
-	    			win_arene = 0;
-	    		}
-	    		if (arene_choixUser == 2 && arene_choixEnemy == 2) { //Tomahawk VS Tomahawk
-	    			message.channel.send("Vous utilisez le **tomahawk**.\n**L'ennemi aussi !**\n*Match nul...*");
-	    			win_arene = 2;
-	    		}
-	    		if (arene_choixUser == 2 && arene_choixEnemy == 3) { //Tomahawk VS Lance
-	    			message.channel.send("Vous utilisez le **tomahawk**.\n**L'ennemi utilise la lance !**\n*Vous gagnez !*");
-	    			//Faire que le mec gagne de l'xp
-	    			win_arene = 1;
-	    		}
-
-
-	    		if (arene_choixUser == 3 && arene_choixEnemy == 1) { //Lance VS Masse
-	    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise la masse !**\n*Vous gagnez !*");
-	    			//Faire que le mec gagne de l'xp
-	    			win_arene = 1;
-	    		}
-	    		if (arene_choixUser == 3 && arene_choixEnemy == 2) { //Lance VS Tomahawk
-	    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi utilise le tomahawk !**\n*Vous perdez...*");
-	    			//Faire que le mec perd de l'xp
-	    			win_arene = 0;
-	    		}
-	    		if (arene_choixUser == 3 && arene_choixEnemy == 3) { //Lance VS Lance
-	    			message.channel.send("Vous utilisez la **lance**.\n**L'ennemi aussi !**\n*Match nul...*");
-	    			win_arene = 2;
-	    		}
-
-	    		if (win_arene == 0) { // Si on a perdu
-	    			message.channel.send("-2 xp");
-					addXp(id_usr, -2);
-	    		} else if (win_arene == 1) { // Si on a win
-	    			message.channel.send("+7 xp\n+1 or");
-					addXp(id_usr, 7);
+	    		if (arene_choixUser == 1 && arene_choixEnnemy == 2) { //Masse VS Tomahawk - Victoire
+	    			message.channel.send(embed_arene_victoire);
+	    			addXp(id_usr, 7);
 					addOr(id_usr, 1);
-	    		} else if (win_arene == 2) {
-	    			message.channel.send("+2 xp");
-					addXp(id_usr, 2);
+	    		}
+	    		if (arene_choixUser == 1 && arene_choixEnnemy == 3) { //Masse VS Lance - Défaite
+	    			message.channel.send(embed_arene_defaite);
+	    			addXp(id_usr, -2);
+	    		}
+
+
+
+	    		if (arene_choixUser == 2 && arene_choixEnnemy == 1) { //Tomahawk VS Masse - Défaite
+	    			message.channel.send(embed_arene_defaite);
+	    			addXp(id_usr, -2);
+	    		}
+	    		if (arene_choixUser == 2 && arene_choixEnnemy == 2) { //Tomahawk VS Tomahawk - Match nul
+	    			message.channel.send(embed_arene_matchnul);
+	    			addXp(id_usr, 2);
+	    		}
+	    		if (arene_choixUser == 2 && arene_choixEnnemy == 3) { //Tomahawk VS Lance - Victoire
+	    			message.channel.send(embed_arene_victoire);
+	    			addXp(id_usr, 7);
+					addOr(id_usr, 1);
+	    		}
+
+
+
+	    		if (arene_choixUser == 3 && arene_choixEnnemy == 1) { //Lance VS Masse - Victoire
+	    			message.channel.send(embed_arene_victoire);
+	    			addXp(id_usr, 7);
+					addOr(id_usr, 1);
+	    		}
+	    		if (arene_choixUser == 3 && arene_choixEnnemy == 2) { //Lance VS Tomahawk - Défaite
+	    			message.channel.send(embed_arene_defaite);
+	    			addXp(id_usr, -2);
+	    		}
+	    		if (arene_choixUser == 3 && arene_choixEnnemy == 3) { //Lance VS Lance - Match nul
+	    			message.channel.send(embed_arene_matchnul);
+	    			addXp(id_usr, 2);
 	    		}
 			}
 
@@ -888,7 +910,7 @@ bot.on('message', async (message) => {
 		fs.readFile('json/or/or_' + id_user_or +'.json', 'utf8', function (erreur, donnees)
 		{
 		 if (erreur) {
-		 	message.channel.send("Vous n'avez pas encore de banque perso, pour la créer faite \"p<revenue\" ");
+		 	message.channel.send("Vous n'avez pas encore de banque perso, pour la créer faites \"p<revenue\" ");
 		 /*fs.writeFile("json/or/or_" + id_user_or + ".json", `
 			{ 
 				"or": 0,
@@ -906,15 +928,15 @@ bot.on('message', async (message) => {
 		 let or_usr = JSON.parse(donnees);
 		 console.log(or_usr.or);
 		 or_usr = or_usr.or;
-
-
+		 let max_bank = JSON.parse(donnees);
+		 max_bank = max_bank.maxbanque;
 		
 
 
 		let embed_or = new Discord.RichEmbed()
-							.setColor("#FFD400")
-							.setTitle(":bank: **Banque** :bank:")
-							.setDescription("**" + or_usr + " or**")
+							.setColor([255, 200, 0])
+							.setTitle(":bank:  **Banque**  :bank:")
+							.setDescription("**" + or_usr + "/" + max_bank + "** " + emote_or)
 
 							message.channel.send(embed_or);
 		});
@@ -1039,9 +1061,15 @@ bot.on('message', async (message) => {
 
 		if (erreur) { // ca veut dire que l'utilisateur n'a pas de banque encore
 
-		 	message.channel.send("Banque perso crée. (ce message apparait quand vous n'avez pas de banque perso)");
+		 	message.channel.send(":bank: **Banque perso créée.** :bank:");
 		 	
-		 	message.channel.send("+" + or_a_add + "/" + max_banque_perso + " or sur votre banque perso.");
+
+		 	let embed_first_revenue = new Discord.RichEmbed()
+					.setColor([255, 200, 0])
+					.setAuthor("Revenue quotidien !", message.author.displayAvatarURL)
+					.setDescription("**+" + or_a_add + "** " + emote_or + "\nVous avez actuellement **" + or_a_add + "/" + max_banque_perso + "** " + emote_or)
+
+		 	message.channel.send(embed_first_revenue);
 
 			 	fs.writeFile("json/or/or_" + id_usr + ".json", `
 				{ 
@@ -1113,7 +1141,7 @@ bot.on('message', async (message) => {
 		let hourToWait = (timeLastB4Daily / 60) / 24;
 		
 			if (timeLastB4Daily >= 0) { // ca veut dire qu'il reste encore du temps avant de daily) 
-			message.channel.send("\n Il faut attendre encore: " + msToTime(timeLastInMS) + " avant d'avoir votre revenue."); /*Math.round((((timeLastB4Daily) / 60) / 24))*/
+			message.channel.send(":hourglass: **|** " + message.author + ", il vous faut attendre **" + msToTime(timeLastInMS) + "** avant de pouvoir obtenir de nouveau votre revenue !"); /*Math.round((((timeLastB4Daily) / 60) / 24))*/
 			}
 			
 			if(diffUnixInMS >= msToWaitToDaily) {
@@ -1164,9 +1192,12 @@ bot.on('message', async (message) => {
 				}); 
 				
 
+			let embed_revenue = new Discord.RichEmbed()
+					.setColor([255, 200, 0])
+					.setAuthor("Revenue quotidien !", message.author.displayAvatarURL)
+					.setDescription("**+" + or_a_add + "** " + emote_or + "\nVous avez actuellement **" + or_add + "/" + max_banque_perso + "** " + emote_or)
 
-
-			 message.channel.send("+" + (or_a_add - buffer_thunas) + " or. Vous avez maintenant: " + or_add + "/" + max_banque_perso + " or dans votre banque perso.");
+			 message.channel.send(embed_revenue);
 
 			} else {
 				
@@ -1516,7 +1547,7 @@ bot.on('message', async (message) => {
 
 		let loopCasio = true;
 		//Personne, action, objet, lieu, temps
-		let personne = [`Chloé`, `Barack Obama`, `Donald Trump`, `Une tortue de mer`, `Un poulet`, `Romar1`, `Noxali`, `Zheo`, `DraxyCUL`, `La Vénitienne`, `PouleRPG`, `Dieu Poulet`, `Jérémy`, `Les Zêtas`, `Le Maître Gamma`, `Le frère con`, `Hitler`, `Une enfant`, `Un psychopathe`, `Un entraineur`, `Un juge`, `Le procureur`, `Donald`, `Picsou`, `Romar1`, `Chveux Vert`, `PD3`, `Bordel`, `Princesseuh`, `DarkDavy`, `Damben`, `Dark`, `Darky`, `BanjoBoi`, `KriixMerde`, `TetreMerde`, `Tatsumakmerde`, /*`Romar la pute de luxe`,*/ `Les Epsilon`, `Un pokémon`, /*`Des animaux de la ferme`*/, `Un chat`, `Un chien`, `Une souris`, `Un animal`, `Emmanuel Macron`, `Kim Jong-Un`, `Un dictateur`, `Gigi`]; //personnage
+		let personne = [`Chloé`, `Barack Obama`, `Donald Trump`, `Une tortue de mer`, `Un poulet`, `Romar1`, `Noxali`, `Zheo`, `DraxyCUL`, `La Vénitienne`, `PouleRPG`, `Dieu Poulet`, `Jérémy`, `Les Zêtas`, `Le Maître Gamma`, `Le frère con`, `Hitler`, `Une enfant`, `Un psychopathe`, `Un entraineur`, `Un juge`, `Le procureur`, `Donald`, `Picsou`, `Romar1`, `Chveux Vert`, `PD3`, `Bordel`, `Princesseuh`, `DarkDavy`, `Damben`, `Dark`, `Darky`, `BanjoBoi`, `KriixMerde`, `TetreMerde`, `Tatsumakmerde`, /*`Romar la pute de luxe`,*/ `Les Epsilon`, `Un pokémon`, /*`Des animaux de la ferme`*/, `Un chat`, `Un chien`, `Une souris`, `Un animal`, `Emmanuel Macron`, `Kim Jong-Un`, `Un dictateur`, `Gigi`, `Un bon gros fils de pute`]; //personnage
 		let action   = [`mange`, `vend`, `détruit`, `fait disparaître`, `lance`, `consomme`, `découpe lentement`, `donne`, `rage à cause (d')`, `pénètre`, `regarde`, `écoute`, /*`à une relation incestueuse avec`,*/ `juge`, `se procure`, `fait un rite satanique avec`, `s'entraine avec`, `poste`, `chante avec`, `théorise sur`, `réfléchit à ne pas cheat avec`, `envoie un cookie à`, `prie`, `meurt à cause (d')`, `fait chier`, `hack les logs (d')`, `a claqué`, `rit de`, `fait apparaître`, `dors grâce à`, `bois`, `fait la lessive pour`, `fait à manger à`, /*`fait le ménage pour`,*/ `insulte`, /*`crie`*/]; //action
 		let objet    = [`une pomme`, `un radiateur`, `une ampoule`, `une vitre`, `du poulet`, `des grilles pain`, `un nouveau née`, `des points venitienne`, `la loi paragraphe 4, sous-tiret 2, alinéa 1`, /*`une arme de destruction massive`,*/ `la boite de jeu de "Link faces to evil"`, `les recettes de cuisine de Noxali`, `des funérailles`, `un banc de messe`, `une porte d'église`, `un bénitier`, `des produits illicites`, `un cercueil`, /*`un film`, `une série`*/, `un enfant`, `de la musique`, `un hentai`, `un mouton`, `un boeuf`, `un mandat`, /*`une vidéo virale`*/, `un ralentisseur de type "dos d'âne"`, `la loi paragraphe 4, sous-tiret 3, alinéa 1`, `une porte`, `un fruit`, /*`une armes blanches`*/, `un jeu Nintendo`, `une boîte en carton`, `une voiture`, `un panneau`, `un tableau`, `une craie`, `un feutre`, `un crayon de couleur`, `une contravention`, `un film`]; //objet1
 		let objet2   = [/*`une aiguille`, */`un couteau`, `du taboulé`, `du chocolat`, `de la confiture`, /*`une anguille`,*/ `un frigo`, `du rhum`, `de l'alcool`, `la daronne de Draxy`, `un verre`, `Zheo`, `le curé`, `des enfants`, `un cheval`, `un veau`]; //objet2
@@ -1984,41 +2015,53 @@ bot.on('message', async (message) => {
 
 		if (message.content.startsWith(prefix + "randomFaction ")) { 
 
-		
-			console.log("Commande exécutée.");
-			if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760") {
-				console.log("Commande exécutée. -> Admin Test Passé");
-				let args3 = message.content.slice(prefix.length + 14); //.split(' ');
-				let id_mention = message.mentions.users.first().id;
-				let member = message.mentions.members.first();
+        
+            console.log("Commande exécutée.");
+            if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760") {
+                console.log("Commande exécutée. -> Admin Test Passé");
+                let args3 = message.content.slice(prefix.length + 14); //.split(' ');
+                let id_mention = message.mentions.users.first().id;
+                let member = message.mentions.members.first();
 
-				let fac = entierAleatoire(1, 4);
+                let fac = entierAleatoire(1, 4);
 
-				switch(fac) {
-					case 1:
-					message.channel.send(`<@${id_mention}> va dans : Epsilon`);
-					member.addRole('415947454626660366'); //ajoute Epsilon 
-					break;
-					case 2:
-					message.channel.send(`<@${id_mention}> va dans : Zêta`);
-					member.addRole('415947455582961686'); //ajoute Epsilon 
-					break;
-					case 3:
-					message.channel.send(`<@${id_mention}> va dans : Gamma`);
-					member.addRole('415947456342130699'); //ajoute Epsilon 
-					break;
-					case 4:
-					message.channel.send(`<@${id_mention}> va dans : Oméga`);
-					member.addRole('665340021640921099'); //ajoute Epsilon 
-					break;
-				}
-				console.log("Commande exécutée. -> Admin Test Passé -> switch effectué");
-				message.delete();
-			} else {
-				message.channel.send("Cette commande est réservée aux Empereurs.");
-				console.log("Commande exécutée. -> Admin Test Refusé");
-			}
-		}
+                if (member.roles.find("name", "Esclave") || member.roles.find("name", "Paysan") || member.roles.find("name", "Bourgeois") || member.roles.find("name", "Courtisan")) {
+                    // Si le membre est Esclave ou plus
+
+                    // On le met dans une faction random
+                    switch(fac) {
+                        case 1:
+                        message.channel.send(`<@${id_mention}> va dans : Epsilon`);
+                        member.addRole('415947454626660366'); //ajoute Epsilon 
+                        break;
+
+                        case 2:
+                        message.channel.send(`<@${id_mention}> va dans : Zêta`);
+                        member.addRole('415947455582961686'); //ajoute Zeta 
+                        break;
+
+                        case 3:
+                        message.channel.send(`<@${id_mention}> va dans : Gamma`);
+                        member.addRole('415947456342130699'); //ajoute Gamma 
+                        break;
+                        
+                        case 4:
+                        message.channel.send(`<@${id_mention}> va dans : Oméga`);
+                        member.addRole('665340021640921099'); //ajoute Omega 
+                        break;
+                    }
+                    console.log("Commande exécutée. -> Admin Test Passé -> switch effectué");
+                    message.delete();
+                } else {
+                        message.channel.send("KICK");
+                }
+
+                
+            } else {
+                message.channel.send("Cette commande est réservée aux Empereurs.");
+                console.log("Commande exécutée. -> Admin Test Refusé");
+            }
+        }
 	} //Fin des commandes admin
 
 	//Commandes Dev :
