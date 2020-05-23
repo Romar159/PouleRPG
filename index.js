@@ -26,8 +26,8 @@ let RomarEmpereurID = 421400262423347211;
 
 let prefix = ("p<");
 
-let bot_version = "0.3.1";
-let bot_lignes = "2604";
+let bot_version = "0.3.2";
+let bot_lignes = "2744";
 
 
 let MaitreFac_Epsilon;
@@ -642,7 +642,7 @@ bot.on('message', async (message) => {
         // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
         // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
         const m = await message.channel.send("Calcul en cours...");
-        m.edit( ":ping_pong: | Pong!\nTemps de réponse : **" + `${m.createdTimestamp - message.createdTimestamp}ms` + "**");
+        m.edit( ":ping_pong: **|** Pong!\nTemps de réponse : **" + `${m.createdTimestamp - message.createdTimestamp}ms` + "**");
     } //Fin ping
 
 	if (message.content === prefix + "tmpdev") {
@@ -664,98 +664,170 @@ bot.on('message', async (message) => {
 //BIG BIG PARTIE DE L'EMBED HELP
 
 
-	if (message.content === prefix + "aide" ||  message.content === prefix + "help")
-	{
+	if (message.content === prefix + "aide" ||  message.content === prefix + "help") {
 
-		message.channel.send({embed: {
-			author: {
-			name: bot.on.username,
-			icon_url: bot.on.avatarURL
-			},
-			"plainText": "**Commandes de PouleRPG**",
-			"title": ":chicken: **Commandes de PouleRPG** :chicken:",
-			"color": 0xc86400,
-			"fields": [
-			//------------------------------
-			{
-			"name": "BOT",
-			"value": "``aide`` | ``ping``",
-			"inline": false
-			},
-			//------------------------------
-			{
-			"name": "STATS PERSONNELLES",
-			"value": "``or`` | ``xp``",
-			"inline": false
-			},
-			//------------------------------
-			{
-			"name": "COMBAT",
-			"value": "``arene``",
-			"inline": false
-			},
-			{
-			"name": "INFOS SUPPLÉMENTAIRES",
-			"value": "**Faites ``p<aide [commande]`` ou ``p<help [commande]`` pour plus de détails sur une certaine commande.**",
-			"inline": false
-			},
-			{
-			"name": "EXEMPLES",
-			"value": "``p<aide or\np<help arene``",
-			"inline": false
-			},
-					] 
-		}});
+		let embed_aide = new Discord.RichEmbed()
+				.setColor([200, 100, 0])
+				.setAuthor("Commandes de PouleRPG", message.author.displayAvatarURL) //JE SOUHAITE AFFICHER LA PP DE POULERPG !!!
+				.setDescription("**Faites ``p<aide [commande]`` ou ``p<help [commande]`` pour plus de détails sur une certaine commande.**")
+				
+				.addField(":satellite: UTILITAIRE", "``aide`` **|** ``help`` **|** ``botinfos`` **|** ``ping`` **|** ``list`` **|** ``???``", false)
+				.addField(":kite: AMUSEMENT DIVERS", "``phrase`` **|** ``pileouface`` **|** ``say`` **|** ``???``", false)
+				.addField(":bar_chart: STATISTIQUES PERSONNELLES", "``or`` **|** ``xp`` **|** ``mes beaux points venitienne`` **|** ``???``", false)
+				.addField(":moneybag: GAINS", "``arene`` **|** ``revenue`` **|** ``???``", false)
+				.addField(":gear: EXEMPLES", "``p<aide or`` **|** ``help phrase`` **|** ``p<aide revenue``", false)
+				
+				.setFooter("© Bot par Romar1 et DraxyDow.", message.author.displayAvatarURL) //JE SOUHAITE AFFICHER LA PP DE POULERPG !!
+
+			message.channel.send(embed_aide);
 	}
 
-	if (message.content === prefix + "aide aide" || message.content === prefix + "help aide" || message.content === prefix + "aide help" || message.content === prefix + "help help")
-	{
+	//UTILITAIRE
+	if (message.content === prefix + "aide aide" || message.content === prefix + "help aide" || message.content === prefix + "aide help" || message.content === prefix + "help help") {
 		let embed_aide_aide = new Discord.RichEmbed()
-							.setColor("#C86400")
-							.setTitle(":grey_question: Aide - aide/help :grey_question:")
-							.setDescription("La commande ``aide`` ou ``help`` affiche la page d'aide ou permet d'avoir plus de précisions sur une commande, voici comment l'utiliser :\n``p<aide`` | ``p<aide [commande]``\n``p<help`` | ``p<help [commande]``")
+							.setColor([200, 100, 0])
+							.setTitle(":microscope: Aide - aide/help :microscope:")
+							.setDescription("La commande ``aide`` ou ``help`` affiche la page d'aide ou permet d'avoir plus de précisions sur une commande.\n**Voici comment l'utiliser :**\n``p<aide`` **|** ``p<aide [commande]``\n``p<help`` **|** ``p<help [commande]``")
 
 							message.channel.send(embed_aide_aide);
     }
 
-    if (message.content === prefix + "aide ping" || message.content === prefix + "help ping")
-    {
+    if (message.content === prefix + "aide botinfos" || message.content === prefix + "help botinfos") {
+		let embed_aide_botinfos = new Discord.RichEmbed()
+							.setColor([200, 100, 0])
+							.setTitle(":microscope: Aide - botinfos :robot:")
+							.setDescription("La commande ``botinfos`` vous montre la version du bot, son nombre de lignes ainsi que ses développeurs.\n**Voici comment l'utiliser :**\n``p<botinfos``")
+
+							message.channel.send(embed_aide_botinfos);
+	}
+
+    if (message.content === prefix + "aide ping" || message.content === prefix + "help ping") {
 		let embed_aide_ping = new Discord.RichEmbed()
-							.setColor("#C86400")
-							.setTitle(":grey_question: Aide - ping :ping_pong:")
-							.setDescription("La commande ``ping`` calcule le temps de réponse du bot et l'affiche, voici comment l'utiliser :\n``p<ping``")
+							.setColor([200, 100, 0])
+							.setTitle(":microscope: Aide - ping :ping_pong:")
+							.setDescription("La commande ``ping`` calcule le temps de réponse du bot et l'affiche.\n**Voici comment l'utiliser :**\n``p<ping``")
 
 							message.channel.send(embed_aide_ping);
     }
 
-    if (message.content === prefix + "aide arene" || message.content === prefix + "help arene")
-    {
+    if (message.content === prefix + "aide list" || message.content === prefix + "help list") {
+		let embed_aide_list = new Discord.RichEmbed()
+							.setColor([200, 100, 0])
+							.setTitle(":microscope: Aide - list :scroll:")
+							.setDescription("La commande ``list`` vous permet de voir tous les membres d'une faction précise ou de toutes les factions séparément.\n**Voici comment l'utiliser :**\n``p<list [epsilon/zeta/gamma/omega]\np<list factions``")
+
+							message.channel.send(embed_aide_list);
+    }
+
+    //AMUSEMENT DIVERS
+    if (message.content === prefix + "aide phrase" || message.content === prefix + "help phrase") {
+		let embed_aide_phrase = new Discord.RichEmbed()
+							.setColor([200, 100, 0])
+							.setTitle(":microscope: Aide - phrase :pen_fountain:")
+							.setDescription("La commande ``phrase`` écrit une phrase aléatoire grâce à une base de données de mots.\n**Voici comment l'utiliser :**\n``p<phrase``")
+
+							message.channel.send(embed_aide_phrase);
+    }
+
+    if (message.content === prefix + "aide pileouface" || message.content === prefix + "help pileouface") {
+		let embed_aide_pileouface = new Discord.RichEmbed()
+							.setColor([200, 100, 0])
+							.setTitle(":microscope: Aide - pileouface :arrows_counterclockwise:")
+							.setDescription("La commande ``pileouface`` lance une pièce et donne le résultat, soit pile, soit face.\n**Voici comment l'utiliser :**\n``p<pileouface``")
+
+							message.channel.send(embed_aide_pileouface);
+    }
+
+    if (message.content === prefix + "aide say" || message.content === prefix + "help say") {
+		let embed_aide_say = new Discord.RichEmbed()
+							.setColor([200, 100, 0])
+							.setTitle(":microscope: Aide - say :loudspeaker:")
+							.setDescription("La commande ``say`` fait en sorte que PouleRPG envoie votre message.\n**Voici comment l'utiliser :**\n``p<say [message]``")
+
+							message.channel.send(embed_aide_say);
+    }
+
+    //STATISTIQUES PERSONNELLES
+    if (message.content === prefix + "aide or" || message.content === prefix + "help or") {
+		let embed_aide_or = new Discord.RichEmbed()
+							.setColor([200, 100, 0])
+							.setTitle(":microscope: Aide - or " + emote_or)
+							.setDescription("La commande ``or`` affiche l'or dont vous êtes en possession.\n**Voici comment l'utiliser :**\n``p<or``")
+
+							message.channel.send(embed_aide_or);
+    }
+
+    if (message.content === prefix + "aide xp" || message.content === prefix + "help xp") {
+		let embed_aide_xp = new Discord.RichEmbed()
+							.setColor([200, 100, 0])
+							.setTitle(":microscope: Aide - xp :battery:")
+							.setDescription("La commande ``xp`` affiche l'XP ainsi que le level que vous avez.\n**Voici comment l'utiliser :**\n``p<xp``")
+
+							message.channel.send(embed_aide_xp);
+    }
+
+    if (message.content === prefix + "aide mes beaux points venitienne" || message.content === prefix + "help mes beaux points venitienne") {
+		let embed_aide_venitienne = new Discord.RichEmbed()
+							.setColor([200, 100, 0])
+							.setTitle(":microscope: Aide - mes beaux points venitienne :woman_red_haired:")
+							.setDescription("La commande ``mes beaux points venitienne`` affiche avec honneur ou déshonneur le nombre de magnifiques points vénitiennes dont vous êtes en possession.\n**Voici comment l'utiliser :**\n``p<mes beaux points venitienne``")
+
+							message.channel.send(embed_aide_venitienne);
+    }
+
+    //GAINS
+    if (message.content === prefix + "aide arene" || message.content === prefix + "help arene") {
 		let embed_aide_arene = new Discord.RichEmbed()
-							.setColor("#C86400")
-							.setTitle(":grey_question: Aide -  :crossed_swords:")
-							.setDescription("La commande ``arene`` permet de faire un combat dans l'arène contre le bot pour gagner de l'expérience, vous pouvez choisir entre 3 armes, la **masse** avec ``p<arene masse`` ou ``p<arene m``, le **tomahawk** avec ``p<arene tomahawk`` ou ``p<arene t``, ou la **lance** avec ``p<arene lance`` ou ``p<arene l``, voici qui l'emporte sur qui :\nLa masse -> le tomahawk\nLe tomahawk -> la lance\nLa lance -> la masse\nLe combat se fait comme un chifoumi. Voici comment l'utiliser :\n``p<arene [arme]``")
+							.setColor([200, 100, 0])
+							.setTitle(":microscope: Aide - arene :crossed_swords:")
+							.setDescription("La commande ``arene`` permet de faire un combat dans l'arène contre le bot pour gagner de l'expérience. Vous pouvez choisir entre 3 armes, la **masse** avec ``p<arene masse`` ou ``p<arene m``, le **tomahawk** avec ``p<arene tomahawk`` ou ``p<arene t``, ou la **lance** avec ``p<arene lance`` ou ``p<arene l``, voici qui l'emporte sur qui :\nLa masse -> le tomahawk **|** Le tomahawk -> la lance **|** La lance -> la masse\nLe combat se fait comme un chifoumi.\n**Voici comment l'utiliser :**\n``p<arene [arme]``")
 
 							message.channel.send(embed_aide_arene);
-	}
+    }
 
-    /*if (message.content === prefix + "aide X" || message.content === prefix + "help X")
-    {
+    if (message.content === prefix + "aide revenue" || message.content === prefix + "help revenue") {
+		let embed_aide_revenue = new Discord.RichEmbed()
+							.setColor([200, 100, 0])
+							.setTitle(":microscope: Aide - revenue :moneybag:")
+							.setDescription("La commande ``revenue`` vous permet de gagner un montant assez conséquent d'or suivant le rôle de level dont vous êtes en possession (cf. rôle Mee6). Ce revenue est réinitialisé après **24h** suite à son utilisation.\n**Voici comment l'utiliser :**\n``p<revenue``")
+
+							message.channel.send(embed_aide_revenue);
+    }
+
+
+    if (message.content === prefix + "aide ???" || message.content === prefix + "help ???") {
+		let embed_aide_no = new Discord.RichEmbed()
+							.setColor([200, 100, 0])
+							.setTitle(":microscope: Aide - ??? :grey_question:")
+							.setDescription("La commande ``???`` n'existe tout simplement pas, c'est un petit easter egg, voilà tout.\n**Voici comment ne pas l'utiliser :**\n``/``")
+
+							message.channel.send(embed_aide_no);
+    }
+    //TEMPLATE
+    /*
+    if (message.content === prefix + "aide X" || message.content === prefix + "help X") {
 		let embed_aide_X = new Discord.RichEmbed()
-							.setColor("#C86400")
-							.setTitle(":grey_question: Aide - X :X:")
-							.setDescription("La commande ``X`` ou ``p<X`` XXX, voici comment l'utiliser :\n``p<X\np<X``")
+							.setColor([200, 100, 0])
+							.setTitle(":microscope: Aide - X :X:")
+							.setDescription("La commande ``X`` XXX.\n**Voici comment l'utiliser :**\n``p<X\np<X``")
 
 							message.channel.send(embed_aide_X);
-    } Sert de modèle!*/
-
+    }
+    */
 
 	//FIN DU BIG BIG EMBED HELP
 
 
-	if (message.content === prefix + "botinfos") {
-		message.channel.send("Version : " + bot_version + "\nLignes : " + bot_lignes + "\nDevs : Programmation : Romar1 ; Design Graphique : DraxyDow\n");
-	}
 
+	if (message.content === prefix + "botinfos") {
+
+		let embed_botinfos = new Discord.RichEmbed()
+			.setColor([200, 100, 0])
+			.setAuthor("Infos de PouleRPG", message.author.displayAvatarURL) //JEVEUX FOUTRE LA PP DE POULERPG !!!
+			.setDescription("Version : **" + bot_version + "**\nLignes de code : **" + bot_lignes + "**\nProgrammation : **Romar1** ; Design Graphique : **DraxyDow**")
+
+		message.channel.send(embed_botinfos);
+	}
 	
 
 
@@ -777,7 +849,7 @@ bot.on('message', async (message) => {
 	
 		let id_usr = message.author.id;
     	if (talkedRecently_arene.has(message.author.id)) {
-				message.channel.send(":hourglass: **|** " + message.author + ", il vous faut attendre **1 minute** avant de pouvoir vous battre de nouveau dans l'arène !");
+				message.channel.send(":hourglass: **| " + message.author.username + "**, il vous faut attendre **1 minute** avant de pouvoir vous battre de nouveau dans l'arène !");
 				
 				/*let final = 0;
 
@@ -812,9 +884,8 @@ bot.on('message', async (message) => {
 
 	    	//EMBED
 			let embed_arene_victoire = new Discord.RichEmbed()
-
 					.setColor([200, 200, 200])
-					.setAuthor("Victoire !", message.author.displayAvatarURL)		//A VOIR AVEC LE ROMAR !!!
+					.setAuthor("Victoire !", message.author.displayAvatarURL)
 					.setDescription("L'ennemi a utilisé " + arme_ennemi + ", vous le terrassez !\n**+7 XP ; +1** " + emote_or)
 
 			let embed_arene_matchnul = new Discord.RichEmbed()
@@ -833,7 +904,7 @@ bot.on('message', async (message) => {
 			else if (arene_choixUser == "tomahawk" || arene_choixUser == "t") { arene_choixUser = 2; }
 			else if (arene_choixUser == "lance" || arene_choixUser == "l") { arene_choixUser = 3; }
 			else {
-				message.channel.send("Mauvaise synthaxe. Vous devez choisir entre \"masse\", \"tomahawk\", \"lance\" ('p<help arene' pour plus de précisions)");
+				message.channel.send(":x: **|** Mauvaise synthaxe !\nVous devez choisir entre \"**masse**\", \"**tomahawk**\" et \"**lance**\" !\nFaites '**p<help arene**' pour plus de précisions.");
 				return;
 			}
 
@@ -910,7 +981,7 @@ bot.on('message', async (message) => {
 		fs.readFile('json/or/or_' + id_user_or +'.json', 'utf8', function (erreur, donnees)
 		{
 		 if (erreur) {
-		 	message.channel.send("Vous n'avez pas encore de banque perso, pour la créer faites \"p<revenue\" ");
+		 	message.channel.send(":x: **|** Vous n'avez pas encore de banque perso, pour la créer faites \"p<revenue\" !");
 		 /*fs.writeFile("json/or/or_" + id_user_or + ".json", `
 			{ 
 				"or": 0,
@@ -935,7 +1006,7 @@ bot.on('message', async (message) => {
 
 		let embed_or = new Discord.RichEmbed()
 							.setColor([255, 200, 0])
-							.setTitle(":bank:  **Banque**  :bank:")
+							.setAuthor("Banque de " + message.author.username, message.author.displayAvatarURL)
 							.setDescription("**" + or_usr + "/" + max_bank + "** " + emote_or)
 
 							message.channel.send(embed_or);
@@ -1141,7 +1212,7 @@ bot.on('message', async (message) => {
 		let hourToWait = (timeLastB4Daily / 60) / 24;
 		
 			if (timeLastB4Daily >= 0) { // ca veut dire qu'il reste encore du temps avant de daily) 
-			message.channel.send(":hourglass: **|** " + message.author + ", il vous faut attendre **" + msToTime(timeLastInMS) + "** avant de pouvoir obtenir de nouveau votre revenue !"); /*Math.round((((timeLastB4Daily) / 60) / 24))*/
+			message.channel.send(":hourglass: **| " + message.author.username + "**, il vous faut attendre **" + msToTime(timeLastInMS) + "** avant de pouvoir obtenir de nouveau votre revenue !"); /*Math.round((((timeLastB4Daily) / 60) / 24))*/
 			}
 			
 			if(diffUnixInMS >= msToWaitToDaily) {
@@ -1213,6 +1284,7 @@ bot.on('message', async (message) => {
 	if (message.content === prefix + "list epsilon") {
 		const ListEmbed = new Discord.RichEmbed()
             .setTitle('Membres de la faction Epsilon')
+            .setColor([170, 60, 0])
             .setDescription(message.guild.roles.get('415947454626660366').members.map(m=>m.user.tag).join('\n'));
         message.channel.send(ListEmbed); 
 	} 
@@ -1220,6 +1292,7 @@ bot.on('message', async (message) => {
 	if (message.content === prefix + "list gamma") {
 			const ListEmbed = new Discord.RichEmbed()
 	            .setTitle('Membres de la faction Gamma')
+	            .setColor([100, 200, 50])
 	            .setDescription(message.guild.roles.get('415947456342130699').members.map(m=>m.user.tag).join('\n'));
 	        message.channel.send(ListEmbed); 
 	} 
@@ -1227,6 +1300,7 @@ bot.on('message', async (message) => {
 	if (message.content === prefix + "list zeta" || message.content === prefix + "list zêta") {
 		const ListEmbed = new Discord.RichEmbed()
             .setTitle('Membres de la faction Zêta')
+            .setColor([50, 100, 200])
             .setDescription(message.guild.roles.get('415947455582961686').members.map(m=>m.user.tag).join('\n'));
         message.channel.send(ListEmbed); 
 	} 
@@ -1234,10 +1308,12 @@ bot.on('message', async (message) => {
 	if (message.content === prefix + "list omega" || message.content === prefix + "list oméga") {
 		const ListEmbed = new Discord.RichEmbed()
             .setTitle('Membres de la faction Oméga')
+            .setColor([170, 150, 40])
             .setDescription(message.guild.roles.get('665340021640921099').members.map(m=>m.user.tag).join('\n'));
         message.channel.send(ListEmbed);
 
 	}
+
 
 	if (message.content === prefix + "list factions") {
 		
@@ -1251,8 +1327,15 @@ bot.on('message', async (message) => {
 		let list_gamma = message.guild.roles.get('415947456342130699').members.map(m=>m.user.tag).join('\n')
 		let list_omega = message.guild.roles.get('665340021640921099').members.map(m=>m.user.tag).join('\n')
 		const ListEmbed = new Discord.RichEmbed()
-            .setTitle('Membres des factions')
-            .setDescription("**Epsilon**\n\n" + list_epsilon + "\n\n**Zêta**\n\n" + list_zeta + "\n\n**Gamma**\n\n" + list_gamma + "\n\n**Oméga**\n\n" + list_omega + "\n");
+            .setAuthor('Membres des factions', message.author.displayAvatarURL) //Je souhaite afficher la pp de PouleRPG et non la notre
+            .setColor([100, 100, 100])
+            .addField("**Epsilon**", "`" + list_epsilon + "`", true)
+            .addField("**Zêta**", "`" + list_zeta + "`", true)
+            .addBlankField()
+            .addField("**Gamma**", "`" + list_gamma + "`", true)
+            .addField("**Oméga**", "`" + list_omega + "`", true)
+            //.setDescription("**Epsilon**\n\n" + list_epsilon + "\n\n**Zêta**\n\n" + list_zeta + "\n\n**Gamma**\n\n" + list_gamma + "\n\n**Oméga**\n\n" + list_omega + "\n");
+        
         message.channel.send(ListEmbed);
 	}
 
@@ -1274,7 +1357,15 @@ bot.on('message', async (message) => {
 	    	fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
 			   	let json_xp = JSON.parse(fichier)
 			   	let xp_level_up_required = getLvlUpReqXP(message.author.id);
-				message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
+
+			   	let embed_xp = new Discord.RichEmbed()
+			   		.setColor([50, 200, 110])
+            		.setAuthor("XP de " + message.author.username, message.author.displayAvatarURL)
+            		.setDescription(`**XP : ${json_xp.xp}/${xp_level_up_required}\nLevel : ${json_xp.xplevel}**`);
+
+
+            	message.channel.send(embed_xp);
+				//message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
 			})
 		} else { //si le fichier xp de l'utilisateur n'existe pas
 				//let contenu_json = '{' + '\n' + ' \"xp\" : 0, ' + '\n' + ' \"xplevel\" : 1' + '\n' + '}';
@@ -1296,7 +1387,14 @@ bot.on('message', async (message) => {
 				    fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
 			   	let json_xp = JSON.parse(fichier)
 			   	let xp_level_up_required = getLvlUpReqXP(message.author.id);
-				message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
+
+			   	let embed_xp = new Discord.RichEmbed()
+			   		.setColor([50, 200, 110])
+            		.setAuthor("XP de " + message.author.username, message.author.displayAvatarURL)
+            		.setDescription(`**XP : ${json_xp.xp}/${xp_level_up_required}\nLevel : ${json_xp.xplevel}**`);
+
+            	message.channel.send(embed_xp);
+				//message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
 			})
 				})
 
@@ -1319,6 +1417,7 @@ bot.on('message', async (message) => {
 	    	fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
 			   	let json_xp = JSON.parse(fichier)
 			   	let xp_level_up_required = xp_level_up_required_BASE * json_xp.xplevel;
+
 				message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
 			})
 		} else { //si le fichier xp de l'utilisateur n'existe pas
@@ -2522,6 +2621,47 @@ factionDe_Request = "";
 							.addField("``" + or_usr + "``")
 							.setFooter(`____`)
 							message.channel.send(embed_or);*/
+
+
+/*message.channel.send({embed: {
+			author: {
+			name: bot.on.username,
+			icon_url: bot.on.avatarURL
+			},
+			"plainText": "**Commandes de PouleRPG**",
+			"title": ":chicken: **Commandes de PouleRPG** :chicken:",
+			"color": 0xc86400,
+			"fields": [
+			//------------------------------
+			{
+			"name": "BOT",
+			"value": "``aide`` | ``ping``",
+			"inline": false
+			},
+			//------------------------------
+			{
+			"name": "STATS PERSONNELLES",
+			"value": "``or`` | ``xp``",
+			"inline": false
+			},
+			//------------------------------
+			{
+			"name": "COMBAT",
+			"value": "``arene``",
+			"inline": false
+			},
+			{
+			"name": "INFOS SUPPLÉMENTAIRES",
+			"value": "**Faites ``p<aide [commande]`` ou ``p<help [commande]`` pour plus de détails sur une certaine commande.**",
+			"inline": false
+			},
+			{
+			"name": "EXEMPLES",
+			"value": "``p<aide or\np<help arene``",
+			"inline": false
+			},
+					] 
+		}});*/
 
 
 /* TESTS FONCTIONS
