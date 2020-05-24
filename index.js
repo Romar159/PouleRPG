@@ -26,7 +26,7 @@ let RomarEmpereurID = 421400262423347211;
 
 let prefix = ("p<");
 
-let bot_version = "0.3.2";
+let bot_version = "0.3.2.1";
 let bot_lignes = "2744";
 
 
@@ -677,7 +677,7 @@ bot.on('message', async (message) => {
 				.addField(":moneybag: GAINS", "``arene`` **|** ``revenue`` **|** ``???``", false)
 				.addField(":gear: EXEMPLES", "``p<aide or`` **|** ``help phrase`` **|** ``p<aide revenue``", false)
 				
-				.setFooter("© Bot par Romar1 et DraxyDow.", message.author.displayAvatarURL) //JE SOUHAITE AFFICHER LA PP DE POULERPG !!
+				.setFooter("© Bot par Romar1 et DraxyDow.", bot.user.displayAvatarURL)
 
 			message.channel.send(embed_aide);
 	}
@@ -823,7 +823,7 @@ bot.on('message', async (message) => {
 
 		let embed_botinfos = new Discord.RichEmbed()
 			.setColor([200, 100, 0])
-			.setAuthor("Infos de PouleRPG", message.author.displayAvatarURL) //JEVEUX FOUTRE LA PP DE POULERPG !!!
+			.setAuthor("Infos de PouleRPG", bot.user.displayAvatarURL)
 			.setDescription("Version : **" + bot_version + "**\nLignes de code : **" + bot_lignes + "**\nProgrammation : **Romar1** ; Design Graphique : **DraxyDow**")
 
 		message.channel.send(embed_botinfos);
@@ -1327,7 +1327,7 @@ bot.on('message', async (message) => {
 		let list_gamma = message.guild.roles.get('415947456342130699').members.map(m=>m.user.tag).join('\n')
 		let list_omega = message.guild.roles.get('665340021640921099').members.map(m=>m.user.tag).join('\n')
 		const ListEmbed = new Discord.RichEmbed()
-            .setAuthor('Membres des factions', message.author.displayAvatarURL) //Je souhaite afficher la pp de PouleRPG et non la notre
+            .setAuthor('Membres des factions', bot.user.displayAvatarURL)
             .setColor([100, 100, 100])
             .addField("**Epsilon**", "`" + list_epsilon + "`", true)
             .addField("**Zêta**", "`" + list_zeta + "`", true)
