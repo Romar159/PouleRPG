@@ -26,7 +26,7 @@ let RomarEmpereurID = 421400262423347211;
 
 let prefix = ("p<");
 
-let bot_version = "0.3.2.1";
+let bot_version = "0.3.2.2";
 let bot_lignes = "2744";
 
 
@@ -668,7 +668,7 @@ bot.on('message', async (message) => {
 
 		let embed_aide = new Discord.RichEmbed()
 				.setColor([200, 100, 0])
-				.setAuthor("Commandes de PouleRPG", message.author.displayAvatarURL) //JE SOUHAITE AFFICHER LA PP DE POULERPG !!!
+				.setAuthor("Commandes de PouleRPG", bot.user.displayAvatarURL) 
 				.setDescription("**Faites ``p<aide [commande]`` ou ``p<help [commande]`` pour plus de détails sur une certaine commande.**")
 				
 				.addField(":satellite: UTILITAIRE", "``aide`` **|** ``help`` **|** ``botinfos`` **|** ``ping`` **|** ``list`` **|** ``???``", false)
