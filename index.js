@@ -26,7 +26,7 @@ let RomarEmpereurID = 421400262423347211;
 
 let prefix = ("p<");
 
-let bot_version = "0.3.3";
+let bot_version = "0.3.3.1";
 let bot_lignes = "2854";
 
 
@@ -1290,18 +1290,19 @@ bot.on('message', async (message) => {
 					else { }
 
 					if (factionDe_Request == "Epsilon") {
-						//ENVOIE DANS LE COFFRE DE EPSILON
+						//ENVOIE DANS LE COFFRE DE Epsilon
 						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Epsilon." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
 					
 					} else if (factionDe_Request == "Gamma") {
-						//ENVOIE DANS LE COFFRE DE EPSILON
+						//ENVOIE DANS LE COFFRE DE Gamma
 						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Gamma." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
 					
 					} else if (factionDe_Request == "Zeta") {
-						//ENVOIE DANS LE COFFRE DE EPSILON
+						//ENVOIE DANS LE COFFRE DE Zêta
 						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Zeta." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
 					
 					} else if (factionDe_Request == "Omega") {
+						//ENVOIE DANS LE COFFRE DE Oméga
 
 						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Omega." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
 					} else {
@@ -1415,10 +1416,10 @@ bot.on('message', async (message) => {
 			let id_usr;
 				if (message.mentions.users.first() !== undefined) {
 					id_usr = message.mentions.users.first().id;
-					message.channel.send("La mention est valide !");
+					//message.channel.send("La mention est valide !"); //DEV
 				} else {
 					id_usr = message.author.id;
-					message.channel.send("La mention est invalide ! Ou n'existe pas !");
+					//message.channel.send("La mention est invalide ! Ou n'existe pas !"); //DEV
 				}
 
 			
@@ -1429,10 +1430,12 @@ bot.on('message', async (message) => {
 					let json_xp = JSON.parse(fichier)
 					let xp_level_up_required = xp_level_up_required_BASE * json_xp.xplevel;
 
-					message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
+					message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`); // POUR DRAXY : Ici c'est l'affichage de l'xp actuel, les noms de variables c'est ce qu'il y a entre ${ ET }. (Nota Bene: il faut bien que l'embed et l'appel des variable se fasse dans ces acolades là.)
 				})
 			} else { //si le fichier xp de l'utilisateur n'existe pas
-					message.channel.send("Cet utilisateur n'a aucune xp");
+					message.channel.send("Cet utilisateur n'a aucune xp"); // POUR DRAXY : Ici tu peux changer plutôt genre ça affiche 0 XP | Level 1. Ce sera mieux que ce truc x)
+
+
 					//message.channel.send(`XP de <@${id_usr}> : 0/${xp_level_up_required_BASE} | Level : 1`);
 			}
 	}
