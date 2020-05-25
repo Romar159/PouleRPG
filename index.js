@@ -1,4 +1,4 @@
-const Discord = require('discord.js'), bot = new Discord.Client()
+﻿const Discord = require('discord.js'), bot = new Discord.Client()
 const ajax = require("ajax");
 const fs = require("fs");
 const mkdirp = require("mkdirp");
@@ -26,8 +26,8 @@ let RomarEmpereurID = 421400262423347211;
 
 let prefix = ("p<");
 
-let bot_version = "0.3.2.2";
-let bot_lignes = "2744";
+let bot_version = "0.3.3";
+let bot_lignes = "2854";
 
 
 let MaitreFac_Epsilon;
@@ -52,6 +52,7 @@ let MaitreFac = "";
 
 
 const talkedRecently_arene = new Set();
+const tmp_arene = new Set();
 
 
 
@@ -59,6 +60,9 @@ let xp_level_up_required_BASE = 50; //nombre d'xp qu'il faut pour level de base 
 
 
 let buffer_thunas;
+
+var Date1;
+var Date2;
 		
 
 //Fontions:
@@ -477,7 +481,22 @@ function addXp(id_usr, xpToAdd) { // Nouvelle fonction pour l'xp : équilibrage 
 
 	xpToAdd = parseInt(xpToAdd);
 
-	fs.readFile("./json/xp/xp_" + id_usr + ".json", function(error, file) {
+	if (fs.existsSync('json/xp/xp_' + id_usr + '.json')) { //si le fichier xp de l'utilisateur existe déjà
+		console.log("Existe !");
+	} else {
+			fs.writeFileSync("./json/xp/xp_" + id_usr + ".json", `
+{
+	"xp": 0, 
+	"xplevel": 1
+}`, function(error) {
+				if (error) {
+					return console.log(error);
+				}
+			});
+			console.log("N'existe pas !");
+	}
+
+		fs.readFile("./json/xp/xp_" + id_usr + ".json", function(error, file) {
 
 
 
@@ -623,7 +642,7 @@ bot.on('message', async (message) => {
 	// check permissions 
 
 	if (message.content.startsWith(prefix)) { //Condition de développement -> permet de whitelist des utilisateurs
-		if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760") {
+		if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760" || message.author.id === "405420810933895168") {
 		}
 		else if (message.author.id === "624387170580561921") {
 			return;
@@ -635,6 +654,8 @@ bot.on('message', async (message) => {
 	}
 
 	const emote_or = bot.emojis.find(emoji => emoji.name === "or");
+	const emote_giga_gras = bot.emojis.find(emoji => emoji.name === "GIGA_GRAS");
+	const emote_bordel = bot.emojis.find(emoji => emoji.name === "BORDEL");
 
 	//Ping
 
@@ -846,18 +867,51 @@ bot.on('message', async (message) => {
 		let startTimeMS = 0;
 		let timeout;
 		let tm = 0;
+
+	
+
+		
+		
 	
 		let id_usr = message.author.id;
     	if (talkedRecently_arene.has(message.author.id)) {
-				message.channel.send(":hourglass: **| " + message.author.username + "**, il vous faut attendre **1 minute** avant de pouvoir vous battre de nouveau dans l'arène !");
+			Date2 = Math.floor(new Date() / 1000);
+
+			/*let pre_final = Date2 - Date1;
+			let final = 60 - pre_final;*/
+			
+			/*message.channel.send("unixtimestamp = " + Unix_timestamp(Date2) + "\nDate2 = " + Date2);
+			message.channel.send("Date1 = " + Date1); 
+			message.channel.send("Final = " + final); */
+
+			fs.readFile("./json/timers/timerArene_" + message.author.id + ".json", function(error, file) {
+				let timerfile = JSON.parse(file);
+				Date1 = timerfile.timer;
+
+				let attente_arene = 60 - (Date2 - Date1);
+			
+				message.channel.send(":hourglass: **| " + message.author.username + "**, il vous faut attendre encore **" + attente_arene + " secondes** avant de pouvoir vous battre de nouveau dans l'arène !");
 				
-				/*let final = 0;
+			});
 
-				message.channel.send("tm = " + tm);
+			
+			/*let final = 0;
 
-				message.channel.send("restant = " + final); */
+			message.channel.send("tm = " + tm);
+
+			message.channel.send("restant = " + final); */
 				
 	    } else {
+
+			
+			Date1 = Math.floor(new Date() / 1000);
+			fs.writeFileSync("./json/timers/timerArene_" + message.author.id + ".json", `{"timer": ` + Date1 + `}`, function(err) {
+				if(err) {
+					console.log(err);
+				}
+			})
+			
+
 
 	    	let arme_ennemi = "ABC"; //Change lorsque l'ennemi a une arme
 
@@ -909,7 +963,7 @@ bot.on('message', async (message) => {
 			}
 
 			if (arene_choixUser == 1 || arene_choixUser == 2 || arene_choixUser == 3) {
-
+				 
 				if (arene_choixUser == 1 && arene_choixEnnemy == 1) { //Masse VS Masse - Match nul
 				    message.channel.send(embed_arene_matchnul);
 				    addXp(id_usr, 2);
@@ -958,14 +1012,20 @@ bot.on('message', async (message) => {
 			}
 
 			// Adds the user to the set so that they can't talk for a minute
-	        talkedRecently_arene.add(message.author.id);
+			talkedRecently_arene.add(message.author.id);
+			
 	        
 	      	 //startTimeMS = new Date().getTime();
 	         setTimeout(() => {
-	          // Removes the user from the set after a minute
+			  // Removes the user from the set after a minute
 	          talkedRecently_arene.delete(message.author.id);
 	        }, couldown);
-	    }
+		}
+		
+
+		
+		
+
 	} ///FIN ARENE
     	
 
@@ -1347,86 +1407,42 @@ bot.on('message', async (message) => {
             .setTitle('Users with the go4 role:')
             .setDescription(message.guild.roles.get('659904895809224725').members.map(m=>m.user.tag).join('\n'));
         message.channel.send(ListEmbed);                    
-    }*/
-    		
+	}*/
+	
 
-	if (message.content === prefix + "xp") { //permet de voir son xp
-		let id_usr = message.author.id;
-
-		if (fs.existsSync('json/xp/xp_' + id_usr + '.json')) { //si le fichier xp de l'utilisateur existe déjà
-	    	fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
-			   	let json_xp = JSON.parse(fichier)
-			   	let xp_level_up_required = getLvlUpReqXP(message.author.id);
-
-			   	let embed_xp = new Discord.RichEmbed()
-			   		.setColor([50, 200, 110])
-            		.setAuthor("XP de " + message.author.username, message.author.displayAvatarURL)
-            		.setDescription(`**XP : ${json_xp.xp}/${xp_level_up_required}\nLevel : ${json_xp.xplevel}**`);
-
-
-            	message.channel.send(embed_xp);
-				//message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
-			})
-		} else { //si le fichier xp de l'utilisateur n'existe pas
-				//let contenu_json = '{' + '\n' + ' \"xp\" : 0, ' + '\n' + ' \"xplevel\" : 1' + '\n' + '}';
-				
-
-				//let data_write = JSON.stringify(contenu_json)
-				
-				fs.writeFile('json/xp/xp_' + id_usr + '.json', `
-					{
-						"xp" : 0,
-						"xplevel" : 1
-					}
-
-					`, function(erreur) {
-				    if (erreur) {
-				        console.log(erreur)
-				    }
-
-				    fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
-			   	let json_xp = JSON.parse(fichier)
-			   	let xp_level_up_required = getLvlUpReqXP(message.author.id);
-
-			   	let embed_xp = new Discord.RichEmbed()
-			   		.setColor([50, 200, 110])
-            		.setAuthor("XP de " + message.author.username, message.author.displayAvatarURL)
-            		.setDescription(`**XP : ${json_xp.xp}/${xp_level_up_required}\nLevel : ${json_xp.xplevel}**`);
-
-            	message.channel.send(embed_xp);
-				//message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
-			})
-				})
+		if (message.content.startsWith(prefix + "xp")) { //permet de voir son xp ou l'xp de quelqu'un
+		
+			let id_usr;
+				if (message.mentions.users.first() !== undefined) {
+					id_usr = message.mentions.users.first().id;
+					message.channel.send("La mention est valide !");
+				} else {
+					id_usr = message.author.id;
+					message.channel.send("La mention est invalide ! Ou n'existe pas !");
+				}
 
 			
 
-	/*
-	{
-	"xp" : 0,
-	"xplevel" : 1
-	}
-	*/
-		}
-	}
 
-		if (message.content.startsWith(prefix + "xp ")) { //permet de voir l'xp de quelqu'un
-		let id_usr = message.mentions.users.first().id;
+			if (fs.existsSync('json/xp/xp_' + id_usr + '.json')) { //si le fichier xp de l'utilisateur existe déjà
+				fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
+					let json_xp = JSON.parse(fichier)
+					let xp_level_up_required = xp_level_up_required_BASE * json_xp.xplevel;
 
-
-		if (fs.existsSync('json/xp/xp_' + id_usr + '.json')) { //si le fichier xp de l'utilisateur existe déjà
-	    	fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
-			   	let json_xp = JSON.parse(fichier)
-			   	let xp_level_up_required = xp_level_up_required_BASE * json_xp.xplevel;
-
-				message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
-			})
-		} else { //si le fichier xp de l'utilisateur n'existe pas
-				message.channel.send("Cet utilisateur n'a aucune xp");
-				//message.channel.send(`XP de <@${id_usr}> : 0/${xp_level_up_required_BASE} | Level : 1`);
-		}
+					message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
+				})
+			} else { //si le fichier xp de l'utilisateur n'existe pas
+					message.channel.send("Cet utilisateur n'a aucune xp");
+					//message.channel.send(`XP de <@${id_usr}> : 0/${xp_level_up_required_BASE} | Level : 1`);
+			}
 	}
 
 	
+
+
+
+
+
 
 	if (message.content.startsWith("J'adore le poulet")) { //Une commande useless
 		let poulet_ran = entierAleatoire(1, 5);
@@ -1623,9 +1639,36 @@ bot.on('message', async (message) => {
 
 
 
-	if (message.content.startsWith("Bonne nuit")) {
-		
-		message.channel.send("BONNE NUUIIIT :))")
+
+
+	if (message.content !== undefined && message.author.id !== bot.user.id) {
+		var test = message.content;
+		if( test.indexOf('Bonne nuit') >= 0 || test.indexOf('bonne nuit') >= 0 ||  test.indexOf('Bon nuit') >= 0 || test.indexOf('Bonne Nuit') >= 0 || test.indexOf('bon nuit') >= 0 || test.indexOf('Bon nui') >= 0 || test.indexOf('Bonne nui') >= 0 || test.indexOf('bonne nui') >= 0){
+			
+			let random_nuit = entierAleatoire(1, 5);
+
+			switch(random_nuit) {
+				case 1:
+					message.channel.send("BONNE NUUIIIT :))");
+					break;
+
+				case 2:
+					message.channel.send("Je vous souhaite à vous aussi une agréable nuit, ainsi que de faire de doux rêves pleins de bonheur.");
+					break;
+
+				case 3:
+					message.channel.send("bon nui.");
+					break;
+				
+					case 4:
+					message.channel.send("**BONNNNEUUUUH NUUUUUUIIIIIT A TOI AUZIIIIIII !!!!!! " + emote_giga_gras);
+					break;
+
+				case 5:
+					message.channel.send("Douce nuit à toi !");
+					break;
+			}
+		}
 	}
 
 	
@@ -2742,3 +2785,70 @@ factionDe_Request = "";
 		remXp(id_usr, 1);
 		message.channel.send("Success")
 	} */
+
+
+
+	// Ancienne commande XP sur nous même !
+
+	/*
+
+	if (message.content === prefix + "xpOBS") { //permet de voir son xp (Obsolète, servait avant de commande pour voir son xp, à maintenant été remplacé pour une autre qui permet de voir son xp ET celle des autres.)
+		let id_usr = message.author.id;
+
+		if (fs.existsSync('json/xp/xp_' + id_usr + '.json')) { //si le fichier xp de l'utilisateur existe déjà
+	    	fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
+			   	let json_xp = JSON.parse(fichier)
+			   	let xp_level_up_required = getLvlUpReqXP(message.author.id);
+
+			   	let embed_xp = new Discord.RichEmbed()
+			   		.setColor([50, 200, 110])
+            		.setAuthor("XP de " + message.author.username, message.author.displayAvatarURL)
+            		.setDescription(`**XP : ${json_xp.xp}/${xp_level_up_required}\nLevel : ${json_xp.xplevel}**`);
+
+
+            	message.channel.send(embed_xp);
+				//message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
+			})
+		} else { //si le fichier xp de l'utilisateur n'existe pas
+				//let contenu_json = '{' + '\n' + ' \"xp\" : 0, ' + '\n' + ' \"xplevel\" : 1' + '\n' + '}';
+				
+
+				//let data_write = JSON.stringify(contenu_json)
+				
+				fs.writeFile('json/xp/xp_' + id_usr + '.json', `
+					{
+						"xp" : 0,
+						"xplevel" : 1
+					}
+
+					`, function(erreur) {
+				    if (erreur) {
+				        console.log(erreur)
+				    }
+
+				    fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
+			   	let json_xp = JSON.parse(fichier)
+			   	let xp_level_up_required = getLvlUpReqXP(message.author.id);
+
+			   	let embed_xp = new Discord.RichEmbed()
+			   		.setColor([50, 200, 110])
+            		.setAuthor("XP de " + message.author.username, message.author.displayAvatarURL)
+            		.setDescription(`**XP : ${json_xp.xp}/${xp_level_up_required}\nLevel : ${json_xp.xplevel}**`);
+
+            	message.channel.send(embed_xp);
+				//message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`);
+			})
+				})
+
+			
+
+	
+	//{
+	//"xp" : 0,
+	//"xplevel" : 1
+	//}
+	
+		}
+	}
+
+	*/
