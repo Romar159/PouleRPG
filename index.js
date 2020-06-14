@@ -11,12 +11,15 @@ var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const wiki = require('wikijs').default;
 
 
+
+var serv;
+
+
 const hash = crypto.createHash('md5')
 	.update('password')
 	.digest('hex')
 
 const config = require("./data/config.json");
-
 
 bot.login(config.token);
 
@@ -24,10 +27,10 @@ let DraxyEmpereurID = 211911771433205760;
 let RomarEmpereurID = 421400262423347211;
 
 
-let prefix = ("p<");
+let prefix = (config.prefix);
 
-let bot_version = "0.3.3.1";
-let bot_lignes = "2854";
+let bot_version = "0.3.4";
+let bot_lignes = "3105";
 
 
 let MaitreFac_Epsilon;
@@ -56,7 +59,7 @@ const tmp_arene = new Set();
 
 
 
-let xp_level_up_required_BASE = 50; //nombre d'xp qu'il faut pour level de base (sans multiplicateur de level)
+let xp_level_up_required_BASE = 50; //nombre d'xp qu'il faut pour level de base (sans multiplicateur de level) OBSOLETE
 
 
 let buffer_thunas;
@@ -107,44 +110,108 @@ function Unix_timestamp(t) {
 }
 
 
-function addOr(id_usr, orToAdd) { 
+function addOr(id_usrF, orToAdd) { 
 
+	getMaxBankSize(id_usrF);
 	// Faire en sorte que l'on ne puisse pas être en thune négative !!! 
 	// (sinon on pourrait acheter n'importe quoi même si on est à -10000 ce serait comme de l'argent infini !)
 	// Voir si on doit ou non (le truc qui empêche d'être au dessus de notre bank max)
 
+	let id_usr = id_usrF.id;
+	console.log("ID_USR !!!!!!!! " + id_usr);
+
 	let or_a_ecrire; // Contient l'or total à ajouter
 	let or_in_json; // Contient l'or se trouvant dans le json
-	let max_bank; // Contient le niveau de bank max se trouvant dans le json
+	var max_bank = 0; // Contient le niveau de bank max se trouvant dans le json
 	let date = 0; // Contient la date à écrire lorsque le fichier user n'existe pas
 
 	if (fs.existsSync('json/or/or_' + id_usr + ".json")) { // Le fichier user or existe, on pourra donc le traiter
 		//checkBankMax(id_usr);
+		console.log("Le fichier existe !");
 	} else { // le fichier n'existe pas, on le crée pour le traiter par la suite.
-		or_a_ecrire = 0;
-		max_bank = 0;
 
-		console.log("addOr function : LE FICHIER N'EXISTE PAS !");
-		console.log("or_a_ecrire : " + or_a_ecrire + "\nmax_bank : " + max_bank);
+	console.log("Le fichier n'existe pas !");
 
-		fs.writeFileSync('json/or/or_' + id_usr + '.json', `
-			{
-				"or": 0,
-				"date": 0,
-				"maxbanque": 5 
-			}
-				
-			`, function(error) {
-				if (error) {
-					console.log(error);
+
+
+
+
+	let file = fs.readFileSync("data/temp/tempmxbk.json");
+	let json_maxbank = JSON.parse(file);
+	max_bank = json_maxbank.tmp;
+	or_a_ecrire = orToAdd;
+	console.log(max_bank);
+
+
+	fs.writeFileSync('json/or/or_' + id_usr + '.json', `
+				{
+					"or": ` + or_a_ecrire + `,
+					"date": 0,
+					"maxbanque": ` + max_bank + ` 
 				}
-			});
+					
+				`, function(error) {
+					if (error) {
+						console.log(error);
+					}
+				});
+	
+	//console.log(json_maxbank.tmp);
 
-	} // Fichier crée !
+	/*
+		fs.readFile(`./data/temp/tempmxbk.json`, function(fichier1) {
+
+			console.log("On est arrivé ici.");
+
+
+			
+			json_mxbk = JSON.parse(fichier1);
+			max_bank = json_mxbk.tmp;
+
+			console.log("max_bank = " + max_bank);
+
+			or_a_ecrire = orToAdd;
+			//max_bank = 0;
+
+			console.log("addOr function : LE FICHIER N'EXISTE PAS !");
+			console.log("or_a_ecrire : " + or_a_ecrire + "\nmax_bank : " + max_bank);
+
+			fs.writeFileSync('json/or/or_' + id_usr + '.json', `
+				{
+					"or": ` + or_a_ecrire + `,
+					"date": 0,
+					"maxbanque": ` + max_bank + ` 
+				}
+					
+				`, function(error) {
+					if (error) {
+						console.log(error);
+					}
+				});
+
+		});
+		*/
+
+		console.log("FIN de la création du fichier.");
+		return;
+	//ici on récup le maxbank
+
+
+
+	// Il faut test si ça marche, si quelqu'un ensuite fait la commande sans avoir le même niveau de max bank
+	// Le problème c'est que la première fois qu'on fait le arene sans le fichier or, cela n'ajoute pas l'or qu'on vient de gagner
+	// MAIS SEULEMENT LA PREMIERE FOIS !!
+	} 
+	// Fichier crée !
 
 	// On a forcément un fichier à traiter.
 
+	console.log("Traitement...");
+
 	fs.readFile(`json/or/or_${id_usr}.json`, function(error, fichier) {
+
+		console.log("Lecture en cours ...");
+
 		json_or = JSON.parse(fichier);
 
 		
@@ -521,6 +588,10 @@ function addXp(id_usr, xpToAdd) { // Nouvelle fonction pour l'xp : équilibrage 
 				xp_final = xp_final - xpmaxlvl_init;
 				xplvl_final = xplvl_init + 1;
 			}
+
+			if (xp_final < 0) {
+				xp_final = 0;
+			}
 			//return xpmaxlvl_init;
 			
 			// ...
@@ -588,33 +659,122 @@ function viewFactionBank(factionID) {
 		return BankFile.or;
 	}
 }
+
+function getMaxBankSize(id_usr) {
+
+
+	var continuer = true;
+	let max_banque_perso_function;
+	let final_getMaxBankFunction;
+
+	console.log("GetMaxBankSize executed...");
+
+
+	//bot.on('message', async (message) => { // Il ne rentre pas ici !!
+
+		console.log("bot.on MaxBankSize executé");
+
+		console.log(id_usr.roles);
+
+		//if (continuer) {
+
+		//console.log(serv.members);
+		
+			if (id_usr.roles.exists('id','445253268176633891')) {
+				max_banque_perso_function = maxbanque_esclave;
+				//message.channel.send("OK1 !" + max_banque_perso_function);
+				continuer = false;
+			}
+			else if (id_usr.roles.exists('id','445253591465328660')) {
+				max_banque_perso_function = maxbanque_paysan;
+				//message.channel.send("OK2 !" + max_banque_perso_function);
+				continuer = false;
+			}
+			else if (id_usr.roles.exists('id','445253561648021514')) {
+				max_banque_perso_function = maxbanque_bourgeois;
+				//message.channel.send("OK3 !" + max_banque_perso_function);
+				continuer = false;
+			}
+			else if (id_usr.roles.exists('id','445253809640308746')) {
+				max_banque_perso_function = maxbanque_courtisan;
+				//message.channel.send("OK4 !" + max_banque_perso_function);
+				continuer = false;
+			}
+			else if (id_usr.roles.exists('id','445257669918588948')) {
+				max_banque_perso_function = maxbanque_baron;
+			//	message.channel.send("OK5 !" + max_banque_perso_function);
+				continuer = false;
+			}
+			else if (id_usr.roles.exists('id','650832087993024522')) {
+				max_banque_perso_function = maxbanque_compte;
+			//	message.channel.send("OK6 !" + max_banque_perso_function);
+				continuer = false;
+			}
+			else if (id_usr.roles.exists('id','445257144011587594')) {
+				max_banque_perso_function = maxbanque_marquis;
+			//	message.channel.send("OK7 !" + max_banque_perso_function);
+				continuer = false;
+			}
+			else if (id_usr.roles.exists('id','612469098466639893')) {
+				max_banque_perso_function = maxbanque_duc;
+			//	message.channel.send("OK8 !" + max_banque_perso_function);
+				continuer = false;
+			}
+			else if (id_usr.roles.exists('id','650828967716192269')) {
+				max_banque_perso_function = maxbanque_vassal;
+			//	message.channel.send("OK9 !" + max_banque_perso_function);
+				continuer = false;
+
+
+									//message.guild.members.get(id_usr).roles.exists('id','650828967716192269')
+			} // fin test du role
+	//	} // fin if continuer
+
+		//console.log(max_banque_perso_function);
+
+
+		fs.writeFileSync("./data/temp/tempmxbk.json", `{"tmp" : ` + max_banque_perso_function + `}`, function(err) {
+			if (err) {
+				console.log(err);
+			}
+		});
+
+		
+	//}); // fin bot on
+
+	var mxbk;
+
+	fs.readFile("./data/temp/tempmxbk.json", function(error, file) {
+
+
+		if(error) {
+			console.log(error);
+		}
+
+
+			
+		let ftmp = JSON.parse(file);
+		mxbk = ftmp.tmp; // contient le max bank
+		console.log(mxbk);
+		
+	});
+
+
+	return;	
+
+		
+	//return max_banque_perso_function;
+
+} // fin de la fonction
+
+
 // Fin des fonctions
 
 // function de dev :
 
-function addXpTMP(id_usr, montant) {
-
-	montant = parseInt(montant);
-
-	let thunedeja = 5;
-	let final = montant + thunedeja;
-	return final;
-}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+// fin fonctions de dev
 
 
 
@@ -628,6 +788,9 @@ bot.on('ready', function() {
 	console.log("bot lancé le: " + new Date() + " ");
 
 	let InitializeVariable = 1;
+	serv = bot.guilds;
+	//console.log(serv);
+	
 });
 
 
@@ -677,6 +840,33 @@ bot.on('message', async (message) => {
 		let final = addXpTMP(message.author.id, args);
 		message.channel.send("FINAL: " + final);
 	}
+
+	if (message.content === prefix + "dev3") {
+		
+		let final = getMaxBankSize(message.author.id);
+		message.channel.send("FINAL: " + final);
+
+	}
+
+	if (message.content === prefix + "dev4") {
+		message.channel.send("FINAL: " + getMaxBankSizeTEMP(message.author.id));
+	}
+
+	if (message.content === prefix + "dev5") {
+
+		let member1 = message.member;
+		message.channel.send("MMM : " + member1.roles);
+		getMaxBankSize(member1);
+	}
+	if (message.content === prefix + "dev6") {
+		let member2 = message.member;
+		let idmbm = message.member.id;
+		message.channel.send("Member2/idmbm = " + member2 + "/" + idmbm);
+
+		addOr(member2, 1);
+	}
+
+
 	
 
 
@@ -696,7 +886,7 @@ bot.on('message', async (message) => {
 				.addField(":kite: AMUSEMENT DIVERS", "``phrase`` **|** ``pileouface`` **|** ``say`` **|** ``???``", false)
 				.addField(":bar_chart: STATISTIQUES PERSONNELLES", "``or`` **|** ``xp`` **|** ``mes beaux points venitienne`` **|** ``???``", false)
 				.addField(":moneybag: GAINS", "``arene`` **|** ``revenue`` **|** ``???``", false)
-				.addField(":gear: EXEMPLES", "``p<aide or`` **|** ``help phrase`` **|** ``p<aide revenue``", false)
+				.addField(":gear: EXEMPLES", "``p<aide or`` **|** ``p<help phrase`` **|** ``p<aide revenue``", false)
 				
 				.setFooter("© Bot par Romar1 et DraxyDow.", bot.user.displayAvatarURL)
 
@@ -868,6 +1058,8 @@ bot.on('message', async (message) => {
 		let timeout;
 		let tm = 0;
 
+		let aut_usr = message.member;
+
 	
 
 		
@@ -933,7 +1125,9 @@ bot.on('message', async (message) => {
 
 	    	if(arene_choixEnnemy == 3) {
 	    		arme_ennemi = "la lance";
-	    	}
+			}
+			
+			
 
 
 	    	//EMBED
@@ -969,9 +1163,10 @@ bot.on('message', async (message) => {
 				    addXp(id_usr, 2);
 				}
 	    		if (arene_choixUser == 1 && arene_choixEnnemy == 2) { //Masse VS Tomahawk - Victoire
-	    			message.channel.send(embed_arene_victoire);
+					message.channel.send(embed_arene_victoire);
+					//getMaxBankSize(id_usr);
 	    			addXp(id_usr, 7);
-					addOr(id_usr, 1);
+					addOr(aut_usr, 1);
 	    		}
 	    		if (arene_choixUser == 1 && arene_choixEnnemy == 3) { //Masse VS Lance - Défaite
 	    			message.channel.send(embed_arene_defaite);
@@ -991,7 +1186,7 @@ bot.on('message', async (message) => {
 	    		if (arene_choixUser == 2 && arene_choixEnnemy == 3) { //Tomahawk VS Lance - Victoire
 	    			message.channel.send(embed_arene_victoire);
 	    			addXp(id_usr, 7);
-					addOr(id_usr, 1);
+					addOr(aut_usr, 1);
 	    		}
 
 
@@ -999,7 +1194,7 @@ bot.on('message', async (message) => {
 	    		if (arene_choixUser == 3 && arene_choixEnnemy == 1) { //Lance VS Masse - Victoire
 	    			message.channel.send(embed_arene_victoire);
 	    			addXp(id_usr, 7);
-					addOr(id_usr, 1);
+					addOr(aut_usr, 1);
 	    		}
 	    		if (arene_choixUser == 3 && arene_choixEnnemy == 2) { //Lance VS Tomahawk - Défaite
 	    			message.channel.send(embed_arene_defaite);
@@ -1140,7 +1335,7 @@ bot.on('message', async (message) => {
 		 		max_banque_perso = maxbanque_vassal;
 		 	}
 
-		 } else { //si AUHTOR n'est pas maitre
+		 } else { //si AUTHOR n'est pas maitre
 		 		//donner la thunas normale
 		 	if (message.guild.members.get(message.author.id).roles.exists('id','445253268176633891')) {
 		 		or_a_add = 1;
@@ -1414,30 +1609,62 @@ bot.on('message', async (message) => {
 		if (message.content.startsWith(prefix + "xp")) { //permet de voir son xp ou l'xp de quelqu'un
 		
 			let id_usr;
+			let member;
 				if (message.mentions.users.first() !== undefined) {
 					id_usr = message.mentions.users.first().id;
+					member = message.mentions.users.first();
 					//message.channel.send("La mention est valide !"); //DEV
 				} else {
 					id_usr = message.author.id;
+					member = message.author;
 					//message.channel.send("La mention est invalide ! Ou n'existe pas !"); //DEV
 				}
+
+
+			
 
 			
 
 
 			if (fs.existsSync('json/xp/xp_' + id_usr + '.json')) { //si le fichier xp de l'utilisateur existe déjà
-				fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
-					let json_xp = JSON.parse(fichier)
-					let xp_level_up_required = xp_level_up_required_BASE * json_xp.xplevel;
-
-					message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`); // POUR DRAXY : Ici c'est l'affichage de l'xp actuel, les noms de variables c'est ce qu'il y a entre ${ ET }. (Nota Bene: il faut bien que l'embed et l'appel des variable se fasse dans ces acolades là.)
-				})
+				
 			} else { //si le fichier xp de l'utilisateur n'existe pas
-					message.channel.send("Cet utilisateur n'a aucune xp"); // POUR DRAXY : Ici tu peux changer plutôt genre ça affiche 0 XP | Level 1. Ce sera mieux que ce truc x)
-
-
+					//message.channel.send("Cet utilisateur n'a aucune xp"); // POUR DRAXY : Ici tu peux changer plutôt genre ça affiche 0 XP | Level 1. Ce sera mieux que ce truc x)
+					
+					fs.writeFileSync(`./json/xp/xp_${id_usr}.json`, `
+{
+"xp": 0,
+"xplevel": 1
+}`, 				function(err) {
+						if(err) {
+							console.log(err);
+						}
+					});
+					
 					//message.channel.send(`XP de <@${id_usr}> : 0/${xp_level_up_required_BASE} | Level : 1`);
 			}
+
+			// On a maintenant forcément un fichier à traiter.
+
+			fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
+				let json_xp = JSON.parse(fichier)
+				//let xp_level_up_required = xp_level_up_required_BASE * json_xp.xplevel;
+
+				let xplvl_init = json_xp.xplevel;
+
+				let xp_level_up_required = t = Math.round((550 * xplvl_init / Math.sqrt(xplvl_init))) - 200;
+
+				let embed_xp = new Discord.RichEmbed()
+				.setColor([50, 200, 110])
+				.setAuthor("XP de " + member.username, member.displayAvatarURL)
+				.setDescription(`**XP : ${json_xp.xp}/${xp_level_up_required}\nLevel : ${json_xp.xplevel}**`);
+				
+				message.channel.send(embed_xp);
+
+
+
+				//message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`); // POUR DRAXY : Ici c'est l'affichage de l'xp actuel, les noms de variables c'est ce qu'il y a entre ${ ET }. (Nota Bene: il faut bien que l'embed et l'appel des variable se fasse dans ces acolades là.)
+			});
 	}
 
 	
@@ -1692,10 +1919,10 @@ bot.on('message', async (message) => {
 
 		let loopCasio = true;
 		//Personne, action, objet, lieu, temps
-		let personne = [`Chloé`, `Barack Obama`, `Donald Trump`, `Une tortue de mer`, `Un poulet`, `Romar1`, `Noxali`, `Zheo`, `DraxyCUL`, `La Vénitienne`, `PouleRPG`, `Dieu Poulet`, `Jérémy`, `Les Zêtas`, `Le Maître Gamma`, `Le frère con`, `Hitler`, `Une enfant`, `Un psychopathe`, `Un entraineur`, `Un juge`, `Le procureur`, `Donald`, `Picsou`, `Romar1`, `Chveux Vert`, `PD3`, `Bordel`, `Princesseuh`, `DarkDavy`, `Damben`, `Dark`, `Darky`, `BanjoBoi`, `KriixMerde`, `TetreMerde`, `Tatsumakmerde`, /*`Romar la pute de luxe`,*/ `Les Epsilon`, `Un pokémon`, /*`Des animaux de la ferme`*/, `Un chat`, `Un chien`, `Une souris`, `Un animal`, `Emmanuel Macron`, `Kim Jong-Un`, `Un dictateur`, `Gigi`, `Un bon gros fils de pute`]; //personnage
-		let action   = [`mange`, `vend`, `détruit`, `fait disparaître`, `lance`, `consomme`, `découpe lentement`, `donne`, `rage à cause (d')`, `pénètre`, `regarde`, `écoute`, /*`à une relation incestueuse avec`,*/ `juge`, `se procure`, `fait un rite satanique avec`, `s'entraine avec`, `poste`, `chante avec`, `théorise sur`, `réfléchit à ne pas cheat avec`, `envoie un cookie à`, `prie`, `meurt à cause (d')`, `fait chier`, `hack les logs (d')`, `a claqué`, `rit de`, `fait apparaître`, `dors grâce à`, `bois`, `fait la lessive pour`, `fait à manger à`, /*`fait le ménage pour`,*/ `insulte`, /*`crie`*/]; //action
-		let objet    = [`une pomme`, `un radiateur`, `une ampoule`, `une vitre`, `du poulet`, `des grilles pain`, `un nouveau née`, `des points venitienne`, `la loi paragraphe 4, sous-tiret 2, alinéa 1`, /*`une arme de destruction massive`,*/ `la boite de jeu de "Link faces to evil"`, `les recettes de cuisine de Noxali`, `des funérailles`, `un banc de messe`, `une porte d'église`, `un bénitier`, `des produits illicites`, `un cercueil`, /*`un film`, `une série`*/, `un enfant`, `de la musique`, `un hentai`, `un mouton`, `un boeuf`, `un mandat`, /*`une vidéo virale`*/, `un ralentisseur de type "dos d'âne"`, `la loi paragraphe 4, sous-tiret 3, alinéa 1`, `une porte`, `un fruit`, /*`une armes blanches`*/, `un jeu Nintendo`, `une boîte en carton`, `une voiture`, `un panneau`, `un tableau`, `une craie`, `un feutre`, `un crayon de couleur`, `une contravention`, `un film`]; //objet1
-		let objet2   = [/*`une aiguille`, */`un couteau`, `du taboulé`, `du chocolat`, `de la confiture`, /*`une anguille`,*/ `un frigo`, `du rhum`, `de l'alcool`, `la daronne de Draxy`, `un verre`, `Zheo`, `le curé`, `des enfants`, `un cheval`, `un veau`]; //objet2
+		let personne = [`Chloé`, `Donald Trump`, `Une tortue de mer`, `Un poulet`, `Romar1`, `Noxali`, `Zheo`, `DraxyCUL`, `La Vénitienne`, `PouleRPG`, `Dieu Poulet`, `Jérémerde`, `Zêta`, `Le Maître Gamma`, `Le frère con`, `Hitler`, `Une enfant`, `Un psychopathe`, `Un entraineur`, `Un juge`, `Le procureur`, `Romar1`, `Chveux Vert`, `Bordel`, `Princesseuh`, `DarkDavy`, `Damben`, `Dark`, `Darky`, `BanjoBoi`, `KriixMerde`, `TetreMerde`, `Tatsumakmerde`, /*`Romar la pute de luxe`,*/ `Epsilon`, `Un pokémon`, /*`Des animaux de la ferme`,*/ `Un chat`, `Un chien`, `Une souris`, `Un animal`, `Emmanuel Macron`, `Kim Jong-Un`, `Un dictateur`, `Gigi`, `Un bon gros fils de pute`]; //personnage
+		let action   = [`mange`, `vend`, `détruit`, `fait disparaître`, `lance`, `consomme`, `découpe lentement`, `donne`, `rage à cause (d')`, `pénètre`, `regarde`, `écoute`, /*`à une relation incestueuse avec`,*/ `juge`, `se procure`, `fait un rite satanique avec`, `s'entraine avec`, `poste`, `chante avec`, `théorise sur`, `réfléchit à ne pas cheat avec`, `envoie un cookie à`, `prie`, `meurt à cause (d')`, `fait chier`, `hack les logs (d')`, `claque`, `rit de (d')`, `fait apparaître`, `dors grâce à`, `bois`, `fait la lessive pour`, `fait à manger à`, /*`fait le ménage pour`,*/ `insulte`/*, `crie`*/]; //action
+		let objet    = [`une pomme`, `un radiateur`, `une ampoule`, `une vitre`, `du poulet`, `des grilles pain`, `un nouveau née`, `des points vénitienne`, `la loi paragraphe 4, sous-tiret 2, alinéa 1`, /*`une arme de destruction massive`,*/ `la boite de jeu de "Link faces to evil"`, `les recettes de cuisine de Noxali`, `des funérailles`, `un banc de messe`, `une porte d'église`, `un bénitier`, `des produits illicites`, `un cercueil`, /*`un film`, `une série`,*/ `un enfant`, `la musique`, `un hentai`, `un mouton`, `un boeuf`, `un mandat`, /*`une vidéo virale`,*/ `un ralentisseur de type "dos d'âne"`, `la loi paragraphe 4, sous-tiret 3, alinéa 1`, `une porte`, `un fruit`, /*`une armes blanches`, `un jeu Nintendo`,*/ `une boîte en carton`, `une voiture`, `un panneau`, `un tableau`, `une craie`, `un feutre`, `un crayon de couleur`, `une contravention`/*, `un film`*/]; //objet1
+		let objet2   = [/*`une aiguille`, */`un couteau`, /*`du taboulé`, `du chocolat`,*/ `de la confiture`, /*`une anguille`,*/ `un frigo`, `du rhum`, `de l'alcool`, `la daronne de Draxy`, `un verre`, `Zheo`, `le curé`, `des enfants`, `un cheval`, `un veau`]; //objet2
 		let conjCoord= [`avec`]; //conjonction
 		let lieu     = [`à Londres`, `à Stockholm`, `en nouvelle Zélande`, `dans son salon`, `dans la cuisine du voisin`, `sur l'Empire Du Poulet`, `dehors`, /*`au ministère de la justice`,*/ `dans une église`, `dans la cave`, `dans un laboratoire`, `dans une maison close`, `dans l'espace`, `dans la chambre de Zheo`, `dans un cimetière`, `à un mariage`, `dans la cathédrale Dieu Poulet`, /*`dans un karaoké`,*/ `dans un centre commercial`, `dans les toilettes`, `dans un cinéma`, `au Super U du coin`, `à Auschwitz` /*`au journal`, `au japon`, `sur Snapchat`, `sur Twitter`, `sur un mur`, `sur Pinterest`*/]; //lieu
 		let temps    = [`à 23h30`, `le lundi matin`, `avant son travail`, `après le déjeuner`, `à minuit`, `à l'heure de la sieste`, `au goûter`, `pendant sa douche`, `à l'heure de manger`, `pendant le repas`, `à la Repä`, `pendant le Goc International`, `à l'ouverture des jeux olympiques`, `pendant la 3ème guerre mondiale`, `au claire de lune`, `au moment où l'astre stellaire n'est plus visible que de moitié`]; //temps
@@ -1741,7 +1968,15 @@ bot.on('message', async (message) => {
 
 			if (personne[choix_personne] != undefined || action[choix_action] != undefined || objet[choix_objet] != undefined || conjCoord[choix_conjCoord] != undefined || objet2[choix_objet2] != undefined || lieu[choix_lieu] != undefined || temps[choix_temps] != undefined)
 			{
-				message.channel.send(`${personne[choix_personne]} ${action[choix_action]} ${objet[choix_objet]} ${conjCoord[choix_conjCoord]} ${objet2[choix_objet2]} ${lieu[choix_lieu]}`/*${temps[choix_temps]}`*/);
+				let ran2 = entierAleatoire(1, 6);
+				if (ran2 == 1 || ran2 == 2 || ran2 == 3) {
+					message.channel.send(`${personne[choix_personne]} ${action[choix_action]} ${objet[choix_objet]} ${conjCoord[choix_conjCoord]} ${objet2[choix_objet2]} ${lieu[choix_lieu]}`/*${temps[choix_temps]}`*/);
+				} else if (ran2 == 4) {
+					message.channel.send(`${personne[choix_personne]} ${action[choix_action]} ${objet[choix_objet]}`);
+				} else if (ran2 == 5 || ran2 == 6) {
+					message.channel.send(`${personne[choix_personne]} ${action[choix_action]} ${objet[choix_objet]} ${conjCoord[choix_conjCoord]} ${objet2[choix_objet2]}`/*${temps[choix_temps]}`*/);
+				}
+				
 				loopCasio = false;
 			} else {
 				console.log("On continue y'a un undefined dans la phrase (casionost phrase)");
@@ -1767,6 +2002,8 @@ bot.on('message', async (message) => {
 			}
 			message.channel.send("END.")
 	}	
+
+	/*
 
 	if (message.author.id === "159985870458322944") { // si un message est envoyé par mee6
 
@@ -1863,7 +2100,7 @@ bot.on('message', async (message) => {
 		 }
 
 
-	} // Fin du test de niveau de bank
+	} // Fin du test de niveau de bank */
 
 	
 
@@ -2121,11 +2358,14 @@ bot.on('message', async (message) => {
 
 			if (message.mentions.users.first() != undefined) {	
 				let id_usr = message.mentions.users.first().id;
+
+				let aut_usr = message.mentions.members.first();
 				console.log("id_usr : " + id_usr);
 				//let or = parseInt(argsAddOr, 10);
 				let or = argsAddOr;
 				console.log("OR : " + or);
-				addOr(id_usr, or);	
+				//getMaxBankSize(id_usr);
+				addOr(aut_usr, or);	
 			} else {
 				message.channel.send("ERROR [1]: Synthaxe Error");
 				return;
@@ -2198,7 +2438,10 @@ bot.on('message', async (message) => {
                     console.log("Commande exécutée. -> Admin Test Passé -> switch effectué");
                     message.delete();
                 } else {
-                        message.channel.send("KICK");
+                        //message.channel.send("KICK");
+                        member.kick();
+                        message.channel.send(`<@${id_mention}> a été kick, nous n'acceptons pas les inactifs sur le serveur.`);
+                        message.delete();
                 }
 
                 
@@ -2855,3 +3098,7 @@ factionDe_Request = "";
 	}
 
 	*/
+
+	
+
+
