@@ -10,16 +10,14 @@ let getRandomValues = require('get-random-values');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const wiki = require('wikijs').default;
 
-
-
 var serv;
-
 
 const hash = crypto.createHash('md5')
 	.update('password')
 	.digest('hex')
 
 const config = require("./data/config.json");
+const { list } = require('pm2');
 
 bot.login(config.token);
 
@@ -29,8 +27,8 @@ let RomarEmpereurID = 421400262423347211;
 
 let prefix = (config.prefix);
 
-let bot_version = "0.3.4";
-let bot_lignes = "3105";
+let bot_version = "0.3.5";
+let bot_lignes = "3210";
 
 
 let MaitreFac_Epsilon;
@@ -55,7 +53,10 @@ let MaitreFac = "";
 
 
 const talkedRecently_arene = new Set();
+const talkedRecently_pray = new Set();
+const talkedRecently_coinsdf = new Set();
 const tmp_arene = new Set();
+
 
 
 
@@ -667,7 +668,7 @@ function getMaxBankSize(id_usr) {
 	let max_banque_perso_function;
 	let final_getMaxBankFunction;
 
-	console.log("GetMaxBankSize executed...");
+	console.log("GetMaxBankSize executed... ID_USR " + id_usr);
 
 
 	//bot.on('message', async (message) => { // Il ne rentre pas ici !!
@@ -778,6 +779,12 @@ function getMaxBankSize(id_usr) {
 
 
 
+
+//Items liste
+
+var item_materiaux = new Array(); // De 0 à 99 (100 items possibles).
+
+
 // Début bot :
 
 
@@ -819,6 +826,10 @@ bot.on('message', async (message) => {
 	const emote_or = bot.emojis.find(emoji => emoji.name === "or");
 	const emote_giga_gras = bot.emojis.find(emoji => emoji.name === "GIGA_GRAS");
 	const emote_bordel = bot.emojis.find(emoji => emoji.name === "BORDEL");
+	const emote_pray = bot.emojis.find(emoji => emoji.name === "pray");
+	const emote_fakedieu = bot.emojis.find(emoji => emoji.name === "fake_DIEU_POULET");
+	const emote_dieudroite = bot.emojis.find(emoji => emoji.name === "DIEU_POULET_droite");
+	const emote_dieugauche = bot.emojis.find(emoji => emoji.name === "DIEU_POULET_gauche"); 
 
 	//Ping
 
@@ -1919,8 +1930,8 @@ bot.on('message', async (message) => {
 
 		let loopCasio = true;
 		//Personne, action, objet, lieu, temps
-		let personne = [`Chloé`, `Donald Trump`, `Une tortue de mer`, `Un poulet`, `Romar1`, `Noxali`, `Zheo`, `DraxyCUL`, `La Vénitienne`, `PouleRPG`, `Dieu Poulet`, `Jérémerde`, `Zêta`, `Le Maître Gamma`, `Le frère con`, `Hitler`, `Une enfant`, `Un psychopathe`, `Un entraineur`, `Un juge`, `Le procureur`, `Romar1`, `Chveux Vert`, `Bordel`, `Princesseuh`, `DarkDavy`, `Damben`, `Dark`, `Darky`, `BanjoBoi`, `KriixMerde`, `TetreMerde`, `Tatsumakmerde`, /*`Romar la pute de luxe`,*/ `Epsilon`, `Un pokémon`, /*`Des animaux de la ferme`,*/ `Un chat`, `Un chien`, `Une souris`, `Un animal`, `Emmanuel Macron`, `Kim Jong-Un`, `Un dictateur`, `Gigi`, `Un bon gros fils de pute`]; //personnage
-		let action   = [`mange`, `vend`, `détruit`, `fait disparaître`, `lance`, `consomme`, `découpe lentement`, `donne`, `rage à cause (d')`, `pénètre`, `regarde`, `écoute`, /*`à une relation incestueuse avec`,*/ `juge`, `se procure`, `fait un rite satanique avec`, `s'entraine avec`, `poste`, `chante avec`, `théorise sur`, `réfléchit à ne pas cheat avec`, `envoie un cookie à`, `prie`, `meurt à cause (d')`, `fait chier`, `hack les logs (d')`, `claque`, `rit de (d')`, `fait apparaître`, `dors grâce à`, `bois`, `fait la lessive pour`, `fait à manger à`, /*`fait le ménage pour`,*/ `insulte`/*, `crie`*/]; //action
+		let personne = [`Un PD`, `Chintok`, `La mémé de la Rochelle`, `Medyl`, `Léa`, `Zineb`, `Chloé`, `Donald Trump`, `Une tortue de mer`, `Un poulet`, `Romar1`, `Noxali`, `Zheo`, `DraxyCUL`, `La Vénitienne`, `PouleRPG`, `Dieu Poulet`, `Jérémerde`, `Zêta`, `Le Maître Gamma`, `Le frère con`, `Hitler`, `Une enfant`, `Un psychopathe`, `Un entraineur`, `Un juge`, `Le procureur`, `Romar1`, `Chveux Vert`, `Bordel`, `Princesseuh`, `DarkDavy`, `Damben`, `Dark`, `Darky`, `BanjoBoi`, `KriixMerde`, `TetreMerde`, `Tatsumakmerde`, /*`Romar la pute de luxe`,*/ `Epsilon`, `Un pokémon`, /*`Des animaux de la ferme`,*/ `Un chat`, `Un chien`, `Une souris`, `Un animal`, `Emmanuel Macron`, `Kim Jong-Un`, `Un dictateur`, `Gigi`, `Un bon gros fils de pute`]; //personnage
+		let action   = [`Imagine ses morts à`, `meurt devant`,`mange`, `vend`, `détruit`, `fait disparaître`, `lance`, `consomme`, `découpe lentement`, `donne`, `rage à cause (d')`, `pénètre`, `regarde`, `écoute`, /*`à une relation incestueuse avec`,*/ `juge`, `se procure`, `fait un rite satanique avec`, `s'entraine avec`, `poste`, `chante avec`, `théorise sur`, `réfléchit à ne pas cheat avec`, `envoie un cookie à`, `prie`, `meurt à cause (d')`, `fait chier`, `hack les logs (d')`, `claque`, `rit de (d')`, `fait apparaître`, `dors grâce à`, `bois`, `fait la lessive pour`, `fait à manger à`, /*`fait le ménage pour`,*/ `insulte`/*, `crie`*/]; //action
 		let objet    = [`une pomme`, `un radiateur`, `une ampoule`, `une vitre`, `du poulet`, `des grilles pain`, `un nouveau née`, `des points vénitienne`, `la loi paragraphe 4, sous-tiret 2, alinéa 1`, /*`une arme de destruction massive`,*/ `la boite de jeu de "Link faces to evil"`, `les recettes de cuisine de Noxali`, `des funérailles`, `un banc de messe`, `une porte d'église`, `un bénitier`, `des produits illicites`, `un cercueil`, /*`un film`, `une série`,*/ `un enfant`, `la musique`, `un hentai`, `un mouton`, `un boeuf`, `un mandat`, /*`une vidéo virale`,*/ `un ralentisseur de type "dos d'âne"`, `la loi paragraphe 4, sous-tiret 3, alinéa 1`, `une porte`, `un fruit`, /*`une armes blanches`, `un jeu Nintendo`,*/ `une boîte en carton`, `une voiture`, `un panneau`, `un tableau`, `une craie`, `un feutre`, `un crayon de couleur`, `une contravention`/*, `un film`*/]; //objet1
 		let objet2   = [/*`une aiguille`, */`un couteau`, /*`du taboulé`, `du chocolat`,*/ `de la confiture`, /*`une anguille`,*/ `un frigo`, `du rhum`, `de l'alcool`, `la daronne de Draxy`, `un verre`, `Zheo`, `le curé`, `des enfants`, `un cheval`, `un veau`]; //objet2
 		let conjCoord= [`avec`]; //conjonction
@@ -2259,6 +2270,96 @@ bot.on('message', async (message) => {
 			message.channel.send("Face");
 	}
 
+	if (message.content !== undefined && message.author.id !== bot.user.id) {
+		let pray = message.content;
+		let midnight = new Date();
+		midnight.setHours(24,0,0,0); 
+		let now = new Date();
+		let msToMidnight = midnight - now;
+		let couldown = msToMidnight;
+
+		//message.channel.send("msToMidNight : " + couldown + "\n minute untilMidnight : " + (couldown / 1000) / 60 + "\n Hour: " + (((couldown / 1000) / 60) / 60));
+
+		
+			
+		
+			if(test.indexOf(`🙏`) >= 0) {
+				if (test.indexOf(`${emote_fakedieu}`) >= 0 || test.indexOf(`${emote_dieudroite}`) >= 0 || test.indexOf(`${emote_dieugauche}`) >= 0 || test.indexOf(`🐔`) >= 0) {
+					if (message.channel.id === "445370665395159060") {
+
+						if (talkedRecently_pray.has(message.author.id)) {
+							//message.channel.send("A deja prié aujourd'hui");
+						} else {
+							//message.channel.send("N'a pas encore prié !");
+							talkedRecently_pray.add(message.author.id);
+
+
+							//message.channel.send("prie !");
+							let ranPray = entierAleatoire(1, 15);
+							if (ranPray == 1) { // Une chance sur 15
+								let mbm = message.member;
+								addOr(mbm, 3);
+								message.author.send("Dieu Poulet à entendu votre prière, 3 or " + emote_or + " apparaissent étrangement dans votre main.")
+							}
+						}
+					}
+				}
+			}
+
+			
+			 
+			setTimeout(() => {
+			talkedRecently_pray.delete(message.author.id);
+		}, couldown); // le couldown sera égale au temps qu'il reste avant 00H (en ms).
+
+		
+	}
+
+	if (message.content === prefix + "tossACoinToYourSDF") {
+		let midnight = new Date();
+		midnight.setHours(24,0,0,0); 
+		let now = new Date();
+		let msToMidnight = midnight - now;
+		let couldown = msToMidnight;
+		
+
+		if (talkedRecently_coinsdf.has(message.author.id)) {
+			message.channel.send("Vous avez déjà jeté un sous à votre SDF aujourd'hui " + emote_giga_gras + "\n attendez encore : **" + Math.round(((couldown / 1000) / 60) / 60) + " Heures**.")
+
+		} else {
+			let member_ran;
+
+			member_ran = message.guild.members.random();
+			//console.log("member_ran : " + member_ran);
+
+			if (member_ran.user.bot) {
+				while(member_ran.user.bot) {
+					member_ran = message.guild.members.random();
+					//console.log("member_ran : " + member_ran);
+					console.log("Retry -> BOT");
+				//	message.channel.send("BOT")
+				}
+			}	
+			// message.channel.send("USER trouvé");
+
+			addOr(member_ran, 1);
+			message.channel.send("Vous avez jeté un sous à ce SDF de " + member_ran.displayName);
+			talkedRecently_coinsdf.add(message.author.id);
+			
+			//message.channel.send("member_ran : " + member_ran);
+			
+			
+		}
+
+		setTimeout(() => {
+			talkedRecently_coinsdf.delete(message.author.id);
+		}, couldown); // le couldown sera égale au temps qu'il reste avant 00H (en ms).
+
+
+	}
+
+
+
 
 
 
@@ -2324,30 +2425,7 @@ bot.on('message', async (message) => {
 			}
 		}
 
-		if (message.content === prefix + "add1Xp --me") {
-			let id_usr = message.author.id; 
-			addXp(id_usr, 1);
-		}
-
-		if (message.content.startsWith(prefix + "setXpOBS ")) {
-			let argsAddXp = message.content.slice(prefix.length + 6 + 23)
-			message.channel.send("User: " + message.mentions.users.first() + "\nNombreXP: " + argsAddXp);
-
-			if (message.mentions.users.first() != undefined) {				
-				if (argsAddXp < 100) {				
-					if (argsAddXp >=100) {
-						message.channel.send("Valeur trop haute (MAX: 99)");
-					} else {
-						let xp = Number(argsAddXp);
-						addXp(message.mentions.users.first().id, xp)
-					}
-				} else {
-					message.channel.send("Erreur de synthaxe (p<setXp @USER XP) OU valeur trop haute (MAX: 99)");
-				}
-			} else {
-				message.channel.send("Utilisateur non défini -> Erreur synthaxe (p<setXp @USER XP)");
-			}
-		}
+		
 
 		if (message.content.startsWith(prefix + "setOr ")) {
 			console.log("Message Original : " + message.content);
@@ -2357,15 +2435,20 @@ bot.on('message', async (message) => {
 			console.log("Message slicé : " + argsAddOr);
 
 			if (message.mentions.users.first() != undefined) {	
-				let id_usr = message.mentions.users.first().id;
+				if (argsAddOr > 0 || argsAddOr < 0) {
+					let id_usr = message.mentions.users.first().id;
 
-				let aut_usr = message.mentions.members.first();
-				console.log("id_usr : " + id_usr);
-				//let or = parseInt(argsAddOr, 10);
-				let or = argsAddOr;
-				console.log("OR : " + or);
-				//getMaxBankSize(id_usr);
-				addOr(aut_usr, or);	
+					let aut_usr = message.mentions.members.first();
+					console.log("id_usr : " + id_usr);
+					//let or = parseInt(argsAddOr, 10);
+					let or = argsAddOr;
+					console.log("OR : " + or);
+					//getMaxBankSize(id_usr);
+					addOr(aut_usr, or);	
+				} else {
+					message.channel.send("ERROR [6]: Invalide Arguments");
+					return;
+				}
 			} else {
 				message.channel.send("ERROR [1]: Synthaxe Error");
 				return;
@@ -2380,7 +2463,8 @@ bot.on('message', async (message) => {
 			console.log("Message slicé : " + argsAddXp);
 
 			if (message.mentions.users.first() != undefined) {
-				if (argsAddXp != undefined) {	
+				if (argsAddXp > 0 || argsAddXp < 0) {
+					message.channel.send("argsAddXP : " + argsAddXp)	
 					let id_usr = message.mentions.users.first().id;
 					console.log("id_usr : " + id_usr);
 					//let or = parseInt(argsAddOr, 10);
@@ -3098,6 +3182,27 @@ factionDe_Request = "";
 	}
 
 	*/
+
+	// l'ancienne commande admin SetXp
+		/* if (message.content.startsWith(prefix + "setXpOBS ")) {
+			let argsAddXp = message.content.slice(prefix.length + 6 + 23)
+			message.channel.send("User: " + message.mentions.users.first() + "\nNombreXP: " + argsAddXp);
+
+			if (message.mentions.users.first() != undefined) {				
+				if (argsAddXp < 100) {				
+					if (argsAddXp >=100) {
+						message.channel.send("Valeur trop haute (MAX: 99)");
+					} else {
+						let xp = Number(argsAddXp);
+						addXp(message.mentions.users.first().id, xp)
+					}
+				} else {
+					message.channel.send("Erreur de synthaxe (p<setXp @USER XP) OU valeur trop haute (MAX: 99)");
+				}
+			} else {
+				message.channel.send("Utilisateur non défini -> Erreur synthaxe (p<setXp @USER XP)");
+			}
+		} */
 
 	
 
