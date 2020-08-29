@@ -27,8 +27,8 @@ let RomarEmpereurID = 421400262423347211;
 
 let prefix = (config.prefix);
 
-let bot_version = "0.3.5";
-let bot_lignes = "3210";
+let bot_version = "0.3.6";
+let bot_lignes = "3592";
 
 
 let MaitreFac_Epsilon;
@@ -241,35 +241,38 @@ function addOr(id_usrF, orToAdd) {
 					buffer_thunas = or_a_ecrire - max_bank; //contient le surplus d'or
 					or_a_ecrire = or_a_ecrire - buffer_thunas; //enlève le surplus à l'or final
 
-					/* if(message.member.roles.find(r => r.name === "Epsilon")) { factionDe_Request = "Epsilon"; }
-					else if(message.member.roles.find(r => r.name === "Gamma")) { factionDe_Request = "Gamma"; 	 }
-					else if(message.member.roles.find(r => r.name === "Zeta")) { factionDe_Request = "Zeta";   }
-					else if(message.member.roles.find(r => r.name === "Omega")) { factionDe_Request = "Omega";   }
-					else { }
+					// ici mettre buffer_thunas dans la banque de faction !
+
+					if(id_usrF.roles.find(r => r.name === "Epsilon")) { factionDe_Request = "Epsilon"; }
+					else if(id_usrF.roles.find(r => r.name === "Gamma")) { factionDe_Request = "Gamma"; 	 }
+					else if(id_usrF.roles.find(r => r.name === "Zeta")) { factionDe_Request = "Zeta";   }
+					else if(id_usrF.roles.find(r => r.name === "Omega")) { factionDe_Request = "Omega";   }
+					
+					let chan1 = bot.channels.get('415945814045884427');
 
 					if (factionDe_Request == "Epsilon") {
 						//ENVOIE DANS LE COFFRE DE EPSILON
-						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Epsilon." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+						chan1.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Epsilon." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
 						addOrFaction(1, buffer_thunas); // Envoie à epsilon du surplus d'or
 
 					} else if (factionDe_Request == "Gamma") {
 						//ENVOIE DANS LE COFFRE DE EPSILON
-						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Gamma." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+						chan1.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Gamma." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
 						addOrFaction(3, buffer_thunas); // Envoie à Gamma le surplus
 
 					} else if (factionDe_Request == "Zeta") {
 						//ENVOIE DANS LE COFFRE DE EPSILON
-						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Zeta." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+						chan1.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Zeta." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
 						addOrFaction(2, buffer_thunas); // Envoie à Zeta le surplus
 
 					} else if (factionDe_Request == "Omega") {
 
-						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Omega." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+						chan1.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Omega." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
 						addOrFaction(4, buffer_thunas); // Envoie à Oméga le surplus
 
 					} else {
-						message.channel.send("Le surplus d'argent à été rendu à PouleRPG : -" + buffer_thunas + " or." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
-					} */
+						message.channel.send("Le surplus d'argent à été rendu à PouleRPG : -" + buffer_thunas + " or." + " (Montez de niveau pour augmenter la capacité de votre banque.)");
+					} 
 
 
 
@@ -338,7 +341,7 @@ function addOrFaction(factionID, montant) {
 
 	let BankFile = require("./json/data_factions/" + faction + "/Banque_" + faction + ".json"); 
 
-	let total = montant + or.BankFile;
+	let total = montant + BankFile.or;
 
 	let Orbank = { 
 		or: total,
@@ -668,14 +671,17 @@ function getMaxBankSize(id_usr) {
 	let max_banque_perso_function;
 	let final_getMaxBankFunction;
 
-	console.log("GetMaxBankSize executed... ID_USR " + id_usr);
+	let revenue_prolo_function;
+	let revenue_maitre_function;
+
+	console.log("GetMaxBankSize executed... ID_USR " + id_usr); 
 
 
 	//bot.on('message', async (message) => { // Il ne rentre pas ici !!
 
 		console.log("bot.on MaxBankSize executé");
 
-		console.log(id_usr.roles);
+		//console.log(id_usr.roles); //-> ce truc SPAM SA GRAND MERE LA CONSOLE avec TOUT le member
 
 		//if (continuer) {
 
@@ -685,46 +691,65 @@ function getMaxBankSize(id_usr) {
 				max_banque_perso_function = maxbanque_esclave;
 				//message.channel.send("OK1 !" + max_banque_perso_function);
 				continuer = false;
+				revenue_prolo_function = 1;
+				revenue_maitre_function = 1;
 			}
 			else if (id_usr.roles.exists('id','445253591465328660')) {
 				max_banque_perso_function = maxbanque_paysan;
 				//message.channel.send("OK2 !" + max_banque_perso_function);
 				continuer = false;
+				revenue_prolo_function = 2;
+				revenue_maitre_function = 3;
 			}
 			else if (id_usr.roles.exists('id','445253561648021514')) {
 				max_banque_perso_function = maxbanque_bourgeois;
 				//message.channel.send("OK3 !" + max_banque_perso_function);
 				continuer = false;
+				revenue_prolo_function = 5;
+				revenue_maitre_function = 7;
 			}
 			else if (id_usr.roles.exists('id','445253809640308746')) {
 				max_banque_perso_function = maxbanque_courtisan;
 				//message.channel.send("OK4 !" + max_banque_perso_function);
 				continuer = false;
+				revenue_prolo_function = 6;
+				revenue_maitre_function = 9;
 			}
 			else if (id_usr.roles.exists('id','445257669918588948')) {
 				max_banque_perso_function = maxbanque_baron;
 			//	message.channel.send("OK5 !" + max_banque_perso_function);
 				continuer = false;
+				revenue_prolo_function = 9;
+				revenue_maitre_function = 12;
 			}
 			else if (id_usr.roles.exists('id','650832087993024522')) {
 				max_banque_perso_function = maxbanque_compte;
 			//	message.channel.send("OK6 !" + max_banque_perso_function);
 				continuer = false;
+				revenue_prolo_function = 11;
+				revenue_maitre_function = 17;
 			}
 			else if (id_usr.roles.exists('id','445257144011587594')) {
 				max_banque_perso_function = maxbanque_marquis;
 			//	message.channel.send("OK7 !" + max_banque_perso_function);
 				continuer = false;
+				revenue_prolo_function = 16;
+				revenue_maitre_function = 23;
 			}
 			else if (id_usr.roles.exists('id','612469098466639893')) {
 				max_banque_perso_function = maxbanque_duc;
 			//	message.channel.send("OK8 !" + max_banque_perso_function);
 				continuer = false;
+				revenue_prolo_function = 25;
+				revenue_maitre_function = 32;
 			}
 			else if (id_usr.roles.exists('id','650828967716192269')) {
 				max_banque_perso_function = maxbanque_vassal;
 			//	message.channel.send("OK9 !" + max_banque_perso_function);
 				continuer = false;
+
+				revenue_prolo_function = 35;
+				revenue_maitre_function = 44;
 
 
 									//message.guild.members.get(id_usr).roles.exists('id','650828967716192269')
@@ -734,7 +759,7 @@ function getMaxBankSize(id_usr) {
 		//console.log(max_banque_perso_function);
 
 
-		fs.writeFileSync("./data/temp/tempmxbk.json", `{"tmp" : ` + max_banque_perso_function + `}`, function(err) {
+		fs.writeFileSync("./data/temp/tempmxbk.json", `{"tmp" : ` + max_banque_perso_function + `, "revenueprolo" : ` + revenue_prolo_function + `, "revenuemaitre" : ` + revenue_maitre_function +`}`, function(err) {
 			if (err) {
 				console.log(err);
 			}
@@ -800,6 +825,33 @@ bot.on('ready', function() {
 	
 });
 
+// Join member :
+
+bot.on('guildMemberAdd', async (member, message) => {
+
+	let id_usr = member.id;
+	// member.guild.channels.get('415943423636537346').send('ID_USR : ' + id_usr);
+
+fs.writeFile('json/users_files/' + id_usr + '.json', `
+{
+	"class" : "Example Class",
+	"favpos" : "Left",
+	"hatepos" : "Center",
+	"xp" : 0,
+	"xplevel" : 0,
+	"or": 0,
+	"date": 0,
+	"maxbanque": 5
+}
+`, function(error) { 
+				    		if (error) {
+									console.log(error);
+									return;
+							    }
+				    		})
+	
+
+});
 
 
 
@@ -875,6 +927,11 @@ bot.on('message', async (message) => {
 		message.channel.send("Member2/idmbm = " + member2 + "/" + idmbm);
 
 		addOr(member2, 1);
+	}
+
+	if (message.content === prefix + "dev7") {
+		message.channel.send("");
+		addOrFaction(1, 50);
 	}
 
 
@@ -1233,316 +1290,193 @@ bot.on('message', async (message) => {
 		
 
 	} ///FIN ARENE
-    	
+
+
+
 
   
 
 
-    if (message.content === prefix + 'or') // permet de regarder ses comptes
-	{
-		let id_user_or = message.author.id;
+	if (message.content.startsWith(prefix + "or")) { // permet de regarder ses comptes
+		
+
+		let id_user_or;
+
+		if (message.mentions.users.first() == undefined) {
+			id_user_or = message.author.id;
+		} else {
+			id_user_or = message.mentions.users.first().id;
+		}
+
+		
 		let or_usr = 0;
 
 
-		fs.readFile('json/or/or_' + id_user_or +'.json', 'utf8', function (erreur, donnees)
+		fs.readFile('json/users_files/' + id_user_or +'.json', 'utf8', function (erreur, donnees)
 		{
-		 if (erreur) {
-		 	message.channel.send(":x: **|** Vous n'avez pas encore de banque perso, pour la créer faites \"p<revenue\" !");
-		 /*fs.writeFile("json/or/or_" + id_user_or + ".json", `
-			{ 
-				"or": 0,
-				"date": ""
-			}`, function(err) {
-		    if(err) {
-		        return console.log(err);
-		    }
+			if (erreur) {
+				message.channel.send(":x: **|** Vous n'avez pas encore de banque perso, pour la créer faites \"p<revenue\" !");
+			/*fs.writeFile("json/or/or_" + id_user_or + ".json", `
+				{ 
+					"or": 0,
+					"date": ""
+				}`, function(err) {
+				if(err) {
+					return console.log(err);
+				}
 
-		    	console.log("The file was saved!");
-			}); */
+					console.log("The file was saved!");
+				}); */
 
-		 	return; // and continue
-		 } 
-		 let or_usr = JSON.parse(donnees);
-		 console.log(or_usr.or);
-		 or_usr = or_usr.or;
-		 let max_bank = JSON.parse(donnees);
-		 max_bank = max_bank.maxbanque;
-		
+				return; // and continue
+			} 
+			let or_usr = JSON.parse(donnees);
+			console.log(or_usr.or);
+			or_usr = or_usr.or;
+			let max_bank = JSON.parse(donnees);
+			max_bank = max_bank.maxbanque;
+			
+			let embed_or;
 
 
-		let embed_or = new Discord.RichEmbed()
-							.setColor([255, 200, 0])
-							.setAuthor("Banque de " + message.author.username, message.author.displayAvatarURL)
-							.setDescription("**" + or_usr + "/" + max_bank + "** " + emote_or)
+			if (message.mentions.users.first() == undefined) {
 
-							message.channel.send(embed_or);
+			embed_or = new Discord.RichEmbed()
+									.setColor([255, 200, 0])
+									.setAuthor("Banque de " + message.author.username, message.author.displayAvatarURL)
+									.setDescription("**" + or_usr + "/" + max_bank + "** " + emote_or)
+			} else {
+
+			embed_or = new Discord.RichEmbed()
+									.setColor([255, 200, 0])
+									.setAuthor("Banque de " +message.mentions.users.first().username, message.mentions.users.first().displayAvatarURL)
+									.setDescription("**" + or_usr + "/" + max_bank + "** " + emote_or)	
+									
+			}
+
+
+
+			message.channel.send(embed_or);
+
+
 		});
 
 
 	} //FIN or
 
-	if (message.content === prefix + 'revenue')
-	{
-		//message.channel.send(Unix_timestamp(1412743274));
-		//message.channel.send(new Date().getTime());
 
+	if (message.content === prefix + 'revenue') {
 		let id_usr = message.author.id;
-		let or_usr = 0;
-		let unix_time_now = new Date().getTime();
-
-		let or_a_add_first = 0;
-		let or_a_add = 0;
-		let max_banque_perso = 0;
+		let utime_now = Math.floor(new Date().getTime() / 1000); //Date lors de l'execution de la commande
 		
-		
+		let date_in_file; // contient la date du fichier user.
+		let or_in_file; // contient l'or déjà présente dans le fichier user
+		let revenue; // contient l'or du revenue
+		let final_or; // contient l'or final qui sera ajouté au fichier.
+		let mxbk; // contient le max bank
+		let difference_or; // contient la différence d'or si on dépasse la banque, à envoyer vers le coffre de faction.
 
+		getMaxBankSize(message.member);
 
-		fs.readFile('json/or/or_' + id_usr +'.json', 'utf8', function (erreur, donnees)
-		{
+		fs.readFile("./data/temp/tempmxbk.json", function(error, file) {
+			if(error) {
+				console.log(error);
+			}
+
+			let ftmp = JSON.parse(file);
+
+			mxbk = ftmp.tmp; // contient le max bank
 
 			let Maitre_Epsilon = message.guild.roles.get('445617906072682514').members.map(m=>m.user.id);
 			let Maitre_Gamma = message.guild.roles.get('445617908903706624').members.map(m=>m.user.id);
 			let Maitre_Zeta = message.guild.roles.get('445617911747313665').members.map(m=>m.user.id);
 			let Maitre_Omega = message.guild.roles.get('665340068046831646').members.map(m=>m.user.id);
 
-			
+			if (message.author.id == Maitre_Epsilon
+			 || message.author.id == Maitre_Gamma 
+			 || message.author.id == Maitre_Zeta 
+			 || message.author.id == MaitreFac_Omega) {
 
-		if (message.author.id == Maitre_Epsilon || message.author.id == Maitre_Gamma || message.author.id == Maitre_Zeta || message.author.id == MaitreFac_Omega) { //si l'author est maitre
-		 		//donner plus de thunas
-		 	if (message.guild.members.get(message.author.id).roles.exists('id','445253268176633891')) {
-		 		or_a_add = 1;
-		 		max_banque_perso = maxbanque_esclave;
-		 	}
-		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253591465328660')) {
-		 		or_a_add = 3;
-		 		max_banque_perso = maxbanque_paysan;
-		 	}
-		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253561648021514')) {
-		 		or_a_add = 7;
-		 		max_banque_perso = maxbanque_bourgeois;
-		 	}
-		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253809640308746')) {
-		 		or_a_add = 9;
-		 		max_banque_perso = maxbanque_courtisan;
-		 	}
-		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257669918588948')) {
-		 		or_a_add = 12;
-		 		max_banque_perso = maxbanque_baron;
-		 	}
-		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650832087993024522')) {
-		 		or_a_add = 17;
-		 		max_banque_perso = maxbanque_compte;
-		 	}
-		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257144011587594')) {
-		 		or_a_add = 23;
-		 		max_banque_perso = maxbanque_marquis;
-		 	}
-		 	else if (message.guild.members.get(message.author.id).roles.exists('id','612469098466639893')) {
-		 		or_a_add = 32;
-		 		max_banque_perso = maxbanque_duc;
-		 	}
-		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650828967716192269')) {
-		 		or_a_add = 44;
-		 		max_banque_perso = maxbanque_vassal;
-		 	}
-
-		 } else { //si AUTHOR n'est pas maitre
-		 		//donner la thunas normale
-		 	if (message.guild.members.get(message.author.id).roles.exists('id','445253268176633891')) {
-		 		or_a_add = 1;
-		 		max_banque_perso = maxbanque_esclave;
-		 	}
-		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253591465328660')) {
-		 		or_a_add = 2;
-		 		max_banque_perso = maxbanque_paysan;
-		 	}
-		 	
-		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253561648021514')) {
-		 		or_a_add = 5;
-		 		max_banque_perso = maxbanque_bourgeois;
-		 	}
-		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253809640308746')) {
-		 
-		 		or_a_add = 6;
-		 		max_banque_perso = maxbanque_courtisan;
-		 	}
-		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257669918588948')) {
-		 		or_a_add = 9;
-		 		max_banque_perso = maxbanque_baron;
-		 	
-		 	}
-		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650832087993024522')) {
-		 		or_a_add = 11;
-		 		max_banque_perso = maxbanque_compte;
-		 	}
-		 	
-		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257144011587594')) {
-		 		or_a_add = 16;
-		 		max_banque_perso = maxbanque_marquis;
-		 	}
-		 	else if (message.guild.members.get(message.author.id).roles.exists('id','612469098466639893')) {
-		 
-		 		or_a_add = 25;
-		 		max_banque_perso = maxbanque_duc;
-
-		 	}
-		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650828967716192269')) {
-		 		or_a_add = 35;
-		 		max_banque_perso = maxbanque_vassal;
-		 	
-		 	}
-		 }
-
-
-
-
-		if (erreur) { // ca veut dire que l'utilisateur n'a pas de banque encore
-
-		 	message.channel.send(":bank: **Banque perso créée.** :bank:");
-		 	
-
-		 	let embed_first_revenue = new Discord.RichEmbed()
-					.setColor([255, 200, 0])
-					.setAuthor("Revenue quotidien !", message.author.displayAvatarURL)
-					.setDescription("**+" + or_a_add + "** " + emote_or + "\nVous avez actuellement **" + or_a_add + "/" + max_banque_perso + "** " + emote_or)
-
-		 	message.channel.send(embed_first_revenue);
-
-			 	fs.writeFile("json/or/or_" + id_usr + ".json", `
-				{ 
-					"or": ` + or_a_add + `,
-					"date": ` + unix_time_now + `,
-					"maxbanque": ` + max_banque_perso + `
-				}`, function(err) {
-
-				    if(err) {
-				        return console.log(err);
-				    }
-
-			    	console.log("The file was saved!");
-				}); 
-
-		 	return; // and continue
-		}
-
-
-		Maitre_Epsilon = message.guild.roles.get('445617906072682514').members.map(m=>m.user.id);
-		Maitre_Gamma = message.guild.roles.get('445617908903706624').members.map(m=>m.user.id);
-		Maitre_Zeta = message.guild.roles.get('445617911747313665').members.map(m=>m.user.id);
-		Maitre_Omega = message.guild.roles.get('665340068046831646').members.map(m=>m.user.id);
-
-
-
-
-		 //DAILY ICI:
-
-		 let or_usr_json = JSON.parse(donnees);
-		 console.log(or_usr_json.or);
-		 or_usr = or_usr_json.or;
-		 unix_time_in_file = or_usr_json.date;
-		 //let unix_time_now = new Date().getTime();
-
-		// let or_a_add = 0; //thunas à ajouter
-		 //or_add // thunas total après le daily
-
-		 	/*
-				ESCLAVE
-				PAYSAN
-				BOURGEOIS
-				COURTISANS
-				BARON
-				COMPTE
-				MARQUIS
-				DUC
-				VASSAL
-		 	*/
-
-
-
-		 //or_add : C'est l'or total à ajouter
-		 //or_usr : C'est l'or se trouvant déjà sur le compte de l'utilisateur
-		 //or_a_add : C'est l'or du daily à ajouter
-		 // le calcul étant: or déjà aquis + or gagné par ce daily = or total donc or_add
-		 let or_add = or_usr + or_a_add;
-		 let msToWaitToDaily = 86400000; //24 Heures:: 86400000
-		 let diffUnixInMS = unix_time_now - unix_time_in_file;
-		 
-		 
-		 
-		// message.channel.send("unix_time_file: " + unix_time_in_file + "\n unix_time_now: " + unix_time_now + "\n unix_time_difference" + diffUnixInMS);
-		
-		let secondSinceLastDaily = Math.floor(diffUnixInMS / 1000);
-		let msSinceLastDaily = Math.floor(diffUnixInMS);
-		let timeLastB4Daily = (msToWaitToDaily / 1000) - secondSinceLastDaily; // ce qui fait donc 30 000 / 1000 fait donc 30 (secondes) donc 30 / par le nombre
-		let timeLastInMS = msToWaitToDaily - msSinceLastDaily;
-		let hourToWait = (timeLastB4Daily / 60) / 24;
-		
-			if (timeLastB4Daily >= 0) { // ca veut dire qu'il reste encore du temps avant de daily) 
-			message.channel.send(":hourglass: **| " + message.author.username + "**, il vous faut attendre **" + msToTime(timeLastInMS) + "** avant de pouvoir obtenir de nouveau votre revenue !"); /*Math.round((((timeLastB4Daily) / 60) / 24))*/
+				revenue = ftmp.revenuemaitre; // maitre
+			} else {
+				revenue = ftmp.revenueprolo; //non maitre
 			}
+
+
+
+
+			// partie 2 :
+
 			
-			if(diffUnixInMS >= msToWaitToDaily) {
-					//console.log(or_add);
-					buffer_thunas = 0;
-				if (or_add > max_banque_perso) {
-					
-					buffer_thunas = or_add - max_banque_perso; //contient le surplus d'or
-					or_add = or_add - buffer_thunas; //enlève le surplus à l'or final
+				fs.readFile(`json/users_files/${id_usr}.json`, 'utf8', function (error, data) {
 
-					if(message.member.roles.find(r => r.name === "Epsilon")) { factionDe_Request = "Epsilon"; }
-					else if(message.member.roles.find(r => r.name === "Gamma")) { factionDe_Request = "Gamma"; 	 }
-					else if(message.member.roles.find(r => r.name === "Zeta")) { factionDe_Request = "Zeta";   }
-					else if(message.member.roles.find(r => r.name === "Omega")) { factionDe_Request = "Omega";   }
-					else { }
+				let usrfile = JSON.parse(data);
 
-					if (factionDe_Request == "Epsilon") {
-						//ENVOIE DANS LE COFFRE DE Epsilon
-						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Epsilon." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
-					
-					} else if (factionDe_Request == "Gamma") {
-						//ENVOIE DANS LE COFFRE DE Gamma
-						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Gamma." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
-					
-					} else if (factionDe_Request == "Zeta") {
-						//ENVOIE DANS LE COFFRE DE Zêta
-						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Zeta." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
-					
-					} else if (factionDe_Request == "Omega") {
-						//ENVOIE DANS LE COFFRE DE Oméga
+				or_in_file = usrfile.or;
+				date_in_file = usrfile.date;
 
-						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Omega." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
-					} else {
-					message.channel.send("Le surplus d'argent à été rendu à PouleRPG : -" + buffer_thunas + " or." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
-					}
+
+				if (Math.abs(utime_now - date_in_file) <= 86400) { // si cela ne fait pas 24h depuis le dernier daily
+					//message.channel.send("Ne fait pas 24h");
+
+					let time_left = Math.abs(Math.abs(utime_now - date_in_file) - 86400) * 1000; // nombre de MILIseconde à attendre entre les deux daily !
+					message.channel.send(`:hourglass: **| ${message.author.username}**, il vous faut attendre **${msToTime(time_left)}** avant de pouvoir obtenir de nouveau votre revenue !`);
+				
+					return;
 				}
 
-			fs.writeFile("json/or/or_" + id_usr + ".json", `
-			{ 
-				"or": ` + or_add + `,
-				"date": ` + unix_time_now + `,
-				"maxbanque": ` + max_banque_perso + `
-			}`, function(err) {
-			    if(err) {
-			        return console.log(err);
-			    }
+			
 
-			    	console.log("The file was saved!");
-				}); 
-				
+				final_or = revenue + or_in_file;
 
-			let embed_revenue = new Discord.RichEmbed()
+				if (final_or > mxbk) { // surplus d'argent dans le banque de faction
+					difference_or = final_or - mxbk;
+					final_or = mxbk
+
+					revenue = revenue - difference_or;
+					
+
+					message.channel.send(`+${difference_or} dans votre banque de faction.`);
+
+					if (message.member.roles.find(r => r.name === "Epsilon")) { 
+						addOrFaction(1, difference_or);
+					}
+					else if (message.member.roles.find(r => r.name === "Zêta")) { 
+						addOrFaction(2, difference_or);
+					}
+					else if (message.member.roles.find(r => r.name === "Gamma")) {
+						addOrFaction(3, difference_or);
+					}
+					else if (message.member.roles.find(r => r.name === "Oméga")) {
+						addOrFaction(4, difference_or);
+					}
+					
+				}
+
+				usrfile.or = final_or;
+				usrfile.date = utime_now;
+				usrfile.maxbanque = mxbk;
+
+				if (revenue != 0) {
+					//message.channel.send(`+${revenue} TOTAL : ${final_or}/${mxbk}`);
+
+					let embed_revenue = new Discord.RichEmbed()
 					.setColor([255, 200, 0])
 					.setAuthor("Revenue quotidien !", message.author.displayAvatarURL)
-					.setDescription("**+" + or_a_add + "** " + emote_or + "\nVous avez actuellement **" + or_add + "/" + max_banque_perso + "** " + emote_or)
+					.setDescription("**+" + revenue + "** " + emote_or + "\nVous avez actuellement **" + final_or + "/" + mxbk + "** " + emote_or)
 
-			 message.channel.send(embed_revenue);
+					 message.channel.send(embed_revenue);
+				}
 
-			} else {
-				
-				//message.channel.send("ERROR"); //Message d'erreur
-			}
+
+				fs.writeFileSync(`json/users_files/${id_usr}.json`, JSON.stringify(usrfile, null, 2));
+			});
 		});
-	} // FIN DAILY
+	}
+
+
+
+
 
 
 
@@ -1579,6 +1513,10 @@ bot.on('message', async (message) => {
             .setDescription(message.guild.roles.get('665340021640921099').members.map(m=>m.user.tag).join('\n'));
         message.channel.send(ListEmbed);
 
+	}
+
+	if (message.content === prefix + "list sigma") {
+		message.channel.send("T'es vieux !?");
 	}
 
 
@@ -1902,7 +1840,7 @@ bot.on('message', async (message) => {
 					break;
 				
 					case 4:
-					message.channel.send("**BONNNNEUUUUH NUUUUUUIIIIIT A TOI AUZIIIIIII !!!!!! " + emote_giga_gras);
+					message.channel.send("**BONNNNEUUUUH NUUUUUUIIIIIT A TOI AUZIIIIIII !!!!!!** " + emote_giga_gras);
 					break;
 
 				case 5:
@@ -2118,24 +2056,93 @@ bot.on('message', async (message) => {
 	if (message.content.startsWith(prefix + "info faction ")) {
 		let argsFac = message.content.slice(prefix.length + 13);
 		let factionExist = false;
-		let faction = ""
+		let faction = "";
+		let factionFS;
+		let faction_channel_id;
+		let maitre;
+
 
 		if (argsFac == "epsilon") {
 			factionExist = true;
 			faction = "Epsilon";
+			factionFS = "Epsilon";
+			faction_channel_id = 445289059892461578;
+
+			maitre = message.guild.roles.get('445617906072682514').members.map(m=>m.user.username).join('\n'); // Maitre Epsilon
+
 		} else if (argsFac == "zeta") {
 			factionExist = true;
 			faction = "Zêta";
+			factionFS = "Zeta";
+			faction_channel_id = 445289032419770378;
+
+			maitre = message.guild.roles.get('445617911747313665').members.map(m=>m.user.username).join('\n'); // Maitre Epsilon
+
 		} else if (argsFac == "gamma") {
 			factionExist = true;
-			faction = "Gamma"
+			faction = "Gamma";
+			factionFS = "Gamma";
+			faction_channel_id = 445289003156242434;
+
+			maitre = message.guild.roles.get('445617908903706624').members.map(m=>m.user.username).join('\n'); // Maitre Epsilon
+
 		} else if (argsFac == "omega") {
 			factionExist = true;
 			faction = "Oméga";
+			factionFS = "Omega";
+			faction_channel_id = 667858618342834216;
+
+			maitre = message.guild.roles.get('665340068046831646').members.map(m=>m.user.username).join('\n'); // Maitre Epsilon
+
+		}
+
+		if (factionExist == false) {
+			message.channel.send("ERROR [1] : Synthax Error");
+			return;
+		} else if (factionExist == true) {
+			if (message.channel.id == faction_channel_id) {
+				// envoyer ici les informations privées ET publiques de la faction.
+				message.channel.send("Informations Privées");
+
+				message.channel.send(`${faction}\n Maître : ${maitre}`);
+
+				fs.readFile('json/data_factions/' + factionFS + '/Banque_' + factionFS + '.json', function(error, file) {
+	   				
+					let facbankjson = JSON.parse(file)
+					let facbank = facbankjson.or;
+					
+					message.channel.send(`OR BANQUE FACTION ${faction} : ${facbank}`);
+				});
+
+				
+
+
+			} else {
+				// envoyer ici les informations publiques de la faction.
+				
+				message.channel.send("Informations Publiques");
+
+			
+
+				
+
+				
+				
+				
+			}
 		}
 
 		//Pour avoir son or, membres de l'armée etc... (garder privé la banque de faction -> vérifier si l'utilisateur est bien dans la faction, et dans ce cas lui envoyer en dm)
 	}
+
+	
+
+	// Général Epsilon ID : 445289059892461578
+	// Général Zêta ID    : 445289032419770378
+	// Général Gamma ID   : 445289003156242434
+	// Général Oméga ID   : 667858618342834216
+
+	
 
 
 
@@ -2324,7 +2331,7 @@ bot.on('message', async (message) => {
 		
 
 		if (talkedRecently_coinsdf.has(message.author.id)) {
-			message.channel.send("Vous avez déjà jeté un sous à votre SDF aujourd'hui " + emote_giga_gras + "\n attendez encore : **" + Math.round(((couldown / 1000) / 60) / 60) + " Heures**.")
+			message.channel.send("Vous avez déjà jeté un sous à votre SDF aujourd'hui " + emote_giga_gras + "\n attendez encore : **" + Math.round(((couldown / 1000) / 60) / 60) + " Heure(s)**.")
 
 		} else {
 			let member_ran;
@@ -2358,8 +2365,64 @@ bot.on('message', async (message) => {
 
 	}
 
+	if (message.content === prefix + "UserProfile") {
+
+		let fileid = message.author.id;
+		
+		fs.readFile(`json/users_files/${fileid}.json`, function(error, file) {
+	   				
+			let usrprofile_json = JSON.parse(file);
+
+			let up_class = usrprofile_json.class;
+			let up_favpos = usrprofile_json.favpos;
+			let up_hatepos = usrprofile_json.hatepos;
+			let up_xp = usrprofile_json.xp;
+			let up_xplevel = usrprofile_json.xplevel;
+			let up_or = usrprofile_json.or;
+			let up_date = usrprofile_json.date;
+			let up_maxbanque = usrprofile_json.maxbanque;
+
+			message.channel.send(`Profile \n Class : ${up_class} \n favpos : ${up_favpos} \n hatepos : ${up_hatepos} \n xp : ${up_xp} \n xplevel : ${up_xplevel} \n or : ${up_or} \n date : ${up_date} \n maxbank : ${up_maxbanque}`);
+
+		});
+	} 
+
+	if (message.content === prefix + "TryJson") {
+
+		let fileid = message.author.id;
+
+		fs.readFile(`json/users_files/${fileid}.json`, function(error, file) {
+	   				
+			let usrprofile_json = JSON.parse(file);
+
+			usrprofile_json.or = 666;
+
+			fs.writeFileSync(`json/users_files/${fileid}.json`, JSON.stringify(usrprofile_json));
+		});
+	}
+
+	/*
+	if (message.content.startsWith(prefix + "ChangeFavPos ")) {
 
 
+		fs.writeFile(`json/users_files/${message.author.id}.json`, `
+					{ 
+						"or": ${or_a_retirer},
+						"date": 0
+					}`, function(err) {
+						if(err) {
+							return console.log(err);
+						}
+					});
+
+	} 
+
+	if (messsage.content === prefix + "ChangeHatePos") {
+
+	} */
+
+
+	
 
 
 
@@ -3204,6 +3267,325 @@ factionDe_Request = "";
 			}
 		} */
 
+
+		/*
+		if (message.content === prefix + "DEV -> UTIL -> IDLIST") {
+
+			let usrs = message.guild.members.map(m=>m.user.id).join('\n');
+	
+			let usrsBOT = message.guild.roles.get('415953862457950209').members.map(m=>m.user.id).join('\n');
+			
+			message.channel.send("usrs : \n" + usrs);
+			message.channel.send("usrsBOT : \n" + usrsBOT);
+		}
+		*/
+
+
+
+
+		/* Ancien système de revenue :
+
+
+
+
+
+
+	if (message.content === prefix + 'revenue')
+	{
+		//message.channel.send(Unix_timestamp(1412743274));
+		//message.channel.send(new Date().getTime());
+
+		let id_usr = message.author.id;
+		let or_usr = 0;
+		let unix_time_now = new Date().getTime();
+
+		let or_a_add_first = 0;
+		let or_a_add = 0;
+		let max_banque_perso = 0;
+		
+		
+
+
+		fs.readFile('json/or/or_' + id_usr +'.json', 'utf8', function (erreur, donnees)
+		{
+
+			let Maitre_Epsilon = message.guild.roles.get('445617906072682514').members.map(m=>m.user.id);
+			let Maitre_Gamma = message.guild.roles.get('445617908903706624').members.map(m=>m.user.id);
+			let Maitre_Zeta = message.guild.roles.get('445617911747313665').members.map(m=>m.user.id);
+			let Maitre_Omega = message.guild.roles.get('665340068046831646').members.map(m=>m.user.id);
+
+			
+
+		if (message.author.id == Maitre_Epsilon || message.author.id == Maitre_Gamma || message.author.id == Maitre_Zeta || message.author.id == MaitreFac_Omega) { //si l'author est maitre
+		 		//donner plus de thunas
+		 	if (message.guild.members.get(message.author.id).roles.exists('id','445253268176633891')) {
+		 		or_a_add = 1;
+		 		max_banque_perso = maxbanque_esclave;
+		 	}
+		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253591465328660')) {
+		 		or_a_add = 3;
+		 		max_banque_perso = maxbanque_paysan;
+		 	}
+		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253561648021514')) {
+		 		or_a_add = 7;
+		 		max_banque_perso = maxbanque_bourgeois;
+		 	}
+		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253809640308746')) {
+		 		or_a_add = 9;
+		 		max_banque_perso = maxbanque_courtisan;
+		 	}
+		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257669918588948')) {
+		 		or_a_add = 12;
+		 		max_banque_perso = maxbanque_baron;
+		 	}
+		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650832087993024522')) {
+		 		or_a_add = 17;
+		 		max_banque_perso = maxbanque_compte;
+		 	}
+		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257144011587594')) {
+		 		or_a_add = 23;
+		 		max_banque_perso = maxbanque_marquis;
+		 	}
+		 	else if (message.guild.members.get(message.author.id).roles.exists('id','612469098466639893')) {
+		 		or_a_add = 32;
+		 		max_banque_perso = maxbanque_duc;
+		 	}
+		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650828967716192269')) {
+		 		or_a_add = 44;
+		 		max_banque_perso = maxbanque_vassal;
+		 	}
+
+		 } else { //si AUTHOR n'est pas maitre
+		 		//donner la thunas normale
+		 	if (message.guild.members.get(message.author.id).roles.exists('id','445253268176633891')) {
+		 		or_a_add = 1;
+		 		max_banque_perso = maxbanque_esclave;
+		 	}
+		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253591465328660')) {
+		 		or_a_add = 2;
+		 		max_banque_perso = maxbanque_paysan;
+		 	}
+		 	
+		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253561648021514')) {
+		 		or_a_add = 5;
+		 		max_banque_perso = maxbanque_bourgeois;
+		 	}
+		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445253809640308746')) {
+		 
+		 		or_a_add = 6;
+		 		max_banque_perso = maxbanque_courtisan;
+		 	}
+		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257669918588948')) {
+		 		or_a_add = 9;
+		 		max_banque_perso = maxbanque_baron;
+		 	
+		 	}
+		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650832087993024522')) {
+		 		or_a_add = 11;
+		 		max_banque_perso = maxbanque_compte;
+		 	}
+		 	
+		 	else if (message.guild.members.get(message.author.id).roles.exists('id','445257144011587594')) {
+		 		or_a_add = 16;
+		 		max_banque_perso = maxbanque_marquis;
+		 	}
+		 	else if (message.guild.members.get(message.author.id).roles.exists('id','612469098466639893')) {
+		 
+		 		or_a_add = 25;
+		 		max_banque_perso = maxbanque_duc;
+
+		 	}
+		 	else if (message.guild.members.get(message.author.id).roles.exists('id','650828967716192269')) {
+		 		or_a_add = 35;
+		 		max_banque_perso = maxbanque_vassal;
+		 	
+		 	}
+		 }
+
+
+
+
+		if (erreur) { // ca veut dire que l'utilisateur n'a pas de banque encore
+
+		 	message.channel.send(":bank: **Banque perso créée.** :bank:");
+		 	
+
+		 	let embed_first_revenue = new Discord.RichEmbed()
+					.setColor([255, 200, 0])
+					.setAuthor("Revenue quotidien !", message.author.displayAvatarURL)
+					.setDescription("**+" + or_a_add + "** " + emote_or + "\nVous avez actuellement **" + or_a_add + "/" + max_banque_perso + "** " + emote_or)
+
+			 message.channel.send(embed_first_revenue);
+			 
+			 let fileid1 = message.author.id;
+
+		fs.readFile(`json/users_files/${fileid1}.json`, function(error, file) {
+	   				
+			let usrprofile_json1 = JSON.parse(file);
+
+			usrprofile_json1.or = or_add;
+			usrprofile_json1.date = unix_time_now;
+			usrprofile_json1.maxbanque = max_banque_perso;
+
+			fs.writeFileSync(`json/users_files/${fileid1}.json`, JSON.stringify(usrprofile_json1, null, 2));
+		});
+
+			 	/*fs.writeFile("json/or/or_" + id_usr + ".json", `
+				{ 
+					"or": ` + or_a_add + `,
+					"date": ` + unix_time_now + `,
+					"maxbanque": ` + max_banque_perso + `
+				}`, function(err) {
+
+				    if(err) {
+				        return console.log(err);
+				    }
+
+			    	console.log("The file was saved!");
+				}); */ /*
+
+		 	return; // and continue
+		}
+
+
+		Maitre_Epsilon = message.guild.roles.get('445617906072682514').members.map(m=>m.user.id);
+		Maitre_Gamma = message.guild.roles.get('445617908903706624').members.map(m=>m.user.id);
+		Maitre_Zeta = message.guild.roles.get('445617911747313665').members.map(m=>m.user.id);
+		Maitre_Omega = message.guild.roles.get('665340068046831646').members.map(m=>m.user.id);
+
+
+
+
+		 //DAILY ICI:
+
+		 let or_usr_json = JSON.parse(donnees);
+		 console.log(or_usr_json.or);
+		 or_usr = or_usr_json.or;
+		 unix_time_in_file = or_usr_json.date;
+		 //let unix_time_now = new Date().getTime();
+
+		// let or_a_add = 0; //thunas à ajouter
+		 //or_add // thunas total après le daily
+
+		 	/*
+				ESCLAVE
+				PAYSAN
+				BOURGEOIS
+				COURTISANS
+				BARON
+				COMPTE
+				MARQUIS
+				DUC
+				VASSAL
+		 	*/ /*
+
+
+
+		 //or_add : C'est l'or total à ajouter
+		 //or_usr : C'est l'or se trouvant déjà sur le compte de l'utilisateur
+		 //or_a_add : C'est l'or du daily à ajouter
+		 // le calcul étant: or déjà aquis + or gagné par ce daily = or total donc or_add
+		 let or_add = or_usr + or_a_add;
+		 let msToWaitToDaily = 86400000; //24 Heures:: 86400000
+		 let diffUnixInMS = unix_time_now - unix_time_in_file;
+		 
+		 
+		 
+		// message.channel.send("unix_time_file: " + unix_time_in_file + "\n unix_time_now: " + unix_time_now + "\n unix_time_difference" + diffUnixInMS);
+		
+		let secondSinceLastDaily = Math.floor(diffUnixInMS / 1000);
+		let msSinceLastDaily = Math.floor(diffUnixInMS);
+		let timeLastB4Daily = (msToWaitToDaily / 1000) - secondSinceLastDaily; // ce qui fait donc 30 000 / 1000 fait donc 30 (secondes) donc 30 / par le nombre
+		let timeLastInMS = msToWaitToDaily - msSinceLastDaily;
+		let hourToWait = (timeLastB4Daily / 60) / 24;
+		
+			if (timeLastB4Daily >= 0) { // ca veut dire qu'il reste encore du temps avant de daily) 
+			message.channel.send(":hourglass: **| " + message.author.username + "**, il vous faut attendre **" + msToTime(timeLastInMS) + "** avant de pouvoir obtenir de nouveau votre revenue !"); /*Math.round((((timeLastB4Daily) / 60) / 24))*/ /*
+			}
+			
+			if(diffUnixInMS >= msToWaitToDaily) {
+					//console.log(or_add);
+					buffer_thunas = 0;
+				if (or_add > max_banque_perso) {
+					
+					buffer_thunas = or_add - max_banque_perso; //contient le surplus d'or
+					or_add = or_add - buffer_thunas; //enlève le surplus à l'or final
+
+					if(message.member.roles.find(r => r.name === "Epsilon")) { factionDe_Request = "Epsilon"; }
+					else if(message.member.roles.find(r => r.name === "Gamma")) { factionDe_Request = "Gamma"; 	 }
+					else if(message.member.roles.find(r => r.name === "Zeta")) { factionDe_Request = "Zeta";   }
+					else if(message.member.roles.find(r => r.name === "Omega")) { factionDe_Request = "Omega";   }
+					else { }
+
+					if (factionDe_Request == "Epsilon") {
+						//ENVOIE DANS LE COFFRE DE Epsilon
+						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Epsilon." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+					
+					} else if (factionDe_Request == "Gamma") {
+						//ENVOIE DANS LE COFFRE DE Gamma
+						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Gamma." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+					
+					} else if (factionDe_Request == "Zeta") {
+						//ENVOIE DANS LE COFFRE DE Zêta
+						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Zeta." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+					
+					} else if (factionDe_Request == "Omega") {
+						//ENVOIE DANS LE COFFRE DE Oméga
+
+						message.channel.send("Le surplus d'argent à été envoyé dans votre coffre de faction : +" + buffer_thunas + " or dans le coffre Omega." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+					} else {
+					message.channel.send("Le surplus d'argent à été rendu à PouleRPG : -" + buffer_thunas + " or." + " (Montez de niveau pour augmenter la capacité de votre banque.)")
+					}
+				}
+
+		let fileid = message.author.id;
+
+		fs.readFile(`json/users_files/${fileid}.json`, function(error, file) {
+	   				
+			let usrprofile_json = JSON.parse(file);
+
+			usrprofile_json.or = or_add;
+			usrprofile_json.date = unix_time_now;
+			usrprofile_json.maxbanque = max_banque_perso;
+
+			fs.writeFileSync(`json/users_files/${fileid}.json`, JSON.stringify(usrprofile_json, null, 2));
+		});
+
+			/*fs.writeFile("json/or/or_" + id_usr + ".json", `
+			{ 
+				"or": ` + or_add + `,
+				"date": ` + unix_time_now + `,
+				"maxbanque": ` + max_banque_perso + `
+			}`, function(err) {
+			    if(err) {
+			        return console.log(err);
+			    }
+
+			    	console.log("The file was saved!");
+				}); */ /*
+				
+
+			let embed_revenue = new Discord.RichEmbed()
+					.setColor([255, 200, 0])
+					.setAuthor("Revenue quotidien !", message.author.displayAvatarURL)
+					.setDescription("**+" + or_a_add + "** " + emote_or + "\nVous avez actuellement **" + or_add + "/" + max_banque_perso + "** " + emote_or)
+
+			 message.channel.send(embed_revenue);
+
+			} else {
+				
+				//message.channel.send("ERROR"); //Message d'erreur
+			}
+		});
+	} // FIN DAILY
+
+
+		*/ 
 	
 
+// ID DE CHANNELS : 
 
+	// Général Epsilon ID : 445289059892461578
+	// Général Zêta ID    : 445289032419770378
+	// Général Gamma ID   : 445289003156242434
+	// Général Oméga ID   : 667858618342834216
