@@ -27,8 +27,8 @@ let RomarEmpereurID = 421400262423347211;
 
 let prefix = (config.prefix);
 
-let bot_version = "0.3.6";
-let bot_lignes = "3592";
+let bot_version = "0.3.7";
+let bot_lignes = "3572"; 
 
 
 let MaitreFac_Epsilon;
@@ -126,6 +126,9 @@ function addOr(id_usrF, orToAdd) {
 	var max_bank = 0; // Contient le niveau de bank max se trouvant dans le json
 	let date = 0; // Contient la date à écrire lorsque le fichier user n'existe pas
 
+
+	/*
+
 	if (fs.existsSync('json/or/or_' + id_usr + ".json")) { // Le fichier user or existe, on pourra donc le traiter
 		//checkBankMax(id_usr);
 		console.log("Le fichier existe !");
@@ -191,7 +194,7 @@ function addOr(id_usrF, orToAdd) {
 				});
 
 		});
-		*/
+		*/ /*
 
 		console.log("FIN de la création du fichier.");
 		return;
@@ -202,14 +205,14 @@ function addOr(id_usrF, orToAdd) {
 	// Il faut test si ça marche, si quelqu'un ensuite fait la commande sans avoir le même niveau de max bank
 	// Le problème c'est que la première fois qu'on fait le arene sans le fichier or, cela n'ajoute pas l'or qu'on vient de gagner
 	// MAIS SEULEMENT LA PREMIERE FOIS !!
-	} 
+	} */
 	// Fichier crée !
 
 	// On a forcément un fichier à traiter.
 
 	console.log("Traitement...");
 
-	fs.readFile(`json/or/or_${id_usr}.json`, function(error, fichier) {
+	fs.readFile(`json/users_files/${id_usr}.json`/*`json/or/or_${id_usr}.json`*/, function(error, fichier) {
 
 		console.log("Lecture en cours ...");
 
@@ -288,18 +291,10 @@ function addOr(id_usrF, orToAdd) {
 
 		// date ; max_bank : or_a_ecrire.
 
-		fs.writeFileSync('json/or/or_' + id_usr + '.json', `
-			{
-				"or": ` + or_a_ecrire + `,
-				"date": ` + date + `,
-				"maxbanque": ` + max_bank + ` 
-			}
-				
-			`, function(error) {
-				if (error) {
-					console.log(error);
-				}
-			});
+		json_or.or = or_a_ecrire;
+		json_or.date = date;
+		json_or.maxbanque = max_bank;
+		fs.writeFileSync(`json/users_files/${id_usr}.json`, JSON.stringify(json_or, null, 2));
 	})
 } // fin function addOre
 
@@ -552,7 +547,7 @@ function addXp(id_usr, xpToAdd) { // Nouvelle fonction pour l'xp : équilibrage 
 
 	xpToAdd = parseInt(xpToAdd);
 
-	if (fs.existsSync('json/xp/xp_' + id_usr + '.json')) { //si le fichier xp de l'utilisateur existe déjà
+	/* if (fs.existsSync('json/xp/xp_' + id_usr + '.json')) { //si le fichier xp de l'utilisateur existe déjà
 		console.log("Existe !");
 	} else {
 			fs.writeFileSync("./json/xp/xp_" + id_usr + ".json", `
@@ -565,9 +560,9 @@ function addXp(id_usr, xpToAdd) { // Nouvelle fonction pour l'xp : équilibrage 
 				}
 			});
 			console.log("N'existe pas !");
-	}
+	} */ // Inutile de vérifier s'il existe, il existe forcément !!
 
-		fs.readFile("./json/xp/xp_" + id_usr + ".json", function(error, file) {
+		fs.readFile(`json/users_files/${id_usr}.json`, function(error, file) {
 
 
 
@@ -602,18 +597,12 @@ function addXp(id_usr, xpToAdd) { // Nouvelle fonction pour l'xp : équilibrage 
 
 			//xp_final = xp_final - xpToAdd;
 
-			let experience = { 
-				xp: xp_final,
-				xplevel: xplvl_final
-			};
-			 
-			let data = JSON.stringify(experience);
-			fs.writeFile("./json/xp/xp_" + id_usr + ".json", data, function(error) {
-				if (error) {
-					return console.log(error);
-				}
-			});
-			//xpfile = require("./data/xpbase.json");
+			xpfile.xp = xp_final;
+			xpfile.xplevel = xplvl_final;
+
+			fs.writeFileSync(`json/users_files/${id_usr}.json`, JSON.stringify(xpfile, null, 2));
+
+		
 
 			if(error) {
 		 		return console.log(error);
@@ -624,7 +613,7 @@ function addXp(id_usr, xpToAdd) { // Nouvelle fonction pour l'xp : équilibrage 
 }
 
 function getLvlUpReqXP(id_usr) {
-	let file = fs.readFileSync("./json/xp/xp_" + id_usr + ".json")
+	let file = fs.readFileSync("./json/users_files/" + id_usr + ".json")
 	let xpfile = JSON.parse(file);
 
 	return Math.round((550 * xpfile.xplevel / Math.sqrt(xpfile.xplevel))) - 200;
@@ -834,14 +823,16 @@ bot.on('guildMemberAdd', async (member, message) => {
 
 fs.writeFile('json/users_files/' + id_usr + '.json', `
 {
-	"class" : "Example Class",
-	"favpos" : "Left",
-	"hatepos" : "Center",
+	"class" : "NONE",
+	"favpos" : "NONE",
+	"hatepos" : "NONE",
 	"xp" : 0,
-	"xplevel" : 0,
+	"xplevel" : 1,
 	"or": 0,
 	"date": 0,
-	"maxbanque": 5
+	"maxbanque": 5,
+	"ptsveni": 0,
+	"timerarene" : 0
 }
 `, function(error) { 
 				    		if (error) {
@@ -1144,9 +1135,9 @@ bot.on('message', async (message) => {
 			message.channel.send("Date1 = " + Date1); 
 			message.channel.send("Final = " + final); */
 
-			fs.readFile("./json/timers/timerArene_" + message.author.id + ".json", function(error, file) {
+			fs.readFile("./json/users_files/" + message.author.id + ".json", function(error, file) {
 				let timerfile = JSON.parse(file);
-				Date1 = timerfile.timer;
+				Date1 = timerfile.timerarene;
 
 				let attente_arene = 60 - (Date2 - Date1);
 			
@@ -1165,11 +1156,18 @@ bot.on('message', async (message) => {
 
 			
 			Date1 = Math.floor(new Date() / 1000);
-			fs.writeFileSync("./json/timers/timerArene_" + message.author.id + ".json", `{"timer": ` + Date1 + `}`, function(err) {
-				if(err) {
-					console.log(err);
-				}
-			})
+
+			fs.readFile("./json/users_files/" + message.author.id + ".json", function(error, file) {
+				
+				let timerjson = JSON.parse(file);
+				timerjson.timerarene = Date1;
+
+				fs.writeFileSync(`json/users_files/${message.author.id}.json`, JSON.stringify(timerjson, null, 2));
+
+				
+			});
+			
+			
 			
 
 
@@ -1284,11 +1282,6 @@ bot.on('message', async (message) => {
 	          talkedRecently_arene.delete(message.author.id);
 	        }, couldown);
 		}
-		
-
-		
-		
-
 	} ///FIN ARENE
 
 
@@ -1559,6 +1552,8 @@ bot.on('message', async (message) => {
 		
 			let id_usr;
 			let member;
+
+			// vérifie si l'on regarde sin xp ou celle d'un autre utilisateur.
 				if (message.mentions.users.first() !== undefined) {
 					id_usr = message.mentions.users.first().id;
 					member = message.mentions.users.first();
@@ -1569,39 +1564,19 @@ bot.on('message', async (message) => {
 					//message.channel.send("La mention est invalide ! Ou n'existe pas !"); //DEV
 				}
 
-
-			
-
-			
-
-
-			if (fs.existsSync('json/xp/xp_' + id_usr + '.json')) { //si le fichier xp de l'utilisateur existe déjà
-				
-			} else { //si le fichier xp de l'utilisateur n'existe pas
-					//message.channel.send("Cet utilisateur n'a aucune xp"); // POUR DRAXY : Ici tu peux changer plutôt genre ça affiche 0 XP | Level 1. Ce sera mieux que ce truc x)
-					
-					fs.writeFileSync(`./json/xp/xp_${id_usr}.json`, `
-{
-"xp": 0,
-"xplevel": 1
-}`, 				function(err) {
-						if(err) {
-							console.log(err);
-						}
-					});
-					
-					//message.channel.send(`XP de <@${id_usr}> : 0/${xp_level_up_required_BASE} | Level : 1`);
+			if (!fs.existsSync('json/users_files/' + id_usr + '.json')) { //si le fichier de l'utilisateur n'existe pas
+				message.channel.send("ERROR, fichier inexistant, membre invalide. (Si vous estimez que le membre devrait être valide, contactez un administrateur.");
+				return;
 			}
 
-			// On a maintenant forcément un fichier à traiter.
 
-			fs.readFile('json/xp/xp_' + id_usr + '.json', function(erreur, fichier) {
+			fs.readFile(`json/users_files/${id_usr}.json`, function(erreur, fichier) {
 				let json_xp = JSON.parse(fichier)
-				//let xp_level_up_required = xp_level_up_required_BASE * json_xp.xplevel;
+				
 
 				let xplvl_init = json_xp.xplevel;
+				let xp_level_up_required = Math.round((550 * xplvl_init / Math.sqrt(xplvl_init))) - 200;
 
-				let xp_level_up_required = t = Math.round((550 * xplvl_init / Math.sqrt(xplvl_init))) - 200;
 
 				let embed_xp = new Discord.RichEmbed()
 				.setColor([50, 200, 110])
@@ -1609,10 +1584,6 @@ bot.on('message', async (message) => {
 				.setDescription(`**XP : ${json_xp.xp}/${xp_level_up_required}\nLevel : ${json_xp.xplevel}**`);
 				
 				message.channel.send(embed_xp);
-
-
-
-				//message.channel.send(`XP de <@${id_usr}> : ${json_xp.xp}/${xp_level_up_required} | Level : ${json_xp.xplevel}`); // POUR DRAXY : Ici c'est l'affichage de l'xp actuel, les noms de variables c'est ce qu'il y a entre ${ ET }. (Nota Bene: il faut bien que l'embed et l'appel des variable se fasse dans ces acolades là.)
 			});
 	}
 
@@ -1647,7 +1618,7 @@ bot.on('message', async (message) => {
 		}	
 	}
 
-	if (message.content.startsWith(prefix + "say")) {
+	if (message.content.startsWith(prefix + "say")) { // permet de faire dire n'importe quoi au bot.
 		//message.channel.send("Original : " + message.content);
 		let m = message.content.slice(5);
 		message.channel.send(m);
@@ -1658,7 +1629,7 @@ bot.on('message', async (message) => {
 
 
 
-	//CE CODE CI-DESSOUS EST DEGEULASSE OUI MAIS OSEF. :)
+	//CE CODE CI-DESSOUS EST DEGEULASSE OUI MAIS OSEF. :) EDIT 30.08.2020 : Un peu mieux grâce au nouveau système de fichier.
 	if (message.content.startsWith(prefix + "point venitienne ")) { //Seul le romar peut exécuter cette commande, c'est un privilège que de recevoir un point vénitienne, elle permet simplement de donner un point venitienne lorsque le romar approuve quelque chose, nottament une blague. 
 			let contenu_json;
 		if (message.mentions.users.first().id) {
@@ -1670,33 +1641,19 @@ bot.on('message', async (message) => {
 
 					let id_usr = message.author.id;
 
-					if (fs.existsSync('json/ven/ven_' + id_selection + '.json')) { //si le fichier de l'utilisateur existe déjà
-				    		fs.readFile('json/ven/ven_' + id_selection + '.json', function(erreur, file) {
+					if (fs.existsSync(`json/users_files/${id_selection}.json`)) { //si le fichier de l'utilisateur existe déjà
+				    		fs.readFile(`json/users_files/${id_selection}.json`, function(erreur, file) {
 			   				
-			   				let veni_json = JSON.parse(file)
-			   				let pts_veni_total = veni_json.ptsveni + 1;
-			   				contenu_json = '{' + '\n' + ' \"ptsveni\" : ' + pts_veni_total + '\n' + '}';
+								let veni_json = JSON.parse(file)
+								let pts_veni_total = veni_json.ptsveni + 1;
+								veni_json.ptsveni = pts_veni_total;
 
-			   				fs.writeFile('json/ven/ven_' + id_selection + '.json', contenu_json, function(erreur) { 
-					    		if (erreur) {
-								        console.log(erreur)
-								    }
-					    		})
+								fs.writeFileSync(`json/users_files/${id_selection}.json`, JSON.stringify(veni_json, null, 2));
 			   				})
-
-
-				    	
 				    	
 					} else { //si le fichier de l'utilisateur n'existe pas
-						 contenu_json = '{' + '\n' + ' \"ptsveni\" : 1 ' + '\n' + '}';							
-
-							//let data_write = JSON.stringify(contenu_json)
-							
-							fs.writeFile('json/ven/ven_' + id_selection + '.json', contenu_json, function(erreur) {
-							    if (erreur) {
-							        console.log(erreur)
-							    }
-							})
+						message.channel.send("ERROR, fichier inexistant, membre invalide. (Si vous estimez que le membre devrait être valide, contactez un administrateur.");
+						return;
 					}
 
 
@@ -1715,43 +1672,23 @@ bot.on('message', async (message) => {
 		if (message.mentions.users.first().id) {
 			if (message.author.id == "421400262423347211") {
 				message.channel.send("Point venitienne retiré !");
+
 				let id_selection = message.mentions.users.first().id;
+				let id_usr = message.author.id;
 
-				
-
-					let id_usr = message.author.id;
-
-					if (fs.existsSync('json/ven/ven_' + id_selection + '.json')) { //si le fichier de l'utilisateur existe déjà
-				    		fs.readFile('json/ven/ven_' + id_selection + '.json', function(erreur, file) {
+					if (fs.existsSync(`json/users_files/${id_selection}.json`)) { //si le fichier de l'utilisateur existe déjà
+				    		fs.readFile(`json/users_files/${id_selection}.json`, function(erreur, file) {
 			   				
-			   				let veni_json = JSON.parse(file)
-			   				let pts_veni_total = veni_json.ptsveni - 1;
-			   				contenu_json = '{' + '\n' + ' \"ptsveni\" : ' + pts_veni_total + '\n' + '}';
+								let veni_json = JSON.parse(file)
+								let pts_veni_total = veni_json.ptsveni - 1;
+								veni_json.ptsveni = pts_veni_total;
 
-			   				fs.writeFile('json/ven/ven_' + id_selection + '.json', contenu_json, function(erreur) { 
-					    		if (erreur) {
-								        console.log(erreur)
-								    }
-					    		})
+								fs.writeFileSync(`json/users_files/${id_selection}.json`, JSON.stringify(veni_json, null, 2));
 			   				})
-
-
-				    	
-				    	
 					} else { //si le fichier de l'utilisateur n'existe pas
-						 contenu_json = '{' + '\n' + ' \"ptsveni\" : -1 ' + '\n' + '}';							
-
-							//let data_write = JSON.stringify(contenu_json)
-							
-							fs.writeFile('json/ven/ven_' + id_selection + '.json', contenu_json, function(erreur) {
-							    if (erreur) {
-							        console.log(erreur)
-							    }
-							})
+						message.channel.send("ERROR, fichier inexistant, membre invalide. (Si vous estimez que le membre devrait être valide, contactez un administrateur.");
+						return;
 					}
-
-
-
 			} else {
 				message.channel.send("Vous n'êtes pas la venitienne, vous ne pouvez donc pas accorder de \"points venitienne\"");
 			}
@@ -1769,8 +1706,8 @@ bot.on('message', async (message) => {
 		} else {
 			let id_usr = message.author.id;
 
-			if (fs.existsSync('json/ven/ven_' + id_usr + '.json')) { //si le fichier de l'utilisateur existe déjà
-		    		fs.readFile('json/ven/ven_' + id_usr + '.json', function(erreur, file) {
+			if (fs.existsSync(`json/users_files/${id_usr}.json`)) { //si le fichier de l'utilisateur existe déjà
+		    		fs.readFile(`json/users_files/${id_usr}.json`, function(erreur, file) {
 	   				
 	   				let veni_json = JSON.parse(file)
 	   				let pts_veni_total = veni_json.ptsveni;
@@ -1780,12 +1717,13 @@ bot.on('message', async (message) => {
 	   				})
 		    	
 			} else { //si le fichier de l'utilisateur n'existe pas
-					message.channel.send("Vous avez : 0 points venitienne.");
+				message.channel.send("ERROR, fichier inexistant, membre invalide. (Si vous estimez que le membre devrait être valide, contactez un administrateur.");
+				return;
 			}
 		}
 	} //Fin de la commande pour voir points venitienne
 
-	if (message.content.startsWith(prefix + "ses beaux points venitienne ")) { //voir ses points venitienne
+	if (message.content.startsWith(prefix + "ses beaux points venitienne ")) { //voir les points venitienne de quelqu'un
 
 		let id_usr_selected = message.mentions.users.first().id;
 
@@ -1800,8 +1738,8 @@ bot.on('message', async (message) => {
 		} else {
 			
 
-			if (fs.existsSync('json/ven/ven_' + id_usr_selected + '.json')) { //si le fichier de l'utilisateur existe déjà
-		    		fs.readFile('json/ven/ven_' + id_usr_selected + '.json', function(erreur, file) {
+			if (fs.existsSync(`json/users_files/${id_usr_selected}.json`)) { //si le fichier de l'utilisateur existe déjà
+		    		fs.readFile(`json/users_files/${id_usr_selected}.json`, function(erreur, file) {
 	   				
 	   				let veni_json = JSON.parse(file)
 	   				let pts_veni_total = veni_json.ptsveni;
@@ -1811,7 +1749,8 @@ bot.on('message', async (message) => {
 	   				})
 		    	
 			} else { //si le fichier de l'utilisateur n'existe pas
-					message.channel.send(`<@${id_usr_selected}> a : 0 points vénitienne.`);
+				message.channel.send("ERROR, fichier inexistant, membre invalide. (Si vous estimez que le membre devrait être valide, contactez un administrateur.");
+				return;
 			}
 		}
 	} //Fin de la commande pour voir les points vénitienne de quelqu'un.
@@ -2350,6 +2289,7 @@ bot.on('message', async (message) => {
 			// message.channel.send("USER trouvé");
 
 			addOr(member_ran, 1);
+			addOr(message.member, -1);
 			message.channel.send("Vous avez jeté un sous à ce SDF de " + member_ran.displayName);
 			talkedRecently_coinsdf.add(message.author.id);
 			
@@ -2365,6 +2305,9 @@ bot.on('message', async (message) => {
 
 	}
 
+
+
+	//commande de dev pour voir le contenu du fichier user.
 	if (message.content === prefix + "UserProfile") {
 
 		let fileid = message.author.id;
@@ -2387,19 +2330,7 @@ bot.on('message', async (message) => {
 		});
 	} 
 
-	if (message.content === prefix + "TryJson") {
-
-		let fileid = message.author.id;
-
-		fs.readFile(`json/users_files/${fileid}.json`, function(error, file) {
-	   				
-			let usrprofile_json = JSON.parse(file);
-
-			usrprofile_json.or = 666;
-
-			fs.writeFileSync(`json/users_files/${fileid}.json`, JSON.stringify(usrprofile_json));
-		});
-	}
+	
 
 	/*
 	if (message.content.startsWith(prefix + "ChangeFavPos ")) {
@@ -2508,6 +2439,7 @@ bot.on('message', async (message) => {
 					console.log("OR : " + or);
 					//getMaxBankSize(id_usr);
 					addOr(aut_usr, or);	
+					message.channel.send(`+${or} ${emote_or} ajouté(s) avec succès à ${message.mentions.users.first().username}`)
 				} else {
 					message.channel.send("ERROR [6]: Invalide Arguments");
 					return;
@@ -2596,7 +2528,40 @@ bot.on('message', async (message) => {
                 message.channel.send("Cette commande est réservée aux Empereurs.");
                 console.log("Commande exécutée. -> Admin Test Refusé");
             }
-        }
+		}
+		if (message.content.startsWith(prefix + "mkfile ")) {
+			if (message.mentions.users.first() == undefined) {
+				message.channel.send("ERROR [3]");
+			} else {
+
+				let id_usr = message.mentions.users.first().id;
+
+				if (fs.existsSync('json/users_files/' + id_usr + '.json')) {
+					message.channel.send("Le fichier de cet utilisateur existe déjà.");
+					return;
+				}
+			
+				fs.writeFile('json/users_files/' + id_usr + '.json', `
+{
+	"class" : "NONE",
+	"favpos" : "NONE",
+	"hatepos" : "NONE",
+	"xp" : 0,
+	"xplevel" : 1,
+	"or": 0,
+	"date": 0,
+	"maxbanque": 5,
+	"ptsveni": 0,
+	"timerarene" : 0
+}
+				`, function(error) { 
+					if (error) {
+							console.log(error);
+							return;
+						}
+					})
+			}
+		}
 	} //Fin des commandes admin
 
 	//Commandes Dev :
@@ -3582,6 +3547,21 @@ factionDe_Request = "";
 
 		*/ 
 	
+/* // exemple d'utilisation du nouveau système de fichier
+		if (message.content === prefix + "TryJson") {
+
+			let fileid = message.author.id;
+	
+			fs.readFile(`json/users_files/${fileid}.json`, function(error, file) {
+						   
+				let usrprofile_json = JSON.parse(file);
+	
+				usrprofile_json.or = 666;
+	
+				fs.writeFileSync(`json/users_files/${fileid}.json`, JSON.stringify(usrprofile_json));
+			});
+		}
+*/
 
 // ID DE CHANNELS : 
 
