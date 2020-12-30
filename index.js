@@ -1,4 +1,4 @@
-﻿const Discord = require('discord.js'), bot = new Discord.Client()
+﻿const Discord = require('discord.js'), bot = new Discord.Client({ ws: {intents: ["GUILDS", "GUILD_MEMBERS", "GUILD_MESSAGES"]}, partials: ["CHANNEL", "GUILD_MEMBER", "MESSAGE", "REACTION", "USER"]});
 const ajax = require("ajax");
 const fs = require("fs");
 const mkdirp = require("mkdirp");
@@ -12,6 +12,7 @@ const wiki = require('wikijs').default;
 
 var serv;
 
+
 const hash = crypto.createHash('md5')
 	.update('password')
 	.digest('hex')
@@ -19,7 +20,13 @@ const hash = crypto.createHash('md5')
 const config = require("./data/config.json");
 const { list } = require('pm2');
 
-bot.login(config.token);
+
+
+
+const id_maitre_epsilon = '421400262423347211';
+const id_maitre_zeta = '211911771433205760';
+const id_maitre_gamma = undefined;
+const id_maitre_omega = undefined;
 
 let DraxyEmpereurID = 211911771433205760;
 let RomarEmpereurID = 421400262423347211;
@@ -67,10 +74,20 @@ let buffer_thunas;
 
 var Date1;
 var Date2;
+
 		
 
 //Fontions:
 
+
+function getItemById(id) {
+
+	fs.readFile(`json/system/items.json`, function(error, file) {
+		let itemsfile = JSON.parse(file);
+		if (itemsfile[id] != undefined)
+			return itemsfile[id];
+	});
+}
 
 
 function msToTime(duration) { //Permet de transformer des MS en heure humaine
@@ -110,8 +127,9 @@ function Unix_timestamp(t) {
 	return hr+ ':' + m.substr(-2) + ':' + s.substr(-2);   // SI je me souviens bien : retourne sous la forme d'un Date, le temps passé en paramètres (milisecondes) -> ou plutôt le unix time en Date)
 }
 
-
 function addOr(id_usrF, orToAdd) { 
+
+	console.log("[DEV] Membre où on ajoute l'or : " + id_usrF);
 
 	getMaxBankSize(id_usrF);
 	// Faire en sorte que l'on ne puisse pas être en thune négative !!! 
@@ -119,7 +137,7 @@ function addOr(id_usrF, orToAdd) {
 	// Voir si on doit ou non (le truc qui empêche d'être au dessus de notre bank max)
 
 	let id_usr = id_usrF.id;
-	console.log("ID_USR !!!!!!!! " + id_usr);
+	console.log("[DEV] ID user : " + id_usr);
 
 	let or_a_ecrire; // Contient l'or total à ajouter
 	let or_in_json; // Contient l'or se trouvant dans le json
@@ -210,20 +228,20 @@ function addOr(id_usrF, orToAdd) {
 
 	// On a forcément un fichier à traiter.
 
-	console.log("Traitement...");
+	console.log("[DEV] {addOr} Traitement...");
 
 	fs.readFile(`json/users_files/${id_usr}.json`/*`json/or/or_${id_usr}.json`*/, function(error, fichier) {
 
-		console.log("Lecture en cours ...");
+		console.log("[DEV] {addOr} Lecture en cours ...");
 
 		json_or = JSON.parse(fichier);
 
 		
 		or_in_json = json_or.or;
 		
-		console.log("or_in_json b4 parse -> " + or_in_json);
+		console.log("[DEV] {addOr} or_in_json b4 parse -> " + or_in_json);
 		or_in_json = parseInt(or_in_json);
-		console.log("or_in_json after parse -> " + or_in_json);
+		console.log("[DEV] {addOr} or_in_json after parse -> " + or_in_json);
 		orToAdd = parseInt(orToAdd);
 
 		max_bank = json_or.maxbanque;
@@ -246,12 +264,12 @@ function addOr(id_usrF, orToAdd) {
 
 					// ici mettre buffer_thunas dans la banque de faction !
 
-					if(id_usrF.roles.find(r => r.name === "Epsilon")) { factionDe_Request = "Epsilon"; }
-					else if(id_usrF.roles.find(r => r.name === "Gamma")) { factionDe_Request = "Gamma"; 	 }
-					else if(id_usrF.roles.find(r => r.name === "Zeta")) { factionDe_Request = "Zeta";   }
-					else if(id_usrF.roles.find(r => r.name === "Omega")) { factionDe_Request = "Omega";   }
+					if(id_usrF.roles.cache.find(r => r.name === "Epsilon")) { factionDe_Request = "Epsilon"; }
+					else if(id_usrF.roles.cache.find(r => r.name === "Gamma")) { factionDe_Request = "Gamma"; 	 }
+					else if(id_usrF.roles.cache.find(r => r.name === "Zeta")) { factionDe_Request = "Zeta";   }
+					else if(id_usrF.roles.cache.find(r => r.name === "Omega")) { factionDe_Request = "Omega";   }
 					
-					let chan1 = bot.channels.get('415945814045884427');
+					let chan1 = bot.channels.cache.get('415945814045884427');
 
 					if (factionDe_Request == "Epsilon") {
 						//ENVOIE DANS LE COFFRE DE EPSILON
@@ -274,7 +292,7 @@ function addOr(id_usrF, orToAdd) {
 						addOrFaction(4, buffer_thunas); // Envoie à Oméga le surplus
 
 					} else {
-						message.channel.send("Le surplus d'argent à été rendu à PouleRPG : -" + buffer_thunas + " or." + " (Montez de niveau pour augmenter la capacité de votre banque.)");
+						chan1.send("Le surplus d'argent à été rendu à PouleRPG : -" + buffer_thunas + " or." + " (Montez de niveau pour augmenter la capacité de votre banque.)");
 					} 
 
 
@@ -292,12 +310,13 @@ function addOr(id_usrF, orToAdd) {
 		// date ; max_bank : or_a_ecrire.
 
 		json_or.or = or_a_ecrire;
+
+		console.log("[DEV] {addOr} OR : " + or_a_ecrire);
 		json_or.date = date;
 		json_or.maxbanque = max_bank;
 		fs.writeFileSync(`json/users_files/${id_usr}.json`, JSON.stringify(json_or, null, 2));
 	})
 } // fin function addOre
-
 
 function addOrFaction(factionID, montant) {
 
@@ -345,7 +364,6 @@ function addOrFaction(factionID, montant) {
 	let data = JSON.stringify(Orbank);
 	fs.writeFileSync("./json/data_factions/" + faction + "/Banque_" + faction + ".json", data);
 }
-
 
 function addXpOLD(id_usr, xpToAdd) { //Obsolète ! ( ancienne fonction addXp -> avant équilibrage Draxy) //Fonction permettant d'éditer l'XP d'un utilisateur : elle peut être utiliser pour retirer ou pour ajouter des points d'XP
 
@@ -579,7 +597,8 @@ function addXp(id_usr, xpToAdd) { // Nouvelle fonction pour l'xp : équilibrage 
 			console.log("xpinit: " + xp_init + "\nxplvlinit: " + xplvl_init); // Debug
 
 			// fonction & calculs
-			xpmaxlvl_init = Math.round((550 * xplvl_init / Math.sqrt(xplvl_init))) - 200; // Xp nécéssaire pour le level up avant ajout d'xp
+			// Avant le 700 était 550
+			xpmaxlvl_init = Math.round((700 * xplvl_init / Math.sqrt(xplvl_init))) - 200; // Xp nécéssaire pour le level up avant ajout d'xp
 			xp_final = xpToAdd + xp_init;
 			xplvl_final = xplvl_init;
 
@@ -676,65 +695,65 @@ function getMaxBankSize(id_usr) {
 
 		//console.log(serv.members);
 		
-			if (id_usr.roles.exists('id','445253268176633891')) {
+			if (id_usr.roles.cache.has('445253268176633891')) {
 				max_banque_perso_function = maxbanque_esclave;
 				//message.channel.send("OK1 !" + max_banque_perso_function);
 				continuer = false;
 				revenue_prolo_function = 1;
 				revenue_maitre_function = 1;
 			}
-			else if (id_usr.roles.exists('id','445253591465328660')) {
+			else if (id_usr.roles.cache.has('445253591465328660')) {
 				max_banque_perso_function = maxbanque_paysan;
 				//message.channel.send("OK2 !" + max_banque_perso_function);
 				continuer = false;
 				revenue_prolo_function = 2;
 				revenue_maitre_function = 3;
 			}
-			else if (id_usr.roles.exists('id','445253561648021514')) {
+			else if (id_usr.roles.cache.has('445253561648021514')) {
 				max_banque_perso_function = maxbanque_bourgeois;
 				//message.channel.send("OK3 !" + max_banque_perso_function);
 				continuer = false;
 				revenue_prolo_function = 5;
 				revenue_maitre_function = 7;
 			}
-			else if (id_usr.roles.exists('id','445253809640308746')) {
+			else if (id_usr.roles.cache.has('445253809640308746')) {
 				max_banque_perso_function = maxbanque_courtisan;
 				//message.channel.send("OK4 !" + max_banque_perso_function);
 				continuer = false;
 				revenue_prolo_function = 6;
 				revenue_maitre_function = 9;
 			}
-			else if (id_usr.roles.exists('id','445257669918588948')) {
+			else if (id_usr.roles.cache.has('445257669918588948')) {
 				max_banque_perso_function = maxbanque_baron;
-			//	message.channel.send("OK5 !" + max_banque_perso_function);
+				//message.channel.send("OK5 !" + max_banque_perso_function);
 				continuer = false;
 				revenue_prolo_function = 9;
 				revenue_maitre_function = 12;
 			}
-			else if (id_usr.roles.exists('id','650832087993024522')) {
+			else if (id_usr.roles.cache.has('650832087993024522')) {
 				max_banque_perso_function = maxbanque_compte;
-			//	message.channel.send("OK6 !" + max_banque_perso_function);
+				//message.channel.send("OK6 !" + max_banque_perso_function);
 				continuer = false;
 				revenue_prolo_function = 11;
 				revenue_maitre_function = 17;
 			}
-			else if (id_usr.roles.exists('id','445257144011587594')) {
+			else if (id_usr.roles.cache.has('445257144011587594')) {
 				max_banque_perso_function = maxbanque_marquis;
-			//	message.channel.send("OK7 !" + max_banque_perso_function);
+				//message.channel.send("OK7 !" + max_banque_perso_function);
 				continuer = false;
 				revenue_prolo_function = 16;
 				revenue_maitre_function = 23;
 			}
-			else if (id_usr.roles.exists('id','612469098466639893')) {
+			else if (id_usr.roles.cache.has('612469098466639893')) {
 				max_banque_perso_function = maxbanque_duc;
-			//	message.channel.send("OK8 !" + max_banque_perso_function);
+				//message.channel.send("OK8 !" + max_banque_perso_function);
 				continuer = false;
 				revenue_prolo_function = 25;
 				revenue_maitre_function = 32;
 			}
-			else if (id_usr.roles.exists('id','650828967716192269')) {
+			else if (id_usr.roles.cache.has('650828967716192269')) {
 				max_banque_perso_function = maxbanque_vassal;
-			//	message.channel.send("OK9 !" + max_banque_perso_function);
+				//message.channel.send("OK9 !" + max_banque_perso_function);
 				continuer = false;
 
 				revenue_prolo_function = 35;
@@ -745,7 +764,7 @@ function getMaxBankSize(id_usr) {
 			} // fin test du role
 	//	} // fin if continuer
 
-		//console.log(max_banque_perso_function);
+		console.log(max_banque_perso_function);
 
 
 		fs.writeFileSync("./data/temp/tempmxbk.json", `{"tmp" : ` + max_banque_perso_function + `, "revenueprolo" : ` + revenue_prolo_function + `, "revenuemaitre" : ` + revenue_maitre_function +`}`, function(err) {
@@ -782,6 +801,12 @@ function getMaxBankSize(id_usr) {
 
 } // fin de la fonction
 
+function setUserPosition(id_usr, id_faction, id_position) {
+	// ecrire dans le fichier de la faction (sut via id_faction) l'utilisateur (sut via id_usr) à la position (sut id_position)
+	
+}
+
+
 
 // Fin des fonctions
 
@@ -805,6 +830,7 @@ var item_materiaux = new Array(); // De 0 à 99 (100 items possibles).
 bot.on('ready', function() {
 	bot.user.setActivity("PouleRPG | p<help")
 	//bot.user.setStatus('dnd');
+	bot.user.fetchAllMembers = true;
 	console.log("bot 'PouleRPG' has been connected sucessfully!")
 	console.log("bot lancé le: " + new Date() + " ");
 
@@ -847,9 +873,11 @@ fs.writeFile('json/users_files/' + id_usr + '.json', `
 
 
 
+
+
 //Main
 
-bot.on('message', async (message) => {
+ bot.on('message', async (message) => {
 
 
 	// check permissions 
@@ -866,13 +894,15 @@ bot.on('message', async (message) => {
 		}
 	}
 
-	const emote_or = bot.emojis.find(emoji => emoji.name === "or");
-	const emote_giga_gras = bot.emojis.find(emoji => emoji.name === "GIGA_GRAS");
-	const emote_bordel = bot.emojis.find(emoji => emoji.name === "BORDEL");
-	const emote_pray = bot.emojis.find(emoji => emoji.name === "pray");
-	const emote_fakedieu = bot.emojis.find(emoji => emoji.name === "fake_DIEU_POULET");
-	const emote_dieudroite = bot.emojis.find(emoji => emoji.name === "DIEU_POULET_droite");
-	const emote_dieugauche = bot.emojis.find(emoji => emoji.name === "DIEU_POULET_gauche"); 
+	const emote_or = bot.emojis.cache.find(emoji => emoji.name === "or");
+	const emote_giga_gras = bot.emojis.cache.find(emoji => emoji.name === "GIGA_GRAS");
+	const emote_bordel = bot.emojis.cache.find(emoji => emoji.name === "BORDEL");
+	const emote_pray = bot.emojis.cache.find(emoji => emoji.name === "pray");
+	const emote_fakedieu = bot.emojis.cache.find(emoji => emoji.name === "fake_DIEU_POULET");
+	const emote_dieudroite = bot.emojis.cache.find(emoji => emoji.name === "DIEU_POULET_droite");
+	const emote_dieugauche = bot.emojis.cache.find(emoji => emoji.name === "DIEU_POULET_gauche");
+
+	
 
 	//Ping
 
@@ -936,9 +966,9 @@ bot.on('message', async (message) => {
 
 	if (message.content === prefix + "aide" ||  message.content === prefix + "help") {
 
-		let embed_aide = new Discord.RichEmbed()
+		let embed_aide = new Discord.MessageEmbed() // DraxyNote : Avec la V12 n'oublie pas que ce n'est plus RichEmbed(), mais MessageEmbed, le constructeur.
 				.setColor([200, 100, 0])
-				.setAuthor("Commandes de PouleRPG", bot.user.displayAvatarURL) 
+				.setAuthor("Commandes de PouleRPG", bot.user.displayAvatarURL()) 
 				.setDescription("**Faites ``p<aide [commande]`` ou ``p<help [commande]`` pour plus de détails sur une certaine commande.**")
 				
 				.addField(":satellite: UTILITAIRE", "``aide`` **|** ``help`` **|** ``botinfos`` **|** ``ping`` **|** ``list`` **|** ``???``", false)
@@ -947,14 +977,14 @@ bot.on('message', async (message) => {
 				.addField(":moneybag: GAINS", "``arene`` **|** ``revenue`` **|** ``???``", false)
 				.addField(":gear: EXEMPLES", "``p<aide or`` **|** ``p<help phrase`` **|** ``p<aide revenue``", false)
 				
-				.setFooter("© Bot par Romar1 et DraxyDow.", bot.user.displayAvatarURL)
+				.setFooter("© Bot par Romar1 et DraxyDow.", bot.user.displayAvatarURL())
 
 			message.channel.send(embed_aide);
 	}
 
 	//UTILITAIRE
 	if (message.content === prefix + "aide aide" || message.content === prefix + "help aide" || message.content === prefix + "aide help" || message.content === prefix + "help help") {
-		let embed_aide_aide = new Discord.RichEmbed()
+		let embed_aide_aide = new Discord.MessageEmbed()
 							.setColor([200, 100, 0])
 							.setTitle(":microscope: Aide - aide/help :microscope:")
 							.setDescription("La commande ``aide`` ou ``help`` affiche la page d'aide ou permet d'avoir plus de précisions sur une commande.\n**Voici comment l'utiliser :**\n``p<aide`` **|** ``p<aide [commande]``\n``p<help`` **|** ``p<help [commande]``")
@@ -963,7 +993,7 @@ bot.on('message', async (message) => {
     }
 
     if (message.content === prefix + "aide botinfos" || message.content === prefix + "help botinfos") {
-		let embed_aide_botinfos = new Discord.RichEmbed()
+		let embed_aide_botinfos = new Discord.MessageEmbed()
 							.setColor([200, 100, 0])
 							.setTitle(":microscope: Aide - botinfos :robot:")
 							.setDescription("La commande ``botinfos`` vous montre la version du bot, son nombre de lignes ainsi que ses développeurs.\n**Voici comment l'utiliser :**\n``p<botinfos``")
@@ -972,7 +1002,7 @@ bot.on('message', async (message) => {
 	}
 
     if (message.content === prefix + "aide ping" || message.content === prefix + "help ping") {
-		let embed_aide_ping = new Discord.RichEmbed()
+		let embed_aide_ping = new Discord.MessageEmbed()
 							.setColor([200, 100, 0])
 							.setTitle(":microscope: Aide - ping :ping_pong:")
 							.setDescription("La commande ``ping`` calcule le temps de réponse du bot et l'affiche.\n**Voici comment l'utiliser :**\n``p<ping``")
@@ -981,7 +1011,7 @@ bot.on('message', async (message) => {
     }
 
     if (message.content === prefix + "aide list" || message.content === prefix + "help list") {
-		let embed_aide_list = new Discord.RichEmbed()
+		let embed_aide_list = new Discord.MessageEmbed()
 							.setColor([200, 100, 0])
 							.setTitle(":microscope: Aide - list :scroll:")
 							.setDescription("La commande ``list`` vous permet de voir tous les membres d'une faction précise ou de toutes les factions séparément.\n**Voici comment l'utiliser :**\n``p<list [epsilon/zeta/gamma/omega]\np<list factions``")
@@ -991,7 +1021,7 @@ bot.on('message', async (message) => {
 
     //AMUSEMENT DIVERS
     if (message.content === prefix + "aide phrase" || message.content === prefix + "help phrase") {
-		let embed_aide_phrase = new Discord.RichEmbed()
+		let embed_aide_phrase = new Discord.MessageEmbed()
 							.setColor([200, 100, 0])
 							.setTitle(":microscope: Aide - phrase :pen_fountain:")
 							.setDescription("La commande ``phrase`` écrit une phrase aléatoire grâce à une base de données de mots.\n**Voici comment l'utiliser :**\n``p<phrase``")
@@ -1000,7 +1030,7 @@ bot.on('message', async (message) => {
     }
 
     if (message.content === prefix + "aide pileouface" || message.content === prefix + "help pileouface") {
-		let embed_aide_pileouface = new Discord.RichEmbed()
+		let embed_aide_pileouface = new Discord.MessageEmbed()
 							.setColor([200, 100, 0])
 							.setTitle(":microscope: Aide - pileouface :arrows_counterclockwise:")
 							.setDescription("La commande ``pileouface`` lance une pièce et donne le résultat, soit pile, soit face.\n**Voici comment l'utiliser :**\n``p<pileouface``")
@@ -1009,7 +1039,7 @@ bot.on('message', async (message) => {
     }
 
     if (message.content === prefix + "aide say" || message.content === prefix + "help say") {
-		let embed_aide_say = new Discord.RichEmbed()
+		let embed_aide_say = new Discord.MessageEmbed()
 							.setColor([200, 100, 0])
 							.setTitle(":microscope: Aide - say :loudspeaker:")
 							.setDescription("La commande ``say`` fait en sorte que PouleRPG envoie votre message.\n**Voici comment l'utiliser :**\n``p<say [message]``")
@@ -1019,16 +1049,16 @@ bot.on('message', async (message) => {
 
     //STATISTIQUES PERSONNELLES
     if (message.content === prefix + "aide or" || message.content === prefix + "help or") {
-		let embed_aide_or = new Discord.RichEmbed()
+		let embed_aide_or = new Discord.MessageEmbed()
 							.setColor([200, 100, 0])
-							.setTitle(":microscope: Aide - or " + emote_or)
+							.setTitle(":microscope: Aide - or " + `${emote_or}`)
 							.setDescription("La commande ``or`` affiche l'or dont vous êtes en possession.\n**Voici comment l'utiliser :**\n``p<or``")
 
 							message.channel.send(embed_aide_or);
     }
 
     if (message.content === prefix + "aide xp" || message.content === prefix + "help xp") {
-		let embed_aide_xp = new Discord.RichEmbed()
+		let embed_aide_xp = new Discord.MessageEmbed()
 							.setColor([200, 100, 0])
 							.setTitle(":microscope: Aide - xp :battery:")
 							.setDescription("La commande ``xp`` affiche l'XP ainsi que le level que vous avez.\n**Voici comment l'utiliser :**\n``p<xp``")
@@ -1037,7 +1067,7 @@ bot.on('message', async (message) => {
     }
 
     if (message.content === prefix + "aide mes beaux points venitienne" || message.content === prefix + "help mes beaux points venitienne") {
-		let embed_aide_venitienne = new Discord.RichEmbed()
+		let embed_aide_venitienne = new Discord.MessageEmbed()
 							.setColor([200, 100, 0])
 							.setTitle(":microscope: Aide - mes beaux points venitienne :woman_red_haired:")
 							.setDescription("La commande ``mes beaux points venitienne`` affiche avec honneur ou déshonneur le nombre de magnifiques points vénitiennes dont vous êtes en possession.\n**Voici comment l'utiliser :**\n``p<mes beaux points venitienne``")
@@ -1047,7 +1077,7 @@ bot.on('message', async (message) => {
 
     //GAINS
     if (message.content === prefix + "aide arene" || message.content === prefix + "help arene") {
-		let embed_aide_arene = new Discord.RichEmbed()
+		let embed_aide_arene = new Discord.MessageEmbed()
 							.setColor([200, 100, 0])
 							.setTitle(":microscope: Aide - arene :crossed_swords:")
 							.setDescription("La commande ``arene`` permet de faire un combat dans l'arène contre le bot pour gagner de l'expérience. Vous pouvez choisir entre 3 armes, la **masse** avec ``p<arene masse`` ou ``p<arene m``, le **tomahawk** avec ``p<arene tomahawk`` ou ``p<arene t``, ou la **lance** avec ``p<arene lance`` ou ``p<arene l``, voici qui l'emporte sur qui :\nLa masse -> le tomahawk **|** Le tomahawk -> la lance **|** La lance -> la masse\nLe combat se fait comme un chifoumi.\n**Voici comment l'utiliser :**\n``p<arene [arme]``")
@@ -1056,7 +1086,7 @@ bot.on('message', async (message) => {
     }
 
     if (message.content === prefix + "aide revenue" || message.content === prefix + "help revenue") {
-		let embed_aide_revenue = new Discord.RichEmbed()
+		let embed_aide_revenue = new Discord.MessageEmbed()
 							.setColor([200, 100, 0])
 							.setTitle(":microscope: Aide - revenue :moneybag:")
 							.setDescription("La commande ``revenue`` vous permet de gagner un montant assez conséquent d'or suivant le rôle de level dont vous êtes en possession (cf. rôle Mee6). Ce revenue est réinitialisé après **24h** suite à son utilisation.\n**Voici comment l'utiliser :**\n``p<revenue``")
@@ -1066,7 +1096,7 @@ bot.on('message', async (message) => {
 
 
     if (message.content === prefix + "aide ???" || message.content === prefix + "help ???") {
-		let embed_aide_no = new Discord.RichEmbed()
+		let embed_aide_no = new Discord.MessageEmbed()
 							.setColor([200, 100, 0])
 							.setTitle(":microscope: Aide - ??? :grey_question:")
 							.setDescription("La commande ``???`` n'existe tout simplement pas, c'est un petit easter egg, voilà tout.\n**Voici comment ne pas l'utiliser :**\n``/``")
@@ -1076,7 +1106,7 @@ bot.on('message', async (message) => {
     //TEMPLATE
     /*
     if (message.content === prefix + "aide X" || message.content === prefix + "help X") {
-		let embed_aide_X = new Discord.RichEmbed()
+		let embed_aide_X = new Discord.RichEmbed() //DraxyNote : ici comme c'est commenté je ne modifie pas le RichEmbed mais si tu veux l'utiliser change le 
 							.setColor([200, 100, 0])
 							.setTitle(":microscope: Aide - X :X:")
 							.setDescription("La commande ``X`` XXX.\n**Voici comment l'utiliser :**\n``p<X\np<X``")
@@ -1091,10 +1121,10 @@ bot.on('message', async (message) => {
 
 	if (message.content === prefix + "botinfos") {
 
-		let embed_botinfos = new Discord.RichEmbed()
+		let embed_botinfos = new Discord.MessageEmbed()
 			.setColor([200, 100, 0])
-			.setAuthor("Infos de PouleRPG", bot.user.displayAvatarURL)
-			.setDescription("Version : **" + bot_version + "**\nLignes de code : **" + bot_lignes + "**\nProgrammation : **Romar1** ; Design Graphique : **DraxyDow**")
+			.setAuthor("Infos de PouleRPG", bot.user.displayAvatarURL())
+			.setDescription("Version : **" + bot_version + "**\nLignes de code : **" + bot_lignes + "**\nProgrammation : **Romar1** ; Design Graphique : **DraxyDow**") // DraxyNote : Si tu peux ajouter la date de début du développement (19/09/2019  23:31) de manière belle grapgiquement ^^
 
 		message.channel.send(embed_botinfos);
 	}
@@ -1106,18 +1136,21 @@ bot.on('message', async (message) => {
 	const command = args.shift().toLowerCase();
 
 	// ce bordel sert à éviter le message.content === prefix + "command", dans chaques if, il suffit juste de "command === "commande"". Mais je ne l'utilise pas
+
+	// et le args -> pour le arene
 	
 
     if (message.content.startsWith(prefix + 'arene ')) { //DEBUT ARENE ///FAIT LE COULDOWN de 1 minute, et le fait qu'on gagne de l'xp (aléatoire entre 1 et 3 un truc commas), DE PLUS fait le système qui calcul l'xp de la pleb dans la commande p<xp (en gros, au lieu de verifier le level dxp des cons à chaques fois, là ça permet de verifier le level uniquement quand on fait la commande "xp", ça allègera le bot, et c'est pas très handicappant que le con ne soit pas avertit qu'il level up, ça osef !!)
 		/*message.channel.send("Temporairement Désactivée");
 		return;*/
 
-		let couldown = 60000;
+		let couldown = 60/*000*/;
 		let startTimeMS = 0;
 		let timeout;
 		let tm = 0;
 
 		let aut_usr = message.member;
+
 
 	
 
@@ -1127,6 +1160,9 @@ bot.on('message', async (message) => {
 		let id_usr = message.author.id;
     	if (talkedRecently_arene.has(message.author.id)) {
 			Date2 = Math.floor(new Date() / 1000);
+			
+
+
 
 			/*let pre_final = Date2 - Date1;
 			let final = 60 - pre_final;*/
@@ -1140,6 +1176,11 @@ bot.on('message', async (message) => {
 				Date1 = timerfile.timerarene;
 
 				let attente_arene = 60 - (Date2 - Date1);
+
+			//message.channel.send("DEBUG: Date1: " + Date1);
+			//message.channel.send("DEBUG: Date2: " + Date2);
+
+				
 			
 				message.channel.send(":hourglass: **| " + message.author.username + "**, il vous faut attendre encore **" + attente_arene + " secondes** avant de pouvoir vous battre de nouveau dans l'arène !");
 				
@@ -1156,13 +1197,29 @@ bot.on('message', async (message) => {
 
 			
 			Date1 = Math.floor(new Date() / 1000);
+			
+			//message.channel.send("DEBUG: Date1: " + Date1);
 
 			fs.readFile("./json/users_files/" + message.author.id + ".json", function(error, file) {
+
+				//message.channel.send("DEBUG : Est bien entrée \n file: " + file);
 				
 				let timerjson = JSON.parse(file);
 				timerjson.timerarene = Date1;
 
-				fs.writeFileSync(`json/users_files/${message.author.id}.json`, JSON.stringify(timerjson, null, 2));
+				fs.writeFile(`json/users_files/${message.author.id}.json`, JSON.stringify(timerjson, null, 2), function(err) {
+					if (err)  {
+						console.log(err); 
+						return;
+					}
+				});
+
+				if (error) {
+					console.log(error);
+					return;
+				}
+
+				return;
 
 				
 			});
@@ -1197,19 +1254,19 @@ bot.on('message', async (message) => {
 
 
 	    	//EMBED
-			let embed_arene_victoire = new Discord.RichEmbed()
+			let embed_arene_victoire = new Discord.MessageEmbed()
 					.setColor([200, 200, 200])
-					.setAuthor("Victoire !", message.author.displayAvatarURL)
-					.setDescription("L'ennemi a utilisé " + arme_ennemi + ", vous le terrassez !\n**+7 XP ; +1** " + emote_or)
+					.setAuthor("Victoire !", message.author.displayAvatarURL())
+					.setDescription("L'ennemi a utilisé " + arme_ennemi + ", vous le terrassez !\n**+7 XP ; +1** " + `${emote_or}`)
 
-			let embed_arene_matchnul = new Discord.RichEmbed()
+			let embed_arene_matchnul = new Discord.MessageEmbed()
 					.setColor([200, 200, 200])
-					.setAuthor("Match nul.", message.author.displayAvatarURL)
+					.setAuthor("Match nul.", message.author.displayAvatarURL())
 					.setDescription("L'ennemi a utilisé " + arme_ennemi + ", c'est une égalité.\n**+2 XP**")
 					
-			let embed_arene_defaite = new Discord.RichEmbed()
+			let embed_arene_defaite = new Discord.MessageEmbed()
 					.setColor([200, 200, 200])
-					.setAuthor("Défaite...", message.author.displayAvatarURL)
+					.setAuthor("Défaite...", message.author.displayAvatarURL())
 					.setDescription("L'ennemi a utilisé " + arme_ennemi + ", vous vous faites éliminer...\n**-2 XP**")				
 
 
@@ -1233,6 +1290,7 @@ bot.on('message', async (message) => {
 					//getMaxBankSize(id_usr);
 	    			addXp(id_usr, 7);
 					addOr(aut_usr, 1);
+					
 	    		}
 	    		if (arene_choixUser == 1 && arene_choixEnnemy == 3) { //Masse VS Lance - Défaite
 	    			message.channel.send(embed_arene_defaite);
@@ -1250,7 +1308,7 @@ bot.on('message', async (message) => {
 	    			addXp(id_usr, 2);
 	    		}
 	    		if (arene_choixUser == 2 && arene_choixEnnemy == 3) { //Tomahawk VS Lance - Victoire
-	    			message.channel.send(embed_arene_victoire);
+					message.channel.send(embed_arene_victoire);
 	    			addXp(id_usr, 7);
 					addOr(aut_usr, 1);
 	    		}
@@ -1258,7 +1316,7 @@ bot.on('message', async (message) => {
 
 
 	    		if (arene_choixUser == 3 && arene_choixEnnemy == 1) { //Lance VS Masse - Victoire
-	    			message.channel.send(embed_arene_victoire);
+					message.channel.send(embed_arene_victoire);
 	    			addXp(id_usr, 7);
 					addOr(aut_usr, 1);
 	    		}
@@ -1334,16 +1392,16 @@ bot.on('message', async (message) => {
 
 			if (message.mentions.users.first() == undefined) {
 
-			embed_or = new Discord.RichEmbed()
+			embed_or = new Discord.MessageEmbed()
 									.setColor([255, 200, 0])
-									.setAuthor("Banque de " + message.author.username, message.author.displayAvatarURL)
-									.setDescription("**" + or_usr + "/" + max_bank + "** " + emote_or)
+									.setAuthor("Banque de " + message.author.username, message.author.displayAvatarURL())
+									.setDescription("**" + or_usr + "/" + max_bank + "** " + `${emote_or}`)
 			} else {
 
-			embed_or = new Discord.RichEmbed()
+			embed_or = new Discord.MessageEmbed()
 									.setColor([255, 200, 0])
-									.setAuthor("Banque de " +message.mentions.users.first().username, message.mentions.users.first().displayAvatarURL)
-									.setDescription("**" + or_usr + "/" + max_bank + "** " + emote_or)	
+									.setAuthor("Banque de " +message.mentions.users.first().username, message.mentions.users.first().displayAvatarURL())
+									.setDescription("**" + or_usr + "/" + max_bank + "** " + `${emote_or}`)	
 									
 			}
 
@@ -1360,6 +1418,7 @@ bot.on('message', async (message) => {
 
 	if (message.content === prefix + 'revenue') {
 		let id_usr = message.author.id;
+		let id_usr2 = message.member;
 		let utime_now = Math.floor(new Date().getTime() / 1000); //Date lors de l'execution de la commande
 		
 		let date_in_file; // contient la date du fichier user.
@@ -1369,7 +1428,7 @@ bot.on('message', async (message) => {
 		let mxbk; // contient le max bank
 		let difference_or; // contient la différence d'or si on dépasse la banque, à envoyer vers le coffre de faction.
 
-		getMaxBankSize(message.member);
+		getMaxBankSize(id_usr2);
 
 		fs.readFile("./data/temp/tempmxbk.json", function(error, file) {
 			if(error) {
@@ -1380,10 +1439,10 @@ bot.on('message', async (message) => {
 
 			mxbk = ftmp.tmp; // contient le max bank
 
-			let Maitre_Epsilon = message.guild.roles.get('445617906072682514').members.map(m=>m.user.id);
-			let Maitre_Gamma = message.guild.roles.get('445617908903706624').members.map(m=>m.user.id);
-			let Maitre_Zeta = message.guild.roles.get('445617911747313665').members.map(m=>m.user.id);
-			let Maitre_Omega = message.guild.roles.get('665340068046831646').members.map(m=>m.user.id);
+			let Maitre_Epsilon = message.guild.roles.cache.get('445617906072682514').members.map(m=>m.user.id);
+			let Maitre_Gamma = message.guild.roles.cache.get('445617908903706624').members.map(m=>m.user.id);
+			let Maitre_Zeta = message.guild.roles.cache.get('445617911747313665').members.map(m=>m.user.id);
+			let Maitre_Omega = message.guild.roles.cache.get('665340068046831646').members.map(m=>m.user.id);
 
 			if (message.author.id == Maitre_Epsilon
 			 || message.author.id == Maitre_Gamma 
@@ -1453,10 +1512,10 @@ bot.on('message', async (message) => {
 				if (revenue != 0) {
 					//message.channel.send(`+${revenue} TOTAL : ${final_or}/${mxbk}`);
 
-					let embed_revenue = new Discord.RichEmbed()
+					let embed_revenue = new Discord.MessageEmbed()
 					.setColor([255, 200, 0])
-					.setAuthor("Revenue quotidien !", message.author.displayAvatarURL)
-					.setDescription("**+" + revenue + "** " + emote_or + "\nVous avez actuellement **" + final_or + "/" + mxbk + "** " + emote_or)
+					.setAuthor("Revenue quotidien !", message.author.displayAvatarURL())
+					.setDescription("**+" + revenue + "** " + `${emote_or}` + "\nVous avez actuellement **" + final_or + "/" + mxbk + "** " + `${emote_or}`)
 
 					 message.channel.send(embed_revenue);
 				}
@@ -1469,41 +1528,100 @@ bot.on('message', async (message) => {
 
 
 
+	 if (message.content === prefix + "DEV A") {
+		// message.guild.members.fetch();
+		
+		message.channel.send("HERE ON THIS");
+		message.guild.members.fetch({roles: ['415947613863411713']})
+  			.then(console.log)
+			.catch(console.error);
+
+
+			
+		
+		let HereRole = message.guild.roles.cache.find(role => role.name == "Events");
+        let HereMembers = message.guild.members.cache.filter(member => member.roles.cache.find(role => role == HereRole)).map(member => member.user.tag).join(',');
+		message.channel.send(`list : ` + HereMembers);
+		
+		// message.channel.send(`Users with ${HereRole.name}: ${HereMembers}`);
+
+		// let roleID = "415947454626660366";
+		// message.channel.send(message.guild.roles.get(roleID).members);
+
+		//message.channel.send(message.member.roles.cache.get('415947454626660366'));
+
+
+	} 
+
+
+	if (message.content === prefix + "DEV B") {
+		guild.members.fetch();
+		message.channel.send(message.member.roles.cache.find(role => role.id === '415947454626660366'));
+	}
+
+	if (message.content === prefix + "DEV C") {
+		message.channel.send("cache: " + bot.guilds.cache.members);
+	}
+
+	if (message.content.startsWith(prefix + "DEV E")) {
+		let user = message.mentions.users.first();
+		let mbm = message.guild.member(user);
+
+		message.channel.send(mbm.roles.cache.has('750336000193986652'));
+	}
+
+	
+		
+
+		
+
+	
+
+
 
 
 
 
 	//listage des membres des factions
 
+
+	// SUSPENDU POUR CAUSE DE BUG DE CACHE !
+	/*
 	if (message.content === prefix + "list epsilon") {
-		const ListEmbed = new Discord.RichEmbed()
+		//const ListEmbed = new Discord.MessageEmbed()
+        //    .setTitle('Membres de la faction Epsilon')
+        //    .setColor([170, 60, 0])
+        //    .setDescription(message.guild.roles.cache.get('415947454626660366').members.map(m=>m.user.tag).join('\n')); //Check le Members.map
+		// message.channel.send(ListEmbed); 
+		
+		const ListEmbed = new Discord.MessageEmbed()
             .setTitle('Membres de la faction Epsilon')
             .setColor([170, 60, 0])
-            .setDescription(message.guild.roles.get('415947454626660366').members.map(m=>m.user.tag).join('\n'));
-        message.channel.send(ListEmbed); 
+            .setDescription(message.guild.roles.cache.get('415947454626660366').members.map(m => m.user.tag).join(' | '));
+        message.channel.send(ListEmbed);
 	} 
 
 	if (message.content === prefix + "list gamma") {
-			const ListEmbed = new Discord.RichEmbed()
+			const ListEmbed = new Discord.MessageEmbed()
 	            .setTitle('Membres de la faction Gamma')
 	            .setColor([100, 200, 50])
-	            .setDescription(message.guild.roles.get('415947456342130699').members.map(m=>m.user.tag).join('\n'));
+	            .setDescription(message.guild.roles.cache.get('415947456342130699').members.map(m=>m.user.tag).join('\n'));
 	        message.channel.send(ListEmbed); 
 	} 
 
 	if (message.content === prefix + "list zeta" || message.content === prefix + "list zêta") {
-		const ListEmbed = new Discord.RichEmbed()
+		const ListEmbed = new Discord.MessageEmbed()
             .setTitle('Membres de la faction Zêta')
             .setColor([50, 100, 200])
-            .setDescription(message.guild.roles.get('415947455582961686').members.map(m=>m.user.tag).join('\n'));
+            .setDescription(message.guild.roles.cache.get('415947455582961686').members.map(m=>m.user.tag).join('\n'));
         message.channel.send(ListEmbed); 
 	} 
 
 	if (message.content === prefix + "list omega" || message.content === prefix + "list oméga") {
-		const ListEmbed = new Discord.RichEmbed()
+		const ListEmbed = new Discord.MessageEmbed()
             .setTitle('Membres de la faction Oméga')
             .setColor([170, 150, 40])
-            .setDescription(message.guild.roles.get('665340021640921099').members.map(m=>m.user.tag).join('\n'));
+            .setDescription(message.guild.roles.cache.get('665340021640921099').members.map(m=>m.user.tag).join('\n'));
         message.channel.send(ListEmbed);
 
 	}
@@ -1535,7 +1653,7 @@ bot.on('message', async (message) => {
             //.setDescription("**Epsilon**\n\n" + list_epsilon + "\n\n**Zêta**\n\n" + list_zeta + "\n\n**Gamma**\n\n" + list_gamma + "\n\n**Oméga**\n\n" + list_omega + "\n");
         
         message.channel.send(ListEmbed);
-	}
+	} */
 
 
 
@@ -1575,10 +1693,10 @@ bot.on('message', async (message) => {
 				
 
 				let xplvl_init = json_xp.xplevel;
-				let xp_level_up_required = Math.round((550 * xplvl_init / Math.sqrt(xplvl_init))) - 200;
+				let xp_level_up_required = Math.round((700 * xplvl_init / Math.sqrt(xplvl_init))) - 200;
 
 
-				let embed_xp = new Discord.RichEmbed()
+				let embed_xp = new Discord.MessageEmbed()
 				.setColor([50, 200, 110])
 				.setAuthor("XP de " + member.username, member.displayAvatarURL)
 				.setDescription(`**XP : ${json_xp.xp}/${xp_level_up_required}\nLevel : ${json_xp.xplevel}**`);
@@ -1596,8 +1714,8 @@ bot.on('message', async (message) => {
 
 	if (message.content.startsWith("J'adore le poulet")) { //Une commande useless
 		let poulet_ran = entierAleatoire(1, 5);
-		let giga_gras = bot.emojis.find(emoji => emoji.name === "GIGA_GRAS");
-		let bordel = bot.emojis.find(emoji => emoji.name === "BORDEL");
+		let giga_gras = bot.emojis.cache.find(emoji => emoji.name === "GIGA_GRAS");
+		let bordel = bot.emojis.cache.find(emoji => emoji.name === "BORDEL");
 
 		switch (poulet_ran) {
 			case 1: 
@@ -1712,7 +1830,7 @@ bot.on('message', async (message) => {
 	   				let veni_json = JSON.parse(file)
 	   				let pts_veni_total = veni_json.ptsveni;
 	   				
-	   				message.channel.send("Vous avez : " + pts_veni_total + " points venitienne.");
+	   				message.channel.send("Vous avez : " + pts_veni_total + " point(s) venitienne.");
 	   				
 	   				})
 		    	
@@ -1733,7 +1851,7 @@ bot.on('message', async (message) => {
 		}
 
 		if (id_usr_selected === "421400262423347211") {
-			message.channel.send(`<@${id_usr_selected}> a : ∞ points venitienne.`);
+			message.channel.send(`<@${id_usr_selected}> a : ∞ point(s) venitienne.`);
 
 		} else {
 			
@@ -1756,11 +1874,17 @@ bot.on('message', async (message) => {
 	} //Fin de la commande pour voir les points vénitienne de quelqu'un.
 
 
-
+	if (message.content !== undefined && message.author.id !== bot.user.id) {
+		let test1 = message.content;
+		if(test1.indexOf('Hitler') >= 0) {
+			message.channel.send("Faut arrêter la discussion là !! Le point Godwin est dépassé !");
+		}
+	}
 
 
 	if (message.content !== undefined && message.author.id !== bot.user.id) {
 		var test = message.content;
+		let giga_gras = bot.emojis.cache.find(emoji => emoji.name === "GIGA_GRAS");
 		if( test.indexOf('Bonne nuit') >= 0 || test.indexOf('bonne nuit') >= 0 ||  test.indexOf('Bon nuit') >= 0 || test.indexOf('Bonne Nuit') >= 0 || test.indexOf('bon nuit') >= 0 || test.indexOf('Bon nui') >= 0 || test.indexOf('Bonne nui') >= 0 || test.indexOf('bonne nui') >= 0){
 			
 			let random_nuit = entierAleatoire(1, 5);
@@ -1779,7 +1903,7 @@ bot.on('message', async (message) => {
 					break;
 				
 					case 4:
-					message.channel.send("**BONNNNEUUUUH NUUUUUUIIIIIT A TOI AUZIIIIIII !!!!!!** " + emote_giga_gras);
+					message.channel.send(`**BONNNNEUUUUH NUUUUUUIIIIIT A TOI AUZIIIIIII !!!!!!** ${giga_gras}`);
 					break;
 
 				case 5:
@@ -1873,23 +1997,7 @@ bot.on('message', async (message) => {
 	} //Fin du p<phrase
 
 
-	if (message.content.startsWith(prefix + "random ")) {
-		let argsRandom = message.content.slice(prefix.length).trim().split(/ +/g);
-			//message.channel.send(argsRandom + `<-args5 ; \n ${args[0]}, ${args[1]}`);
-			let nbrAexe = args[2];
-			let minR = args[0];
-			let maxR = args[1];
-			let nombreRan = 0;
-
-			console.log(nbrAexe + "\n" + minR + "\n" + maxR)
-
-			for(i=1;i <= nbrAexe; i++) {
-				nombreRan = entierAleatoire(minR, maxR);
-				message.channel.send(nombreRan);
-				nombreRan = 0;
-			}
-			message.channel.send("END.")
-	}	
+		
 
 	/*
 
@@ -1990,6 +2098,9 @@ bot.on('message', async (message) => {
 
 	} // Fin du test de niveau de bank */
 
+
+
+	// Problème principale : Trouver les gens à base d'un rôle.
 	
 
 	if (message.content.startsWith(prefix + "info faction ")) {
@@ -2001,13 +2112,26 @@ bot.on('message', async (message) => {
 		let maitre;
 
 
+		
+		
+
+		
+
+		let user_maitre_epsilon = bot.users.cache.get(id_maitre_epsilon);
+		let user_maitre_zeta = bot.users.cache.get(id_maitre_zeta);
+		let user_maitre_gamma = bot.users.cache.get(id_maitre_gamma);
+		let user_maitre_omega = bot.users.cache.get(id_maitre_omega);
+
+
 		if (argsFac == "epsilon") {
 			factionExist = true;
 			faction = "Epsilon";
 			factionFS = "Epsilon";
 			faction_channel_id = 445289059892461578;
 
-			maitre = message.guild.roles.get('445617906072682514').members.map(m=>m.user.username).join('\n'); // Maitre Epsilon
+			// maitre = message.guild.roles.cache.get('445617906072682514').members.map(m=>m.user.username).join('\n'); // Maitre Epsilon
+
+			maitre = message.guild.member(user_maitre_epsilon);
 
 		} else if (argsFac == "zeta") {
 			factionExist = true;
@@ -2015,7 +2139,8 @@ bot.on('message', async (message) => {
 			factionFS = "Zeta";
 			faction_channel_id = 445289032419770378;
 
-			maitre = message.guild.roles.get('445617911747313665').members.map(m=>m.user.username).join('\n'); // Maitre Epsilon
+			// maitre = message.guild.roles.get('445617911747313665').members.map(m=>m.user.username).join('\n'); // Maitre Epsilon
+			maitre = message.guild.member(user_maitre_zeta);
 
 		} else if (argsFac == "gamma") {
 			factionExist = true;
@@ -2023,7 +2148,8 @@ bot.on('message', async (message) => {
 			factionFS = "Gamma";
 			faction_channel_id = 445289003156242434;
 
-			maitre = message.guild.roles.get('445617908903706624').members.map(m=>m.user.username).join('\n'); // Maitre Epsilon
+			// maitre = message.guild.roles.get('445617908903706624').members.map(m=>m.user.username).join('\n'); // Maitre Epsilon
+			maitre = message.guild.member(user_maitre_gamma);
 
 		} else if (argsFac == "omega") {
 			factionExist = true;
@@ -2031,8 +2157,13 @@ bot.on('message', async (message) => {
 			factionFS = "Omega";
 			faction_channel_id = 667858618342834216;
 
-			maitre = message.guild.roles.get('665340068046831646').members.map(m=>m.user.username).join('\n'); // Maitre Epsilon
+			// maitre = message.guild.roles.get('665340068046831646').members.map(m=>m.user.username).join('\n'); // Maitre Epsilon
+			maitre = message.guild.member(user_maitre_omega);
 
+		}
+
+		if(maitre == undefined) {
+			maitre = "Vacant";
 		}
 
 		if (factionExist == false) {
@@ -2064,9 +2195,6 @@ bot.on('message', async (message) => {
 			
 
 				
-
-				
-				
 				
 			}
 		}
@@ -2081,7 +2209,6 @@ bot.on('message', async (message) => {
 	// Général Gamma ID   : 445289003156242434
 	// Général Oméga ID   : 667858618342834216
 
-	
 
 
 
@@ -2090,11 +2217,307 @@ bot.on('message', async (message) => {
 
 	
 
+
+
+	if (message.content === prefix + "pileouface") {
+		let ran = entierAleatoire(1, 2);
+		if (ran == 1)
+			message.channel.send("Pile");
+		if (ran == 2)
+			message.channel.send("Face");
+	}
+
+	if (message.content !== undefined && message.author.id !== bot.user.id) {
+		let pray = message.content;
+		let midnight = new Date();
+		midnight.setHours(24,0,0,0); 
+		let now = new Date();
+		let msToMidnight = midnight - now;
+		let couldown = msToMidnight;
+
+		//message.channel.send("msToMidNight : " + couldown + "\n minute untilMidnight : " + (couldown / 1000) / 60 + "\n Hour: " + (((couldown / 1000) / 60) / 60));
+
+		
+			
+		
+			if(test.indexOf(`🙏`) >= 0) {
+				if (test.indexOf(`${emote_fakedieu}`) >= 0 || test.indexOf(`${emote_dieudroite}`) >= 0 || test.indexOf(`${emote_dieugauche}`) >= 0 || test.indexOf(`🐔`) >= 0) {
+					if (message.channel.id === "445370665395159060") {
+
+						if (talkedRecently_pray.has(message.author.id)) {
+							//message.channel.send("A deja prié aujourd'hui");
+						} else {
+							//message.channel.send("N'a pas encore prié !");
+							talkedRecently_pray.add(message.author.id);
+
+
+							//message.channel.send("prie !");
+							let ranPray = entierAleatoire(1, 15);
+							ranPray = 2;
+							if (ranPray == 2) { // Une chance sur 15
+								let mbm = message.member;
+								addOr(mbm, 3);
+								message.author.send(`Dieu Poulet à entendu votre prière, 3 or ${emote_or} apparaissent étrangement dans votre main.`);
+							}
+						}
+					}
+				}
+			}
+
+			
+			 
+			setTimeout(() => {
+			talkedRecently_pray.delete(message.author.id);
+		}, couldown); // le couldown sera égale au temps qu'il reste avant 00H (en ms).
+
+		
+	}
+
+	/* if (message.content === prefix + "tossACoinToYourSDF") {
+		let midnight = new Date();
+		midnight.setHours(24,0,0,0); 
+		let now = new Date();
+		let msToMidnight = midnight - now;
+		let couldown = msToMidnight;
+		
+
+		if (talkedRecently_coinsdf.has(message.author.id)) {
+			message.channel.send("Vous avez déjà jeté un sous à votre SDF aujourd'hui " + emote_giga_gras + "\n attendez encore : **" + Math.round(((couldown / 1000) / 60) / 60) + " Heure(s)**.")
+
+		} else {
+			let member_ran;
+
+			member_ran = message.guild.members.cache.random();
+			//console.log("member_ran : " + member_ran);
+
+			if (member_ran.user.bot) {
+				while(member_ran.user.bot) {
+					member_ran = message.guild.members.random();
+					//console.log("member_ran : " + member_ran);
+					console.log("Retry -> BOT");
+				//	message.channel.send("BOT")
+				}
+			}	
+			// message.channel.send("USER trouvé");
+
+			addOr(member_ran, 1);
+			addOr(message.member, -1);
+			message.channel.send("Vous avez jeté un sous à ce SDF de " + member_ran.displayName);
+			talkedRecently_coinsdf.add(message.author.id);
+			
+			//message.channel.send("member_ran : " + member_ran);
+			
+			
+		}
+
+		setTimeout(() => {
+			talkedRecently_coinsdf.delete(message.author.id);
+		}, couldown); // le couldown sera égale au temps qu'il reste avant 00H (en ms).
+
+
+	} */
+
+
+
+	//commande de dev pour voir le contenu du fichier user.
+	if (message.content === prefix + "UserProfile") {
+
+		let fileid = message.author.id;
+		
+		fs.readFile(`json/users_files/${fileid}.json`, function(error, file) {
+	   				
+			let usrprofile_json = JSON.parse(file);
+
+			let up_class = usrprofile_json.class;
+			let up_favpos = usrprofile_json.favpos;
+			let up_hatepos = usrprofile_json.hatepos;
+			let up_xp = usrprofile_json.xp;
+			let up_xplevel = usrprofile_json.xplevel;
+			let up_or = usrprofile_json.or;
+			let up_date = usrprofile_json.date;
+			let up_maxbanque = usrprofile_json.maxbanque;
+
+			message.channel.send(`Profile \n Class : ${up_class} \n favpos : ${up_favpos} \n hatepos : ${up_hatepos} \n xp : ${up_xp} \n xplevel : ${up_xplevel} \n or : ${up_or} \n date : ${up_date} \n maxbank : ${up_maxbanque}`);
+
+		});
+	} 
+
+
+	// Vive les gros nichons 
+
+	if (message.content.startsWith(prefix + "DEV:Item ")) {
+		let args = message.content.slice(prefix.length + 9);
+
+		// fs.readFile(`json/system/items.json`, function(error, file) {
+		// 	let itemsfile = JSON.parse(file);
+		// 	if (itemsfile[args] != undefined)
+		// 		message.channel.send("ItemName: " + itemsfile[args]); 
+		// });
+
+		message.channel.send("itemSelected : " + getItemById(args));
+	}
+
+	if (message.content === prefix + "DEV unixtime") {
+		message.channel.send(Math.floor(new Date() / 1000));
+	}
+
+	if (message.content === prefix + "DEV calcul") {
+		let tmp = 0.5 * entierAleatoire(16, 20);
+		let date1 = Math.floor(new Date() / 1000);
+		let sec = (tmp * 60) * 60;
+		message.channel.send(tmp + "\n secondes" + sec + "\n unix end " + (date1 + sec) + "\n unix now " + date1);
+	}
+
+	if (message.content === prefix + "clc2") {
+		let temps_expedition_write = 0.5 * entierAleatoire(16, 20);
+		message.channel.send(temps_expedition_write);
+	}
+
+	// Expeditions :
+
+	if (message.content.startsWith(prefix + "expedition run") || message.content.startsWith(prefix + "e r")) {
+
+		let args_or_apporte;
+		if (message.content.startsWith(prefix + "expedition run")) args_or_apporte = message.content.slice(prefix.length + 14);
+		if (message.content.startsWith(prefix + "e r")) args_or_apporte = message.content.slice(prefix.length + 3);
+
+		if (args_or_apporte == undefined || args_or_apporte < 10) {
+			args_or_apporte = 0;
+		} 
+		if (args_or_apporte > 100) {
+			args_or_apporte = 100;
+		}
+		message.channel.send("or_apporté :" + args_or_apporte);
+		args_or_apporte = parseInt(args_or_apporte);
+
+
+
+		// date 1 -> execution de la commande
+		let date1 = Math.floor(new Date() / 1000); // contient la date de l'execution de la commande
+		message.channel.send("DEBUG DATE1: " + date1);
+		let date2;
+
+		let in_expedition; // si une expedition est en cours
+		let end_expedition; // Date à laquelle se fini l'expedition
+
+		fs.readFile(`json/users_files/${message.author.id}.json`, function(error, file) {	
+			let usrprofile_json = JSON.parse(file);
+
+			// date 2 -> dernière expedition
+			date2 = usrprofile_json.timerexpedition; // Contient la date de début de la dernière expédition
+			end_expedition = usrprofile_json.expeditionend; // Contient la date à laquelle se fini l'expédition
+
+			let is_on_expedition = usrprofile_json.ifonexpedition; // si le joueur est en expedition et n'a pas récup ses loots
+		
+		
+		
+			if(date1 < end_expedition) { // expedition en cours // verifier si une expéditions est en cours
+				// Si oui, dire combien de temps il reste
+				message.channel.send("DEBUG DATE2: " + date2);
+				message.channel.send("L'expédition est toujours en cours, il vous reste " + msToTime((end_expedition - date1) * 1000) + " avant de rentrer.");
+
+			} else { // expedition fini
+				message.channel.send("Expedition fini");
+				if (is_on_expedition == true) {
+					message.channel.send("Expedition terminée, executez la commande 'p<expedition loot' pour récupérer vos loots.");
+					return;
+				} else {
+					//lancer une nouvelle expedition
+
+					usrprofile_json.timerexpedition = date1; // remplacer le timerexpedition du fichier user par date1 (Date de début de l'expédition)
+
+					let temps_expedition_write = 0.5 * entierAleatoire(16, 20);
+					message.channel.send(temps_expedition_write);
+					usrprofile_json.expeditionduration = temps_expedition_write; // Calculer le temps de l'éxpédition, et le mettre dans "expeditionduration" est utile pour le calcul du cul (en heure et demi heure fait par un float genre 1h30 -> 1.5);
+					
+					usrprofile_json.expeditionend = date1 + ((temps_expedition_write * 60) * 60); // placer dans la valeur expeditionend la date de fin en UNIX TIME STAMP (secondes)
+					
+					usrprofile_json.ifonexpedition = true; // mettre true dans le "ifonexpedition", pour dire que l'expedition est en cours et n'a pas encore récup ses loots
+
+					usrprofile_json.expedition_or_apporte = args_or_apporte; // placer dans la valeur 'expedition_or_apporter' l'or apporté (max : 100 | Min 10 (on peut emporter moins mais le bonus ne s'applique pas on met donc 0 de thune apporté si c'est en dessous de 10))
+
+					fs.writeFileSync(`json/users_files/${message.author.id}.json`, JSON.stringify(usrprofile_json, null, 2)); // écritures données
+
+					let ex_duration = msToTime((usrprofile_json.expeditionend - date1) * 1000);
+					message.channel.send("Expedition lancée, durée : " + ex_duration + "   DEBUG : " + temps_expedition_write);
+				}	
+			}
+		});
+		
+	}
+
+	if (message.content === prefix + "expedition loot" || message.content === prefix + "e l") {
+
+
+		let date1 = Math.floor(new Date() / 1000);
+		let date2;
+		let end_expedition;
+
+		fs.readFile(`json/users_files/${message.author.id}.json`, function(error, file) {
+	   				
+			let usrprofile_json1 = JSON.parse(file);
+
+
+			// read
+			end_expedition = usrprofile_json1.expeditionend;
+			let expe_duration = usrprofile_json1.expeditionduration;
+			date2 = usrprofile_json1.timerexpedition;
+			let is_on_expedition = usrprofile_json1.ifonexpedition;
+			let or_apporte_file = usrprofile_json1.expedition_or_apporte;
+			let xp_level_usr = usrprofile_json1.xplevel;
+
+
+
+			if(date1 < end_expedition) { // expedition en cours // verifier si une expéditions est en cours
+				// Si oui, dire combien de temps il reste
+				message.channel.send("DEBUG DATE2: " + date2);
+				message.channel.send("L'expédition est toujours en cours, il vous reste " + msToTime((end_expedition - date1) * 1000) + " avant de rentrer.");
+				return;
+			} else { // expedition fini
+				
+				if (is_on_expedition == true) { // n'a pas encore récup ses loots
+					message.channel.send("Expedition fini");
+
+					// write
+					usrprofile_json1.ifonexpedition = false; // a récup ses loots et à fini son expédition
+			
+
+					// Donner les loots en faisant le calcul du cul (Au niveau du système quand on lance une expedition ...
+					// ... cela ne fait que créer un timer et la durée de l'expé, c'est uniquement quand elle est fini que le calcul du cul se fait)
+
+					let R_bonus_xp = Math.round(0.25 * or_apporte_file);
+
+					let gain_final_xp = Math.round(xp_level_usr * expe_duration * 25 / Math.sqrt(xp_level_usr)) + xp_level_usr * R_bonus_xp;
+					let gain_final_or = Math.round(15 - or_apporte_file * 0.15);
+
+
+					message.channel.send("Give Loots :\nGain XP : " + gain_final_xp + "\nGain Or : " + gain_final_or);
+
+					fs.writeFileSync(`json/users_files/${message.author.id}.json`, JSON.stringify(usrprofile_json1, null, 2));
+
+					addOr(message.member, gain_final_or);
+					addXp(message.author.id, gain_final_xp);
+
+					return;
+				} else {
+					message.channel.send("Aucune expedition n'est en cours, et vous n'avez aucun loots à récupérer. Executez la commande 'p<expedition run' pour lancer une nouvelle expédition.");
+					return;
+				}
+			}
+		});
+
+		
+		
+	}
+
+
+
+	
 	if (message.content.startsWith(prefix + "requestWar ")) {
-		if(message.guild.members.get(message.author.id).roles.exists('id','445617906072682514')
-		 || message.guild.members.get(message.author.id).roles.exists('id','445617911747313665')
-		  || message.guild.members.get(message.author.id).roles.exists('id','445617908903706624')
-		   || message.guild.members.get(message.author.id).roles.exists('id','665340068046831646')) { //vérifie si l'utilisateur est maître de faction
+		if(message.guild.members.cache.get(message.author.id).roles.cache.exists('id','445617906072682514')
+		 || message.guild.members.cache.get(message.author.id).roles.cache.exists('id','445617911747313665')
+		  || message.guild.members.cache.get(message.author.id).roles.cache.exists('id','445617908903706624')
+		   || message.guild.members.cache.get(message.author.id).roles.cache.exists('id','665340068046831646')) { //vérifie si l'utilisateur est maître de faction
 
 			let argsReqWar = "";
 			argsReqWar = message.content.slice(prefix.length + 11);
@@ -2119,7 +2542,7 @@ bot.on('message', async (message) => {
 				//Ici envoyer un DM au romar et au Draxy.
 
 				message.guild.members.get("421400262423347211").send(`Le maître ${facmaitre} ainsi que sa faction, souhaite attaquer la faction ${argsReqWar}\nEn vu de votre position d'Empereur vous vous devez de vérifier le casus beli de la faction, et si cela est positif vous pourrez accepter et activer la guerre !`); //romar
-				message.guild.members.get("211911771433205760").send(`Faction à attaquer : ${argsReqWar} ; Maître ${facmaitre}`); //draxy
+				// message.guild.members.get("211911771433205760").send(`Faction à attaquer : ${argsReqWar} ; Maître ${facmaitre}`); //draxy
 				
 				//Plus un message expliquant que la décision se fera dans #conference de maître,
 				//et que le maître devra prouver son casus beli (au maître en question (avec un message.channel.send !))
@@ -2202,155 +2625,135 @@ bot.on('message', async (message) => {
 			message.channel.send("Guerre opposant: " + faction1 + " et " + faction2);
 
 			// Fin initialisation
-
-
 		}
 	} // fin startWar
 
 
-	if (message.content === prefix + "pileouface") {
-		let ran = entierAleatoire(1, 2);
-		if (ran == 1)
-			message.channel.send("Pile");
-		if (ran == 2)
-			message.channel.send("Face");
+
+	if (message.content === prefix + "view war stats") {
+		// Regarde de quel faction vient l'utilisateur
+		// Regarde si sa faction est en guerre
+		// Envoie les stats, comme les points de guerre
 	}
 
-	if (message.content !== undefined && message.author.id !== bot.user.id) {
-		let pray = message.content;
-		let midnight = new Date();
-		midnight.setHours(24,0,0,0); 
-		let now = new Date();
-		let msToMidnight = midnight - now;
-		let couldown = msToMidnight;
+	if (message.content === prefix + "start Battle") {
+		// Vérifie le timer
+		// Fait tous les calculs pour le timer
 
-		//message.channel.send("msToMidNight : " + couldown + "\n minute untilMidnight : " + (couldown / 1000) / 60 + "\n Hour: " + (((couldown / 1000) / 60) / 60));
+		// faire le GIGA PUTAIN DE CALCUL DUZZ CULMMZZZ pour calculer qui gagne la bataille !
+	}
 
-		
-			
-		
-			if(test.indexOf(`🙏`) >= 0) {
-				if (test.indexOf(`${emote_fakedieu}`) >= 0 || test.indexOf(`${emote_dieudroite}`) >= 0 || test.indexOf(`${emote_dieugauche}`) >= 0 || test.indexOf(`🐔`) >= 0) {
-					if (message.channel.id === "445370665395159060") {
-
-						if (talkedRecently_pray.has(message.author.id)) {
-							//message.channel.send("A deja prié aujourd'hui");
-						} else {
-							//message.channel.send("N'a pas encore prié !");
-							talkedRecently_pray.add(message.author.id);
+	if (message.content === prefix + "organize Army") {
+		// Organize les rangs de l'armée !
+	}
 
 
-							//message.channel.send("prie !");
-							let ranPray = entierAleatoire(1, 15);
-							if (ranPray == 1) { // Une chance sur 15
-								let mbm = message.member;
-								addOr(mbm, 3);
-								message.author.send("Dieu Poulet à entendu votre prière, 3 or " + emote_or + " apparaissent étrangement dans votre main.")
-							}
+	
+	
+
+
+
+
+
+
+
+	/* Commande en tant que Maître de faction */
+
+
+	/*
+
+	if (message.member.roles.find("name", "Maître Epsilon") 
+		|| message.member.roles.find("name", "Maître Zêta")
+		|| message.member.roles.find("name", "Maître Gamma") 
+		|| message.member.roles.find("name", "Maître Oméga")) {
+
+
+			if (message.content.startsWith(prefix + "rangs ")) {
+				if (message.mentions.users.first() != undefined) {
+					if (message.mentions.members.first().roles.find("name", "Epsilon") && message.member.roles.find("name", "Epsilon")
+						|| message.mentions.members.first().roles.find("name", "Zêta") && message.member.roles.find("name", "Zêta") 
+						|| message.mentions.members.first().roles.find("name", "Gamma") && message.member.roles.find("name", "Gamma")
+						|| message.mentions.members.first().roles.find("name", "Oméga") && message.member.roles.find("name", "Oméga") ) {
+						
+						// EXECUTION !
+						
+						let rang_choisis = message.content.slice(prefix.length + 29);
+						message.channel.send("Rang: " + rang_choisis);
+
+						switch(rang_choisis) {
+							case "A1":
+								break;
+							case "A2":
+								break;
+							case "A3":
+								break;
+							
+							case "B1":
+								break;
+							case "B2":
+								break;
+							case "B3":
+								break;
+
+							case "C1":
+								break;
+							case "C2":
+								break;
+							case "C3":
+								break;
+
 						}
+					} else {
+						message.channel.send("Le maître de faction, et le mentionné ne sont pas dans la même faction");
+						return;
 					}
+				} else {
+					message.channel.send("ERROR DETECTED IN : '" + message.content + "' -> ERROR [3]");
 				}
 			}
-
-			
-			 
-			setTimeout(() => {
-			talkedRecently_pray.delete(message.author.id);
-		}, couldown); // le couldown sera égale au temps qu'il reste avant 00H (en ms).
-
-		
-	}
-
-	if (message.content === prefix + "tossACoinToYourSDF") {
-		let midnight = new Date();
-		midnight.setHours(24,0,0,0); 
-		let now = new Date();
-		let msToMidnight = midnight - now;
-		let couldown = msToMidnight;
-		
-
-		if (talkedRecently_coinsdf.has(message.author.id)) {
-			message.channel.send("Vous avez déjà jeté un sous à votre SDF aujourd'hui " + emote_giga_gras + "\n attendez encore : **" + Math.round(((couldown / 1000) / 60) / 60) + " Heure(s)**.")
-
-		} else {
-			let member_ran;
-
-			member_ran = message.guild.members.random();
-			//console.log("member_ran : " + member_ran);
-
-			if (member_ran.user.bot) {
-				while(member_ran.user.bot) {
-					member_ran = message.guild.members.random();
-					//console.log("member_ran : " + member_ran);
-					console.log("Retry -> BOT");
-				//	message.channel.send("BOT")
-				}
-			}	
-			// message.channel.send("USER trouvé");
-
-			addOr(member_ran, 1);
-			addOr(message.member, -1);
-			message.channel.send("Vous avez jeté un sous à ce SDF de " + member_ran.displayName);
-			talkedRecently_coinsdf.add(message.author.id);
-			
-			//message.channel.send("member_ran : " + member_ran);
-			
-			
-		}
-
-		setTimeout(() => {
-			talkedRecently_coinsdf.delete(message.author.id);
-		}, couldown); // le couldown sera égale au temps qu'il reste avant 00H (en ms).
-
-
-	}
-
-
-
-	//commande de dev pour voir le contenu du fichier user.
-	if (message.content === prefix + "UserProfile") {
-
-		let fileid = message.author.id;
-		
-		fs.readFile(`json/users_files/${fileid}.json`, function(error, file) {
-	   				
-			let usrprofile_json = JSON.parse(file);
-
-			let up_class = usrprofile_json.class;
-			let up_favpos = usrprofile_json.favpos;
-			let up_hatepos = usrprofile_json.hatepos;
-			let up_xp = usrprofile_json.xp;
-			let up_xplevel = usrprofile_json.xplevel;
-			let up_or = usrprofile_json.or;
-			let up_date = usrprofile_json.date;
-			let up_maxbanque = usrprofile_json.maxbanque;
-
-			message.channel.send(`Profile \n Class : ${up_class} \n favpos : ${up_favpos} \n hatepos : ${up_hatepos} \n xp : ${up_xp} \n xplevel : ${up_xplevel} \n or : ${up_or} \n date : ${up_date} \n maxbank : ${up_maxbanque}`);
-
-		});
-	} 
+		} */
+	
 
 	
 
-	/*
-	if (message.content.startsWith(prefix + "ChangeFavPos ")) {
 
 
-		fs.writeFile(`json/users_files/${message.author.id}.json`, `
-					{ 
-						"or": ${or_a_retirer},
-						"date": 0
-					}`, function(err) {
-						if(err) {
-							return console.log(err);
-						}
-					});
 
-	} 
 
-	if (messsage.content === prefix + "ChangeHatePos") {
 
-	} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/* PARTIE GUERRE */
+
+/*
+	if (message.member.roles.find("name", "En guerre")) { // Il faut être en guerre pour avoir executer les commandes suivantes
+
+		// Ici récuperer toutes les infos sur la guerre, notamment :
+		// les deux parties qui sont en guerre
+		// l'allié si il y a
+		// les points de victoire
+		// les membres de l'armée (donc leurs positions)
+
+		if (message.content === prefix + "startBattle") {
+			// déclenche une battaille contre l'oposant
+		}
+	}
+*/
 
 
 	
@@ -2431,14 +2834,22 @@ bot.on('message', async (message) => {
 			if (message.mentions.users.first() != undefined) {	
 				if (argsAddOr > 0 || argsAddOr < 0) {
 					let id_usr = message.mentions.users.first().id;
+					let user = message.mentions.users.first();
 
-					let aut_usr = message.mentions.members.first();
+					//let rMember = message.guild.members.fetch(id_usr);
+					let rMember = message.guild.member(user);
+
+					
+
+					message.channel.send("rMember : " + rMember);
+					message.channel.send("MENTION : " + message.mentions.users.first());
+
 					console.log("id_usr : " + id_usr);
 					//let or = parseInt(argsAddOr, 10);
 					let or = argsAddOr;
 					console.log("OR : " + or);
 					//getMaxBankSize(id_usr);
-					addOr(aut_usr, or);	
+					addOr(rMember, or);	
 					message.channel.send(`+${or} ${emote_or} ajouté(s) avec succès à ${message.mentions.users.first().username}`)
 				} else {
 					message.channel.send("ERROR [6]: Invalide Arguments");
@@ -2489,7 +2900,7 @@ bot.on('message', async (message) => {
 
                 let fac = entierAleatoire(1, 4);
 
-                if (member.roles.find("name", "Esclave") || member.roles.find("name", "Paysan") || member.roles.find("name", "Bourgeois") || member.roles.find("name", "Courtisan")) {
+                if (member.roles.find("name", "tmp") || member.roles.find("name", "Esclave") || member.roles.find("name", "Paysan") || member.roles.find("name", "Bourgeois") || member.roles.find("name", "Courtisan")) {
                     // Si le membre est Esclave ou plus
 
                     // On le met dans une faction random
@@ -2565,6 +2976,50 @@ bot.on('message', async (message) => {
 	} //Fin des commandes admin
 
 	//Commandes Dev :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	if (message.content.startsWith(prefix + "DEV CUL ")) {
+		let rMember = message.mentions.members.first();
+		message.channel.send("aut_usr : " + rMember.tag);	
+	}
+
+	if (message.content.startsWith(prefix + "random ")) {
+		let argsRandom = message.content.slice(prefix.length).trim().split(/ +/g);
+			//message.channel.send(argsRandom + `<-args5 ; \n ${args[0]}, ${args[1]}`);
+			let nbrAexe = args[2];
+			let minR = args[0];
+			let maxR = args[1];
+			let nombreRan = 0;
+
+			console.log(nbrAexe + "\n" + minR + "\n" + maxR)
+
+			for(i=1;i <= nbrAexe; i++) {
+				nombreRan = entierAleatoire(minR, maxR);
+				message.channel.send(nombreRan);
+				nombreRan = 0;
+			}
+			message.channel.send("END.")
+	}
 
 
 	if (message.author.id === "421400262423347211" || message.author.id === "211911771433205760") {
@@ -3569,3 +4024,6 @@ factionDe_Request = "";
 	// Général Zêta ID    : 445289032419770378
 	// Général Gamma ID   : 445289003156242434
 	// Général Oméga ID   : 667858618342834216
+
+	bot.login(config.token);
+
