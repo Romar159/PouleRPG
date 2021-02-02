@@ -29,4 +29,4 @@ const loadEvents = (client, dir = "./events/") => {
 module.exports = {
     loadCommands,
     loadEvents,
-}
+} 
