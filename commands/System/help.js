@@ -4,6 +4,7 @@ const {readdirSync} = require("fs");
 const categoryList = readdirSync('./commands');
 
 module.exports.run = (client, message, args) => {
+    
     if(!args.lenght) {
         const embed = new MessageEmbed()
         .setColor("#FFFFFF")
@@ -18,13 +19,12 @@ module.exports.run = (client, message, args) => {
         return message.channel.send(embed);
 
     } else { // ! Ici, la commande individuelle ne fonctionne pas comme elle devrait.
-        console.log("ARGS !");
         const command = client.commands.get(args[0]) || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(args[0]));
         if (!command) return message.reply("Cette commande n'existe pas.");
 
         const embed = new MessageEmbed()
         .setColor("#FFFFFF")
-        .setTitle(`\`${commande.help.name}\``)
+        .setTitle(`\`${command.help.name}\``)
         .addField("Description", `${command.help.desription}`)
         .addField("Utilisation", command.help.usage ? `${PREFIX}${command.help.name} ${command.help.usage}` : `${PREFIX}${command.help.name}`, true)
 

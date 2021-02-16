@@ -1,5 +1,5 @@
 module.exports.run = (client, message, args) => {
-    const m = message.channel.send("Calcul !").then(async msg => {
+    const m = message.channel.send("Calcul ...").then(async msg => {
         msg.edit( ":ping_pong: **|** Pong!\nTemps de réponse : **" + `${msg.createdTimestamp - message.createdTimestamp}ms` + "**");
     });
    

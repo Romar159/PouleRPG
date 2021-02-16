@@ -18,5 +18,4 @@ module.exports = (client, MessageReaction, user) => {
                 break;
         }
     }
-
 }
