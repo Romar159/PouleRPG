@@ -70,6 +70,19 @@ const userSchema = mongoose.Schema({
     cooldown_tacty : {
         "type": Date,
         "default": 0
+    },
+
+    cooldown_expedition : {
+        "type": Date,
+        "default": 0
+    },
+    expedition_duration : {
+        "type": Number,
+        "default": 0
+    },
+    or_expedition : {
+        "type": Number,
+        "default": 0
     }
 
   

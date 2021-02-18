@@ -1,38 +1,48 @@
+const {MessageEmbed} = require('discord.js');
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
     
-    if(message.author.id != '421400262423347211' && args[0] != 'view' || args[0] != 'leaderboard') 
-        return message.channel.send("Vous n'êtes pas la vénitienne. Vous ne pouvez donc pas modifier les points vénitienne.");
+    if(args[0] == 'view' || args[0] == 'leaderboard') {}
+    else if(message.author.id != '421400262423347211')
+        return message.channel.send("Vous n'êtes pas la vénitienne.\nVous ne pouvez donc pas modifier les points vénitienne.");
     
+
     let user;
     if(message.mentions.users.first())
        user = message.guild.member(message.mentions.users.first());
     
 
     if(args[0].toLowerCase() == 'view') {
-        if(!args[1] || !message.mentions.users.first()) return message.channel.send(`Vous avez ${dbUser.pointsvenitienne} point(s) vénitienne.`);
+        const embed = new MessageEmbed()
+        .setColor('#BF2F00');
+        if(!args[1] || !message.mentions.users.first()) {
+            embed.setDescription(`:woman_red_haired: Vous avez **${dbUser.pointsvenitienne}** point(s) vénitienne.`);
+
+            return message.channel.send(embed);
+        }
         else {
             const usr = await client.getUser(user);
-            return message.channel.send(`${usr.username} à ${usr.pointsvenitienne} point(s) vénitienne.`);
+            embed.setDescription(`:woman_red_haired: ${user} à **${usr.pointsvenitienne}** point(s) vénitienne.`);
+            return message.channel.send(embed);
         }
     }
 
     if(args[0].toLowerCase() == 'ajout') {
-        if(!args[1] || !message.mentions.users.first()) return message.channel.send(`Vous devez définir un utilisateur cible.`);
+        if(!args[1] || !message.mentions.users.first()) return message.channel.send(`Chère vénitienne, vous devez définir un utilisateur cible.`);
 
         const userToUpdate = await client.getUser(user);
         const updatedPts = parseInt(userToUpdate.pointsvenitienne) + 1;
         await client.updateUser(user, { pointsvenitienne: updatedPts});
-        return message.channel.send(`Point vénitienne accordé à ${userToUpdate.username}`);
+        return message.channel.send(`Point vénitienne accordé à ${user.user.username}.`);
     }
 
     if(args[0].toLowerCase() == 'retrait') {
-        if(!args[1] || !message.mentions.users.first()) return message.channel.send(`Vous devez définir un utilisateur cible.`);
+        if(!args[1] || !message.mentions.users.first()) return message.channel.send(`Chère vénitienne, vous devez définir un utilisateur cible.`);
 
         const userToUpdate = await client.getUser(user);
         const updatedPts = parseInt(userToUpdate.pointsvenitienne) - 1;
         await client.updateUser(user, { pointsvenitienne: updatedPts});
-        return message.channel.send(`Point vénitienne retiré à ${userToUpdate.username}`);
+        return message.channel.send(`Point vénitienne retiré à ${user.user.username}.`);
     }
 
     if(args[0].toLowerCase() == 'leaderboard') {
@@ -47,7 +57,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
 module.exports.help = {
     name: "pointvenitienne",
-    aliases: ['point venitienne', 'ptsveni'],
+    aliases: ['point venitienne', 'ptveni', 'ptsveni'],
     category: "entertainment",
     desription: "Donne, retire ou regarde ses points venitienne",
     usage: "<action:view/leaderboard/ajout/retrait> <@user>",

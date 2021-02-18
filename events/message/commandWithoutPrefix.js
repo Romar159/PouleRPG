@@ -52,4 +52,10 @@ module.exports = async (client, message) => {
             client.updateUser(message.member, {cooldown_pray: Date.now()});
         }
     }
+
+    if(msg.indexOf('je peux mettre ce que je veux') >= 0)
+        return message.channel.send("Eouez meczz, t'as vu ça? <:EP_poulet_trop_classe:803391420580233226>");
+
+    if(msg.indexOf('fuck les majuscules') >= 0)
+        return message.channel.send("C'est pas de ma faute si t'es pété. :person_shrugging:");
 }

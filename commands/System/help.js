@@ -5,7 +5,7 @@ const categoryList = readdirSync('./commands');
 
 module.exports.run = (client, message, args) => {
     
-    if(!args.lenght) {
+    if(!args.length) {
         const embed = new MessageEmbed()
         .setColor("#FFFFFF")
         .addField("Liste des commandes", `Liste de toutes les sous-catégories disponible et leurs commandes\nPour plus d\'informations sur une commande tappez \`${PREFIX}help <commandName>\``)
@@ -28,7 +28,7 @@ module.exports.run = (client, message, args) => {
         .addField("Description", `${command.help.desription}`)
         .addField("Utilisation", command.help.usage ? `${PREFIX}${command.help.name} ${command.help.usage}` : `${PREFIX}${command.help.name}`, true)
 
-        if (command.help.aliases.lenght > 1) embed.addField("Alias", `${command.help.aliases.join(", ")}`, true);
+        if (command.help.aliases.length > 1) embed.addField("Alias", `${command.help.aliases.join(", ")}`, true);
 
         return message.channel.send(embed);
     }

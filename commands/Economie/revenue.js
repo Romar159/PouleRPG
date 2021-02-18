@@ -1,3 +1,5 @@
+const {MessageEmbed} = require('discord.js');
+
 module.exports.run = async (client, message, args, settings, dbUser) => {
     let or = 0;
     const dailyCD = 8.64e+7;
@@ -6,7 +8,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     const lastDaily = await dbUser.daily;
     if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
         const cdTime = dailyCD - (Date.now() - lastDaily);
-        message.reply(`Il reste ${Math.floor(cdTime / (1000*60*60) % 24)} Heures, ${Math.floor(cdTime / (1000*60) % 60)} Minutes et ${Math.floor(cdTime / (1000) % 60)} secondes avant d'avoir votre revenue de nouveau.`);
+        message.reply(`il reste **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes avant de pouvoir de nouveau récupérer votre revenue. :hourglass:`);
     } else { // Si le cooldown est passé.
 
         var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
@@ -27,7 +29,12 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         }
         client.setOr(client, message.member, or, message);
         client.updateUser(message.member, {daily: Date.now()});
-        message.channel.send(`+${or} dans votre banque personnel.`);
+        const embed = new MessageEmbed()
+        .setColor('#F2DB0C')
+        .setAuthor('Revenue quotidien', message.author.displayAvatarURL())
+        .setDescription(`**+${or}** :coin:\nVous avez actuellement **${dbUser.or + or}/${dbUser.maxbank}** :coin:`);
+
+        message.channel.send(embed);
     }
 }
 
