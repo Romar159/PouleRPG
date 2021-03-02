@@ -15,11 +15,24 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 .addField(`Maître`, maitre)
                 .addField(`Nombre de membres`, `${members.size}`)
                 .addField(`Points de victoire`, `${faction.ptsvictoire}`);
+
+                if(faction.en_guerre)
+                    embed.addField(`${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)} est actuellement en guerre contre`, `${faction.ennemy.charAt(0).toUpperCase() + faction.ennemy.slice(1)}`);
+                else
+                    embed.addField(`${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)} n'est en guerre contre personne.`, `Relations diplomatiques stables.`);    
+
+                if(faction.ally)
+                    embed.addField(`Allié`, `${faction.ally}`);
+                else
+                    embed.addField(`Allié`, `Aucune faction alliée.`);
+
+
             
         
             if (message.channel.id == faction.channelid) {
                 embed.addField(`Bank`, `${faction.bank}`);
-
+                embed.addField(`Taxe`, `${faction.taxe}`)
+                
                 if(faction.factionid == 0) {
                     embed.addField(`Points d'amitié avec Daïros`, `${faction.ptsami_dairos}`)
                     .addField(`Points d'amitié avec Lyomah`, `${faction.ptsami_lyomah}`)
@@ -42,7 +55,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         }
         catch(e) {
             if(args.length)
-                message.reply("Faction Inexistante");
+                message.reply("Faction Inexistante ");
         }
     });
 }

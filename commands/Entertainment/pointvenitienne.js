@@ -16,13 +16,20 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         const embed = new MessageEmbed()
         .setColor('#BF2F00');
         if(!args[1] || !message.mentions.users.first()) {
-            embed.setDescription(`:woman_red_haired: Vous avez **${dbUser.pointsvenitienne}** point(s) vénitienne.`);
+            if(message.author.id == '421400262423347211')
+                embed.setDescription(`:woman_red_haired: Oh, La vénitiene ! Tu as bien évidemment **∞** point(s) vénitienne.`);
+            else
+                embed.setDescription(`:woman_red_haired: Vous avez **${dbUser.pointsvenitienne}** point(s) vénitienne.`);
 
             return message.channel.send(embed);
         }
         else {
-            const usr = await client.getUser(user);
-            embed.setDescription(`:woman_red_haired: ${user} à **${usr.pointsvenitienne}** point(s) vénitienne.`);
+            if(message.mentions.users.first().id == '421400262423347211') {
+                embed.setDescription(`:woman_red_haired: ${message.mentions.users.first()} à **∞** point(s) vénitienne.`);
+            } else {
+                const usr = await client.getUser(user);
+                embed.setDescription(`:woman_red_haired: ${user} à **${usr.pointsvenitienne}** point(s) vénitienne.`);
+            }
             return message.channel.send(embed);
         }
     }
@@ -33,6 +40,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         const userToUpdate = await client.getUser(user);
         const updatedPts = parseInt(userToUpdate.pointsvenitienne) + 1;
         await client.updateUser(user, { pointsvenitienne: updatedPts});
+        if(updatedPts >= 100) {
+            user.roles.add('732964881028087920');
+        }
         return message.channel.send(`Point vénitienne accordé à ${user.user.username}.`);
     }
 
@@ -42,12 +52,15 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         const userToUpdate = await client.getUser(user);
         const updatedPts = parseInt(userToUpdate.pointsvenitienne) - 1;
         await client.updateUser(user, { pointsvenitienne: updatedPts});
+        if(updatedPts <= 100 && user.roles.cache.get('732964881028087920')) {
+            user.roles.remove('732964881028087920');
+        }
         return message.channel.send(`Point vénitienne retiré à ${user.user.username}.`);
     }
 
     if(args[0].toLowerCase() == 'leaderboard') {
         await client.getUsers(message.guild).then(p => {
-            console.log(p);
+                message.channel.send(`${message.guild.member('421400262423347211').user.username} - ∞ point(s) vénitienne.`); // ? DraxyNote: Est-ce qu'on ajoute vraiment cette ligne ? (ça rajoute juste la vénitienne en haut du classement avec l'infini de points x))
             p.sort((a, b) => (a.pointsvenitienne < b.pointsvenitienne) ? 1 : -1).splice(0, 5).forEach(e => {
                 message.channel.send(`${e.username} - ${e.pointsvenitienne} point(s) vénitienne.`); // ? DraxyNote: Ici, je pense que tu foutras un embed, donc fait tout l'embed JUSTE en dessous du if, et ensuite tu ajouteras un embed.addField à la place de cette ligne ^^
             });

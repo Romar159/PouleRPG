@@ -8,7 +8,7 @@ module.exports.run = (client, message, args) => {
         const alpha = fetchAll.filter(m => m.roles.cache.get('665340021640921099'));
 
         // Si aucun argument n'est passé, envoyer la liste de toutes les factions.
-        if (!args.lenght) return message.channel.send(`Membres de la faction Epsilon :\`\n${epsilon.map(m=>m.user.tag).join('`\n`')}\`\n\n
+        if (!args.length) return message.channel.send(`Membres de la faction Epsilon :\`\n${epsilon.map(m=>m.user.tag).join('`\n`')}\`\n\n
 Membres de la faction Daïros :\`\n${dairos.map(m=>m.user.tag).join('`\n`')}\`\n\n
 Membres de la faction Lyomah :\`\n${lyomah.map(m=>m.user.tag).join('`\n`')}\`\n\n
 Membres de la faction Alpha :\`\n${alpha.map(m=>m.user.tag).join('`\n`')}\``);
@@ -32,7 +32,7 @@ module.exports.help = {
     aliases: ['list'],
     category: "generalrpg",
     desription: "renvoie la liste des membres des factions.",
-    usage: '',
+    usage: '[faction]',
     cooldown: 3, 
     permissions: false,
     args: false

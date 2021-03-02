@@ -13,7 +13,7 @@ module.exports = async (client, message) => {
     const settings = await client.getGuild(message.guild);
 
     // Dès qu'un utilisateur parle on vérifie s'il existe dans la bdd, sinon on l'ajoute
-    if(!dbUser) {
+    if(!dbUser && !message.author.bot) {
         await client.createUser({
             guildID: message.member.guild.id,
             guildName: message.member.guild.name,
@@ -25,16 +25,18 @@ module.exports = async (client, message) => {
 
         //Màj de la faction si l'utilisateur en a déjà une alors avant de parler
         if(message.member.roles.cache.has('415947454626660366')) return await client.updateUser(message.member, {faction: "epsilon"});
-        if(message.member.roles.cache.has('415947455582961686')) return await client.updateUser(message.member, {faction: "dairos"});
+        if(message.member.roles.cache.has('415947455582961686')) return await client.updateUser(message.member, {faction: "daïros"});
         if(message.member.roles.cache.has('415947456342130699')) return await client.updateUser(message.member, {faction: "lyomah"});
         if(message.member.roles.cache.has('665340021640921099')) return await client.updateUser(message.member, {faction: "alpha"});
     } else {
-        if(dbUser.faction == "NULL") {
-            //Màj de la faction si l'utilisateur parle et est déjà inscrit dans la bdd 
-            if(message.member.roles.cache.has('415947454626660366')) return await client.updateUser(message.member, {faction: "epsilon"});
-            if(message.member.roles.cache.has('415947455582961686')) return await client.updateUser(message.member, {faction: "dairos"});
-            if(message.member.roles.cache.has('415947456342130699')) return await client.updateUser(message.member, {faction: "lyomah"});
-            if(message.member.roles.cache.has('665340021640921099')) return await client.updateUser(message.member, {faction: "alpha"});
+        if(!message.author.bot) {
+            if(dbUser.faction == "NULL") {
+                //Màj de la faction si l'utilisateur parle et est déjà inscrit dans la bdd 
+                if(message.member.roles.cache.has('415947454626660366')) return await client.updateUser(message.member, {faction: "epsilon"});
+                if(message.member.roles.cache.has('415947455582961686')) return await client.updateUser(message.member, {faction: "daïros"});
+                if(message.member.roles.cache.has('415947456342130699')) return await client.updateUser(message.member, {faction: "lyomah"});
+                if(message.member.roles.cache.has('665340021640921099')) return await client.updateUser(message.member, {faction: "alpha"});
+            }
         }
     }
 
@@ -51,7 +53,7 @@ module.exports = async (client, message) => {
     if(!command) return;
 
     if(command.help.permissions && !message.member.hasPermission('ADMINISTRATOR')) return message.reply("Commande administrateur, permission requise.");
-    
+
     if(command.help.args && !args.length) {
         let noArgsReply = `Argument Attendu ${message.author}`;
 

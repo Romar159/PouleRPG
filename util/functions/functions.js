@@ -65,4 +65,36 @@ module.exports = client => {
         }
         return data.updateOne(settings);
     }
+
+
+
+    client.verifposition = async (client, dbUser, mention, faction1db) => {
+        if(faction1db.a1 == mention) await client.updateFaction(dbUser.faction, {a1: "NULL"});
+        if(faction1db.a2 == mention) await client.updateFaction(dbUser.faction, {a2: "NULL"});
+        if(faction1db.a3 == mention) await client.updateFaction(dbUser.faction, {a3: "NULL"});
+
+        if(faction1db.b1 == mention) await client.updateFaction(dbUser.faction, {b1: "NULL"});
+        if(faction1db.b2 == mention) await client.updateFaction(dbUser.faction, {b2: "NULL"});
+        if(faction1db.b3 == mention) await client.updateFaction(dbUser.faction, {b3: "NULL"});
+
+        if(faction1db.c1 == mention) await client.updateFaction(dbUser.faction, {c1: "NULL"});
+        if(faction1db.c2 == mention) await client.updateFaction(dbUser.faction, {c2: "NULL"});
+        if(faction1db.c3 == mention) await client.updateFaction(dbUser.faction, {c3: "NULL"});
+    }
+
+    client.getPeloRole = async mention => {
+        
+        await client.updateMaxBank(client, mention);
+        const dbmention = await client.getUser(mention);
+
+        var mxbk = [10, 35, 80, 120, 200, 350, 550, 800, 1000];
+        var levels_pelos = [1, 5, 10, 20, 35, 50, 70, 85, 100];
+
+        for(let i=0;i<mxbk.length;i++) {
+            if(dbmention.maxbank == mxbk[i])
+                client.updateUser(mention, {level_mee6: levels_pelos[i]});
+        }
+
+
+    }
 };

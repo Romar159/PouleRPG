@@ -18,7 +18,7 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
     const lastDaily = await dbUser.cooldown_arene;
     if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
         const cdTime = dailyCD - (Date.now() - lastDaily);
-        message.reply(`Il reste ${Math.floor(cdTime / (1000*60*60) % 24)} Heures, ${Math.floor(cdTime / (1000*60) % 60)} Minutes et ${Math.floor(cdTime / (1000) % 60)} secondes avant de retourner dans l'arène.`);
+        message.reply(`Il reste ${Math.floor(cdTime / (1000) % 60)} secondes avant de retourner dans l'arène.`);
     } else { // Si le cooldown est passé.
 
         // Calcul de l'arme choisit par l'utilisateur.

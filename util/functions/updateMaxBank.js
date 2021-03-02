@@ -1,6 +1,8 @@
 module.exports = client => {
     client.updateMaxBank = async (client, member) => {
 
+        
+
         const userToUpdate = await client.getUser(member);
         if (member.roles.cache.has('445253268176633891'))       // Paysan
             return await client.updateUser(member, { maxbank: 10});

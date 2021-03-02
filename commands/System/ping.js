@@ -13,5 +13,5 @@ module.exports.help = {
     usage: '',
     cooldown: 3, 
     permissions: false,
-    args: false
+    args: false,
 };

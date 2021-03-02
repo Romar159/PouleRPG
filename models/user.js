@@ -83,6 +83,11 @@ const userSchema = mongoose.Schema({
     or_expedition : {
         "type": Number,
         "default": 0
+    },
+
+    level_mee6 : {
+        "type": Number,
+        "default": 1
     }
 
   
