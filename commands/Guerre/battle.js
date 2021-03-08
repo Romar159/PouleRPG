@@ -571,7 +571,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         const battle_puissance_faction1 = Math.round((grande_addition_faction1 * grande_multiplication_faction1) * random_faction1);
         const battle_puissance_faction2 = Math.round((grande_addition_faction2 * grande_multiplication_faction2) * random_faction2);
 
-        console.log("POWER: " + battle_puissance_faction1);
+        console.log("POWER FACTION1: " + battle_puissance_faction1 + "\nPOWER FACTION2: " + battle_puissance_faction2);
         //message.channel.send("DEBUG: BATTLE -> puissance faction 1: " + battle_puissance_faction1 + "\nPuissance faction 2: " + battle_puissance_faction2); 
         
         // ? DraxyNote: C'est ici à styliser (en dessous dans les if), si tu veux toutes les autres variables (mais j'ai un doute parce que osef 'xD) elles sont au dessus dans les debugs commentés.

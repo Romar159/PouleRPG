@@ -12,6 +12,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         if(or_apporter < 10) or_apporter = 0; // Ici c'est défini à 0 pour l'affichage.
         if(or_apporter > dbUser.or) return message.reply("Vous n'avez pas assez d'argent.");
     
+        await client.setOr(client, message.member, - or_apporter, message);
         message.channel.send(`Expedition lancée pour ${Math.floor(expedition_duration / (1000*60*60) % 24)} heures. Avec ${or_apporter} or apportés.`); // ? DraxyNote: A stylisé aussi, c'est ce qui dit que tu as lancé l'expedition
         await client.updateUser(message.member, {expedition_duration: expedition_duration, or_expedition: or_apporter, cooldown_expedition: Date.now()});
 
@@ -30,6 +31,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
             
             message.channel.send(`FIN EXPEDITION, vous gagnez ${final_or} or + ${final_xp} xp.`); // ? DraxyNote: Ici c'est l'affichage de fin d'éxpedition à rendre beau.
+            await client.setOr(client, message.member, dbUser.or_expedition, message);
             await client.updateUser(message.member, {expedition_duration: 0, or_expedition: 0, cooldown_expedition: 0});
             await client.setXp(client, message.member, final_xp);
             await client.setOr(client, message.member, final_or, message);

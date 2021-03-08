@@ -45,17 +45,20 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
                 p.forEach(async e => {
                     var a = message.guild.members.cache.get(e.userID);
-                    if(a.roles.cache.get(faction.roleid)) { // Todo faut pas être maitre de faction (la taxe ne se prélève pas sur le maître).
+                    if(a.roles.cache.get(faction.roleid)) {
                         var mbm = await client.getUser(a);
                         //message.channel.send("DEBUG: or: " + mbm.or + " taxe: " + (taxe_value * weeks));
                         if(mbm.or > (taxe_value * weeks)) { // si il a assez d'argent.
-                            await client.setOr(client, a, - (taxe_value * weeks), message);
-                            total_taxe = total_taxe + (taxe_value * weeks);
+                            if(mbm.userID == faction.idmaitre) {
 
-                            faction = await client.getFaction(faction.name);
-
-                            //message.channel.send(`UPDATE: ${faction.bank + (taxe_value * weeks)}`);
-                            await client.updateFaction(faction.name, {bank: faction.bank + (taxe_value * weeks)});
+                            } else {
+                                await client.setOr(client, a, - (taxe_value * weeks), message);
+                                total_taxe = total_taxe + (taxe_value * weeks);
+    
+                                faction = await client.getFaction(faction.name);
+                                //message.channel.send(`UPDATE: ${faction.bank + (taxe_value * weeks)}`);
+                                await client.updateFaction(faction.name, {bank: parseInt(faction.bank + (taxe_value * weeks))});
+                            }
 
                         } else {
                             //em.addField(`${a.user.username}`, "n'as pas assez d'argent pour payer la taxe.");
@@ -92,7 +95,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 module.exports.help = {
     name: "taxe",
     aliases: ['taxe'],
-    category: "Politique, Diplomatie et Economie.",
+    category: "Politique, Diplomatie et Economie",
     desription: "Gérer les taxes de votre faction.",
     usage: "<action:prélever/etablir> <montant>",
     cooldown: 3,

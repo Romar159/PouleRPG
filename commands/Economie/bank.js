@@ -6,11 +6,29 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     .setTitle(':bank: Banque personnelle');
 
     if(message.mentions.users.first()) {
-        const usr_member = message.guild.member(message.mentions.users.first())
-        await client.updateMaxBank(client, usr_member);
-        const usr = await client.getUser(usr_member);
-        embed.setDescription(`${usr_member} à **${usr.or}/${usr.maxbank}** or dans sa banque.`);
-        return message.channel.send(embed);
+        const mention = message.mentions.members.first();
+        const usr_member = message.guild.member(message.mentions.users.first());
+        const usr1 = await client.getUser(usr_member);
+
+        try {
+            if(usr1.or < 0) { // Si l'utilisateur n'existe pas dans la bdd on le crée.
+            }
+            else {
+                await client.updateMaxBank(client, usr_member);
+                const usr = await client.getUser(usr_member);
+                embed.setDescription(`${usr_member} à **${usr.or}/${usr.maxbank}** or dans sa banque.`);
+                return message.channel.send(embed);
+            }
+        } catch (e) {
+            await client.createUser({
+                guildID: mention.guild.id,
+                guildName: mention.guild.name,
+            
+                userID: mention.id,
+                username: mention.user.tag,
+            }); 
+            return message.channel.send("L'utilisateur n'existait pas dans la base de donnée.\nEssayez de retaper la commande");
+        }
     } else {
         await client.updateMaxBank(client, message.member);
         embed.setDescription(`Vous avez **${dbUser.or}/${dbUser.maxbank}** or dans votre banque.`);

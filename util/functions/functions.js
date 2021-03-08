@@ -94,7 +94,14 @@ module.exports = client => {
             if(dbmention.maxbank == mxbk[i])
                 client.updateUser(mention, {level_mee6: levels_pelos[i]});
         }
+    }
 
-
+    client.loadDependencies = client => {
+        client.config = require("../../config");
+        client.mongoose = require("../mongoose");
+        require("./setXp")(client);
+        require("./setOr")(client);
+        require("./updateMaxBank")(client);
+        
     }
 };

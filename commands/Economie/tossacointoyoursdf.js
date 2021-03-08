@@ -42,7 +42,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         await client.setXp(client, mbm, 10); // ? Est-ce abusé ? 
         
         if(randomInt(1, 5) == 3) {
-            // TODO: POST ALPHA: Ajouter un point d'amitié avec la faction de l'utilisateur cible (voir cahier des charges. #idées-bonnes).
+            // TODO: POST BETA: Ajouter un point d'amitié avec la faction de l'utilisateur cible (voir cahier des charges. #idées-bonnes).
         }
     
         message.channel.send(`:coin: Vous avez jeté un sous à ce SDF de **${member_ran.displayName}**`);
