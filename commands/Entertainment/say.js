@@ -1,5 +1,11 @@
 module.exports.run = (client, message, args) => {
-    message.channel.send(args.join(" "));
+    message.delete();
+
+    if(message.content.indexOf('@everyone') >= 0) {
+        return message.reply('Le contenu du message est innaproprié.');
+    } else {
+        message.channel.send(args.join(" "));
+    }
 }
 
 module.exports.help = {
