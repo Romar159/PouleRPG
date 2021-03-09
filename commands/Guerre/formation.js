@@ -1,10 +1,20 @@
 const {MessageEmbed} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
-
     let faction1db = await client.getFaction(dbUser.faction);
-    if(args[0].toLowerCase() == "view") return message.channel.send(`<@${faction1db.a1}> <@${faction1db.a2}> <@${faction1db.a3}>\n<@${faction1db.b1}> <@${faction1db.b2}> <@${faction1db.b3}>\n<@${faction1db.c1}> <@${faction1db.c2}> <@${faction1db.c3}>`); // ? DraxyNote: Bon courage :)
-    if(!message.mentions.members.first() && args[1] != "retirer") return message.reply("Vous devez mentionner un utilisateur valide.");
+    
+   
+    if(args[0].toLowerCase() == "view") {
+        const embedView = new MessageEmbed()
+            .setColor('8C4638')
+            .setAuthor(`Visualisation de la formation`, client.user.displayAvatarURL())
+            .addField(`A1`, `<@${faction1db.a1}>`, true) .addField(`A2`, `<@${faction1db.a2}>`, true) .addField(`A3`, `<@${faction1db.a3}>`, true)
+            .addField(`B1`, `<@${faction1db.b1}>`, true) .addField(`B2`, `<@${faction1db.b2}>`, true) .addField(`B3`, `<@${faction1db.b3}>`, true)
+            .addField(`C1`, `<@${faction1db.c1}>`, true) .addField(`C2`, `<@${faction1db.c2}>`, true) .addField(`C3`, `<@${faction1db.c3}>`, true);
+        return message.channel.send(embedView);
+    }
+
+    if(!message.mentions.members.first() && args[1] != "retirer") return message.reply("vous devez mentionner un utilisateur valide.");
     const position = args[0].toLowerCase();
     var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
     var est_maitre = false;
@@ -26,9 +36,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             est_maitre = false;
         }
     }
-    if(!est_maitre) return message.reply("Commande utilisable que par les maîtres de faction.");
+    if(!est_maitre) return message.reply("commande utilisable que par les maîtres de faction.");
     if(mention != "NULL") {
-        if(!mention.roles.cache.has(faction1db.roleid)) return message.reply("Cet utilisateur n'est pas dans votre faction.");
+        if(!mention.roles.cache.has(faction1db.roleid)) return message.reply("cet utilisateur n'est pas dans votre faction.");
     }
 
     if(position == "a1" || position == "1a") {
@@ -70,18 +80,28 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         await client.updateFaction(dbUser.faction, {c3: mention});
     }
     else
-        return message.reply("Error: Vous devez spécifier une position valide.");
+        return message.reply("ERROR: Vous devez spécifier une position valide.");
     
+    // TODO : Faire en sorte que l'on puisse récuprérer le user enlevé.
+    if(mention == "NULL") return message.channel.send(`**Le joueur a été retiré de la formation.**`);
+
     faction1db = await client.getFaction(dbUser.faction); //update.
-    message.channel.send(`<@${faction1db.a1}> <@${faction1db.a2}> <@${faction1db.a3}>\n<@${faction1db.b1}> <@${faction1db.b2}> <@${faction1db.b3}>\n<@${faction1db.c1}> <@${faction1db.c2}> <@${faction1db.c3}>`); // ? DraxyNote: Bon courage :)
-};
+    const embedFormation = new MessageEmbed()
+        .setColor('8C4638')
+        .setAuthor(`${mention.user.username} a été placé en ${args[0]}`, client.user.displayAvatarURL())
+        .addField(`A1`, `<@${faction1db.a1}>`, true) .addField(`A2`, `<@${faction1db.a2}>`, true) .addField(`A3`, `<@${faction1db.a3}>`, true)
+        .addField(`B1`, `<@${faction1db.b1}>`, true) .addField(`B2`, `<@${faction1db.b2}>`, true) .addField(`B3`, `<@${faction1db.b3}>`, true)
+        .addField(`C1`, `<@${faction1db.c1}>`, true) .addField(`C2`, `<@${faction1db.c2}>`, true) .addField(`C3`, `<@${faction1db.c3}>`, true);
+
+    message.channel.send(embedFormation);
+    };
 
 module.exports.help = {
     name: "formation",
-    aliases: ['formation'],
+    aliases: ['formation', 'former'],
     category: "guerre",
     desription: "Forme votre armée.",
-    usage: "<position> <@USER>",
+    usage: "<position> <@USER/retirer>",
     cooldown: 3,
     permissions: false,
     args: true

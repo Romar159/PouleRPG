@@ -1,3 +1,4 @@
+const {MessageEmbed} = require("discord.js");
 const {randomInt} = require("../../util/functions/randominteger");
 
 module.exports = async (client, message) => {
@@ -53,9 +54,12 @@ module.exports = async (client, message) => {
         }
     }
 
-    if(msg.indexOf('je peux mettre ce que je veux') >= 0)
-        return message.channel.send("Eouez meczz, t'as vu ça? <:EP_poulet_trop_classe:803391420580233226>");
+    if(msg.indexOf('je peux ce que je veux') >= 0)
+        return message.channel.send(`Eouez meczz, t'as vu ça? <:EP_poulet_trop_classe:803391420580233226>`);
 
     if(msg.indexOf('fuck les majuscules') >= 0)
-        return message.channel.send("C'est pas de ma faute si t'es pété. :person_shrugging:");
+        return message.channel.send(`C'est pas de ma faute si t'es pété. :person_shrugging:`);
+
+    if(msg.indexOf('cul') >= 0)
+        return message.channel.send(`OH UN CUL ! <:EP_GIGA_SATANAS:670675422756732932>`)
 }

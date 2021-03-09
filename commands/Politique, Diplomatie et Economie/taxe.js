@@ -62,7 +62,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
                         } else {
                             //em.addField(`${a.user.username}`, "n'as pas assez d'argent pour payer la taxe.");
-                            message.channel.send(`${a.user.username} n'as pas assez d'argent pour payer la taxe.`);
+                            message.channel.send(`**${a.user.username} n'as pas assez d'argent pour payer la taxe.**`);
                         }
                     }
                 });

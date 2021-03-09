@@ -3,10 +3,10 @@ const {randomInt} = require("../../util/functions/randominteger");
 
 module.exports.run = async (client, message, args, settings, dbUser, command) => {
    
-    if(message.channel.id != "616652710942343222") return message.reply('Cette commande ne peut être executée que dans le salon <#616652710942343222>');
+    if(message.channel.id != "616652710942343222") return message.reply('cette commande ne peut être executée que dans le salon <#616652710942343222>');
 
     const faction = await client.getFaction(dbUser.faction);
-    if(!faction.en_guerre) return message.reply("Vous n'êtes pas en guerre.");
+    if(!faction.en_guerre) return message.reply("vous n'êtes pas en guerre.");
     const factionEnemy = await client.getFaction(faction.ennemy);
 
     if(faction.ptsvictoire >= 3) {
@@ -22,7 +22,15 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
         await client.updateFaction(dbUser.faction, {en_guerre: false, ennemy: "", ptsvictoire: 0});
         //Todo: post bêta il y aura probablement de nouvelles choses qui se passe à la fin de la guerre.
 
-        return message.channel.send(`La faction <@&${faction.roleid}> est victorieuse sur <@&${factionEnemy.roleid}>\n ${faction.name} Récupère donc ${gain} du coffre de ${factionEnemy.name}`);
+        const embed = new MessageEmbed()
+        .setColor('BF2F00')
+	    .setAuthor("Résultats de la guerre !", client.user.displayAvatarURL())
+        .setDescription(`**Guerre entre <@&${faction.roleid}> et <@&${factionEnemy.roleid}>.**
+
+        La faction **${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}** est victorieuse sur **${factionEnnemy.name.charAt(0).toUpperCase() + factionEnnemy.name.slice(1)}** ! :trophy:
+        ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)} récupère donc **${gain}:coin:** du coffre de ${factionEnnemy.name.charAt(0).toUpperCase() + factionEnnemy.name.slice(1)} !`);
+        
+        return message.channel.send(embed);
 
     } else if(factionEnemy.ptsvictoire >= 3) {
         return message.channel.send("La faction adverse domine la guerre. Elle peut à présent appuyer ses revendications.");

@@ -25,7 +25,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 userID: mention.id,
                 username: mention.user.tag,
             });
-            return message.channel.send("L'utilisateur n'existait pas dans la base de donnée.\nEssayez de retaper la commande");
+            return message.channel.send("L'utilisateur n'existait pas dans la base de donnée.\nEssayez de retaper la commande.");
         }
     } else {
         const needxp_dbuser = Math.round((((700 * parseInt(dbUser.level)) / Math.sqrt(parseInt(dbUser.level))) - 200));
@@ -37,9 +37,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
 module.exports.help = {
     name: "xp",
-    aliases: ['xp'],
+    aliases: ['xp', 'niveau', 'experience', 'expérience'],
     category: "experience",
-    desription: "Affiche l'experience actuelle d'un utilisateur.",
+    desription: "Affiche le niveau et l'expérience actuelle d'un utilisateur.",
     usage: "[@user]", // ? DraxyNote: Je précis de faire attention quand il y l'utilisation comme ça, les paramètres obligatoires sont entre "<>" et facultatifs entre "[]". Et ici par exemple, c'est bien facultatif car on peut ne pas le renseigner, fait juste attention à cela quand tu vas éditer tout ça.
     cooldown: 1,
     permissions: false,

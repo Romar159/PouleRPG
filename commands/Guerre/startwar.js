@@ -3,6 +3,8 @@ const {MessageEmbed} = require("discord.js");
 module.exports.run = async (client, message, args, settings, dbUser, command) => {
 
     if(message.channel.id != "616652710942343222") return message.reply('Cette commande ne peut être executée que dans le salon <#616652710942343222>');
+    if(!args[0]) return message.reply("veuillez entrer une faction valide.");
+    if(!args[1]) return message.reply("veuillez entrer une faction valide.");
 
     let faction1 = args[0].toLowerCase();
     let faction2 = args[1].toLowerCase();
@@ -32,7 +34,7 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
                 break;
 
                 default:
-                return message.reply("Veuillez entrer une faction valide.");
+                return message.reply("veuillez entrer une faction valide.");
             }
 
         switch(faction2) {
@@ -49,7 +51,7 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
                 break;
 
                 default:
-                return message.reply("Veuillez entrer une faction valide.");
+                return message.reply("veuillez entrer une faction valide.");
             }
 
             if(faction1db.name == faction2db.name) return message.reply("ERROR: Impossible de lancer une guerre avec la même faction.");
@@ -57,7 +59,7 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
             if(faction1db.en_guerre == true || faction2db.en_guerre == true) return message.reply("ERROR: L'une des faction est déjà en guerre.");
             
             
-            message.channel.send(`Guerre lancée entre <@&${faction1db.roleid}> et <@&${faction2db.roleid}>`);
+            message.channel.send(`**PRÉPAREZ-VOUS AU COMBAT !\nLa guerre est lancée entre <@&${faction1db.roleid}> et <@&${faction2db.roleid}> !**`);
 
             client.updateFaction(args[0].toLowerCase(), {en_guerre: true, ennemy: args[1].toLowerCase(), ptsvictoire: 0});
             client.updateFaction(args[1].toLowerCase(), {en_guerre: true, ennemy: args[0].toLowerCase(), ptsvictoire: 0});
@@ -70,10 +72,10 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
     }
     
 module.exports.help = {
-    name: "startwar",
-    aliases: ['startwar'],
+    name: "guerre",
+    aliases: ['easy'],
     category: "guerre",
-    desription: "Démarre une guerre.",
+    desription: "Démarre une guerre entre deux factions.",
     usage: '<faction1> <faction2>',
     cooldown: 0, 
     permissions: true,

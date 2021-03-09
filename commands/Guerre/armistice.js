@@ -7,7 +7,7 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
     let faction1 = args[0].toLowerCase();
     faction1 = faction1.charAt(0).toUpperCase() + faction1.slice(1);
     
-
+    // TODO : On peut pas signer une armisitice pour une faction dans laquelle on n'est pas dedans !
     try {
         const faction1db = await client.getFaction(args[0].toLowerCase());
         const faction2db = await client.getFaction(faction1db.ennemy);
@@ -27,7 +27,7 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
                 break;
 
                 default:
-                return message.reply("Veuillez entrer une faction valide.");
+                return message.reply("veuillez entrer une faction valide.");
             }
 
             if(faction1db.en_guerre == false) return message.reply("ERROR: La faction n'est pas en guerre.");

@@ -1,5 +1,5 @@
 module.exports.run = async (client, message, args) => {
-    await message.channel.send("Redémarrage en cours ...");
+    await message.channel.send("Redémarrage en cours...");
     await message.delete();
     process.exit();
 }
