@@ -62,7 +62,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
                         } else {
                             //em.addField(`${a.user.username}`, "n'as pas assez d'argent pour payer la taxe.");
-                            message.channel.send(`**${a.user.username} n'as pas assez d'argent pour payer la taxe.**`);
+                            message.channel.send(`**${a.user.username} n'as pas assez d'argent pour payer la taxe.**`); // ? DraxyNote: ICI
                         }
                     }
                 });
@@ -77,7 +77,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                // message.channel.send(`Or total taxé à <@&${faction.roleid}> : ${faction.bank - or_avant }`); 
             });
 
-            message.channel.send("Taxe prélevée.");
+            message.channel.send("Taxe prélevée."); // ? DraxyNote:  ICI (non on ne peut pas récupérer le total parce que j'ai galéré 3 jours sur cette commande de mes couilles donc bordel elle sera peut être update en final xD).
             await client.updateFaction(faction.name, {cooldown_taxe: Date.now()});
         }
     }
@@ -87,7 +87,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
         let faction = await client.getFaction(dbUser.faction);
 
-        message.channel.send("La taxe est maintenant de " + args[1]);
+        message.channel.send("La taxe est maintenant de " + args[1]); // ? DraxyNote: ICI
         await client.updateFaction(faction.name, {taxe: parseInt(args[1])});
     }
 };
@@ -95,9 +95,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 module.exports.help = {
     name: "taxe",
     aliases: ['taxe'],
-    category: "Politique, Diplomatie et Economie",
+    category: "politique, diplomatie et economie",
     desription: "Gérer les taxes de votre faction.",
-    usage: "<action:prélever/etablir> <montant>",
+    usage: "<action:prélever/établir> <montant>",
     cooldown: 3,
     permissions: false,
     args: true,

@@ -1,9 +1,6 @@
 const {MessageEmbed} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
-
-    //DRAXYNOTE:  Ici c'est pas fini.
-    
     var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
     var est_maitre = false;
 
@@ -22,7 +19,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     const member_ran = message.mentions.members.first();
     const faction = await client.getFaction(dbUser.faction);
-    const dataUser = await client.getUser(member_ran);
+    let dataUser = await client.getUser(member_ran);
     if(!dataUser) {
         await client.createUser({
             guildID: member_ran.guild.id,
@@ -31,19 +28,26 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             userID: member_ran.id,
             username: member_ran.user.tag,
         });
+
+        if(member_ran.roles.cache.has('415947454626660366')) await client.updateUser(member_ran, {faction: "epsilon"});
+        if(member_ran.roles.cache.has('415947455582961686')) await client.updateUser(member_ran, {faction: "daïros"});
+        if(member_ran.roles.cache.has('415947456342130699')) await client.updateUser(member_ran, {faction: "lyomah"});
+        if(member_ran.roles.cache.has('665340021640921099')) await client.updateUser(member_ran, {faction: "alpha"});
     }
+    dataUser = await client.getUser(member_ran); //update
+
     if(dataUser.faction != dbUser.faction) return message.reply("ERROR: cet utilisateur ne fait pas partie de votre faction.");
-    await client.setOr(client, member_ran, args[1], message);
     const or = parseInt(args[1]);
     await client.updateFaction(dbUser.faction, {bank: faction.bank - or});
+    await client.setOr(client, member_ran, args[1], message);
 
     message.channel.send(`${or} versé à la banque personnel de ${member_ran} depuis le coffre de la faction ${faction.name}`);
 };
 
 module.exports.help = {
-    name: "vircof",
+    name: "virementcoffre",
     aliases: ['virementCoffre'],
-    category: "Politique, Diplomatie et Economie",
+    category: "politique, diplomatie et economie",
     desription: "Transfère de l'or du coffre de faction vers la banque personnel d'un membre.",
     usage: "<@USER> <or>",
     cooldown: 3,

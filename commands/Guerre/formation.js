@@ -43,47 +43,56 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     if(position == "a1" || position == "1a") {
         await client.verifposition(client, dbUser, mention, faction1db);
+        membre_retire = faction1db.a1;
         await client.updateFaction(dbUser.faction, {a1: mention});
     }
     else if(position == "a2" || position == "2a") {
         await client.verifposition(client, dbUser, mention, faction1db);
+        membre_retire = faction1db.a2;
         await client.updateFaction(dbUser.faction, {a2: mention});
     }
     else if(position == "a3" || position == "3a") {
         await client.verifposition(client, dbUser, mention, faction1db);
+        membre_retire = faction1db.a3;
         await client.updateFaction(dbUser.faction, {a3: mention});
     }
     
     else if(position == "b1" || position == "1b") {
         await client.verifposition(client, dbUser, mention, faction1db);
+        membre_retire = faction1db.b1;
         await client.updateFaction(dbUser.faction, {b1: mention});
     } 
     else if(position == "b2" || position == "2b") {
         await client.verifposition(client, dbUser, mention, faction1db);
+        membre_retire = faction1db.b2;
         await client.updateFaction(dbUser.faction, {b2: mention});
     }
     else if(position == "b3" || position == "3b") {
         await client.verifposition(client, dbUser, mention, faction1db);
+        membre_retire = faction1db.b3;
         await client.updateFaction(dbUser.faction, {b3: mention});
     }
     
     else if(position == "c1" || position == "1c") {
         await client.verifposition(client, dbUser, mention, faction1db);
+        membre_retire = faction1db.c1;
         await client.updateFaction(dbUser.faction, {c1: mention});
     }
     else if(position == "c2" || position == "2c") {
         await client.verifposition(client, dbUser, mention, faction1db);
+        membre_retire = faction1db.c2;
         await client.updateFaction(dbUser.faction, {c2: mention});
     }
     else if(position == "c3" || position == "3c") {
         await client.verifposition(client, dbUser, mention, faction1db);
+        membre_retire = faction1db.c3;
         await client.updateFaction(dbUser.faction, {c3: mention});
     }
     else
         return message.reply("ERROR: Vous devez spécifier une position valide.");
     
-    // TODO : Faire en sorte que l'on puisse récuprérer le user enlevé.
-    if(mention == "NULL") return message.channel.send(`**Le joueur a été retiré de la formation.**`);
+    if(mention == "NULL" && membre_retire != "NULL") return message.channel.send(`**<@${membre_retire}> a été retiré de la formation.**`);
+    if(mention == "NULL" && membre_retire == "NULL") return message.channel.send(`Il n'y a personne à cette position.`);
 
     faction1db = await client.getFaction(dbUser.faction); //update.
     const embedFormation = new MessageEmbed()

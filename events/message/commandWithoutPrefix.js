@@ -40,12 +40,12 @@ module.exports = async (client, message) => {
         const dailyCD = 8.64e+7;
         if(!dbUser.or) await client.updateUser(message.member, {or: 0});
 
-        const lastDaily = await dbUser.daily;
+        const lastDaily = await dbUser.cooldown_pray;
         if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
             return;
         } else { // Si le cooldown est passé
             let random_pray = randomInt(1, 12);
-            if(random_pray > 0) {
+            if(random_pray == 1) {
                 message.author.send("Dieu Poulet à entendu votre prière ! +2 or dans votre banque.");
                 client.setOr(client, message.member, 2, message);
                 
@@ -54,7 +54,7 @@ module.exports = async (client, message) => {
         }
     }
 
-    if(msg.indexOf('je peux ce que je veux') >= 0)
+    if(msg.indexOf('je peux faire ce que je veux') >= 0)
         return message.channel.send(`Eouez meczz, t'as vu ça? <:EP_poulet_trop_classe:803391420580233226>`);
 
     if(msg.indexOf('fuck les majuscules') >= 0)

@@ -25,6 +25,9 @@ module.exports.run = (client, message, args) => {
                 case "Experience":
                     categoryName = `:test_tube: Expérience`;
                     break;
+                case "Experiments":
+                    categoryName = `:microscope: Experiments`;
+                    break;
                 case "GeneralRPG":
                     categoryName = `:archery: RPG`;
                     break;

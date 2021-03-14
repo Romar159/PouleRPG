@@ -55,11 +55,13 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
             }
 
             if(faction1db.name == faction2db.name) return message.reply("ERROR: Impossible de lancer une guerre avec la même faction.");
+            if(faction1db.ally == faction2db.name) return message.reply("Ces deux factions sont alliées");
+            message.channel.send(`ALLY: ${faction1db.ally} | name2: ${faction2db.name}`);
 
             if(faction1db.en_guerre == true || faction2db.en_guerre == true) return message.reply("ERROR: L'une des faction est déjà en guerre.");
             
             
-            message.channel.send(`**PRÉPAREZ-VOUS AU COMBAT !\nLa guerre est lancée entre <@&${faction1db.roleid}> et <@&${faction2db.roleid}> !**`);
+            message.channel.send(`**PRÉPAREZ-VOUS AU COMBAT !\nLa guerre est déclarée entre <@&${faction1db.roleid}> et <@&${faction2db.roleid}> !**`);
 
             client.updateFaction(args[0].toLowerCase(), {en_guerre: true, ennemy: args[1].toLowerCase(), ptsvictoire: 0});
             client.updateFaction(args[1].toLowerCase(), {en_guerre: true, ennemy: args[0].toLowerCase(), ptsvictoire: 0});
