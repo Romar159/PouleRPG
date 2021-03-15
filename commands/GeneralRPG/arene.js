@@ -6,13 +6,19 @@ const {PREFIX} = require('../../config');
 module.exports.run = async (client, message, args, settings, dbUser, command) => {
     const dailyCD = 60000;
     let user_weapon;
-    let bot_weapon = parseInt(randomInt(1, 3));
+    let bot_weapon = randomInt(1, 5);
     let bot_weapon_name = "";
     if(bot_weapon == 1) bot_weapon_name = "le tomahawk";
     else if(bot_weapon == 2) bot_weapon_name = "la lance";
     else if(bot_weapon == 3) bot_weapon_name = "la masse";
+    else if(bot_weapon == 4) bot_weapon_name = "arene.arme4.name";
+    else if(bot_weapon == 5) bot_weapon_name = "arene.arme5.name";
 
-    /* TODO : Rajouter 2 autres armes et rajouter le fait que l'xp est stocké dans une variable pour pouvoir la changer avec les rôels bans */
+    const xp_defaite = 2;
+    const xp_egalite = 2;
+    const xp_win = 7;
+    const or_win = 1; 
+
 
     const embed = new MessageEmbed()
     .setColor('BF2F00')
@@ -36,49 +42,50 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
 
         if(usr_c.startsWith("t")) {
             user_weapon = 1;
+            user_weapon_name = "le tomahawk";
         } else if(usr_c.startsWith("l")) {
             user_weapon = 2;
+            user_weapon_name = "la lance";
         } else if(usr_c.startsWith("m")) {
             user_weapon = 3;
+            user_weapon_name = "la masse";
+        } else if(usr_c.startsWith("arme1")) {
+            user_weapon = 4;
+            user_weapon_name = "l'arme1";
+        } else if(usr_c.startsWith("arme2")) {
+            user_weapon = 5;
+            user_weapon_name = "l'arme2";
         } else {
-
-        let noArgsReply = `Synthax Error ${message.author}`;
-
-        if(command.help.usage) noArgsReply += `\nSyntaxe : \`${PREFIX}${command.help.name} ${command.help.usage}\``;
-            return message.channel.send(noArgsReply);
+            let noArgsReply = `Synthax Error ${message.author}`;
+            if(command.help.usage) noArgsReply += `\nSyntaxe : \`${PREFIX}${command.help.name} ${command.help.usage}\``;
+                return message.channel.send(noArgsReply);
         }
         
-        if(user_weapon == 1) user_weapon_name = "le tomahawk";
-        else if(user_weapon == 2) user_weapon_name = "la lance";
-        else if(user_weapon == 3) user_weapon_name = "la masse";
-
         //Combat:
 
-        if(user_weapon == bot_weapon) {
-            embed.setDescription(`Vous utilisez **${user_weapon_name}**, l'adversaire fait de même !\nC'est une **égalité**, **+2xp**.`);
-            message.channel.send(embed);
-            await client.setXp(client, message.member, 2);
-        } 
-        else if(user_weapon == 1 && bot_weapon == 2 
-                || user_weapon == 2 && bot_weapon == 3 
-                || user_weapon == 3 && bot_weapon == 1) {
-            
-                embed.setDescription(`Vous utilisez **${user_weapon_name}** et prenez l'avantage sur votre adversaire qui utilise **${bot_weapon_name}** !\nVous **gagnez**, **+7xp** et **+1or**.`);
-                message.channel.send(embed);
-               // client.updateUser(message.member, {experience: parseInt(dbUser.experience) + 7, or: parseInt(dbUser.or) + 1});
-               //client.setOr(message.member, 1);
-               await client.setOr(client, message.member, 1, message);
-               await client.setXp(client, message.member, 7);
+        if(user_weapon == 1 && bot_weapon == 5 || user_weapon == 1 && bot_weapon == 3
+        || user_weapon == 2 && bot_weapon == 1 || user_weapon == 2 && bot_weapon == 4
+        || user_weapon == 3 && bot_weapon == 2 || user_weapon == 3 && bot_weapon == 5
+        || user_weapon == 4 && bot_weapon == 1 || user_weapon == 4 && bot_weapon == 3
+        || user_weapon == 5 && bot_weapon == 4 || user_weapon == 5 && bot_weapon == 2) { // Gagner
 
-        } 
-        else if(user_weapon == 1 && bot_weapon == 3
-                || user_weapon == 2 && bot_weapon == 1
-                || user_weapon == 3 && bot_weapon == 2) {
-
-                embed.setDescription(`Vous êtes en désavantage en utilisant **${user_weapon_name}** tandis que votre adversaire utilise **${bot_weapon_name}** !\nVous **perdez**... **-2xp**.`);
+            embed.setDescription(`Vous utilisez **${user_weapon_name}** et prenez l'avantage sur votre adversaire qui utilise **${bot_weapon_name}** !\nVous **gagnez**, **+${xp_win}xp** et **+${or_win}or**.`);
                 message.channel.send(embed);
-                await client.setXp(client, message.member, -2);
+               await client.setOr(client, message.member, or_win, message);
+               await client.setXp(client, message.member, xp_win);
+
         }
+        else if(user_weapon == bot_weapon) { // égalité
+            embed.setDescription(`Vous utilisez **${user_weapon_name}**, l'adversaire ${bot_weapon_name} !\nC'est une **égalité**, **+${xp_egalite}xp**.`);
+            message.channel.send(embed);
+            await client.setXp(client, message.member, xp_egalite);
+        }
+        else { // defaite
+            embed.setDescription(`Vous êtes en désavantage en utilisant **${user_weapon_name}** tandis que votre adversaire utilise **${bot_weapon_name}** !\nVous **perdez**... **-${xp_defaite}xp**.`);
+            message.channel.send(embed);
+            await client.setXp(client, message.member, -xp_defaite);
+        }
+
         client.updateUser(message.member, {cooldown_arene: Date.now()});
     }
 
@@ -89,7 +96,7 @@ module.exports.help = {
     aliases: ['arene'],
     category: "generalrpg",
     desription: "Entraînez-vous dans l'arène.",
-    usage: '<tomahawk/lance/masse>',
+    usage: '<tomahawk/lance/masse/arme1/arme2>',
     cooldown: 3, 
     permissions: false,
     args: true

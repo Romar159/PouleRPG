@@ -2,9 +2,6 @@ const {MessageEmbed} = require("discord.js");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
     const faction = await client.getFaction(dbUser.faction);
-    
-    /* TODO : Faire un nouveau truc dans le user profil :
-     * On peut customizer l'emote de la faction ainsi que celle de la position favorite parmi une bdd */
 
     let emote = "";
     if(dbUser.class == "NULL") emote = ":hole:";
@@ -12,22 +9,43 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     else if(dbUser.class == "guerrier") emote = ":crossed_swords:";
     else if(dbUser.class == "archer") emote = ":bow_and_arrow:";
 
+    const emote_faction = dbUser.profil_emote_faction;
+    const emote_position = dbUser.profil_emote_position;
+
+
     const embed = new MessageEmbed()
-    .setAuthor(`Profil de ${message.author.username}`, message.author.displayAvatarURL())
-    .setColor('BF2F00')
-    .addField(`:european_castle: **Faction**`, `<@&${faction.roleid}>`, true)
-    .addField(`${emote} **Classe**`, `${dbUser.class.charAt(0).toUpperCase() + dbUser.class.slice(1)}`, true)
+    .setAuthor(`Profil de ${message.author.username}`, message.author.displayAvatarURL());
+    if(dbUser.faction == "epsilon")
+        embed.setColor('AA3C00');
+    if(dbUser.faction == "daïros")
+        embed.setColor('0078F0');
+    if(dbUser.faction == "lyomah")
+        embed.setColor('00A00A');
+    if(dbUser.faction == "alpha")
+        embed.setColor('F0C800');
+    if(dbUser.faction == "NULL")
+        embed.setColor('5E6366');
+
+    if(dbUser.faction == "NULL")
+        embed.addField(`${emote_faction} **Faction**`, `Vous n'avez pas rejoint de faction.`, true);
+    else
+        embed.addField(`${emote_faction} **Faction**`, `**<@&${faction.roleid}>**`, true);
+
+    embed.addField(`${emote} **Classe**`, `${dbUser.class.charAt(0).toUpperCase() + dbUser.class.slice(1)}`, true)
     .addField(`** **`, `** **`)
     .addField(`:bar_chart: **Niveau**`, dbUser.level, true)
     .addField(`:test_tube: **Expérience**`, dbUser.experience, true)
     .addField(`** **`, `** **`)
     .addField(`**:coin: Or**`, dbUser.or, true)
     .addField(`** **`, `** **`)
-    .addField(`:heart: **Position favorite**`, `${dbUser.combat_favoriteposition.charAt(0).toUpperCase() + dbUser.combat_favoriteposition.slice(1)}`, true)
+    .addField(`${emote_position} **Position favorite**`, `${dbUser.combat_favoriteposition.charAt(0).toUpperCase() + dbUser.combat_favoriteposition.slice(1)}`, true)
     .addField(`:broken_heart: **Position détestée**`, `${dbUser.combat_hatedposition.charAt(0).toUpperCase() + dbUser.combat_hatedposition.slice(1)}`, true)
-    .addField(`** **`, `** **`)
-    .addField(`:woman_red_haired: **Points(s) vénitienne**`, dbUser.pointsvenitienne, true)
-    .addField(`:dart: **Point(s) de puissance**`, dbUser.powerpoints, true);
+    .addField(`** **`, `** **`);
+    if(message.author.id == '421400262423347211')
+        embed.addField(`:woman_red_haired: **Points(s) vénitienne**`, `∞`, true);
+    else
+        embed.addField(`:woman_red_haired: **Points(s) vénitienne**`, dbUser.pointsvenitienne, true);
+    embed.addField(`:dart: **Point(s) de puissance**`, dbUser.powerpoints, true);
         
     message.channel.send(embed);
 }

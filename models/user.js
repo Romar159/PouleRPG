@@ -88,6 +88,15 @@ const userSchema = mongoose.Schema({
     level_mee6 : {
         "type": Number,
         "default": 1
+    },
+
+    profil_emote_faction : {
+        "type": String,
+        "default": ":european_castle:"
+    },
+    profil_emote_position : {
+        "type": String,
+        "default": ":heart:"
     }
 
   
