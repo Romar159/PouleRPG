@@ -7,6 +7,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
     var est_maitre = false;
 
+    const taxeEmbed = new MessageEmbed()
+    .setColor('F2F23C');
+
     for(let y=0; y<roles_maitre.length; y++) {
         if(message.member.roles.cache.has(roles_maitre[y])) {
             est_maitre = true;
@@ -15,9 +18,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             est_maitre = false;
         }
     }
-    if(!est_maitre) return message.reply("Commande utilisable que par les maîtres de faction.");
+    if(!est_maitre) return message.reply("commande utilisable que par les maîtres de faction.");
 
-    if(args[0] == "prélever") {
+    if(args[0] == "prélever" || args[0] == "prelever") {
 
         let faction = await client.getFaction(dbUser.faction);
         let or_avant = faction.bank;
@@ -62,7 +65,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
                         } else {
                             //em.addField(`${a.user.username}`, "n'as pas assez d'argent pour payer la taxe.");
-                            message.channel.send(`**${a.user.username} n'as pas assez d'argent pour payer la taxe.**`); // ? DraxyNote: ICI
+                            message.channel.send(`**${a} n'as pas assez d'argent pour payer la taxe.**`);
                         }
                     }
                 });
@@ -77,17 +80,22 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                // message.channel.send(`Or total taxé à <@&${faction.roleid}> : ${faction.bank - or_avant }`); 
             });
 
-            message.channel.send("Taxe prélevée."); // ? DraxyNote:  ICI (non on ne peut pas récupérer le total parce que j'ai galéré 3 jours sur cette commande de mes couilles donc bordel elle sera peut être update en final xD).
+            taxeEmbed.setAuthor(`Taxes prélevées !`, message.author.displayAvatarURL());
+
+            message.channel.send(taxeEmbed); // ? DraxyNote:  ICI (non on ne peut pas récupérer le total parce que j'ai galéré 3 jours sur cette commande de mes couilles donc bordel elle sera peut être update en final xD).
             await client.updateFaction(faction.name, {cooldown_taxe: Date.now()});
         }
     }
-    else if(args[0] == "établir") {
-        if(isNaN(args[1])) return message.reply("Vous devez renseigner une valeur numérique.");
-        if(args[1] < 0) return message.reply("Le montant des taxes ne peut être négatif.");
+    else if(args[0] == "établir" || args[0] == "etablir") {
+        if(isNaN(args[1])) return message.reply("vous devez renseigner une valeur numérique.");
+        if(args[1] < 0) return message.reply("le montant des taxes ne peut être négatif.");
 
         let faction = await client.getFaction(dbUser.faction);
 
-        message.channel.send("La taxe est maintenant de " + args[1]); // ? DraxyNote: ICI
+        taxeEmbed.setAuthor(`La taxe vient d'être établie !`, message.author.displayAvatarURL());
+        taxeEmbed.setDescription(`Elle est désormais de **${args[1]}** :coin:`);
+
+        message.channel.send(taxeEmbed);
         await client.updateFaction(faction.name, {taxe: parseInt(args[1])});
     }
 };

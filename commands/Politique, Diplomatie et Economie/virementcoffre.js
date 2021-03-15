@@ -12,10 +12,10 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             est_maitre = false;
         }
     }
-    if(!est_maitre) return message.reply("Commande utilisable que par les maîtres de faction.");
+    if(!est_maitre) return message.reply("commande utilisable que par les maîtres de faction.");
 
-    if(!message.mentions.users.first()) return message.reply("ERROR: Vous devez renseigner un utilisateur valide. {HERE-> " + args[0] + "}");
-    if(isNaN(args[1])) return message.reply("ERROR, vous devez renseigner une valeur numérique {HERE-> " + args[1] + "}");
+    if(!message.mentions.users.first()) return message.reply(`vous devez renseigner un utilisateur valide.\n**ICI -> ${args[0]}**`);
+    if(isNaN(args[1])) return message.reply(`vous devez renseigner une valeur numérique.\n**ICI -> ${args[1]}**`);
 
     const member_ran = message.mentions.members.first();
     const faction = await client.getFaction(dbUser.faction);
@@ -36,17 +36,22 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     }
     dataUser = await client.getUser(member_ran); //update
 
-    if(dataUser.faction != dbUser.faction) return message.reply("ERROR: cet utilisateur ne fait pas partie de votre faction.");
+    if(dataUser.faction != dbUser.faction) return message.reply("cet utilisateur ne fait pas partie de votre faction.");
     const or = parseInt(args[1]);
     await client.updateFaction(dbUser.faction, {bank: faction.bank - or});
     await client.setOr(client, member_ran, args[1], message);
 
-    message.channel.send(`${or} versé à la banque personnel de ${member_ran} depuis le coffre de la faction ${faction.name}`);
+    const embed = new MessageEmbed()
+    .setColor('F2F23C')
+    .setAuthor(`Virement effectué !`, message.author.displayAvatarURL())
+    .setDescription(`**${or}** :coin: versé à ${member_ran} du coffre de la faction **${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}**.`);
+
+    message.channel.send(embed);
 };
 
 module.exports.help = {
     name: "virementcoffre",
-    aliases: ['virementCoffre'],
+    aliases: ['virementCoffre', 'virCoffre', 'vc'],
     category: "politique, diplomatie et economie",
     desription: "Transfère de l'or du coffre de faction vers la banque personnel d'un membre.",
     usage: "<@USER> <or>",

@@ -60,6 +60,16 @@ module.exports = async (client, message) => {
     if(msg.indexOf('fuck les majuscules') >= 0)
         return message.channel.send(`C'est pas de ma faute si t'es pété. :person_shrugging:`);
 
-    if(msg.indexOf('cul') >= 0)
+    if(msg.indexOf('cul') >= 0) {
+        if(msg.indexOf('culm') >= 0) {
+            return;
+        }
         return message.channel.send(`OH UN CUL ! <:EP_GIGA_SATANAS:670675422756732932>`)
+    }
+
+    if(msg.indexOf('maintenante') >= 0)
+        return message.channel.send(`Ah oui alors là, l'ancien WapPreferences de mon cul oui ! **:)**`);
+
+    if(msg.indexOf('grcher') >= 0 || msg.indexOf('drcher') >= 0)
+        return message.channel.send(`Le beau profil de cul là avec la classe de merde !`);
 }

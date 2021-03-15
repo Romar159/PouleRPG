@@ -1,37 +1,60 @@
-const { guild } = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 module.exports.run = (client, message, args) => {
-   message.guild.members.fetch().then(fetchAll => {
+    message.guild.members.fetch().then(fetchAll => {
        
         const epsilon = fetchAll.filter(m => m.roles.cache.get('415947454626660366'));
         const dairos = fetchAll.filter(m => m.roles.cache.get('415947455582961686'));
         const lyomah = fetchAll.filter(m => m.roles.cache.get('415947456342130699'));
         const alpha = fetchAll.filter(m => m.roles.cache.get('665340021640921099'));
-
+        
+        const embed = new MessageEmbed()
+        
         // Si aucun argument n'est passé, envoyer la liste de toutes les factions.
-        if (!args.length) return message.channel.send(`Membres de la faction Epsilon :\`\n${epsilon.map(m=>m.user.tag).join('`\n`')}\`\n\n
-Membres de la faction Daïros :\`\n${dairos.map(m=>m.user.tag).join('`\n`')}\`\n\n
-Membres de la faction Lyomah :\`\n${lyomah.map(m=>m.user.tag).join('`\n`')}\`\n\n
-Membres de la faction Alpha :\`\n${alpha.map(m=>m.user.tag).join('`\n`')}\``);
+        if(!args.length) {
+            embed.setColor('5E6366')
+            embed.setAuthor(`Listes des factions`, client.user.displayAvatarURL());
+            embed.addField(`:regional_indicator_e: Membres de la faction Epsilon`, `\`${epsilon.map(m => m.user.tag).join('` • `')}\``)
+            embed.addField(`:regional_indicator_d: Membres de la faction Daïros`, `\`${dairos.map(m => m.user.tag).join('` • `')}\``)
+            embed.addField(`:regional_indicator_l: Membres de la faction Lyomah`, `\`${lyomah.map(m => m.user.tag).join('` • `')}\``)
+            embed.addField(`:regional_indicator_a: Membres de la faction Alpha`, `\`${alpha.map(m => m.user.tag).join('` • `')}\``)
 
+            return message.channel.send(embed);
+        }
+        
         // Sinon, on analyse les arguments pour chaque faction.
-
-        //DraxyNote : Si tu veux mettre le nombre de pelo qu'il y a dans la faction il faut récupérer "faction.size". (remplace "faction", par le nom de la faction que tu veux évidemment x))
-        if (args[0].toLowerCase() == "epsilon")
-            message.channel.send(`Membres de la faction Epsilon :\`\n${epsilon.map(m=>m.user.tag).join('`\n`')}\``);
-        if (args[0].toLowerCase() == "daïros")
-            message.channel.send(`Membres de la faction Daïros :\`\n${dairos.map(m=>m.user.tag).join('`\n`')}\``);
-        if (args[0].toLowerCase() == "lyomah")
-            message.channel.send(`Membres de la faction Lyomah :\`\n${lyomah.map(m=>m.user.tag).join('`\n`')}\``);
-        if (args[0].toLowerCase() == "alpha")
-            message.channel.send(`Membres de la faction Alpha :\`\n${alpha.map(m=>m.user.tag).join('`\n`')}\``);     
+        if(args[0].toLowerCase() == "epsilon") {
+            embed.setColor('AA3C00')
+            embed.setAuthor(`Liste d'Epsilon`, client.user.displayAvatarURL());
+            embed.addField(`:regional_indicator_e: Membres de la faction Epsilon : ${epsilon.size}`, `\`${epsilon.map(m => m.user.tag).join('` • `')}\``);
+            message.channel.send(embed);
+        }
+        if(args[0].toLowerCase() == "daïros") {
+            embed.setColor('0078F0')
+            embed.setAuthor(`Liste de Daïros`, client.user.displayAvatarURL());
+            embed.addField(`:regional_indicator_d: Membres de la faction Daïros : ${dairos.size}`, `\`${dairos.map(m => m.user.tag).join('` • `')}\``);
+            message.channel.send(embed);
+        }
+        if(args[0].toLowerCase() == "lyomah") {
+            embed.setColor('00A00A')
+            embed.setAuthor(`Liste de Lyomah`, client.user.displayAvatarURL());
+            embed.addField(`:regional_indicator_l: Membres de la faction Lyomah : ${lyomah.size}`, `\`${lyomah.map(m => m.user.tag).join('` • `')}\``);
+            message.channel.send(embed);
+        }
+        if(args[0].toLowerCase() == "alpha") {
+            embed.setColor('F0C800')
+            embed.setAuthor(`Liste d'Alpha`, client.user.displayAvatarURL());
+            embed.addField(`:regional_indicator_a: Membres de la faction Alpha : ${alpha.size}`, `\`${alpha.map(m => m.user.tag).join('` • `')}\``);
+            message.channel.send(embed);
+        }
+        
    });
 }
 
 module.exports.help = {
-    name: "list",
-    aliases: ['list'],
+    name: "liste",
+    aliases: ['liste'],
     category: "generalrpg",
-    desription: "renvoie la liste des membres des factions.",
+    desription: "Renvoie la liste des membres d'une ou des factions.",
     usage: '[faction]',
     cooldown: 3, 
     permissions: false,

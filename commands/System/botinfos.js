@@ -11,7 +11,10 @@ module.exports.run = (client, message, args) => {
         **Date de début du projet :** 19/09/2019 - 23:31
         **Date de début de la reprogrammation :** 26/01/2021
 
-        **Programmation :** <@421400262423347211> | **Design Graphique :** <@211911771433205760>`)
+        **Programmation :** <@421400262423347211> | **Design Graphique :** <@211911771433205760>
+
+        **Lien utiles :**
+        [Discord Empire](https://discord.gg/n6xxGQs) • [Github](https://github.com/Romar159/PouleRPG) • [Site](https://poulerpg.glitch.me)`)
 
     message.channel.send(embed);
 }

@@ -5,7 +5,7 @@ module.exports = async (client, message) => {
     if(!message.author.bot && message.content.startsWith(PREFIX)) {
         if(message.author.id !== "421400262423347211") {
             if(message.author.id !== "211911771433205760")
-                return message.reply(`Vous n'avez pas la permission requise pour utiliser le bot. DEBUG: MESSAGE AUTHOR ID: ${message.author.id}`);
+                return message.reply(`vous n'avez pas la permission requise pour utiliser le bot. DEBUG: MESSAGE AUTHOR ID: ${message.author.id}`);
         }
     }
     
@@ -52,12 +52,12 @@ module.exports = async (client, message) => {
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
     if(!command) return;
 
-    if(command.help.permissions && !message.member.hasPermission('ADMINISTRATOR')) return message.reply("Commande administrateur, permission requise.");
+    if(command.help.permissions && !message.member.hasPermission('ADMINISTRATOR')) return message.reply("commande administrateur, permissions requise.");
 
     if(command.help.args && !args.length) {
-        let noArgsReply = `Argument Attendu ${message.author}`;
+        let noArgsReply = `Argument(s) attendu(s) ${message.author}`;
 
-        if(command.help.usage) noArgsReply += `\nSyntaxe: \`${PREFIX}${command.help.name} ${command.help.usage}\``;
+        if(command.help.usage) noArgsReply += `\nSyntaxe : \`${PREFIX}${command.help.name} ${command.help.usage}\``;
         return message.channel.send(noArgsReply);
     }
 
@@ -74,7 +74,7 @@ module.exports = async (client, message) => {
 
         if(timeNow < cdExpirationTime) {
             timeLeft = (cdExpirationTime - timeNow) / 1000;
-            return message.reply(`Veuillez attendre ${timeLeft.toFixed(0)} seconde(s) avant de réutiliser la commande.`);
+            return message.reply(`veuillez attendre **${timeLeft.toFixed(0)}** seconde(s) avant de réutiliser la commande.`);
         }
     }
 

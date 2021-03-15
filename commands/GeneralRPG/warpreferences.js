@@ -1,13 +1,17 @@
-const { guild } = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 const {randomInt} = require("../../util/functions/randominteger");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
-    if(dbUser.class !== "NULL") return message.reply("Vous avez déjà créé vos préférences militaire.");
-    if(!args[0].length || !args[1].length) return message.reply(`Vous devez renseigner les deux valeurs.`);
+    if(!args[1]) return message.reply(`vous devez renseigner une position.`);
+    if(dbUser.class !== "NULL") return message.reply("vous avez déjà créé vos préférences militaire.");
+    if(!args[0].length || !args[1].length) return message.reply(`vous devez renseigner les deux valeurs.`);
    
     const choice_class = args[0].toLowerCase();
     const choice_position = args[1].toLowerCase();
+    const embed = new MessageEmbed()
+    .setColor('BF2F00')
+    .setAuthor(`Préférences de guerre`, client.user.displayAvatarURL());
 
     try {
         let random = randomInt(1, 3);
@@ -16,10 +20,12 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         if(choice_class == "cavalier" || choice_class == "guerrier" || choice_class == "archer") {
             if(choice_position == "droite" || choice_position == "centre" || choice_position == "gauche") {
 
-                message.channel.send(`Vous avez choisis la classe \`${choice_class}\`, ainsi que \`${choice_position}\` comme position favorite. Cela vous convient-il ? vous ne pourrez plus changer après (oui)`);
+                embed.setDescription(`Vous avez choisi la classe **${choice_class}**, ainsi que la position **${choice_position}** comme favorite.\nCela vous convient-il ? (oui)\n\n**Vous ne pourrez plus les changer après.**`);
+
+                message.channel.send(embed);
                 const filter = m => (message.author.id === m.author.id);
                 const userEntry = await message.channel.awaitMessages(filter, {
-                    max:1, time:8000, errors: ['time']
+                    max:1, time:10000, errors: ['time']
                 });
 
                 if(userEntry.first().content.toLowerCase() === "oui") {
@@ -34,13 +40,21 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                     } while (hatedpos == choice_position)
                     await client.updateUser(message.member, {combat_hatedposition: hatedpos});
 
-                    message.channel.send(`Votre classe est maintenante : \`${choice_class}\`\nVotre position favorite est : \`${choice_position}\` \nEt la position où vous êtes le moins efficace est \`${hatedpos}\``);
+                    const randomMessage = randomInt(0, 69)
+                    if(randomMessage == 42) {
+                        embed.setDescription(`Votre classe est maintenante : **${choice_class}**\nVotre position favorite est maintenante : **${choice_position}**\nVotre position détestée est : **${hatedpos}**`)
+                        embed.setFooter(`Hehehehehe, t'as eu un easter egg, bien joué ! :)`)
+                    } else {
+                        embed.setDescription(`Votre classe est désormais : **${choice_class}**\nVotre position favorite est désormais : **${choice_position}**\nVotre position détestée est : **${hatedpos}**`);
+                    }
+
+                    message.channel.send(embed);
                 }
             } else {
-                return message.channel.send("Cette position n'existe pas.");
+                return message.reply(`cette position n'existe pas.\n**ICI -> ${args[1]}**`);
             }
         } else {
-            return message.channel.send("Cette classe n'existe pas.");
+            return message.reply(`cette classe n'existe pas.\n**ICI -> ${args[0]}**`);
         }
 /*
         if(choice_position == "droite") {
@@ -51,7 +65,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             await client.updateUser(message.member, {combat_favoriteposition: "gacuhe"});
         } */
     } catch(e) {
-        message.channel.send(`TIMEOUT / ?ERROR: ${e}`);
+        message.channel.send(`Temps écoulé.`);
     }
         
 /*
@@ -143,10 +157,10 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 }
 
 module.exports.help = {
-    name: "warpreferences",
-    aliases: ['warpreferences'],
+    name: "préférencesguerre",
+    aliases: ['préfguerre', 'prefguerre', 'pg'],
     category: "generalrpg",
-    desription: "Créé ses préférences militaire.",
+    desription: "Définit ses préférences militaire.",
     usage: '<class:cavalier/guerrier/archer> <position_favorite:gauche/centre/droite>',
     cooldown: 3, 
     permissions: false,

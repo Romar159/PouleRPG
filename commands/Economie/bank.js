@@ -2,7 +2,7 @@ const {MessageEmbed} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
     const embed = new MessageEmbed()
-    .setColor('#F2DB0C')
+    .setColor('F2DB0C')
     .setTitle(':bank: Banque personnelle');
 
     if(message.mentions.users.first()) {
