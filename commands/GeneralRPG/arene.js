@@ -49,12 +49,12 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
         } else if(usr_c.startsWith("m")) {
             user_weapon = 3;
             user_weapon_name = "la masse";
-        } else if(usr_c.startsWith("arme1")) {
+        } else if(usr_c.startsWith("arme4")) {
             user_weapon = 4;
-            user_weapon_name = "l'arme1";
-        } else if(usr_c.startsWith("arme2")) {
+            user_weapon_name = "l'arme4";
+        } else if(usr_c.startsWith("arme5")) {
             user_weapon = 5;
-            user_weapon_name = "l'arme2";
+            user_weapon_name = "l'arme5";
         } else {
             let noArgsReply = `Synthax Error ${message.author}`;
             if(command.help.usage) noArgsReply += `\nSyntaxe : \`${PREFIX}${command.help.name} ${command.help.usage}\``;
@@ -68,15 +68,19 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
         || user_weapon == 3 && bot_weapon == 2 || user_weapon == 3 && bot_weapon == 5
         || user_weapon == 4 && bot_weapon == 1 || user_weapon == 4 && bot_weapon == 3
         || user_weapon == 5 && bot_weapon == 4 || user_weapon == 5 && bot_weapon == 2) { // Gagner
-
-            embed.setDescription(`Vous utilisez **${user_weapon_name}** et prenez l'avantage sur votre adversaire qui utilise **${bot_weapon_name}** !\nVous **gagnez**, **+${xp_win}xp** et **+${or_win}or**.`);
-                message.channel.send(embed);
-               await client.setOr(client, message.member, or_win, message);
-               await client.setXp(client, message.member, xp_win);
-
+		
+			if(randomInt(1, 3) == 3) {
+				embed.setDescription(`Vous utilisez **${user_weapon_name}** et prenez l'avantage sur votre adversaire qui utilise **${bot_weapon_name}** !\nVous **gagnez**, **+${xp_win}xp** et **+${or_win}or**.`);
+				await client.setOr(client, message.member, or_win, message);
+			} else {
+				embed.setDescription(`Vous utilisez **${user_weapon_name}** et prenez l'avantage sur votre adversaire qui utilise **${bot_weapon_name}** !\nVous **gagnez**, **+${xp_win}xp**.`);
+			}
+			
+			await client.setXp(client, message.member, xp_win);
+			message.channel.send(embed);
         }
         else if(user_weapon == bot_weapon) { // égalité
-            embed.setDescription(`Vous utilisez **${user_weapon_name}**, l'adversaire ${bot_weapon_name} !\nC'est une **égalité**, **+${xp_egalite}xp**.`);
+            embed.setDescription(`Vous utilisez **${user_weapon_name}**, l'adversaire aussi !\nC'est une **égalité**, **+${xp_egalite}xp**.`);
             message.channel.send(embed);
             await client.setXp(client, message.member, xp_egalite);
         }
@@ -96,7 +100,7 @@ module.exports.help = {
     aliases: ['arene'],
     category: "generalrpg",
     desription: "Entraînez-vous dans l'arène.",
-    usage: '<tomahawk/lance/masse/arme1/arme2>',
+    usage: '<tomahawk/lance/masse/arme4/arme5>',
     cooldown: 3, 
     permissions: false,
     args: true
