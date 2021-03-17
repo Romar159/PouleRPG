@@ -7,7 +7,7 @@ module.exports = async (client, message) => {
     const msg = message.content.toLowerCase();
     if(user.bot || user.id == "297414955618140162") return;
 
-    if(msg.indexOf('bonne nuit') >= 0 || msg.indexOf('bon nui') >= 0 || msg.indexOf('bon nuit') >= 0 || msg.indexOf('bone nuit') >= 0) {
+    if(msg.indexOf('bonne nuit') >= 0 || msg.indexOf('bon nui') >= 0 || msg.indexOf('bon nuit') >= 0 || msg.indexOf('bone nuit') >= 0 || msg.indexOf('bananenuit') >= 0) {
         const bonnenuit_ran = randomInt(1, 5);
         switch(bonnenuit_ran) {
             case 1:

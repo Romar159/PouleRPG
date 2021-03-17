@@ -1,4 +1,4 @@
-const { guild, MessageEmbed } = require("discord.js");
+const {guild, MessageEmbed} = require("discord.js");
 const {randomInt} = require('../../util/functions/randominteger');
 const {PREFIX} = require('../../config');
 
@@ -8,20 +8,19 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
     let user_weapon;
     let bot_weapon = randomInt(1, 5);
     let bot_weapon_name = "";
-    if(bot_weapon == 1) bot_weapon_name = "le tomahawk";
-    else if(bot_weapon == 2) bot_weapon_name = "la lance";
-    else if(bot_weapon == 3) bot_weapon_name = "la masse";
-    else if(bot_weapon == 4) bot_weapon_name = "arene.arme4.name";
-    else if(bot_weapon == 5) bot_weapon_name = "arene.arme5.name";
+    if(bot_weapon == 1) bot_weapon_name = "la dague";             //> 3 & 5  •  < 2 & 4
+    else if(bot_weapon == 2) bot_weapon_name = "le glaive";       //> 1 & 4  •  < 3 & 5
+    else if(bot_weapon == 3) bot_weapon_name = "la lance";        //> 2 & 5  •  < 1 & 4
+    else if(bot_weapon == 4) bot_weapon_name = "l'arbalète";      //> 1 & 3  •  < 2 & 5
+    else if(bot_weapon == 5) bot_weapon_name = "la claymore";     //> 2 & 4  •  < 1 & 3
 
-    const xp_defaite = 2;
-    const xp_egalite = 2;
+    const xp_defaite = 3;
+    const xp_egalite = 3;
     const xp_win = 7;
     const or_win = 1; 
 
 
     const embed = new MessageEmbed()
-    .setColor('BF2F00')
     .setAuthor(`Un combat a lieu !`, client.user.displayAvatarURL());
 
     let usr_c = args[0].toLowerCase();
@@ -40,21 +39,21 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
         // Calcul de l'arme choisit par l'utilisateur.
         let user_weapon_name = "";
 
-        if(usr_c.startsWith("t")) {
+        if(usr_c.startsWith("d")) {
             user_weapon = 1;
-            user_weapon_name = "le tomahawk";
-        } else if(usr_c.startsWith("l")) {
+            user_weapon_name = "la dague";
+        } else if(usr_c.startsWith("g")) {
             user_weapon = 2;
-            user_weapon_name = "la lance";
-        } else if(usr_c.startsWith("m")) {
+            user_weapon_name = "le glaive";
+        } else if(usr_c.startsWith("l")) {
             user_weapon = 3;
-            user_weapon_name = "la masse";
-        } else if(usr_c.startsWith("arme4")) {
+            user_weapon_name = "la lance";
+        } else if(usr_c.startsWith("a")) {
             user_weapon = 4;
-            user_weapon_name = "l'arme4";
-        } else if(usr_c.startsWith("arme5")) {
+            user_weapon_name = "l'arbalète";
+        } else if(usr_c.startsWith("c")) {
             user_weapon = 5;
-            user_weapon_name = "l'arme5";
+            user_weapon_name = "la claymore";
         } else {
             let noArgsReply = `Synthax Error ${message.author}`;
             if(command.help.usage) noArgsReply += `\nSyntaxe : \`${PREFIX}${command.help.name} ${command.help.usage}\``;
@@ -70,22 +69,25 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
         || user_weapon == 5 && bot_weapon == 4 || user_weapon == 5 && bot_weapon == 2) { // Gagner
 		
 			if(randomInt(1, 3) == 3) {
-				embed.setDescription(`Vous utilisez **${user_weapon_name}** et prenez l'avantage sur votre adversaire qui utilise **${bot_weapon_name}** !\nVous **gagnez**, **+${xp_win}xp** et **+${or_win}or**.`);
+				embed.setDescription(`Vous utilisez **${user_weapon_name}** et prenez l'avantage alors que votre adversaire utilise **${bot_weapon_name}** !\nVous **gagnez**, **+${xp_win}xp** et **+${or_win}:coin:**.`);
 				await client.setOr(client, message.member, or_win, message);
 			} else {
-				embed.setDescription(`Vous utilisez **${user_weapon_name}** et prenez l'avantage sur votre adversaire qui utilise **${bot_weapon_name}** !\nVous **gagnez**, **+${xp_win}xp**.`);
+				embed.setDescription(`Vous utilisez **${user_weapon_name}** et prenez l'avantage alors que votre adversaire utilise **${bot_weapon_name}** !\nVous **gagnez**, **+${xp_win}xp**.`);
 			}
 			
-			await client.setXp(client, message.member, xp_win);
+            embed.setColor('3F992D');
 			message.channel.send(embed);
+			await client.setXp(client, message.member, xp_win);
         }
         else if(user_weapon == bot_weapon) { // égalité
-            embed.setDescription(`Vous utilisez **${user_weapon_name}**, l'adversaire aussi !\nC'est une **égalité**, **+${xp_egalite}xp**.`);
+            embed.setDescription(`Vous utilisez **${user_weapon_name}**, l'adversaire aussi !\nC'est une **égalité**, **+${xp_egalite}xp**.`)
+            .setColor('5E6366');
             message.channel.send(embed);
             await client.setXp(client, message.member, xp_egalite);
         }
         else { // defaite
-            embed.setDescription(`Vous êtes en désavantage en utilisant **${user_weapon_name}** tandis que votre adversaire utilise **${bot_weapon_name}** !\nVous **perdez**... **-${xp_defaite}xp**.`);
+            embed.setDescription(`Vous êtes en désavantage en utilisant **${user_weapon_name}** tandis que votre adversaire utilise **${bot_weapon_name}** !\nVous **perdez**... **-${xp_defaite}xp**.`)
+            .setColor('BF2F00');
             message.channel.send(embed);
             await client.setXp(client, message.member, -xp_defaite);
         }
@@ -96,11 +98,11 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
 }
 
 module.exports.help = {
-    name: "arene",
+    name: "arène",
     aliases: ['arene'],
     category: "generalrpg",
     desription: "Entraînez-vous dans l'arène.",
-    usage: '<tomahawk/lance/masse/arme4/arme5>',
+    usage: '<dague/glaive/lance/arbalète/claymore>',
     cooldown: 3, 
     permissions: false,
     args: true
