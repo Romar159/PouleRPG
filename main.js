@@ -17,4 +17,10 @@ client.mongoose.init();
 //     await fetch('https://poulerpgfail.glitch.me').then(console.log("pinged"));
 //   }, 240000);
 
+setInterval(async () => {
+    // vérifie les points d'amitiés de chaque faction : Si au dessus de 0 enlever 10 points (à équilibrer) Si en dessous de 0 : Ajouter 10
+    // Si on est en dessous de 10pts mais au dessus de 0 il faudra pas enlever 10pts mais l'équivalent pour atteindre 0 et pareil dans l'autre sens quand on est en chiffre négatif.
+    
+  }, 240000); // toutes les 24h ! (ne fonctionne que si le bot est ON H24 :thinking:).
+
 client.login(TOKEN);

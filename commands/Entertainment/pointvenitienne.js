@@ -25,10 +25,10 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         }
         else {
             if(message.mentions.users.first().id == '421400262423347211') {
-                embed.setDescription(`:woman_red_haired: ${message.mentions.users.first()} à **∞** point(s) vénitienne.`);
+                embed.setDescription(`:woman_red_haired: ${message.mentions.users.first()} a **∞** point(s) vénitienne.`);
             } else {
                 const usr = await client.getUser(user);
-                embed.setDescription(`:woman_red_haired: ${user} à **${usr.pointsvenitienne}** point(s) vénitienne.`);
+                embed.setDescription(`:woman_red_haired: ${user} a **${usr.pointsvenitienne}** point(s) vénitienne.`);
             }
             return message.channel.send(embed);
         }
