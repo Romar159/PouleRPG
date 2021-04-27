@@ -52,7 +52,7 @@ module.exports.run = (client, message, args) => {
 
 module.exports.help = {
     name: "liste",
-    aliases: ['liste'],
+    aliases: [],
     category: "generalrpg",
     desription: "Renvoie la liste des membres d'une ou des factions.",
     usage: '[faction]',

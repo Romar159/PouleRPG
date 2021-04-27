@@ -8,6 +8,10 @@ const guildSchema = mongoose.Schema({
     prefix : {
         "type": String,
         "default": defaults.prefix
+    },
+    poulet : {
+        "type": Number,
+        "default": 0
     }
 });
 

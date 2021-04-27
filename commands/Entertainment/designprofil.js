@@ -16,14 +16,14 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 return message.reply(`vous devez renseigner un identifiant valide. \n**ICI :** p<designprofil ${args[0]} ->**${args[1]}**`);
 
             await client.updateUser(message.member, {profil_emote_faction: bdd_faction[id]});
-            message.channel.send(`Le nouvel emote de faction pour votre profile est désormais : ${bdd_faction[id]}`)
+            message.channel.send(`Le nouvel emote de faction pour votre profil est désormais : ${bdd_faction[id]}`)
         }
         else if(args[0] == 'position') {
             if(id < 0 || id > bdd_position.length - 1 || isNaN(args[1])) 
                 return message.reply(`vous devez renseigner un identifiant valide. \n**ICI :** p<designprofil ${args[0]} ->**${args[1]}**`);
             
             await client.updateUser(message.member, {profil_emote_position: bdd_position[id]});
-            message.channel.send(`Le nouvel emote de votre position favorite pour votre profile est désormais : ${bdd_position[id]}`)
+            message.channel.send(`Le nouvel emote de votre position favorite pour votre profil est désormais : ${bdd_position[id]}`)
         }
     }
 }

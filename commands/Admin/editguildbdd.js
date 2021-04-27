@@ -16,7 +16,7 @@ module.exports.run = async (client, message, args, settings) => {
   
 module.exports.help = {
     name: "editguildbdd",
-    aliases: ['editguildbdd'],
+    aliases: [],
     category: "admin",
     desription: "Modifie la base de données",
     usage: '<key> <value>',

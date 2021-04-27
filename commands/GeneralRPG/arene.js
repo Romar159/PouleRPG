@@ -16,12 +16,12 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
 
     const xp_defaite = 3;
     const xp_egalite = 3;
-    const xp_win = 7;
+    const xp_win = 8;
     const or_win = 1; 
 
 
     const embed = new MessageEmbed()
-    .setAuthor(`Un combat a lieu !`, client.user.displayAvatarURL());
+    .setAuthor(`Un combat a lieu !`, message.author.displayAvatarURL());
 
     let usr_c = args[0].toLowerCase();
 

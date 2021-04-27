@@ -77,8 +77,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 }
 
 module.exports.help = {
-    name: "infofaction",
-    aliases: ['infosfaction', 'infoFaction', 'infosfac', 'infofac'],
+    name: "infosfaction",
+    aliases: ['infofaction', 'infosfac', 'infofac'],
     category: "generalrpg",
     desription: "Donne toutes les infos sur une faction.",
     usage: '<faction>',

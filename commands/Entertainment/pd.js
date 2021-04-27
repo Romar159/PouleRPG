@@ -4,7 +4,7 @@ module.exports.run = (client, message, args) => {
 
 module.exports.help = {
     name: "pd",
-    aliases: ['pd'],
+    aliases: [],
     category: "",
     desription: "Easter Egg.",
     usage: "",

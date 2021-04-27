@@ -2,8 +2,7 @@ const {MessageEmbed} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
     const embed = new MessageEmbed()
-    .setColor('F2DB0C')
-    .setTitle(':bank: Banque personnelle');
+    .setColor('F2DB0C');
 
     if(message.mentions.users.first()) {
         const mention = message.mentions.members.first();
@@ -16,7 +15,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             else {
                 await client.updateMaxBank(client, usr_member);
                 const usr = await client.getUser(usr_member);
-                embed.setDescription(`${usr_member} à **${usr.or}/${usr.maxbank}** or dans sa banque.`);
+                embed.setAuthor(`Banque de ${client.users.cache.get(usr.userID).username}`, client.users.cache.get(usr.userID).displayAvatarURL())
+                .setDescription(`:coin: ${usr_member} à **${usr.or}/${usr.maxbank}** or.`);
                 return message.channel.send(embed);
             }
         } catch (e) {
@@ -31,14 +31,15 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         }
     } else {
         await client.updateMaxBank(client, message.member);
-        embed.setDescription(`Vous avez **${dbUser.or}/${dbUser.maxbank}** or dans votre banque.`);
+        embed.setAuthor(`Votre banque`, message.author.displayAvatarURL())
+        .setDescription(`:coin: Vous avez **${dbUser.or}/${dbUser.maxbank}** or.`);
         return message.channel.send(embed);
     }
 };
 
 module.exports.help = {
-    name: "bank",
-    aliases: ['or', 'banque'],
+    name: "banque",
+    aliases: ['or'],
     category: "economie",
     desription: "Affiche votre contenu de banque ou celle d'un utilisateur.",
     usage: "[@user]",

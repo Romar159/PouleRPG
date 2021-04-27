@@ -1,4 +1,4 @@
-const {guild, MessageEmbed} = require("discord.js");
+const {guild} = require("discord.js");
 const {db} = require("../../models/user");
 const {randomInt} = require('../../util/functions/randominteger');
 
@@ -12,7 +12,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     const m = message.channel.send("Calcul en cours...").then(async msg => {
         for(let i=0;i<points;i++) {
             //console.log("Tour de boucle : " + i + " " + points);
-            final_xp = final_xp + randomInt(25, 65);
+            final_xp = final_xp + randomInt(50, 75);
         }
         await client.setXp(client, message.member, final_xp);
         await client.updateUser(message.member, {"powerpoints": (dbUser.powerpoints - points)})
@@ -21,8 +21,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 }
 
 module.exports.help = {
-    name: "convertpoints",
-    aliases: ['convertpoints', 'cp', 'convertPoints'],
+    name: "convertirpoints",
+    aliases: ['cp', 'convertirpoint'],
     category: "experience",
     desription: "Convertissez vos points de puissance en xp.",
     usage: '<points>',

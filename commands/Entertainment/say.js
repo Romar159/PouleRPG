@@ -9,10 +9,10 @@ module.exports.run = (client, message, args) => {
 }
 
 module.exports.help = {
-    name: "say",
-    aliases: ['dit'],
+    name: "dire",
+    aliases: ['dis'],
     category: "entertainment",
-    desription: "renvoie le même message que l'utilisateur.",
+    desription: "Renvoie le même message que l'utilisateur.",
     usage: "<message>",
     cooldown: 1,
     permissions: false,

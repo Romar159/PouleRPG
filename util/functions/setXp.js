@@ -3,12 +3,12 @@ module.exports = (client, member, message) => {
         const userToUpdate = await client.getUser(member);
         let updatedXp = parseInt(userToUpdate.experience) + parseInt(xp);
         let updatedlvl = parseInt(userToUpdate.level);
-
-        while(updatedXp >= (((700 * parseInt(userToUpdate.level)) / Math.sqrt(parseInt(userToUpdate.level))) - 200)) {
+        
+        while(updatedXp >= ((700 * parseInt(userToUpdate.level)) / Math.sqrt(parseInt(userToUpdate.level)))) {
            updatedlvl++;
-           updatedXp -= Math.round((((700 * parseInt(userToUpdate.level)) / Math.sqrt(parseInt(userToUpdate.level))) - 200));
+           updatedXp -= Math.round((700 * parseInt(userToUpdate.level)) / Math.sqrt(parseInt(userToUpdate.level)));
         }
-        if (updatedXp < 0) updatedXp = 0;
-        await client.updateUser(member, { experience: updatedXp, level: updatedlvl});
+        if(updatedXp < 0) updatedXp = 0;
+        await client.updateUser(member, {experience: updatedXp, level: updatedlvl});
     }
 };

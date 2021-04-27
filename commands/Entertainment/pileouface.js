@@ -9,7 +9,7 @@ module.exports.run = (client, message) => {
 
 module.exports.help = {
     name: "pileouface",
-    aliases: ['pileouface', 'pof'],
+    aliases: ['pof'],
     category: "entertainment",
     desription: "Lance une pièce pour faire un pile ou face.",
     usage: "",

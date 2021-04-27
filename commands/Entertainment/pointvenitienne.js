@@ -2,7 +2,7 @@ const {MessageEmbed} = require('discord.js');
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
     
-    if(args[0] == 'view' || args[0] == 'leaderboard') {}
+    if(args[0] == 'voir' || args[0] == 'classement') {}
     else if(message.author.id != '421400262423347211')
         return message.channel.send("Vous n'êtes pas la vénitienne.\nVous ne pouvez donc pas modifier les points vénitienne.");
     
@@ -12,9 +12,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
        user = message.guild.member(message.mentions.users.first());
     
 
-    if(args[0].toLowerCase() == 'view') {
+    if(args[0].toLowerCase() == 'voir') {
         const embed = new MessageEmbed()
-        .setColor('#BF2F00');
+        .setColor('BF2F00');
         if(!args[1] || !message.mentions.users.first()) {
             if(message.author.id == '421400262423347211')
                 embed.setDescription(`:woman_red_haired: Oh, La vénitiene ! Tu as bien évidemment **∞** point(s) vénitienne.`);
@@ -58,13 +58,19 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         return message.channel.send(`Point vénitienne retiré à ${user.user.username}.`);
     }
 
-    if(args[0].toLowerCase() == 'leaderboard') {
+    if(args[0].toLowerCase() == 'classement') {
+        const leadEmbed = new MessageEmbed()
+        .setColor('BF2F00')
+        .setAuthor(`Classement des points vénitienne`, client.user.displayAvatarURL());
+
         await client.getUsers(message.guild).then(p => {
-                message.channel.send(`${message.guild.member('421400262423347211').user.username} - ∞ point(s) vénitienne.`); // ? DraxyNote: Est-ce qu'on ajoute vraiment cette ligne ? (ça rajoute juste la vénitienne en haut du classement avec l'infini de points x))
+                leadEmbed.addField(`** **`, `**${message.guild.member('421400262423347211').user.username}** - **∞** point(s) vénitienne.`);
             p.sort((a, b) => (a.pointsvenitienne < b.pointsvenitienne) ? 1 : -1).splice(0, 5).forEach(e => {
-                message.channel.send(`${e.username} - ${e.pointsvenitienne} point(s) vénitienne.`); // ? DraxyNote: Ici, je pense que tu foutras un embed, donc fait tout l'embed JUSTE en dessous du if, et ensuite tu ajouteras un embed.addField à la place de cette ligne ^^
+                leadEmbed.addField(`** **`, `**${client.users.cache.get(e.userID).username}** - **${e.pointsvenitienne}** point(s) vénitienne.`);
+                //message.channel.send(`${e.username} - ${e.pointsvenitienne} point(s) vénitienne.`); // ? DraxyNote: Ici, je pense que tu foutras un embed, donc fait tout l'embed JUSTE en dessous du if, et ensuite tu ajouteras un embed.addField à la place de cette ligne ^^
             });
         });
+        message.channel.send(leadEmbed);
     }
 };
 
@@ -72,8 +78,8 @@ module.exports.help = {
     name: "pointvenitienne",
     aliases: ['point venitienne', 'ptveni', 'ptsveni'],
     category: "entertainment",
-    desription: "Donne, retire ou regarde ses points venitienne",
-    usage: "<action:view/leaderboard/ajout/retrait> <@user>",
+    desription: "Permet de voir ses points venitienne.",
+    usage: "<action:voir/classement/ajout/retrait> <@user>",
     cooldown: 1,
     permissions: false,
     args: true

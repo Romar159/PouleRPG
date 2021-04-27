@@ -1,3 +1,4 @@
+const {MessageEmbed, Message} = require('discord.js')
 const {randomInt} = require('../../util/functions/randominteger');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
@@ -13,24 +14,36 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         if(or_apporter > dbUser.or) return message.reply("Vous n'avez pas assez d'argent.");
     
         await client.setOr(client, message.member, - or_apporter, message);
-        message.channel.send(`Expedition lancée pour ${Math.floor(expedition_duration / (1000*60*60) % 24)} heures. Avec ${or_apporter} or apportés.`); // ? DraxyNote: A stylisé aussi, c'est ce qui dit que tu as lancé l'expedition
+
+        const debutEmbed = new MessageEmbed()
+        .setColor('5E6366')
+        .setAuthor(`Expédition lancée !`, message.author.displayAvatarURL())
+        .setDescription(`L'expédition va durer **${expedition_duration / 3600000}h** avec **${or_apporter}** or !`);
+
+        message.channel.send(debutEmbed);
         await client.updateUser(message.member, {expedition_duration: expedition_duration, or_expedition: or_apporter, cooldown_expedition: Date.now()});
 
     } else { // Si la duration n'est pas égale à 0 c'est qu'il y a une éxpedition en cours OU terminée où on peut récup les loots.
 
         if(dbUser.expedition_duration - (Date.now() - dbUser.cooldown_expedition) < 0) {
-            if(dbUser.or_expedition < 10) or_apporter = 4; // Ici c'est défini à 4 car comme ça le calcul de bonus sera * 1 donc aucun bonus.
+            if(dbUser.or_expedition < 10) or_apporter = 0; // Ici c'est défini à 4 car comme ça le calcul de bonus sera * 1 donc aucun bonus.
             else or_apporter = dbUser.or_expedition;
 
-            const bonus_or = Math.round(0.25 * or_apporter);
+            const bonus_or = 0.125 * or_apporter;
             const level_user = dbUser.level;
             const time = Math.floor(dbUser.expedition_duration / (1000*60*60) % 24);
-
-            const final_xp = Math.round((level_user * time * 25 / Math.sqrt(level_user)) + level_user * bonus_or);
-            const final_or = Math.round(15 - dbUser.or_expedition * 0.15);
-
             
-            message.channel.send(`FIN EXPEDITION, vous gagnez ${final_or} or + ${final_xp} xp.`); // ? DraxyNote: Ici c'est l'affichage de fin d'éxpedition à rendre beau.
+            const final_xp = Math.round((15 * (time * level_user + (bonus_or * level_user / 3))/ Math.sqrt(level_user)));
+            const final_or = Math.round(15 - dbUser.or_expedition * 0.15);
+            
+            const finEmbed = new MessageEmbed()
+            .setColor('3F992D')
+            .setAuthor(`Expédition terminée !`, message.author.displayAvatarURL())
+            .addField(`** **`, `**:test_tube: +${final_xp} XP**`, true)
+            .addField(`** **`, `** **`, true)
+            .addField(`** **`, `:coin: **+${final_or} Or**`, true);
+
+            message.channel.send(finEmbed);
             await client.setOr(client, message.member, dbUser.or_expedition, message);
             await client.updateUser(message.member, {expedition_duration: 0, or_expedition: 0, cooldown_expedition: 0});
             await client.setXp(client, message.member, final_xp);
@@ -38,14 +51,14 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
         } else {
             const cdTime = dbUser.expedition_duration - (Date.now() - dbUser.cooldown_expedition);
-            message.reply(`il reste **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes avant de revenir d'expédition. :hourglass:`); // ? DraxyNote, ça tu peux voir mais logiquement j'ai juste copié collé le revenue, en changeant la phrase.
+            message.reply(`il reste **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes avant de revenir d'expédition. :hourglass:`);
         }   
     }
 };
 
 module.exports.help = {
-    name: "expedition",
-    aliases: ['expedition', 'e'],
+    name: "expédition",
+    aliases: ['e', 'expedition'],
     category: "generalrpg",
     desription: "Partez en éxpedition pour gagner richesses, experience et items.",
     usage: '<or>',
