@@ -15,7 +15,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         let member_ran;
         member_ran = message.guild.members.cache.random();
     
-        if (member_ran.user.bot) {
+        if(member_ran.user.bot) {
             while(member_ran.user.bot) {
                 member_ran = message.guild.member(message.guild.members.cache.random());
                 console.log("Retry -> BOT");
@@ -48,13 +48,11 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         message.channel.send(`:coin: Vous avez jeté un sous à ce SDF de **${member_ran.displayName}**`);
         client.updateUser(message.member, {cooldown_tacty: Date.now()});
     }
-
-
 }
 
 module.exports.help = {
     name: "tossacointoyoursdf",
-    aliases: ['tossacointoyoursdf', 'tossACoinToYourSDF', 'tactysdf'],
+    aliases: ['tactysdf'],
     category: "economie",
     desription: "Envoie une de vos pièce à un utilisateur aléatoire, vous permettant de gagner de l'XP, et avec de la chance un point d'amitié.",
     usage: "",

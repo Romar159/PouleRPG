@@ -30,7 +30,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         client.setOr(client, message.member, or, message);
         client.updateUser(message.member, {daily: Date.now()});
         const embed = new MessageEmbed()
-        .setColor('#F2DB0C')
+        .setColor('F2DB0C')
         .setAuthor('Revenue quotidien', message.author.displayAvatarURL())
         .setDescription(`**+${or}** :coin:\nVous avez actuellement **${dbUser.or + or}/${dbUser.maxbank}** :coin:`);
 
@@ -40,9 +40,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
 module.exports.help = {
     name: "revenue",
-    aliases: ['revenue', 'daily'],
+    aliases: ['thune'],
     category: "economie",
-    desription: "Récupère son revenue.",
+    desription: "Récupère son revenue du jour.",
     usage: '',
     cooldown: 4, 
     permissions: false,

@@ -2,7 +2,7 @@ const {MessageEmbed} = require("discord.js");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
     const embed = new MessageEmbed()
-    .setColor('#3F992D');
+    .setColor('3F992D');
 
     if(message.mentions.users.first()) {
         const mention = message.mentions.members.first();
@@ -39,7 +39,7 @@ module.exports.help = {
     name: "xp",
     aliases: ['niveau', 'expérience', 'experience'],
     category: "experience",
-    desription: "Affiche le niveau et l'expérience actuelle d'un utilisateur.",
+    desription: "Affiche votre niveau et votre expérience actuelle ou celle d'un utilisateur.",
     usage: "[@user]",
     cooldown: 1,
     permissions: false,

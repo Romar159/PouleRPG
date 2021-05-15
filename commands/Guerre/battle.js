@@ -13,12 +13,12 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             est_maitre = false;
         }
     }
-    if(!est_maitre) return message.reply("Commande utilisable que par les maîtres de faction.");
+    if(!est_maitre) return message.reply("commande utilisable que par les maîtres de faction.");
 
 
     const faction1db = await client.getFaction(dbUser.faction);
    // message.channel.send("DEBUG: faction: " + faction1db);
-    if(!faction1db.en_guerre) return message.reply("Vous n'êtes pas en guerre.");
+    if(!faction1db.en_guerre) return message.reply("vous n'êtes pas en guerre.");
     const faction2db = await client.getFaction(faction1db.ennemy);
 
 
@@ -604,8 +604,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 };
 
 module.exports.help = {
-    name: "battle",
-    aliases: ['battle'],
+    name: "bataille",
+    aliases: [],
     category: "guerre",
     desription: "Démarre une bataille.",
     usage: "",

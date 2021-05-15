@@ -16,11 +16,11 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             }
 
             const embed = new MessageEmbed()
-                .setAuthor(`Faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}`, ppmaitre.user.displayAvatarURL())
-                .addField(`:mortar_board: Maître`, maitre)
-                .addField(`:busts_in_silhouette: Nombre de membres`, `${members.size}`, true)
-                .addField(`:dart: Points de victoire`, `${faction.ptsvictoire}`, true)
-                .addField(`** **`, `** **`);
+            .setAuthor(`Faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}`, ppmaitre.user.displayAvatarURL())
+            .addField(`:mortar_board: Maître`, maitre)
+            .addField(`:busts_in_silhouette: Nombre de membres`, `${members.size}`, true)
+            .addField(`:dart: Points de victoire`, `${faction.ptsvictoire}`, true)
+            .addField(`** **`, `** **`);
 
                 //Couleurs
                 if(faction.factionid == 0)          //Epsilon
@@ -69,7 +69,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             }    
             message.channel.send(embed);
         }
-        catch(e) {
+        catch(e) { //Mettre le ICI! <-
             if(args.length)
                 message.reply("Faction Inexistante " + e);
         }

@@ -8,10 +8,10 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         const expedition_duration = randomInt(8, 10) * 3600000; // random entre 8 et 10 heures (en ms);
         let or_apporter = parseInt(args[0]);
 
-        if(!or_apporter && or_apporter != 0) return message.reply("Vous devez renseigner une valeur numérique.");
+        if(!or_apporter && or_apporter != 0) return message.reply("vous devez renseigner une valeur numérique.");
         if(or_apporter > 100) or_apporter = 100;
         if(or_apporter < 10) or_apporter = 0; // Ici c'est défini à 0 pour l'affichage.
-        if(or_apporter > dbUser.or) return message.reply("Vous n'avez pas assez d'argent.");
+        if(or_apporter > dbUser.or) return message.reply("vous n'avez pas assez d'argent.");
     
         await client.setOr(client, message.member, - or_apporter, message);
 
@@ -60,7 +60,7 @@ module.exports.help = {
     name: "expédition",
     aliases: ['e', 'expedition'],
     category: "generalrpg",
-    desription: "Partez en éxpedition pour gagner richesses, experience et items.",
+    desription: "Partez en éxpedition pour gagner richesses, expériences et items.",
     usage: '<or>',
     cooldown: 3, 
     permissions: false,

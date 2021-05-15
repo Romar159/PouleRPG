@@ -64,10 +64,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         .setAuthor(`Classement des points vénitienne`, client.user.displayAvatarURL());
 
         await client.getUsers(message.guild).then(p => {
-                leadEmbed.addField(`** **`, `**${message.guild.member('421400262423347211').user.username}** - **∞** point(s) vénitienne.`);
+                leadEmbed.addField(`** **`, `**:woman_red_haired: ${message.guild.member('421400262423347211').user.username}** - **∞** point(s) vénitienne.`);
             p.sort((a, b) => (a.pointsvenitienne < b.pointsvenitienne) ? 1 : -1).splice(0, 5).forEach(e => {
                 leadEmbed.addField(`** **`, `**${client.users.cache.get(e.userID).username}** - **${e.pointsvenitienne}** point(s) vénitienne.`);
-                //message.channel.send(`${e.username} - ${e.pointsvenitienne} point(s) vénitienne.`); // ? DraxyNote: Ici, je pense que tu foutras un embed, donc fait tout l'embed JUSTE en dessous du if, et ensuite tu ajouteras un embed.addField à la place de cette ligne ^^
             });
         });
         message.channel.send(leadEmbed);
