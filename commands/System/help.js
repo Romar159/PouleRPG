@@ -58,7 +58,7 @@ module.exports.run = (client, message, args) => {
         .addField("Description", `${command.help.desription}`)
         .addField("Utilisation", command.help.usage ? `${PREFIX}${command.help.name} ${command.help.usage}` : `${PREFIX}${command.help.name}`, true)
 
-        if(command.help.aliases.length > 1) embed.addField("Alias", `${command.help.aliases.join(", ")}`, true);
+        if(command.help.aliases.length >= 1) embed.addField("Alias", `${command.help.aliases.join(", ")}`, true);
 
         return message.channel.send(embed);
     }
