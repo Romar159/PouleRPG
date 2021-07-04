@@ -1,9 +1,6 @@
 const {MessageEmbed} = require('discord.js');
 
-var total_taxe = 0;
-
 module.exports.run = async (client, message, args, settings, dbUser) => {
-
     var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
     var est_maitre = false;
 
@@ -20,73 +17,100 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     }
     if(!est_maitre) return message.reply("commande utilisable que par les maîtres de faction.");
 
+
+    
+
     if(args[0] == "prélever" || args[0] == "prelever") {
 
         let faction = await client.getFaction(dbUser.faction);
-        let or_avant = faction.bank;
-        const taxe_value = parseInt(faction.taxe);
+
+        let or_avant = faction.bank; // contient l'or d'origine de la faction
+        const taxe_value = parseInt(faction.taxe); // Contient la valeur de la taxe définit par le maître de faction.
 
         const dailyCD = 8.64e+7 * 7; // Une semaine.
-        const lastDaily = faction.cooldown_taxe;
-        var weeks = Math.round((Date.now()-lastDaily)/ 604800000) - 1; // - 1 car sinon ça compte la semaine en cour.
+        const lastDaily = faction.cooldown_taxe; // Dernière fois qu'on a récup la taxe
+        var weeks = Math.round((Date.now()-lastDaily)/ 604800000) - 1; // - 1 car sinon ça compte la semaine en cours.
 
         if(weeks < 0) weeks = 1; // Pour éviter un chiffre négatif et que la multiplication retourne 0.
 
-        //message.channel.send(`Multiplicateur (nombre de semaines): ${weeks}`);
+        var final_quantity = taxe_value * weeks; //Calcul la quantité final à taxer pour chaque utilisateur.
         
+            
         if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
             const cdTime = dailyCD - (Date.now() - lastDaily);
-           
-            message.reply(`il reste **${Math.floor(cdTime / (1000*60*60) % 7)}** jours, **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes avant de pouvoir de nouveau récupérer les taxes. :hourglass:`);
-        } else { // Si le cooldown est passé.
-
-            await client.getUsers(message.guild).then(p => {
             
-                // const em = new MessageEmbed()
-                // .setColor("FFFFFF")
-                // .setTitle("Liste des cons sans fric");
-
-                p.forEach(async e => {
-                    var a = message.guild.members.cache.get(e.userID);
-                    if(a.roles.cache.get(faction.roleid)) {
-                        var mbm = await client.getUser(a);
-                        //message.channel.send("DEBUG: or: " + mbm.or + " taxe: " + (taxe_value * weeks));
-                        if(mbm.or > (taxe_value * weeks)) { // si il a assez d'argent.
-                            if(mbm.userID == faction.idmaitre) {
-
-                            } else {
-                                await client.setOr(client, a, - (taxe_value * weeks), message);
-                                total_taxe = total_taxe + (taxe_value * weeks);
-    
-                                faction = await client.getFaction(faction.name);
-                                //message.channel.send(`UPDATE: ${faction.bank + (taxe_value * weeks)}`);
-                                await client.updateFaction(faction.name, {bank: parseInt(faction.bank + (taxe_value * weeks))});
-                            }
-
-                        } else {
-                            //em.addField(`${a.user.username}`, "n'as pas assez d'argent pour payer la taxe.");
-                            message.channel.send(`**${a} n'as pas assez d'argent pour payer la taxe.**`);
-                        }
-                    }
-                });
-                //message.channel.send(em);
-
-            });
-
+            message.reply(`il reste **${Math.floor(cdTime / (1000*60*60) % 7)}** jours, **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes avant de pouvoir de nouveau récupérer les taxes. :hourglass:`);
+        
+        } else { // Si le cooldown est passé.
             message.guild.members.fetch().then(async fetchAll => {
-                const members = fetchAll.filter(m => m.roles.cache.get(faction.roleid));
-                faction = await client.getFaction(faction.name);
-               // message.channel.send("Or avant: " + or_avant + " FACTION BANK: " + faction.bank);
-               // message.channel.send(`Or total taxé à <@&${faction.roleid}> : ${faction.bank - or_avant }`); 
+            
+                const epsilon = fetchAll.filter(m => m.roles.cache.get('415947454626660366'));
+                const dairos = fetchAll.filter(m => m.roles.cache.get('415947455582961686'));
+                const lyomah = fetchAll.filter(m => m.roles.cache.get('415947456342130699'));
+                const alpha = fetchAll.filter(m => m.roles.cache.get('665340021640921099'));
+
+                var array;
+                if(faction.factionid == 0) {
+                    array = Array.from(epsilon, ([name, value]) => ({ name, value }));
+                }
+                if(faction.factionid == 1) {
+                    array = Array.from(dairos, ([name, value]) => ({ name, value }));
+                }
+                if(faction.factionid == 2) {
+                    array = Array.from(lyomah, ([name, value]) => ({ name, value }));
+                }
+                if(faction.factionid == 3) {
+                    array = Array.from(alpha, ([name, value]) => ({ name, value }));
+                } else {
+                    return message.channel.send("FATAL ERROR");
+                }
+
+                var cantpaid = [];
+                var canpaid = [];
+                var total = 0;
+                var pos = 0;
+                var taille_array = array.length;
+                
+                array.forEach(async function(item, index, array) {
+                    let usr = await client.getUser(item.value);
+
+                    if(usr.or < final_quantity) {
+                        cantpaid.push(item.value.user.username);
+
+                    } else {
+                        canpaid.push(item.value.user.username);
+
+                        await client.updateUser(item.value, {or: usr.or - final_quantity});
+                        total = total + final_quantity;
+                        console.log(total);
+                    }
+
+                    pos = pos + 1;
+                    if(taille_array == pos) {
+                        try {
+                            message.channel.send(cantpaid + ". Ne peuvent pas payer la taxe.");
+                        } catch (error) {
+                            console.log(error);
+                        }
+                
+                        if(canpaid.length == 1) {
+                            message.channel.send(`${canpaid} a payé ${final_quantity} or pour un total de ${total} or taxé.`); 
+
+                        } else if (canpaid.length > 1) {
+                            message.channel.send(`${canpaid} ont payé ${final_quantity} or pour un total de ${total} or taxé.`); 
+                        }
+                        await client.updateFaction(faction.name, {bank: faction.bank + total});
+
+                    }
+                }); 
             });
 
-            taxeEmbed.setAuthor(`Taxes prélevées !`, message.author.displayAvatarURL());
-
-            message.channel.send(taxeEmbed); // ? DraxyNote:  ICI (non on ne peut pas récupérer le total parce que j'ai galéré 3 jours sur cette commande de mes couilles donc bordel elle sera peut être update en final xD).
             await client.updateFaction(faction.name, {cooldown_taxe: Date.now()});
         }
-    }
-    else if(args[0] == "établir" || args[0] == "etablir") {
+
+
+    } else if (args[0] == "établir" || args[0] == "etablir") {
+
         if(isNaN(args[1])) return message.reply("vous devez renseigner une valeur numérique.");
         if(args[1] < 0) return message.reply("le montant des taxes ne peut être négatif.");
 
@@ -97,8 +121,11 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
         message.channel.send(taxeEmbed);
         await client.updateFaction(faction.name, {taxe: parseInt(args[1])});
+        
     }
+
 };
+
 
 module.exports.help = {
     name: "taxe",
