@@ -4,6 +4,7 @@ const {PREFIX} = require('../../config');
 
 
 module.exports.run = async (client, message, args, settings, dbUser, command) => {
+    const list_badges = require('../../assets/rpg/badges.json');
     const dailyCD = 60000;
     let user_weapon;
     let bot_weapon = randomInt(1, 5);
@@ -78,18 +79,28 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
             embed.setColor('3F992D');
 			message.channel.send(embed);
 			await client.setXp(client, message.member, xp_win);
+            
+            await client.updateUser(message.member, {arene_streak: dbUser.arene_streak + 1});
+
+            if((dbUser.arene_streak + 1) == 5) {
+                if(await client.addBadge(client, message.member, dbUser, "0")) {
+                    message.channel.send(`WOW !! ${message.member} vient de gagner le badge **${client.filterById(list_badges, 0).name}** !`);
+                }
+            }
         }
         else if(user_weapon == bot_weapon) { // égalité
             embed.setDescription(`Vous utilisez **${user_weapon_name}**, l'adversaire aussi !\nC'est une **égalité**, **+${xp_egalite}xp**.`)
             .setColor('5E6366');
             message.channel.send(embed);
             await client.setXp(client, message.member, xp_egalite);
+            await client.updateUser(message.member, {arene_streak: 0});
         }
         else { // defaite
             embed.setDescription(`Vous êtes en désavantage en utilisant **${user_weapon_name}** tandis que votre adversaire utilise **${bot_weapon_name}** !\nVous **perdez**... **-${xp_defaite}xp**.`)
             .setColor('BF2F00');
             message.channel.send(embed);
             await client.setXp(client, message.member, -xp_defaite);
+            await client.updateUser(message.member, {arene_streak: 0});
         }
 
         client.updateUser(message.member, {cooldown_arene: Date.now()});

@@ -43,8 +43,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 };
 
 module.exports.help = {
-    name: "shop",
-    aliases: ['shop', 'magasin'],
+    name: "magasin",
+    aliases: ['shop'],
     category: "economie",
     desription: "Ouvre le magasin.",
     usage: "[item_to_buy]",

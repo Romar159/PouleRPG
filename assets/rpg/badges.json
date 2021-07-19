@@ -1,0 +1,32 @@
+[
+    {
+        "badgeid" : 0,
+        "name" : "Imbattable",
+        "description" : "Gagner 5x l'arène d'affilée"
+    },
+    {
+        "badgeid" : 1,
+        "name" : "Parmi les plus forts",
+        "description" : "Atteindre le niveau 50"
+    },
+    {
+        "badgeid" : 2,
+        "name" : "Trop s'aimer pour se donner",
+        "description" : "Se donner une pièce de SDF"
+    },
+    {
+        "badgeid" : 3,
+        "name" : "Le chouchou de la vénitienne",
+        "description" : "Avoir 10 points vénitienne"
+    },
+    {
+        "badgeid" : 4,
+        "name" : "Gloire aux Poulets !",
+        "description" : "Ajouter 500 poulets à la collection de poulets"
+    },
+    {
+        "badgeid" : 5,
+        "name" : "Meilleur donateur",
+        "description" : "Donner 150 or au coffre de faction"
+    }
+]

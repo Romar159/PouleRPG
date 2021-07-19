@@ -2,6 +2,8 @@ const {randomInt} = require('../../util/functions/randominteger');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
+    const list_badges = require('../../assets/rpg/badges.json');
+
     const dailyCD = 8.64e+7;
     
     const lastDaily = await dbUser.cooldown_tacty;
@@ -20,7 +22,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 member_ran = message.guild.member(message.guild.members.cache.random());
                 console.log("Retry -> BOT");
             }
-        }	
+        }
     
         let mbm = message.guild.member(message.author);
         member_ran = message.guild.member(member_ran);
@@ -47,6 +49,12 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     
         message.channel.send(`:coin: Vous avez jeté un sous à ce SDF de **${member_ran.displayName}**`);
         client.updateUser(message.member, {cooldown_tacty: Date.now()});
+
+        if(member_ran == message.member) {
+            if(await client.addBadge(client, message.member, dbUser, "2")) {
+                message.channel.send(`WOW !! ${message.member} vient de gagner le badge **${client.filterById(list_badges, 2).name}** !`);
+            }
+        }
     }
 }
 

@@ -104,4 +104,17 @@ module.exports = client => {
         require("./updateMaxBank")(client);
         
     }
+
+    client.addBadge = async (client, member, dbUser, badgeid) => {
+        if(dbUser.badges_possedes.includes(badgeid)) return false;
+        var new_string = dbUser.badges_possedes + badgeid;
+        await client.updateUser(member, {badges_possedes: new_string});
+        return true;
+    }
+
+    // Récupérer un badge par ID
+    //EXEMPLE:  filterById(list_badges, 0).name;
+    client.filterById = (jsonObject, id) => {
+        return jsonObject.filter(function(jsonObject) {return (jsonObject['badgeid'] == id);})[0];
+    }
 };

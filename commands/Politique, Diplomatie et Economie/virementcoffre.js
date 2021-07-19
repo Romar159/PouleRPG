@@ -16,6 +16,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     if(!message.mentions.users.first()) return message.reply(`vous devez renseigner un utilisateur valide.\n**ICI -> ${args[0]}**`);
     if(isNaN(args[1])) return message.reply(`vous devez renseigner une valeur numérique.\n**ICI -> ${args[1]}**`);
+    if(args[1] < 1) return message.channel.send(`Valeur trop faible.`);
 
     const member_ran = message.mentions.members.first();
     const faction = await client.getFaction(dbUser.faction);
@@ -35,9 +36,14 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         if(member_ran.roles.cache.has('665340021640921099')) await client.updateUser(member_ran, {faction: "alpha"});
     }
     dataUser = await client.getUser(member_ran); //update
+    
 
     if(dataUser.faction != dbUser.faction) return message.reply("cet utilisateur ne fait pas partie de votre faction.");
+    
     const or = parseInt(args[1]);
+
+    if(faction.bank < or) return message.reply("il n'y a pas assez d'argent dans le coffre de faction.");
+
     await client.updateFaction(dbUser.faction, {bank: faction.bank - or});
     await client.setOr(client, member_ran, args[1], message);
 

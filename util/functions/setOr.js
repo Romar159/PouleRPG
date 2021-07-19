@@ -19,7 +19,7 @@ module.exports = (client, member, message) => {
             updatedOr = parseInt(userToUpdate.maxbank);
         }
 
-        if (updatedOr < 0) updatedOr = 0;
+        //if (updatedOr < 0) updatedOr = 0; // ! Avoir de l'argent en négatif.
         await client.updateUser(member, { or: updatedOr});
     }
 };

@@ -1,7 +1,7 @@
 const {MessageEmbed} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
-    if(isNaN(args[1]) || args[1] == 0) return message.reply("vous devez définir un nombre valide.");
+    if(isNaN(args[1]) || args[1] < 1) return message.reply("vous devez définir un nombre valide.");
     if(!message.mentions.users.first()) return message.reply("vous devez spécifier un utilisateur.");
     if(dbUser.or < parseInt(args[1])) return message.reply("vous n'avez pas assez d'argent dans votre banque pour en donner autant.");
 

@@ -1,6 +1,8 @@
 const {MessageEmbed} = require('discord.js');
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
+    const list_badges = require('../../assets/rpg/badges.json');
+
     
     if(args[0] == 'voir' || args[0] == 'classement') {}
     else if(message.author.id != '421400262423347211')
@@ -42,6 +44,11 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         await client.updateUser(user, { pointsvenitienne: updatedPts});
         if(updatedPts >= 100) {
             user.roles.add('732964881028087920');
+        }
+        if(updatedPts == 10) {
+            if(await client.addBadge(client, message.guild.member(user), userToUpdate, "3")) {
+                message.channel.send(`WOW !! ${message.guild.member(user)} vient de gagner le badge **${client.filterById(list_badges, 3).name}** !`);
+            }
         }
         return message.channel.send(`Point vénitienne accordé à ${user.user.username}.`);
     }

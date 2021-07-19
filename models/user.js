@@ -97,7 +97,25 @@ const userSchema = mongoose.Schema({
     profil_emote_position : {
         "type": String,
         "default": ":heart:"
+    },
+
+    fois_dans_le_rouge : {
+        "type": Number,
+        "default": 0
+    },
+
+    badges_possedes : {
+        "type": String,
+        "default": ""
+    },
+
+    arene_streak : {
+        "type": Number,
+        "default": 0
     }
+
+
+
 
   
 

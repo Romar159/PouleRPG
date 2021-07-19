@@ -36,7 +36,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         var final_quantity = taxe_value * weeks; //Calcul la quantité final à taxer pour chaque utilisateur.
         
             
-        if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
+        if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) < 0) { //cooldown pas encore passé.
             const cdTime = dailyCD - (Date.now() - lastDaily);
             
             message.reply(`il reste **${Math.floor(cdTime / (1000*60*60) % 7)}** jours, **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes avant de pouvoir de nouveau récupérer les taxes. :hourglass:`);
@@ -53,19 +53,20 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 if(faction.factionid == 0) {
                     array = Array.from(epsilon, ([name, value]) => ({ name, value }));
                 }
-                if(faction.factionid == 1) {
+                else if(faction.factionid == 1) {
                     array = Array.from(dairos, ([name, value]) => ({ name, value }));
                 }
-                if(faction.factionid == 2) {
+                else if(faction.factionid == 2) {
                     array = Array.from(lyomah, ([name, value]) => ({ name, value }));
                 }
-                if(faction.factionid == 3) {
+                else if(faction.factionid == 3) {
                     array = Array.from(alpha, ([name, value]) => ({ name, value }));
                 } else {
-                    return message.channel.send("FATAL ERROR");
+                    return message.channel.send("FATAL ERROR | **0x000001**");
                 }
 
-                var cantpaid = [];
+                var ceux_dans_le_rouge = [];
+                var ceux_dans_le_vert = [];
                 var canpaid = [];
                 var total = 0;
                 var pos = 0;
@@ -74,30 +75,52 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 array.forEach(async function(item, index, array) {
                     let usr = await client.getUser(item.value);
 
-                    if(usr.or < final_quantity) {
-                        cantpaid.push(item.value.user.username);
+                    if(usr.or < final_quantity) { // Si l'utilisateur va arriver dans le rouge
+                        ceux_dans_le_rouge.push(usr);
+                        var fdlr;
 
-                    } else {
+                        if(!usr.fois_dans_le_rouge) {
+                            fdlr = 0;
+                        } else {
+                            fdlr = usr.fois_dans_le_rouge;
+                        }
+                        await client.updateUser(item.value, {fois_dans_le_rouge: fdlr + 1});
+
+
                         canpaid.push(item.value.user.username);
 
                         await client.updateUser(item.value, {or: usr.or - final_quantity});
                         total = total + final_quantity;
-                        console.log(total);
+
+                    } else {
+                        canpaid.push(item.value.user.username);
+                        ceux_dans_le_vert.push(usr);
+
+                        await client.updateUser(item.value, {or: usr.or - final_quantity});
+                        await client.updateUser(item.value, {fois_dans_le_rouge: 0});
+                        total = total + final_quantity;
+                        //console.log(total);
                     }
 
                     pos = pos + 1;
                     if(taille_array == pos) {
-                        try {
-                            message.channel.send(cantpaid + ". Ne peuvent pas payer la taxe.");
-                        } catch (error) {
-                            console.log(error);
+                        
+                        if(ceux_dans_le_rouge.length >= 1) {
+                            
+                            message.channel.send(`${ceux_dans_le_rouge.map(m => `• :red_square: ${final_quantity} or :coin: taxé à \`` + m.username + `\` ${m.fois_dans_le_rouge} fois dans le rouge.`).join('\n')}`);
+
+                            /*for(let id = 0; id < ceux_dans_le_rouge.length; id++) {
+                                message.channel.send(`Ceux là sont dans le rouge : ${ceux_dans_le_rouge[id].username} et ça fait ${ceux_dans_le_rouge[id].fois_dans_le_rouge} fois.`);
+                            }*/
                         }
                 
                         if(canpaid.length == 1) {
                             message.channel.send(`${canpaid} a payé ${final_quantity} or pour un total de ${total} or taxé.`); 
 
                         } else if (canpaid.length > 1) {
-                            message.channel.send(`${canpaid} ont payé ${final_quantity} or pour un total de ${total} or taxé.`); 
+                            //message.channel.send(`${canpaid} ont payé ${final_quantity} or pour un total de ${total} or taxé.`);
+                            message.channel.send(`\n${ceux_dans_le_vert.map(m => `• :green_square: ${final_quantity} or :coin: taxé à \`` + m.username + `\``).join('\n')} \n\n**Total** : ${total} or taxé.`);
+                            
                         }
                         await client.updateFaction(faction.name, {bank: faction.bank + total});
 

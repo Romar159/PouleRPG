@@ -5,6 +5,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     else if(message.member.roles.cache.has('415947456342130699')) await client.updateUser(message.member, {faction: "lyomah"});
     else if(message.member.roles.cache.has('665340021640921099')) await client.updateUser(message.member, {faction: "alpha"});
     else await client.updateUser(message.member, {faction: "NULL"});
+
     
     message.channel.send("Possible mise à jour effectuée avec succès.");
 }

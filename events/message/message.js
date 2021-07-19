@@ -2,12 +2,14 @@ const {Collection} = require('discord.js');
 const {PREFIX} = require('../../config');
 
 module.exports = async (client, message) => {
-    /*if(!message.author.bot && message.content.startsWith(PREFIX)) {
+    if(!message.author.bot && message.content.startsWith(PREFIX)) {
         if(message.author.id !== "421400262423347211") {
-            if(message.author.id !== "211911771433205760")
-                return message.reply(`vous n'avez pas la permission requise pour utiliser le bot. DEBUG: MESSAGE AUTHOR ID: ${message.author.id}`);
+            if(message.author.id !== "211911771433205760") {
+                if(message.author.id !== "405420810933895168")
+                    return message.reply(`vous n'avez pas la permission requise pour utiliser le bot. DEBUG: MESSAGE AUTHOR ID: ${message.author.id}`);
+            }
         }
-    } */
+    }
     
     const dbUser = await client.getUser(message.member);
     const settings = await client.getGuild(message.guild);
