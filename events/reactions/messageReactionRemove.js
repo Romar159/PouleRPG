@@ -1,12 +1,12 @@
 const { MessageReaction } = require("discord.js");
 
-module.exports = (client, MessageReaction, user) => {
+module.exports = async (client, MessageReaction, user) => {
     const message = MessageReaction.message;
     const member = message.guild.members.cache.get(user.id);
     const emoji = MessageReaction.emoji.name;
     const channel = message.guild.channels.cache.find(c => c.id === "415945814045884427");
 
-    const guerreRole = message.guild.roles.cache.get("750336000193986652");
+    const guerreRole = message.guild.roles.cache.get("867514642360041502");
 
     if(member.user.bot) return;
 

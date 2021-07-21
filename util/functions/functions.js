@@ -112,9 +112,59 @@ module.exports = client => {
         return true;
     }
 
-    // Récupérer un badge par ID
+    client.addFoundedEasterEgg = async (client, member, dbUser, eeID) => {
+        if(dbUser.foundedeastereggs.includes(eeID)) return false;
+        const list_badges = require('../../assets/rpg/badges.json');
+        var new_string = dbUser.foundedeastereggs + eeID;
+        await client.updateUser(member, {foundedeastereggs: new_string});
+        if((dbUser.foundedeastereggs.length + 1) == 3) {
+            if(await client.addBadge(client, member, dbUser, "6")) {
+                client.channels.cache.get('415945814045884427').send(`WOW !! ${member} vient de gagner le badge **${client.filterById(list_badges, 6).name}** !`);
+            }
+        }
+        return true;
+    }
+
+    client.addItemById = async(client, message, member, dbUser, itemid, quantity) => {
+        const shop = require('../../assets/shop/shop.json');
+        let item = await client.filterById(shop, itemid);
+        let price = item.price * quantity;
+
+        // ---
+        // item spéciaux -> On fait une action spécifique. :
+        if(itemid == 1) { // * Point de puissance.
+            await client.setOr(client, member, -price, message);
+            let items = parseInt(dbUser.powerpoints) + parseInt(quantity);
+            await client.updateUser(member, {"powerpoints": items});
+        }
+
+        // ---
+        // items classique -> On les mets dans un string par ID tout comme les badges.
+    }
+
+    client.removeItemById = async(client, member, dbUser, itemid, quantity) => {
+        let item = await client.filterById(shop, itemid);
+        
+        // ---
+        // item spéciaux -> On fait une action spécifique. :
+        if(itemid == 1) { // * Point de puissance.
+            let items = parseInt(dbUser.powerpoints) - parseInt(quantity);
+            await client.updateUser(member, {"powerpoints": items});
+        }
+
+        // ---
+        // items classique -> On les mets dans un string par ID tout comme les badges.
+    }
+
+    // Récupérer un élément par ID
     //EXEMPLE:  filterById(list_badges, 0).name;
     client.filterById = (jsonObject, id) => {
-        return jsonObject.filter(function(jsonObject) {return (jsonObject['badgeid'] == id);})[0];
+        return jsonObject.filter(function(jsonObject) {return (jsonObject['id'] == id);})[0];
     }
+
+    client.filterByName = (jsonObject, name) => {
+        return jsonObject.filter(function(jsonObject) { return (jsonObject['name'].toLowerCase() == name.toLowerCase());})[0];
+    }
+
+
 };

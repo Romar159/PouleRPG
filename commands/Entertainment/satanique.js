@@ -2,6 +2,7 @@ module.exports.run = (client, message, args) => {
     for(let i=0;i<5;i++) {
         message.channel.send("<@297414955618140162> Mon préfix est bien fils de con !");
     }
+    client.addFoundedEasterEgg(client, message.member, dbUser, 2);
 }
 
 module.exports.help = {

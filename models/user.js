@@ -109,6 +109,11 @@ const userSchema = mongoose.Schema({
         "default": ""
     },
 
+    foundedeastereggs : {
+        "type": String,
+        "default": ""
+    },
+
     arene_streak : {
         "type": Number,
         "default": 0

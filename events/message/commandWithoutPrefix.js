@@ -32,8 +32,10 @@ module.exports = async (client, message) => {
         }
     }
       
-    if(msg.indexOf('hitler') >= 0)
+    if(msg.indexOf('hitler') >= 0) {
+        client.addFoundedEasterEgg(client, message.member, dbUser, 3);
         return message.channel.send("Arrêtez tout !! Le point Godwin est atteint !");
+    }
     
     if(msg.indexOf('🙏') >= 0 && message.channel.id == '445370665395159060') {
             
@@ -54,11 +56,15 @@ module.exports = async (client, message) => {
         }
     }
 
-    if(msg.indexOf('je peux faire ce que je veux') >= 0)
+    if(msg.indexOf('je peux faire ce que je veux') >= 0) {
+        client.addFoundedEasterEgg(client, message.member, dbUser, 4);
         return message.channel.send(`Eouez meczz, t'as vu ça? <:EP_poulet_trop_classe:803391420580233226>`);
+    }
 
-    if(msg.indexOf('fuck les majuscules') >= 0)
+    if(msg.indexOf('fuck les majuscules') >= 0) {
+        client.addFoundedEasterEgg(client, message.member, dbUser, 5);
         return message.channel.send(`C'est pas de ma faute si t'es pété. :person_shrugging:`);
+    }
 
     if(msg.indexOf('cul') >= 0) {
         if(msg.indexOf('culm') >= 0) {
@@ -67,9 +73,14 @@ module.exports = async (client, message) => {
         return message.channel.send(`OH UN CUL ! <:EP_GIGA_SATANAS:670675422756732932>`)
     }
 
-    if(msg.indexOf('maintenante') >= 0)
-        return message.channel.send(`Ah oui alors là, l'ancien WapPreferences de mon cul oui ! **:)**`);
+    if(msg.indexOf('maintenante') >= 0) {
+        client.addFoundedEasterEgg(client, message.member, dbUser, 6);
 
-    if(msg.indexOf('grcher') >= 0 || msg.indexOf('drcher') >= 0)
+        return message.channel.send(`Ah oui alors là, l'ancien WapPreferences de mon cul oui ! **:)**`);
+    }
+
+    if(msg.indexOf('grcher') >= 0 || msg.indexOf('drcher') >= 0) {
+        client.addFoundedEasterEgg(client, message.member, dbUser, 7);
         return message.channel.send(`Le beau profil de cul là avec la classe de merde !`);
+    }
 }

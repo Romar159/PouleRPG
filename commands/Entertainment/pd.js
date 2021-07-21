@@ -1,5 +1,6 @@
-module.exports.run = (client, message, args) => {
+module.exports.run = (client, message, args, settings, dbUser) => {
         message.channel.send("C'est toi le pd !");
+        client.addFoundedEasterEgg(client, message.member, dbUser, 0);
 }
 
 module.exports.help = {
