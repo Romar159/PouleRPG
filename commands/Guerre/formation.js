@@ -4,14 +4,14 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     let faction1db = await client.getFaction(dbUser.faction);
     
    
-    if(args[0].toLowerCase() == "view") {
+    if(args[0].toLowerCase() == "voir") {
         const embedView = new MessageEmbed()
             .setColor('8C4638')
             .setAuthor(`Visualisation de la formation`, client.user.displayAvatarURL())
             .addField(`A1`, `<@${faction1db.a1}>`, true) .addField(`A2`, `<@${faction1db.a2}>`, true) .addField(`A3`, `<@${faction1db.a3}>`, true)
             .addField(`B1`, `<@${faction1db.b1}>`, true) .addField(`B2`, `<@${faction1db.b2}>`, true) .addField(`B3`, `<@${faction1db.b3}>`, true)
             .addField(`C1`, `<@${faction1db.c1}>`, true) .addField(`C2`, `<@${faction1db.c2}>`, true) .addField(`C3`, `<@${faction1db.c3}>`, true);
-        return message.channel.send(embedView);
+        return message.channel.send({embeds:[embedView]});
     }
 
     if(!message.mentions.members.first() && args[1] != "retirer") return message.reply("vous devez mentionner un utilisateur valide.");
@@ -25,7 +25,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         mention = message.mentions.members.first();
 
     if(mention != "NULL") {
-        const dbmention = client.getUser(message.mentions.members.first()); // Peut être utile (pour Draxy ?).
+        const dbmention = client.getUser(message.mentions.members.first()); // ? Peut être utile (pour Draxy ?).
     }
     
     for(let y=0; y<roles_maitre.length; y++) {
@@ -102,7 +102,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         .addField(`B1`, `<@${faction1db.b1}>`, true) .addField(`B2`, `<@${faction1db.b2}>`, true) .addField(`B3`, `<@${faction1db.b3}>`, true)
         .addField(`C1`, `<@${faction1db.c1}>`, true) .addField(`C2`, `<@${faction1db.c2}>`, true) .addField(`C3`, `<@${faction1db.c3}>`, true);
 
-    message.channel.send(embedFormation);
+    message.channel.send({embeds:[embedFormation]});
     };
 
 module.exports.help = {
@@ -110,7 +110,7 @@ module.exports.help = {
     aliases: ['formation', 'former'],
     category: "guerre",
     desription: "Forme votre armée.",
-    usage: "<position> <@USER/retirer>",
+    usage: "[<voir>] [<position> <@USER/retirer>]",
     cooldown: 3,
     permissions: false,
     args: true

@@ -36,7 +36,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         var final_quantity = taxe_value * weeks; //Calcul la quantité final à taxer pour chaque utilisateur.
         
             
-        if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) < 0) { //cooldown pas encore passé.
+        if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
             const cdTime = dailyCD - (Date.now() - lastDaily);
             
             message.reply(`il reste **${Math.floor(cdTime / (1000*60*60) % 7)}** jours, **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes avant de pouvoir de nouveau récupérer les taxes. :hourglass:`);

@@ -1,6 +1,7 @@
 const {MessageEmbed} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
+    return;
     let or = 0;
     const dailyCD = 8.64e+7;
     if(!dbUser.or) await client.updateUser(message.member, {or: 0});
@@ -34,14 +35,14 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         .setAuthor('Revenue quotidien', message.author.displayAvatarURL())
         .setDescription(`**+${or}** :coin:\nVous avez actuellement **${dbUser.or + or}/${dbUser.maxbank}** :coin:`);
 
-        message.channel.send(embed);
+        message.channel.send({embeds:[embed]});
     }
 }
 
 module.exports.help = {
     name: "revenue",
     aliases: ['thune'],
-    category: "economie",
+    category: "",
     desription: "Récupère son revenue du jour.",
     usage: '',
     cooldown: 4, 

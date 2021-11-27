@@ -1,19 +1,17 @@
-const {randomInt} = require('../../util/functions/randominteger');
-
 module.exports.run = (client, message, args) => {
    
     const tonnalités = ["do", "do#", "ré", "ré#", "mi", "fa", "fa#", "sol", "sol#", "la", "la#", "si", "do", "do#", "ré", "ré#", "mi", "fa", "fa#", "sol", "sol#", "la", "la#", "si"];
     const mode = ["majeur", "mineur"];
 
-    const random_tonnalité = randomInt(0, 11);
-    const random_mode = randomInt(0, 1);
+    const random_tonnalité = client.randomInt(0, 11);
+    const random_mode = client.randomInt(0, 1);
 
     const gamme = `${tonnalités[random_tonnalité]} ${mode[random_mode]}`;
 
-    const random_accord1 = randomInt(0, 6);
-    const random_accord2 = randomInt(0, 6);
-    const random_accord3 = randomInt(0, 6);
-    const random_accord4 = randomInt(0, 6);
+    const random_accord1 = client.randomInt(0, 6);
+    const random_accord2 = client.randomInt(0, 6);
+    const random_accord3 = client.randomInt(0, 6);
+    const random_accord4 = client.randomInt(0, 6);
 
     
    
@@ -46,7 +44,7 @@ module.exports.run = (client, message, args) => {
         let rythm;
         let rythm_avant = 500;
 
-        let random_mesure = randomInt(1, 4);
+        let random_mesure = client.randomInt(1, 4);
         let mesure = 0;
         switch(random_mesure) {
             case 1:
@@ -69,18 +67,18 @@ module.exports.run = (client, message, args) => {
     for(let y=0;y<mesure;y++) {
         
         if(rythm_avant == 1) {
-            rythm = randomInt(1, rythm_avant + 1);
+            rythm = client.randomInt(1, rythm_avant + 1);
         } else if (rythm_avant == 4){
-            rythm = randomInt(1, 4);
+            rythm = client.randomInt(1, 4);
         } else {
-            rythm = randomInt(rythm_avant -1, rythm_avant + 1);
+            rythm = client.randomInt(rythm_avant -1, rythm_avant + 1);
         }
         
         if(rythm_avant == 500) { //premier tour de boucle.
-            rythm = randomInt(1, 4);
+            rythm = client.randomInt(1, 4);
         }
         
-        let random_notes = randomInt(0, 6);
+        let random_notes = client.randomInt(0, 6);
         const notes = ["do", "ré", "mi", "fa", "sol", "la", "si"];
         if(rythm == 1) { // croche
             rythm_string = " croche\n";

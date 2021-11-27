@@ -10,14 +10,14 @@ module.exports.run = async (client, message, args, settings) => {
     await client.getGuild(message.guild);
 
     embed.setDescription(`:chicken: **${settings.poulet}** :chicken:`);
-    message.channel.send(embed);
+    message.channel.send({embeds:[embed]});
 }
 
 module.exports.help = {
     name: "poulet",
     aliases: ['chicken'],
     category: "entertainment",
-    desription: "Augmente le nombre de poulet de 1 à chaque utilisation et l'affiche.",
+    desription: "Augmente le nombre de poulet de 1 ğŸ” chaque utilisation et l'affiche.",
     usage: "",
     cooldown: 1,
     permissions: false,

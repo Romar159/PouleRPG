@@ -1,6 +1,5 @@
 const {guild} = require("discord.js");
 const {db} = require("../../models/user");
-const {randomInt} = require('../../util/functions/randominteger');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
     const points = parseInt(args[0]);
@@ -12,7 +11,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     const m = message.channel.send("Calcul en cours...").then(async msg => {
         for(let i=0;i<points;i++) {
             //console.log("Tour de boucle : " + i + " " + points);
-            final_xp = final_xp + randomInt(50, 75);
+            final_xp = final_xp + client.randomInt(50, 75);
         }
         await client.setXp(client, message.member, final_xp);
         await client.updateUser(message.member, {"powerpoints": (dbUser.powerpoints - points)})

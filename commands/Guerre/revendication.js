@@ -1,5 +1,4 @@
 const {MessageEmbed} = require("discord.js");
-const {randomInt} = require("../../util/functions/randominteger");
 
 module.exports.run = async (client, message, args, settings, dbUser, command) => {
    
@@ -11,7 +10,7 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
 
     if(faction.ptsvictoire >= 3) {
 
-        const taux = randomInt(35, 40); // taux en pourcentage de gain de l'or adverse.
+        const taux = client.randomInt(35, 40); // taux en pourcentage de gain de l'or adverse.
         const gain = Math.round((taux * factionEnemy.bank) / 100);
 
         await client.updateFaction(dbUser.faction, {bank: faction.bank + gain}); // Gain de guerre.
@@ -30,7 +29,7 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
         La faction **${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}** est victorieuse sur **${factionEnnemy.name.charAt(0).toUpperCase() + factionEnnemy.name.slice(1)}** ! :trophy:
         ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)} récupère donc **${gain}:coin:** du coffre de ${factionEnnemy.name.charAt(0).toUpperCase() + factionEnnemy.name.slice(1)} !`);
         
-        return message.channel.send(embed);
+        return message.channel.send({embeds:[embed]});
 
     } else if(factionEnemy.ptsvictoire >= 3) {
         return message.channel.send("La faction adverse domine la guerre. Elle peut à présent appuyer ses revendications.");

@@ -6,7 +6,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     if(message.mentions.users.first()) {
         const mention = message.mentions.members.first();
-        const member = message.guild.member(message.mentions.users.first());
+        const member = message.guild.members.cache.get(message.mentions.users.first().id);
         const usr1 = await client.getUser(member);
         try {
             if(usr1.or < 0) { // Si l'utilisateur n'existe pas dans la bdd on le crée. (en passant dans le catch).
@@ -15,7 +15,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 const needxp_usr = Math.round((700 * parseInt(usr.level)) / Math.sqrt(parseInt(usr.level)));
                 embed.setAuthor(`Experience de ${member.user.username}`, member.user.displayAvatarURL());
                 embed.setDescription(`:bar_chart: Niveau : **${usr.level}**\n\n:test_tube: XP : **${usr.experience}/${needxp_usr}**`);
-                message.channel.send(embed);
+                message.channel.send({embeds:[embed]});
             }
         } catch(e) {
              await client.createUser({
@@ -31,7 +31,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         const needxp_dbuser = Math.round((700 * parseInt(dbUser.level)) / Math.sqrt(parseInt(dbUser.level)));
         embed.setAuthor(`Votre experience`, message.author.displayAvatarURL());
         embed.setDescription(`:bar_chart: Niveau :** ${dbUser.level}**\n\n:test_tube: XP : **${dbUser.experience}/${needxp_dbuser}**`);
-        message.channel.send(embed);
+        message.channel.send({embeds:[embed]});
     }
 };
 

@@ -44,9 +44,10 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         await client.updateFaction(args[0].toLowerCase(), {ally: ""});
         
         embed.setAuthor(`Alliance brisée !`, client.user.displayAvatarURL());
-        embed.setDescription(`**<@&${faction.roleid}>** a brisé son alliance avec **<@&${faction2.roleid}>** !`);
+        embed.setDescription(`**<@&${faction.roleid}>** a brisé son alliance avec **<@&${faction2.roleid}>** !\n **<@${message.author.id}>** perd **500** points de prestige.`);
+        client.editPiete(client, message.member, -500);
 
-        return message.channel.send(embed);
+        return message.channel.send({ embeds: [embed] });
     
     }
 
@@ -68,7 +69,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             embed.setAuthor(`Nouvelle alliance !`, client.user.displayAvatarURL())
             embed.setDescription(`**<@&${faction.roleid}>** est désormais alliée à **<@&${faction2.roleid}>** !`);
             
-            message.channel.send(embed);
+            message.channel.send({ embeds: [embed] });
 
             await client.updateFaction(dbUser.faction, {ally: args[0].toLowerCase()});
             await client.updateFaction(args[0].toLowerCase(), {ally: faction.name});

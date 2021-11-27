@@ -11,13 +11,13 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     const faction = await client.getFaction(dbUser.faction);
     await client.updateFaction(dbUser.faction, {bank: (faction.bank + parseInt(args[0]))});
     await client.setOr(client, message.member, - args[0], message);
-    let ppmaitre = message.guild.member(faction.idmaitre);
+    let ppmaitre = message.guild.members.cache.get(faction.idmaitre);
     const embed = new MessageEmbed()
     .setColor('5E6366')
     .setAuthor(`Envoie effectué`, ppmaitre.user.displayAvatarURL())
     .setDescription(`:bank: ${message.author} a ajouté **${args[0]} or** à son coffre de faction.`);
 
-    message.channel.send(embed);
+    message.channel.send({embeds:[embed]});
 
     if(args[0] >= 150) {
         if(await client.addBadge(client, message.member, dbUser, "5")) {

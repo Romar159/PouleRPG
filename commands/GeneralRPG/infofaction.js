@@ -9,7 +9,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             let ppmaitre;
             if(faction.idmaitre) {
                 maitre = `<@${faction.idmaitre}>`;
-                ppmaitre = message.guild.member(faction.idmaitre);
+                ppmaitre = message.guild.members.cache.get(faction.idmaitre);
             } else {
                 maitre = "Vacant";
                 ppmaitre = client;
@@ -66,12 +66,15 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                     .addField(`:blue_heart: Points d'amitié avec Daïros`, `${faction.ptsami_dairos}`, true)
                     .addField(`:green_heart: Points d'amitié avec Lyomah`, `${faction.ptsami_lyomah}`, true);
                 }
-            }    
-            message.channel.send(embed);
+            }
+            message.channel.send(`Lois de la faction en vigueur : ...`);
+            message.channel.send(`Gouvernement actuel : Conseillers ; Intendant ; Maréchal ; Chapelain`);
+
+            message.channel.send({embeds:[embed]});
         }
         catch(e) { //Mettre le ICI! <-
             if(args.length)
-                message.reply("Faction Inexistante " + e);
+                message.reply("Faction Inexistante");
         }
     });
 }

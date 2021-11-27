@@ -1,13 +1,12 @@
-const {randomInt} = require('../../util/functions/randominteger');
 const {MessageEmbed} = require('discord.js');
 
 module.exports.run = (client, message, args) => {
     if(!args[0] || !args[1]) return message.channel.send("Argument(s) attendu(s).");
     const embed = new MessageEmbed()
     .setColor('BF2F00')
-    .setDescription(`:game_die: Résultat : **${parseInt(randomInt(parseInt(args[0]), parseInt(args[1])))}**`);
+    .setDescription(`:game_die: Résultat : **${parseInt(client.randomInt(parseInt(args[0]), parseInt(args[1])))}**`);
 
-    message.channel.send(embed);
+    message.channel.send({embeds:[embed]});
 }
 
 module.exports.help = {

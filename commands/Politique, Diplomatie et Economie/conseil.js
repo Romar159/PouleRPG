@@ -60,7 +60,7 @@ module.exports.run = (client, message, args, settings, dbUser) => {
                 if(membre.faction != dbUser.faction) return message.reply("ERREUR, cet utilisateur ne fait pas partie de votre faction.");
                 if(message.author.id == message.mentions.users.first().id) return message.reply("ERREUR, vous ne pouvez pas vous désigner comme membre du conseil.");
 
-                let mm = message.guild.member(message.mentions.users.first().id);
+                let mm = message.guild.members.cache.get(message.mentions.users.first().id);
 
                 if(mm.roles.cache.has('858117141564096512')) return message.channel.send("Cet utilisateur est déjà membre de votre conseil.");
 
@@ -94,7 +94,7 @@ module.exports.run = (client, message, args, settings, dbUser) => {
                 if(membre.faction != dbUser.faction) return message.reply("ERREUR, cet utilisateur ne fait pas partie de votre faction.");
                 if(message.author.id == message.mentions.users.first().id) return message.reply("ERREUR, vous ne pouvez pas être membre du conseil et encore moins le quitter.");
 
-                let mm = message.guild.member(message.mentions.users.first().id);
+                let mm = message.guild.members.cache.get(message.mentions.users.first().id);
 
                 if(!mm.roles.cache.has('858117141564096512')) return message.channel.send("Cet utilisateur n'est pas membre de votre conseil.");
 

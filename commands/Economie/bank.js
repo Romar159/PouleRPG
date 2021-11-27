@@ -6,7 +6,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     if(message.mentions.users.first()) {
         const mention = message.mentions.members.first();
-        const usr_member = message.guild.member(message.mentions.users.first());
+        const usr_member = message.guild.members.cache.get(message.mentions.users.first().id);
         const usr1 = await client.getUser(usr_member);
 
         try { // Si l'utilisateur n'existe pas dans la bdd on le crée.
@@ -17,7 +17,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 const usr = await client.getUser(usr_member);
                 embed.setAuthor(`Banque de ${client.users.cache.get(usr.userID).username}`, client.users.cache.get(usr.userID).displayAvatarURL())
                 .setDescription(`:coin: ${usr_member} à **${usr.or}/${usr.maxbank}** or.`);
-                return message.channel.send(embed);
+                return message.channel.send({embeds:[embed]});
             // } // !
         } catch (e) {
             await client.createUser({
@@ -33,7 +33,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         await client.updateMaxBank(client, message.member);
         embed.setAuthor(`Votre banque`, message.author.displayAvatarURL())
         .setDescription(`:coin: Vous avez **${dbUser.or}/${dbUser.maxbank}** or.`);
-        return message.channel.send(embed);
+        return message.channel.send({embeds:[embed]});
     }
 };
 

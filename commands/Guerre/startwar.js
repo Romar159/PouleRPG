@@ -33,7 +33,7 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
             case "Alpha":
                 break;
 
-                default:
+            default:
                 return message.reply("veuillez entrer une faction valide.");
             }
 
@@ -50,7 +50,7 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
             case "Alpha":
                 break;
 
-                default:
+            default:
                 return message.reply("veuillez entrer une faction valide.");
             }
 

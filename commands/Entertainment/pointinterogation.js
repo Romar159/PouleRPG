@@ -1,5 +1,5 @@
-module.exports.run = (client, message, args) => {
-    client.addFoundedEasterEgg(client, message.member, dbUser, 1);
+module.exports.run = (client, message, args, settings, dbUser) => {
+    client.addFoundedEasterEgg(client, message.member, dbUser, 1); // ! BUG ici
 }
 
 module.exports.help = {

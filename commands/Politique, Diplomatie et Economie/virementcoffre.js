@@ -52,12 +52,12 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     .setAuthor(`Virement effectué !`, message.author.displayAvatarURL())
     .setDescription(`**${or}** :coin: versé à ${member_ran} du coffre de la faction **${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}**.`);
 
-    message.channel.send(embed);
+    message.channel.send({ embeds: [embed] });
 };
 
 module.exports.help = {
     name: "virementcoffre",
-    aliases: ['virementCoffre', 'virCoffre', 'vc'],
+    aliases: ['vc'],
     category: "politique, diplomatie et economie",
     desription: "Transfère de l'or du coffre de faction vers la banque personnel d'un membre.",
     usage: "<@USER> <or>",

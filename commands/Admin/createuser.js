@@ -12,10 +12,6 @@ module.exports.run = async (client, message, args, settings) => {
             username: mention.user.tag,
         }); 
         message.channel.send("Utilisateur crée.");
- 
-    
-
-    
  };
    
  module.exports.help = {

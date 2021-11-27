@@ -1,11 +1,10 @@
 const {MessageEmbed, Message} = require('discord.js')
-const {randomInt} = require('../../util/functions/randominteger');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
     let or_apporter = parseInt(args[0]);
     if(dbUser.expedition_duration == 0) { // Si la duration est égale à 0 c'est qu'il n'y a pas d'éxpedition en cours.
-        const expedition_duration = randomInt(8, 10) * 3600000; // random entre 8 et 10 heures (en ms);
+        const expedition_duration = client.randomInt(8, 10) * 3600000; // random entre 8 et 10 heures (en ms);
         let or_apporter = parseInt(args[0]);
 
         if(!or_apporter && or_apporter != 0) return message.reply("vous devez renseigner une valeur numérique.");
@@ -20,7 +19,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         .setAuthor(`Expédition lancée !`, message.author.displayAvatarURL())
         .setDescription(`L'expédition va durer **${expedition_duration / 3600000}h** avec **${or_apporter}** or !`);
 
-        message.channel.send(debutEmbed);
+        message.channel.send({embeds:[debutEmbed]});
         await client.updateUser(message.member, {expedition_duration: expedition_duration, or_expedition: or_apporter, cooldown_expedition: Date.now()});
 
     } else { // Si la duration n'est pas égale à 0 c'est qu'il y a une éxpedition en cours OU terminée où on peut récup les loots.
@@ -33,8 +32,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             const level_user = dbUser.level;
             const time = Math.floor(dbUser.expedition_duration / (1000*60*60) % 24);
             
-            const final_xp = Math.round((15 * (time * level_user + (bonus_or * level_user / 3))/ Math.sqrt(level_user)));
-            const final_or = Math.round(15 - dbUser.or_expedition * 0.15);
+            const final_xp = Math.round((12.5 * (time * level_user + (bonus_or * level_user / 3))/ Math.sqrt(level_user)));
+            const final_or = Math.round(10 - dbUser.or_expedition * 0.10);
             
             const finEmbed = new MessageEmbed()
             .setColor('3F992D')
@@ -43,7 +42,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             .addField(`** **`, `** **`, true)
             .addField(`** **`, `:coin: **+${final_or} Or**`, true);
 
-            message.channel.send(finEmbed);
+            message.channel.send({embeds:[finEmbed]});
             await client.setOr(client, message.member, dbUser.or_expedition, message);
             await client.updateUser(message.member, {expedition_duration: 0, or_expedition: 0, cooldown_expedition: 0});
             await client.setXp(client, message.member, final_xp);

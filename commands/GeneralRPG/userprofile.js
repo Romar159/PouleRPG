@@ -33,10 +33,10 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     embed.addField(`${emote} **Classe**`, `${dbUser.class.charAt(0).toUpperCase() + dbUser.class.slice(1)}`, true)
     .addField(`** **`, `** **`)
-    .addField(`:bar_chart: **Niveau**`, dbUser.level, true)
-    .addField(`:test_tube: **Expérience**`, dbUser.experience, true)
+    .addField(`:bar_chart: **Niveau**`, dbUser.level.toString(), true)
+    .addField(`:test_tube: **Expérience**`, dbUser.experience.toString(), true)
     .addField(`** **`, `** **`)
-    .addField(`**:coin: Or**`, dbUser.or, true)
+    .addField(`**:coin: Or**`, dbUser.or.toString(), true)
     .addField(`** **`, `** **`)
     .addField(`${emote_position} **Position favorite**`, `${dbUser.combat_favoriteposition.charAt(0).toUpperCase() + dbUser.combat_favoriteposition.slice(1)}`, true)
     .addField(`:broken_heart: **Position détestée**`, `${dbUser.combat_hatedposition.charAt(0).toUpperCase() + dbUser.combat_hatedposition.slice(1)}`, true)
@@ -44,10 +44,11 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     if(message.author.id == '421400262423347211')
         embed.addField(`:woman_red_haired: **Points(s) vénitienne**`, `∞`, true);
     else
-        embed.addField(`:woman_red_haired: **Points(s) vénitienne**`, dbUser.pointsvenitienne, true);
-    embed.addField(`:dart: **Point(s) de puissance**`, dbUser.powerpoints, true);
+        embed.addField(`:woman_red_haired: **Points(s) vénitienne**`, dbUser.pointsvenitienne.toString(), true);
+    embed.addField(`:dart: **Point(s) de puissance**`, dbUser.powerpoints.toString(), true);
         
-    message.channel.send(embed);
+    message.channel.send(`Piété : ${dbUser.piete} \nPrestige : ${dbUser.prestige} \nRichesse : ${dbUser.richesse} \nTravail : ${dbUser.travail} \nForme : ${dbUser.forme} \nSavoir : ${dbUser.savoir} \nMoral : ${dbUser.moral}`); // ? DraxyNote: Ici faut ajouter au embed.
+    message.channel.send({embeds:[embed]});
 }
 
 module.exports.help = {

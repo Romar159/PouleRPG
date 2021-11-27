@@ -1,0 +1,21 @@
+[
+    {
+        "id" : 0,
+        "name" : "Crochetage",
+        "rarete" : 1000,
+        "condition" : "if(dbUser.savoir >= 40 && dbUser.or >= 5) return true;",
+        "description" : "Une épingle à cheveux est restée dans le tissus de la vieille couverture du cachot. \n🔓 : Vous tentez de crocheter la porte \n😴 : Vous restez tranquille",
+        "reactions" : ["🔓", "😴"],
+        "commands" : ["let x = randomInt(1, 5); if(x == 1) { client.updateUser(message.member, {in_jail : false}); client.updateUser(message.member, {in_jail_date : 0}); message.channel.send('Vous réussissez à vous échapper'); } else { message.channel.send(`Vous échouez votre tentative d'évasion, et un garde vous surprend. Vous devez payer une amende de 5 :coin:`); client.setOr(client, message.member, -5, message); }", "message.channel.send('Vous restez tranquille, et vous vous reposez. +3 forme'); client.editPoint(client, message.member, 3, 'forme');"]
+    },
+    {
+        "id" : 1,
+        "name" : "Soudoyer le garde",
+        "rarete" : 900,
+        "condition" : "if(dbUser.or >= 10) return true;",
+        "description" : "Vous pouvez soudoyer le garde \n\n💰 : 10 :coin: \n💵 : 5 :coin:",
+        "reactions" : ["💰", "💵"],
+        "commands" : ["if(randomInt(1, 2) == 1) {message.channel.send('Vous réussissez à soudoyer le garde. Vous sortez de prison.');  client.updateUser(message.member, {in_jail : false}); client.updateUser(message.member, {in_jail_date : 0});} else {message.channel.send('Le garde vous insulte ! -3 moral'); client.editPoint(client, message.member, -3, 'moral')}", "if(randomInt(1, 8) == 1) {message.channel.send('Vous réussissez à soudoyer le garde. Vous sortez de prison.'); client.updateUser(message.member, {in_jail : false}); client.updateUser(message.member, {in_jail_date : 0});} else {message.channel.send('Le garde vous insulte violement ! -4 moral'); client.editPoint(client, message.member, -4, 'moral')}"]
+    }
+]
+

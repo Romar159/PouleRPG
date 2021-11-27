@@ -12,7 +12,7 @@ module.exports.run = (client, message, args, settings, dbUser) => {
         badges_embed.addField(`${(dbUser.badges_possedes.includes(i)) ? "🏅" : "⚫"} - ${client.filterById(list_badges, i).name}`, `${client.filterById(list_badges, i).description}`, true)
         //message.channel.send(`${(dbUser.badges_possedes.includes(i)) ? "Possédé" : "Non possédé"} | ${client.filterById(list_badges, i).name} - ${client.filterById(list_badges, i).description}`);
     }
-    message.channel.send(badges_embed);
+    message.channel.send({embeds:[badges_embed]});
 }
 
 module.exports.help = {

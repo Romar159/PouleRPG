@@ -1,6 +1,8 @@
 const {MessageEmbed} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
+
+    // ! INFONCTIONNEL -> Sera rework dans une prochaine màj
     let items = [];
     const shop = require('../../assets/shop/shop.json');
     let or = dbUser.or;
@@ -11,7 +13,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
   
     shop.map(e => { items.push(`${e.id} • ${e.name} | ${e.price} Or`) });
     embed.setDescription(`Voici les différents objets disponibles :\n\n${items.map(item => `• **${item}**`).join('\n')}`);
-    message.channel.send(embed);
+    message.channel.send({embeds:[embed]});
 
     const filter = m => (message.author.id === m.author.id);
     const userEntry = await message.channel.awaitMessages(filter, {

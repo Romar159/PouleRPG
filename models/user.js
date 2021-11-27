@@ -41,10 +41,25 @@ const userSchema = mongoose.Schema({
         "default": 0
     },
 
-    powerpoints : {
+    powerpoints : { // points de puissance
         "type": Number,
         "default": 0
     },
+
+
+    metier : {
+        "type": Number,
+        "default": 0 // 0 étant la valeur NULL
+    },
+    heure_travail : { // temps que l'utilisateur travail actuellement
+        "type": Number,
+        "default": 0
+    },
+    cooldown_metier : {
+        "type": Date,
+        "default": 0
+    },
+
 
     or : {
         "type": Number,
@@ -68,6 +83,10 @@ const userSchema = mongoose.Schema({
         "default": 0
     },
     cooldown_tacty : {
+        "type": Date,
+        "default": 0
+    },
+    cooldown_pari : {
         "type": Date,
         "default": 0
     },
@@ -108,7 +127,7 @@ const userSchema = mongoose.Schema({
         "type": String,
         "default": ""
     },
-
+    
     foundedeastereggs : {
         "type": String,
         "default": ""
@@ -117,13 +136,89 @@ const userSchema = mongoose.Schema({
     arene_streak : {
         "type": Number,
         "default": 0
+    },
+
+    titre_honorifique : {
+        "type": String,
+        "default": "NULL"
+    },
+
+    titre_politique : {
+        "type": String,
+        "default": "NULL"
+    },
+
+    // preferences :
+
+    preferences_defaultArene : {
+        "type" : String,
+        "default" : "dague"
+    },
+
+    // états précis :
+
+    in_jail : {
+        "Type" : Boolean,
+        "default": false
+    },
+    in_jail_date : { // depuis combien de temps on est aux cachots.
+        "Type" : Date,
+        "default" : 0
+    },
+
+    on_mission : {
+        "Type" : Boolean,
+        "default": false
+    },
+
+    conspiring : {
+        "Type" : Boolean,
+        "default": false
+    },
+
+    working : {
+        "Type": Boolean,
+        "default": false
+    },
+
+    // pts
+
+    // les points de puissance sont plus haut étant donné qu'ils sont un peu spéciaux.
+
+    piete : {
+        "type": Number,
+        "default": 0
+    },
+
+    prestige : {
+        "type": Number,
+        "default": 0
+    },
+
+    richesse : {
+        "type": Number,
+        "default": 0
+    },
+
+    travail : {
+        "type": Number,
+        "default": 0
+    },
+
+    forme : {
+        "type": Number,
+        "default": 0
+    },
+
+    savoir : {
+        "type": Number,
+        "default": 0
+    },
+
+    moral : {
+        "type": Number,
+        "default": 0
     }
-
-
-
-
-  
-
 });
 
 module.exports = mongoose.model("User", userSchema);

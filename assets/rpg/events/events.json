@@ -1,0 +1,29 @@
+[
+    {
+        "id" : 0,
+        "name" : "Thune par terre",
+        "rarete" : 4000,
+        "condition" : "/",
+        "description" : "Oh, sur les pavés de la rue se trouve une bourse avec quelques pièces d'or.\n\n💰 : Récupérer pour soit.\n💸 : Donner aux plus pauvres.",
+        "reactions" : ["💰", "💸"],
+        "commands" : ["client.setOr(client, message.member, 3, message); message.channel.send(`Vous récupérez tout l'argent pour vous. \n\n+3 :coin: \n-10 points de piété`); client.editPoint(client, message.member, -10, 'piete');", "message.channel.send(`Vous allez donner l'argent à des mandiants assis sur les marches de la cathédrale Saint Poulet.\n\n+ 10 points de piété. ||Et Dieu Poulet est content **:)**||`); client.editPoint(client, message.member, 10, 'piete');"]
+    },
+    {
+        "id" : 1,
+        "name" : "ev 2",
+        "rarete" : 5000,
+        "condition" : "/",
+        "description" : "Oh nique ta mère",
+        "reactions" : ["💰", "💸", "🐔", "🚸"],
+        "commands" : ["message.channel.send('La bonne thune');", "message.channel.send('RIP La thune');", "message.channel.send('Gloire au Dieu Poulet');", "message.channel.send('Heu... oui ?');"]
+    },
+    {
+        "id" : 2,
+        "name" : "ev 3",
+        "rarete" : 5250,
+        "condition" : "/",
+        "description" : "Oh nique ta mère v2",
+        "reactions" : "/",
+        "commands" : ["message.channel.send('Hello PUTE');"]
+    }
+]

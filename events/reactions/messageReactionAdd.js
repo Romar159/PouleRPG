@@ -17,7 +17,7 @@ module.exports = async (client, MessageReaction, user) => {
                 member.roles.add(guerreRole);
                 message.channel.send("C'est cadeau :)");
                 client.addFoundedEasterEgg(client, member, dbUser, 8);
-                break;
+            break;
         }
     }
 }

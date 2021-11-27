@@ -1,14 +1,13 @@
 const {MessageEmbed} = require("discord.js");
-const {randomInt} = require("../../util/functions/randominteger");
 
 module.exports = async (client, message) => {
     const dbUser = await client.getUser(message.member);
     const user = message.author;
     const msg = message.content.toLowerCase();
-    if(user.bot || user.id == "297414955618140162") return;
+    if(user.bot) return;
 
     if(msg.indexOf('bonne nuit') >= 0 || msg.indexOf('bon nui') >= 0 || msg.indexOf('bon nuit') >= 0 || msg.indexOf('bone nuit') >= 0 || msg.indexOf('bananenuit') >= 0) {
-        const bonnenuit_ran = randomInt(1, 5);
+        const bonnenuit_ran = client.randomInt(1, 5);
         switch(bonnenuit_ran) {
             case 1:
                 return message.channel.send("Bonne Nuiiiiiiiit :)))) !!!");
@@ -46,7 +45,7 @@ module.exports = async (client, message) => {
         if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
             return;
         } else { // Si le cooldown est passé
-            let random_pray = randomInt(1, 12);
+            let random_pray = client.randomInt(1, 12);
             if(random_pray == 1) {
                 message.author.send("Dieu Poulet à entendu votre prière ! +2 or dans votre banque.");
                 client.setOr(client, message.member, 2, message);
@@ -66,17 +65,14 @@ module.exports = async (client, message) => {
         return message.channel.send(`C'est pas de ma faute si t'es pété. :person_shrugging:`);
     }
 
-    if(msg.indexOf('cul') >= 0) {
-        if(msg.indexOf('culm') >= 0) {
-            return;
-        }
+    if(msg.split(/(,|\?|!|\.|"|'|-|\/|\\|`|:|~| )+/).includes('cul')) {
         return message.channel.send(`OH UN CUL ! <:EP_GIGA_SATANAS:670675422756732932>`)
     }
 
     if(msg.indexOf('maintenante') >= 0) {
         client.addFoundedEasterEgg(client, message.member, dbUser, 6);
 
-        return message.channel.send(`Ah oui alors là, l'ancien WapPreferences de mon cul oui ! **:)**`);
+        return message.channel.send(`Ah oui alors là, l'ancien WarPreferences de mon cul oui ! **:)**`);
     }
 
     if(msg.indexOf('grcher') >= 0 || msg.indexOf('drcher') >= 0) {

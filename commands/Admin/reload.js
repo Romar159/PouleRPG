@@ -6,7 +6,7 @@ module.exports.run = async (client, message, args) => {
 
 module.exports.help = {
     name: "reload",
-    aliases: ['reload', 'restart'],
+    aliases: ['reload', 'restart', 'reboot'],
     category: "admin",
     desription: "Redémarre le bot.",
     usage: '',

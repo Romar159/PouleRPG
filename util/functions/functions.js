@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Guild, User, Faction } = require("../../models/index");
+const {randomInt} = require("./randoms");
 
 module.exports = client => {
     client.createGuild = async guild => {
@@ -32,6 +33,24 @@ module.exports = client => {
 
     client.getUser = async user => {
         const data = await User.findOne({ userID: user.id});
+        if(data) return data;
+        else return; 
+    };
+
+    client.getUserTitreHonorifique = async titre => {
+        const data = await User.findOne({ titre_honorifique: titre});
+        if(data) return data;
+        else return; 
+    };
+
+    client.getUserTitrePolitique = async titre => {
+        const data = await User.findOne({ titre_politique: titre});
+        if(data) return data;
+        else return; 
+    };
+
+    client.getUsersInjail = async () => {
+        const data = await User.find({ in_jail: true});
         if(data) return data;
         else return; 
     };
@@ -101,7 +120,9 @@ module.exports = client => {
         client.mongoose = require("../mongoose");
         require("./setXp")(client);
         require("./setOr")(client);
+        require("./randoms")(client);
         require("./updateMaxBank")(client);
+        //require("./edit_points.js")(client);
         
     }
 
@@ -166,5 +187,79 @@ module.exports = client => {
         return jsonObject.filter(function(jsonObject) { return (jsonObject['name'].toLowerCase() == name.toLowerCase());})[0];
     }
 
+    client.eventFilterByRarity = (jsonObject, rarete) => { // s'utilise que pour les events (que si dans le json y'a un paramètre "rarete")
+        //return jsonObject.filter(function(jsonObject) { return (jsonObject['rarete'] == rarete);})[0];
 
+        return result = jsonObject.filter(obj => obj.rarete == rarete);
+    }
+
+    // POINTS :
+
+    // ex editpoint(50, "piete")
+    // puissance, piete, prestige, richesse, travail, forme, savoir, moral
+
+    client.editPoint = async (client, member, quantity, point) => {
+
+        const userToUpdate = await client.getUser(member);
+        let point_base = 0;
+
+        switch(point) {
+            case "puissance":
+                if(userToUpdate.powerpoints == undefined) point_base = 0;
+                else point_base = userToUpdate.powerpoints
+                await client.updateUser(member, { powerpoints: point_base + quantity});
+            break;
+
+            case "piete":
+                if(userToUpdate.piete == undefined) point_base = 0;
+                else point_base = userToUpdate.piete
+                await client.updateUser(member, { piete: point_base + quantity});
+            break;
+
+            case "prestige":
+                if(userToUpdate.prestige == undefined) point_base = 0;
+                else point_base = userToUpdate.prestige
+                await client.updateUser(member, { prestige: point_base + quantity});
+            break;
+
+            case "richesse":
+                if(userToUpdate.richesse == undefined) point_base = 0;
+                else point_base = userToUpdate.richesse
+                await client.updateUser(member, { richesse: point_base + quantity});
+            break;
+
+            case "travail":
+                if(userToUpdate.travail == undefined) point_base = 0;
+                else point_base = userToUpdate.travail
+                await client.updateUser(member, { travail: point_base + quantity});
+            break;
+
+            case "forme":
+                if(userToUpdate.forme == undefined) point_base = 0;
+                else point_base = userToUpdate.forme
+                await client.updateUser(member, { forme: point_base + quantity});
+            break;
+
+            case "savoir":
+                if(userToUpdate.savoir == undefined) point_base = 0;
+                else point_base = userToUpdate.savoir
+                await client.updateUser(member, { savoir: point_base + quantity});
+            break;
+
+            case "moral":
+                if(userToUpdate.moral == undefined) point_base = 0;
+                else point_base = userToUpdate.moral
+                await client.updateUser(member, { moral: point_base + quantity});
+            break;
+        } 
+    }
+
+    
+
+    // returns random key from Set or Map
+    client.getRandomKeyOfMap = (collection) => {
+        //let keys = Array.from(collection.keys());
+        //console.log("HERE : " + collection.length);
+        return collection[client.randomInt(0, collection.length - 1)];
+    };
 };

@@ -11,7 +11,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     let user;
     if(message.mentions.users.first())
-       user = message.guild.member(message.mentions.users.first());
+       user = message.guild.members.cache.get(message.mentions.users.first().id);
     
 
     if(args[0].toLowerCase() == 'voir') {
@@ -23,7 +23,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             else
                 embed.setDescription(`:woman_red_haired: Vous avez **${dbUser.pointsvenitienne}** point(s) vénitienne.`);
 
-            return message.channel.send(embed);
+            return message.channel.send({embeds:[embed]});
         }
         else {
             if(message.mentions.users.first().id == '421400262423347211') {
@@ -32,7 +32,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 const usr = await client.getUser(user);
                 embed.setDescription(`:woman_red_haired: ${user} a **${usr.pointsvenitienne}** point(s) vénitienne.`);
             }
-            return message.channel.send(embed);
+            return message.channel.send({embeds:[embed]});
         }
     }
 
@@ -46,8 +46,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             user.roles.add('732964881028087920');
         }
         if(updatedPts == 10) {
-            if(await client.addBadge(client, message.guild.member(user), userToUpdate, "3")) {
-                message.channel.send(`WOW !! ${message.guild.member(user)} vient de gagner le badge **${client.filterById(list_badges, 3).name}** !`);
+            if(await client.addBadge(client, message.guild.members.cache.get(user.user.id), userToUpdate, "3")) {
+                message.channel.send(`WOW !! ${message.guild.members.cache.get(user.user.id)} vient de gagner le badge **${client.filterById(list_badges, 3).name}** !`);
             }
         }
         return message.channel.send(`Point vénitienne accordé à ${user.user.username}.`);
@@ -71,12 +71,12 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         .setAuthor(`Classement des points vénitienne`, client.user.displayAvatarURL());
 
         await client.getUsers(message.guild).then(p => {
-                leadEmbed.addField(`** **`, `**:woman_red_haired: ${message.guild.member('421400262423347211').user.username}** - **∞** point(s) vénitienne.`);
+                leadEmbed.addField(`** **`, `**:woman_red_haired: ${message.guild.members.cache.get('421400262423347211').user.username}** - **∞ + 0.5** point(s) vénitienne.`);
             p.sort((a, b) => (a.pointsvenitienne < b.pointsvenitienne) ? 1 : -1).splice(0, 5).forEach(e => {
                 leadEmbed.addField(`** **`, `**${client.users.cache.get(e.userID).username}** - **${e.pointsvenitienne}** point(s) vénitienne.`);
             });
         });
-        message.channel.send(leadEmbed);
+        message.channel.send({embeds:[leadEmbed]});
     }
 };
 

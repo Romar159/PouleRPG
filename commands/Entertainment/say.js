@@ -2,7 +2,7 @@ module.exports.run = (client, message, args) => {
     message.delete();
 
     if(message.content.indexOf('@everyone') >= 0) {
-        return message.reply('Le contenu du message est innaproprié.');
+        return message.channel.send('Le contenu du message est innaproprié.');
     } else {
         message.channel.send(args.join(" "));
     }

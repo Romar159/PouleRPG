@@ -31,6 +31,9 @@ module.exports.run = (client, message, args) => {
                 case "GeneralRPG":
                     categoryName = `:archery: RPG`;
                     break;
+                case "Geography":
+                    categoryName = `:earth_africa: Géographie`; // ? DraxyNote : lulz ici je sais pas quoi dire pour tout ce qui est géopolitique & partie gestion de terrain.
+                    break;
                 case "Guerre":
                     categoryName = `:crossed_swords: Guerre`;
                     break;
@@ -46,7 +49,7 @@ module.exports.run = (client, message, args) => {
                 `\`${client.commands.filter(cat => cat.help.category === category.toLowerCase()).map(cmd => cmd.help.name).join('` • `')}\``
             );
         };
-        return message.channel.send(embed);
+        return message.channel.send({ embeds: [embed] });
 
     } else {
         const command = client.commands.get(args[0]) || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(args[0]));
@@ -60,7 +63,8 @@ module.exports.run = (client, message, args) => {
 
         if(command.help.aliases.length >= 1) embed.addField("Alias", `${command.help.aliases.join(", ")}`, true);
 
-        return message.channel.send(embed);
+        return message.channel.send({ embeds: [embed] });
+        
     }
    
 };
