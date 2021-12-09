@@ -74,6 +74,11 @@ const userSchema = mongoose.Schema({
         "default": 0
     },
 
+    wins_quiz : {
+        "type": Number,
+        "default": 0
+    },
+
     cooldown_arene : {
         "type": Date,
         "default": 0

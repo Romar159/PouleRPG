@@ -32,13 +32,13 @@ module.exports.run = (client, message, args) => {
                     categoryName = `:archery: RPG`;
                     break;
                 case "Geography":
-                    categoryName = `:earth_africa: Géographie`; // ? DraxyNote : lulz ici je sais pas quoi dire pour tout ce qui est géopolitique & partie gestion de terrain.
+                    categoryName = `:earth_africa: Géographie [WIP]`; // ? DraxyNote : lulz ici je sais pas quoi dire pour tout ce qui est géopolitique & partie gestion de terrain.
                     break;
                 case "Guerre":
                     categoryName = `:crossed_swords: Guerre`;
                     break;
-                case "Politique, Diplomatie et Economie":
-                    categoryName = `:mortar_board: Maître de Faction`;
+                case "Faction":
+                    categoryName = `:mortar_board: Faction`;
                     break;
                 case "System":
                     categoryName = `:robot: Système`;
@@ -47,7 +47,7 @@ module.exports.run = (client, message, args) => {
                 embed.addField(
                 `${categoryName}`,
                 `\`${client.commands.filter(cat => cat.help.category === category.toLowerCase()).map(cmd => cmd.help.name).join('` • `')}\``
-            );
+                );
         };
         return message.channel.send({ embeds: [embed] });
 
@@ -62,6 +62,7 @@ module.exports.run = (client, message, args) => {
         .addField("Utilisation", command.help.usage ? `${PREFIX}${command.help.name} ${command.help.usage}` : `${PREFIX}${command.help.name}`, true)
 
         if(command.help.aliases.length >= 1) embed.addField("Alias", `${command.help.aliases.join(", ")}`, true);
+        embed.addField('** **', `[Wiki](${command.help.wiki})`)
 
         return message.channel.send({ embeds: [embed] });
         

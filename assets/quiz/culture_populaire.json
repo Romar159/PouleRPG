@@ -1,0 +1,44 @@
+[
+    {
+        "id" : 0,
+        "categorie": "Jeux Vidéo",
+        "question" : "Quel est la couleur de la casquette de Mario dans Super Mario ?",
+        "reponses" : ["rouge"]
+    },
+    {
+        "id" : 1,
+        "categorie": "Jeux Vidéo",
+        "question" : "Quel est le nom de l'éditeur du jeu vidéo Castlevania",
+        "reponses" : ["konami"]
+    },
+    { 
+        "id" : 2,
+        "categorie": "Délire",
+        "question" : "Qui est Bordel ?",
+        "reponses" : ["draxy", "draxydow"]
+    },
+    { 
+        "id" : 3,
+        "categorie": "Délire",
+        "question" : "Qui est La Joie ?",
+        "reponses" : ["romar", "romar1"]
+    },
+    {
+        "id" : 4,
+        "categorie": "Jeux Vidéo",
+        "question" : "Trouvez le jeu à partir des émojis suivants : \n🌳 💎 ⛏️",
+        "reponses" : ["minecraft"]
+    },
+    {
+        "id": 5,
+        "categorie": "Jeux Vidéo",
+        "question" : "Durant quelle période de l'Histoire se déroule le jeu vidéo intitulé 'A Plague Tale: Innocence' ?",
+        "reponses" : ["moyen âge", "bas moyen âge", "moyen âge tardif"]
+    },
+    {
+        "id": 6,
+        "categorie": "Film",
+        "question" : "Quel est le nom de l'antagoniste principal de la saga Star Wars",
+        "reponses" : ["sheev palpatine", "palpatine", "darth sidious", "dark sidious"]
+    }
+]

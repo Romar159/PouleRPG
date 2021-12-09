@@ -14,7 +14,7 @@ module.exports = (client, member, message) => {
                 const fac = await client.getFaction(userToUpdate.faction);
                 await client.updateFaction(userToUpdate.faction, {bank: fac.bank + buffer});
 
-                message.channel.send(`**${buffer}** :coin: ajoutés au coffre de votre faction.`) // ? DraxyNote : Ici faut styliser :)
+                message.channel.send(`${message.guild.members.cache.get(userToUpdate.userID).user.username}, **${buffer}** :coin: ajouté(s) au coffre de votre faction.`) // ? DraxyNote : Ici faut styliser :)
             }
             updatedOr = parseInt(userToUpdate.maxbank);
         }

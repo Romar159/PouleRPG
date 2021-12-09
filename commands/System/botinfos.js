@@ -8,7 +8,7 @@ module.exports.run = (client, message, args) => {
 	    .setColor('5E6366')
 	    .setAuthor("Infos de PouleRPG", client.user.displayAvatarURL())
 	    .setDescription(`**Version actuelle :** ${VERSION}
-        
+
 
         **Date de début du projet :** 19/09/2019 - 23:31
         **Date de début de la reprogrammation :** 26/01/2021

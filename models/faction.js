@@ -41,6 +41,20 @@ const factionSchema = mongoose.Schema({
         "default": 0
     },
 
+    
+    marechal: {
+        "type": String,
+        "default": "NULL"
+    },
+    intendant: {
+        "type": String,
+        "default": "NULL"
+    },
+    chapelain: {
+        "type": String,
+        "default": "NULL"
+    },
+
     ptsami_epsilon: Number,
     ptsami_dairos: Number,
     ptsami_lyomah: Number,

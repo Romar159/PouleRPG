@@ -1,4 +1,5 @@
 module.exports.run = async (client, message, args, settings, dbUser) => {
+    return message.reply("Cette commande ne sera disponnible que dans une future mise à jour.");
     var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
     var est_maitre = false;
 
@@ -24,17 +25,14 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     }
 
     if(message.mentions.users.first().id == message.author.id) return message.reply("Vous ne pouvez pas vous même partir en mission.");
-
-
-
 }
 
 
 module.exports.help = {
-    name: "mission",
+    name: "[WIP] mission",
     aliases: [],
     category: "geography",
-    desription: "Envoyez en mission vos membres pour récolter des ressources naturelles ou diriger des travaux.",
+    desription: "[WIP] Envoyez en mission vos membres pour récolter des ressources naturelles ou diriger des travaux.",
     usage: '<@USER> <mission>',
     cooldown: 3, 
     permissions: false,

@@ -27,7 +27,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 userID: mention.id,
                 username: mention.user.tag,
             }); 
-            return message.channel.send("L'utilisateur n'existait pas dans la base de donnée.\nEssayez de retaper la commande");
+            return message.channel.send("Erreur, l'utilisateur n'existait probablement pas dans la base de donnée.\nEssayez de retaper la commande");
         }
     } else {
         await client.updateMaxBank(client, message.member);

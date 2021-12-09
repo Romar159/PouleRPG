@@ -1,0 +1,92 @@
+[
+    {
+        "id" : 0,
+        "categorie": "Géographie",
+        "question" : "Quel fleuve traverse paris ?",
+        "reponses" : ["seine", "la seine"]
+    },
+    {
+        "id" : 1,
+        "categorie": "Littérature",
+        "question" : "Qui a écrit 'Le Horla' ?",
+        "reponses" : ["maupassant", "guy maupassant", "guy de maupassant"]
+    },
+    {
+        "id" : 2,
+        "categorie": "Musique",
+        "question" : "À quel compositeur baroque fait référence le catalogue HWV ?",
+        "reponses" : ["georg friedrich Haendel", "haendel", "handel"]
+    },
+    {
+        "id" : 3,
+        "categorie": "Biologie",
+        "question" : "Que signifie le N de l'acronyme ARN ?",
+        "reponses" : ["nucléique", "nucleique"]
+    },
+    {
+        "id" : 4,
+        "categorie": "Chimie",
+        "question" : "A quel numéro atomique est associé l'élément chimique Oxygène dans le tableau de Mendeleïev ?",
+        "reponses" : ["8", "huit"]
+    },
+    {
+        "id" : 5,
+        "categorie": "Chimie",
+        "question" : "A quel numéro atomique est associé l'élément chimique Cobalt dans le tableau de Mendeleïev ?",
+        "reponses" : ["27", "vingt sept", "vingt-sept"]
+    },
+    {
+        "id" : 6,
+        "categorie": "Chimie",
+        "question" : "A quel numéro atomique est associé l'élément chimique Neptunium dans le tableau de Mendeleïev ?",
+        "reponses" : ["93", "nonante-trois", "quatre-vingt-treize", "nonante trois", "quatre vingt treize"]
+    },
+    {
+        "id" : 7,
+        "categorie": "Chimie",
+        "question" : "Quel est l'abréviation du composé chimique Trinitrotoluene ?",
+        "reponses" : ["tnt"]
+    },
+    {
+        "id" : 8,
+        "categorie": "Chimie",
+        "question" : "Quel est le nom complet de l'élément chimique de numéro atomique 46 et de symbole PD ?",
+        "reponses" : ["palladium"]
+    },
+    {
+        "id" : 9,
+        "categorie": "Littérature",
+        "question" : "Dans quelle région de France se déroule le livre Germinal écrit par Émile Zola ?",
+        "reponses" : ["nord pas de calais", "pas de calais", "nord", "nord pas-de-calais", "pas-de-calais"]
+    },
+    {
+        "id" : 10,
+        "categorie": "Histoire",
+        "question" : "Dans quelle ville Jeanne d'Arc est mort sur le bûcher ?",
+        "reponses" : ["rouen"]
+    },
+    {
+        "id" : 11,
+        "categorie": "Histoire",
+        "question" : "De quelle période dans la préhistoire fait partie le célèbre Tyrannosaurus ?",
+        "reponses" : ["crétacé"]
+    },
+    {
+        "id" : 12,
+        "categorie": "Biologie",
+        "question" : "De quelle famille fait partie le Clogmia Albipunctata ?",
+        "reponses" : ["psychodidae"]
+    },
+    {
+        "id" : 13,
+        "categorie": "Peinture",
+        "question" : "Qui a peint Guernica ?",
+        "reponses" : ["pablo picasso", "picasso"]
+    },
+    {
+        "id" : 14,
+        "categorie": "Random",
+        "question" : "Quelle lettre est représentée sur les autocollants apposés à l'arrière des voitures des jeunes conducteurs ?",
+        "reponses" : ["a"]
+    }
+]

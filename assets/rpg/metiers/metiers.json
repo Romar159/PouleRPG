@@ -199,7 +199,7 @@
         "id": 901,
         "name": "Maréchal",
         "prerequis": "if(dbUser.titre_politique == 'Maréchal') return true;",
-        "description": "Le maréchal est celui qui gère les armées de la faction. C'est à lui que la plupart des questions militaires remontent.",
+        "description": "Le maréchal est celui qui gère les armées de la faction. C'est à lui que la plupart des questions militaires remontent. Il est un des conseiller de faction.",
         "infos": "Pour exercer ce métier vous devez être le maréchal d'une faction.",
         "salaire": 7,
         "horaires": 10
@@ -208,7 +208,7 @@
         "id": 902,
         "name": "Intendant",
         "prerequis": "if(dbUser.titre_politique == 'Intendant') return true;",
-        "description": "L'intendant est chargé de gérer efficacement et avec soin la totale économie de la faction et assurer sa prospérité financière.",
+        "description": "L'intendant est chargé de gérer efficacement et avec soin la totale économie de la faction et assurer sa prospérité financière. Il est un des conseiller de faction.",
         "infos": "Pour exercer ce métier vous devez être l'intendant d'une faction.",
         "salaire": 7,
         "horaires": 10
@@ -217,7 +217,7 @@
         "id": 903,
         "name": "Chapelain",
         "prerequis": "if(dbUser.titre_politique == 'Chapelain') return true;",
-        "description": "Le Chapelain dirige et ordonne tous les aspects religieux de la faction. Et notamment les ordres religieux.",
+        "description": "Le Chapelain dirige et ordonne tous les aspects religieux de la faction. Et notamment les ordres religieux. Il est un des conseiller de faction.",
         "infos": "Pour exercer ce métier vous devez être le chapelain d'une faction.",
         "salaire": 7,
         "horaires": 10

@@ -11,7 +11,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     const dailyCD = dbUser.heure_travail * 3600000;
     
     const lastDaily = await dbUser.cooldown_metier;
-    if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) < 0) { //cooldown pas encore passé.
+    if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
         const cdTime = dailyCD - (Date.now() - lastDaily);
         message.reply(`Il vous reste encore **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes de travail !`);
     } else { // Si le cooldown est passé.
