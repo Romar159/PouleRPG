@@ -84,7 +84,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
 module.exports.help = {
     name: "préférencesguerre",
-    aliases: ['préfguerre', 'prefguerre', 'pg'],
+    aliases: ['préfguerre', 'prefguerre', 'pg', "preferencesguerre"],
     category: "generalrpg",
     desription: "Définit ses préférences militaire.",
     usage: '<class:cavalier/guerrier/archer> <position_favorite:gauche/centre/droite>',

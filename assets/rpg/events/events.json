@@ -6,24 +6,39 @@
         "condition" : "/",
         "description" : "Oh, sur les pavés de la rue se trouve une bourse avec quelques pièces d'or.\n\n💰 : Récupérer pour soit.\n💸 : Donner aux plus pauvres.",
         "reactions" : ["💰", "💸"],
-        "commands" : ["client.setOr(client, message.member, 3, message); message.channel.send(`Vous récupérez tout l'argent pour vous. \n\n+3 :coin: \n-10 points de piété`); client.editPoint(client, message.member, -10, 'piete');", "message.channel.send(`Vous allez donner l'argent à des mandiants assis sur les marches de la cathédrale Saint Poulet.\n\n+ 10 points de piété. ||Et Dieu Poulet est content **:)**||`); client.editPoint(client, message.member, 10, 'piete');"]
+        "commands" : ["client.setOr(client, message.member, 3, message); message.channel.send(`Vous récupérez tout l'argent pour vous. \n\n+3 :coin: \n-10 points de piété`); client.editPoint(client, message.member, -10, 'piete');", 
+            "message.channel.send(`Vous allez donner l'argent à des mandiants assis sur les marches de la cathédrale Saint Poulet.\n\n+ 10 points de piété. ||Et Dieu Poulet est content **:)**||`); client.editPoint(client, message.member, 10, 'piete');"]
     },
     {
         "id" : 1,
-        "name" : "ev 2",
-        "rarete" : 5000,
+        "name" : "Accident de scene",
+        "rarete" : 800,
         "condition" : "/",
-        "description" : "Oh nique ta mère",
-        "reactions" : ["💰", "💸", "🐔", "🚸"],
-        "commands" : ["message.channel.send('La bonne thune');", "message.channel.send('RIP La thune');", "message.channel.send('Gloire au Dieu Poulet');", "message.channel.send('Heu... oui ?');"]
+        "description" : "Jacqueline tombe de la scène ! Une de ses pièces tombe de sa poche, que faite-vous ?\n\n💰 : Vous récupérez la pièce pour vous.\n🤚 : Vous aidez Jacqueline à se relever.\n🗣️ : Vous rigolez de la situation.",
+        "reactions" : ["💰", "🤚", "🗣️"],
+        "commands" : ["message.channel.send('Vous vous empressez de récupérer la pièce avant les autres ! +1 Or -3 piété'); client.setOr(client, message.member, 1, message); client.editPoint(client, message.member, -3, 'piete')", 
+            "message.channel.send(`Vous vous approchez de Jacqueline et lui tendez la main pour l'aider. Elle vous remercie avant de récupérer sa pièce. +5 piété`); client.editPoint(client, message.member, 5, 'piete');", 
+            "message.channel.send('On entend que vous dans la pièce, qui rit aux éclats de cette chute... +3 moral -2 piété'); client.editPoint(client, message.member, -2, 'piete'); client.editPoint(client, message.member, 3, 'moral');"]
     },
     {
         "id" : 2,
-        "name" : "ev 3",
-        "rarete" : 5250,
-        "condition" : "/",
-        "description" : "Oh nique ta mère v2",
-        "reactions" : "/",
-        "commands" : ["message.channel.send('Hello PUTE');"]
+        "name" : "L'avis sur les gros",
+        "rarete" : 800,
+        "condition" : "if(dbUser.level >= 5) return true;",
+        "description" : "Vous êtes en pleine discussion avec un noble et celui-ci vous pose la question suivante d'un ton autain ''Comment trouvez-vous les gros ?'' \n\n❤️ : Vous répondez : ''Les gros sont beaux.''\n💔 : Vous répondez ''Les gros sont laids.''\n💨 : Vous changez de discussion.",
+        "reactions" : ["❤️", "💔", "💨"],
+        "commands" : ["message.channel.send(`Le noble ne semble pas de votre avis et se contente d'hocher la tête et de boire un coup en guise de réponse. +1 piété, -1 prestige`); client.editPoint(client, message.member, 1, 'piete'); client.editPoint(client, message.member, -1, 'prestige')",
+            "message.channel.send(`Le noble sourit, et répond ''Je suis en parfait accord avec vous, mon jeune ami !''. -1 piété, +1 moral`); client.editPoint(client, message.member, -1, 'piete'); client.editPoint(client, message.member, -1, 'moral')",
+            "message.channel.send(`Le noble n'a pas aimer que vous l'ignoriez, il se retourne vers quelqu'un d'autre pour lui reposer la question. +1 prestige -1 moral`); client.editPoint(client, message.member, -1, 'moral'); client.editPoint(client, message.member, 1, 'prestige');"]
+    },
+    {
+        "id" : 3,
+        "name" : "Le Poulet sauvage",
+        "rarete" : 500,
+        "condition" : "if(dbUser.expedition_duration == 0) return true;",
+        "description" : "Lors de votre expédition, vous rencontrez un poulet, que faites-vous ? \n\n⚔️ : Vous le tuez.\n🙏 : Vous vous agenouillez et priez le Dieu Poulet pour son bien.",
+        "reactions" : ["⚔️", "🙏"],
+        "commands" : ["message.channel.send(`Dieu Poulet est très déçu de vous ! (-10 piété, +1 puissance)`); client.editPoint(client, message.member, -10, 'piete'); client.editPoint(client, message.member, +1, 'puissance');",
+                      "message.channel.send(`Dieu Poulet est content ! (+10 piété)`); client.editPoint(client, message.member, 10, 'piete');"]
     }
 ]

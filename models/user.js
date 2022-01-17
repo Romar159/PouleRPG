@@ -95,6 +95,20 @@ const userSchema = mongoose.Schema({
         "type": Date,
         "default": 0
     },
+    cooldown_ennemi : {
+        "type": Date,
+        "default": 0
+    },
+    
+    cooldown_entrainement : {
+        "type" : Date,
+        "default": 0
+    },
+    heure_entrainement : {
+        "type" : Number,
+        "default": 0
+    },
+
 
     cooldown_expedition : {
         "type": Date,
@@ -123,10 +137,10 @@ const userSchema = mongoose.Schema({
         "default": ":heart:"
     },
 
-    fois_dans_le_rouge : {
+    /*fois_dans_le_rouge : {
         "type": Number,
         "default": 0
-    },
+    },*/
 
     badges_possedes : {
         "type": String,
@@ -183,6 +197,11 @@ const userSchema = mongoose.Schema({
 
     working : {
         "Type": Boolean,
+        "default": false
+    },
+
+    training : {
+        "type": Boolean,
         "default": false
     },
 

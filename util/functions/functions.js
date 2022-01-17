@@ -55,6 +55,12 @@ module.exports = client => {
         else return; 
     };
 
+    client.getUsersByFaction = async (faction_name) => {
+        const data = await User.find({ faction: faction_name});
+        if(data) return data;
+        else return; 
+    };
+
     client.getUsers = async guild => {
         const data = await User.find({ guildID: guild.id});
         if(data) return data;

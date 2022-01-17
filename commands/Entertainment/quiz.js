@@ -41,8 +41,8 @@ module.exports.run = async (client, message, args) => {
         already_started = true;
 
         if(args[1]) {
-            if(args[1] == "cultureg") categorie = "culture générale";
-            if(args[1] == "culturepop") categorie = "culture populaire";
+            if(args[1].toLowerCase() == "cultureg") categorie = "culture générale";
+            if(args[1].toLowerCase() == "culturepop") categorie = "culture populaire";
         }
 
         questions = ["Question 1", "Question 2", "Question 3", "Question 4", "Question 5", "Question 6"]; //! TESTS
@@ -148,7 +148,7 @@ module.exports.run = async (client, message, args) => {
                 //console.log("DEBUG 3: " + array_players_points.indexOf(5) + " DATA: " + array_players[array_players_points.indexOf(5)]);
                 already_started = false;
                 if(array_players_points.indexOf(objectif_point) < 0) {
-                    return message.channel.send(`Quiz terminé sans gagant !`);
+                    return message.channel.send(`Quiz terminé sans gagnant !`);
                 } else {
                     let memb = message.guild.members.cache.get(array_players[array_players_points.indexOf(objectif_point)]);
                     let dbM = await client.getUser(memb)

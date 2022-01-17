@@ -3,6 +3,11 @@ const {PREFIX} = require('../../config');
 
 module.exports = async (client, message) => {
 
+    if(message.author.id == "F211911771433205760") {
+        let phrases = ["CHEH :)", "T'es PD ! :)", "Olala Draxy parle :)", "T'es beau :)", "Je suis un fanboy de toi !", "Je peux avoir un autographe stppppp ?"];
+        return message.reply(phrases[client.randomInt(0, phrases.length - 1)]);
+    }
+
 
     if(!message.author.bot && message.content.startsWith(PREFIX)) {
         if(message.author.id !== "421400262423347211") {
@@ -50,7 +55,7 @@ module.exports = async (client, message) => {
 
     if(!message.author.bot) {
         if(dbUser.faction != "NULL" || dbUser.faction != undefined) {
-            if(message.content.startsWith(PREFIX)) {
+            if(message.content.startsWith(PREFIX)) { // ? DraxyNote : Ici, soit on garde le prefix comme déclencheur de l'event, ou bien on remplace ça part le salon #bots
                 client.emit("gameEvents", message);
             }
         }

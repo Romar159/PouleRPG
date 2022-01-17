@@ -1,7 +1,7 @@
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
     if(!args[0]) { // consultation
-        let nombre = 0;
+        var nombre = 0;
         client.getUsersInjail().then(p => { 
             p.forEach(e => { 
                 nombre++;
@@ -9,8 +9,10 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                    message.channel.send(`${e.username} se trouve dans les cachots de votre faction.`); // ? DraxyNote : on pourra ici faire comme avec les points vénitienne, un embed pour que ça fasse un seul et beau message.
                 }
             }) 
-        }).catch(c => {message.channel.send("Il n'y a personne dans les cachots de votre faction.");});
+            if(nombre == 0) return message.channel.send("Il n'y a personne dans les cachots de votre faction.");
+        }).catch(c => {message.channel.send("Il n'y a personne dans les cachots de votre faction. Ou une erreur s'est produite : " + c);});
 
+       
         
 
     } else { // enfermer ou libération cachot
@@ -33,9 +35,10 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
  
         if(!message.mentions.users.first()) return message.reply("Erreur, mention invalide.");
+        if(message.author.id == message.mentions.users.first().id) return message.reply("Vous ne pouvez pas vous enfermer ou vous libérer vous même des cachots.");
         let cMembre = message.guild.members.cache.get(message.mentions.users.first().id);
         let dbMembre = await client.getUser(cMembre);
-        console.log(dbMembre.in_jail);
+        // console.log(dbMembre.in_jail); // debug
         if(dbMembre.faction != dbUser.faction) return message.channel.send("Cet utilisateur n'est pas membre de votre faction.");
         
         if(args[0].toLowerCase() == "enfermer") {

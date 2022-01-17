@@ -37,21 +37,18 @@ module.exports = async (client, message) => {
     }
     
     if(msg.indexOf('🙏') >= 0 && message.channel.id == '445370665395159060') {
-            
-        const dailyCD = 8.64e+7;
-        if(!dbUser.or) await client.updateUser(message.member, {or: 0});
 
-        const lastDaily = await dbUser.cooldown_pray;
-        if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
+        const lastDaily = await dbUser.cooldown_pray; 
+        let dateNow = new Date()
+
+        if(dateNow.getFullYear() === lastDaily.getFullYear() && dateNow.getMonth() === lastDaily.getMonth() && dateNow.getDate() === lastDaily.getDate()) {
             return;
-        } else { // Si le cooldown est passé
-            let random_pray = client.randomInt(1, 12);
-            if(random_pray == 1) {
-                message.author.send("Dieu Poulet à entendu votre prière ! +2 or dans votre banque.");
-                client.setOr(client, message.member, 2, message);
-                
-            }
-            client.updateUser(message.member, {cooldown_pray: Date.now()});
+        } else {
+            let random_pray = client.randomInt(1, 3);
+            
+            await client.updateUser(message.member, {cooldown_pray: Date.now()});
+            await client.editPoint(client, message.member, random_pray, "piete");
+            return message.author.send(`Dieu Poulet a entendu votre prière ! +${random_pray} points de piété.`);
         }
     }
 

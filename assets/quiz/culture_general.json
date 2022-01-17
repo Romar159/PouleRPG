@@ -88,5 +88,17 @@
         "categorie": "Random",
         "question" : "Quelle lettre est représentée sur les autocollants apposés à l'arrière des voitures des jeunes conducteurs ?",
         "reponses" : ["a"]
+    },
+    {
+        "id" : 15,
+        "categorie": "Littérature",
+        "question" : "Qui a écrit 'Alice au Pays des Merveilles' ?",
+        "reponses" : ["lewis carroll", "carroll"]
+    },
+    {
+        "id" : 16,
+        "categorie": "Science",
+        "question" : "Quelle est la vitesse de la lumière en mettre par seconde ?",
+        "reponses" : ["299 792 458", "299792458"]
     }
 ]

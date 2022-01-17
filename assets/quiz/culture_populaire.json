@@ -26,7 +26,7 @@
     {
         "id" : 4,
         "categorie": "Jeux Vidéo",
-        "question" : "Trouvez le jeu à partir des émojis suivants : \n🌳 💎 ⛏️",
+        "question" : "Trouvez le jeu à partir des émoticônes suivants : \n🌳 💎 ⛏️",
         "reponses" : ["minecraft"]
     },
     {
@@ -40,5 +40,23 @@
         "categorie": "Film",
         "question" : "Quel est le nom de l'antagoniste principal de la saga Star Wars",
         "reponses" : ["sheev palpatine", "palpatine", "darth sidious", "dark sidious"]
+    },
+    {
+        "id": 7,
+        "categorie": "Jeux Vidéo",
+        "question" : "Comment s'appelle le protagoniste du jeu Donkey Kong sorti en 1981 ?",
+        "reponses" : ["jumpman"]
+    },
+    {
+        "id": 8,
+        "categorie": "Film",
+        "question" : "Trouvez le film à partir des émoticônes suivants : \n :fly: 🔥 🦖 ",
+        "reponses" : ["godzilla"]
+    },
+    {
+        "id": 9,
+        "categorie": "Animé",
+        "question" : "Trouvez l'animé à partir des émoticônes suivants : \n 🚶‍♀️ 🚜 🚶‍♂️ -> 💧 💥 ⚔️ ✋",
+        "reponses" : ["konosuba", "kono subarashii", "kono subarashii sekai ni shukufuku o!", "kono subarashii sekai ni shukufuku o", "kono subarashii sekai ni shukufuku wo!", "kono subarashii sekai ni shukufuku wo"]
     }
 ]

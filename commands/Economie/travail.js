@@ -1,7 +1,12 @@
 const metiers = require("../../assets/rpg/metiers/metiers.json");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
-   if(dbUser.metier == 0) return message.reply('Vous devez d\'abord choisir un métier avec la commande p<métier');
+    if(dbUser.expedition_duration != 0) return message.reply("Vous ne pouvez pas travailler si vous êtes en expédition.");
+    if(dbUser.in_jail == 'true') return message.reply("Aux cachots vous ne pouvez pas travailler.");
+    if(dbUser.on_mission == 'true') return message.reply("Vous êtes en mission, il vous est donc impossible de travailler.");
+    if(dbUser.training == true) return message.reply("Vous êtes en train de vous entrainez, vous ne pouvez donc pas travailler."); //0x01pa
+
+    if(dbUser.metier == 0) return message.reply('Vous devez d\'abord choisir un métier avec la commande p<métier');
    
 
    let mt = client.filterById(metiers, dbUser.metier);
