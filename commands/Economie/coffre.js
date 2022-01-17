@@ -38,7 +38,7 @@ module.exports.help = {
     name: "coffre",
     aliases: ['coffre de faction'],
     category: "economie",
-    desription: "Affiche le contenu du coffre de faction.",
+    desription: "Affiche la quantité d'or du coffre de faction.",
     usage: "",
     cooldown: 3,
     permissions: false,

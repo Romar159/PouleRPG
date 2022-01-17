@@ -80,7 +80,7 @@ module.exports.help = {
     name: "jetteunepieceatonsdf",
     aliases: ['tactysdf', "eupatsdf", "jupatsdf", "tossacointoyousdf", "envoieunepieceatonsdf"],
     category: "economie",
-    desription: "Envoie une de vos pièce à un utilisateur aléatoire, vous permettant de gagner de la piété",
+    desription: "Envoie une de vos pièces à un utilisateur aléatoire, vous permettant de gagner de la piété",
     usage: "",
     cooldown: 1,
     permissions: false,

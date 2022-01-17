@@ -12,11 +12,11 @@
     {
         "id": 1,
         "name": "🐺",
-        "levelMin": 6000,
-        "levelMax": 13000,
+        "levelMin": 6,
+        "levelMax": 13,
         "ranMin": 0.45,
         "ranMax": 1.6,
-        "attaques": ["dit : woof !", "vous fait un câlin de furry dégueulasse", "émoticône de loup", "je suis une merde"],
+        "attaques": ["dit : woof !", "vous fait un câlin de furry dégueulasse", "émoticône de loup", "dit : je suis une merde"],
         "gains" : "client.setXp(client, message.member, 123); client.editPoint(client, message.member, 5, 'prestige'); message.channel.send(`+123 xp et +5 prestige !`);"
     }
 ]

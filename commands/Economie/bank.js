@@ -41,7 +41,7 @@ module.exports.help = {
     name: "banque",
     aliases: ['or'],
     category: "economie",
-    desription: "Affiche votre contenu de banque ou celle d'un utilisateur.",
+    desription: "Affiche votre quantité d'or ou celle d'un utilisateur.",
     usage: "[@user]",
     cooldown: 3,
     permissions: false,

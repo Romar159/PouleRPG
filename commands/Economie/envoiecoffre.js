@@ -30,7 +30,7 @@ module.exports.help = {
     name: "envoiecoffre",
     aliases: ['envcoffre'],
     category: "economie",
-    desription: "Envoie de l'argent dans votre coffre de faction.",
+    desription: "Envoie de l'or dans votre coffre de faction.",
     usage: "<or>",
     cooldown: 3,
     permissions: false,
