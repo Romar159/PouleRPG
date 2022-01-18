@@ -1,3 +1,4 @@
+const { MessageEmbed } = require("discord.js");
 const ennemis = require("../../assets/rpg/ennemis.json")
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
@@ -12,19 +13,21 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         let ranMin;
         let ranMax;
         let phrase;
+        let phrasePerdre = [" cependant, vous n'arrivez pas à encaisser le choc", ", cela vous détruit", " et vous n'arrivez pas à le supporter", ", la force de cette attaque vous tétanise", ", cela vous donne le cancer", " et vous tombez au sol", ", vous essayez d'esquiver mais ce fut un échec"]
+        let gagner;
 
         if(dbUser.class == "guerrier") {
             ranMin = 0.8;
             ranMax = 1.2;
-            phrase = "Vous donnez un violent coup d'épée sur"
+            phrase = ["Vous donnez un violent coup d'épée sur", "Vous tranchez violemment"]
         } else if(dbUser.class == "archer") {
             ranMin = 0.7;
             ranMax = 1.3;
-            phrase = "Vous tirez une flèche très puissante sur"
+            phrase = ["Vous tirez une flèche très puissante sur", "Vous tirez une pluie de flèches sur", "Vous décochez une sublime flèche sur"]
         } else if(dbUser.class == "cavalier") {
             ranMin = 0.9;
             ranMax = 1.1;
-            phrase = "Vous foncez avec votre cheval sur"
+            phrase = ["Vous foncez avec votre cheval sur"]
         } else {
             return message.reply("Vous devez posséder une classe avant de lancer un combat. faites `p<préférencecsguerre` pour selectionner votre classe.");
         }
@@ -36,13 +39,22 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         let final_user = (dbUser.level * client.randomFloat(ranMin, ranMax)) / (LevelMob * client.randomFloat(ennemi.ranMin, ennemi.ranMax));
         let final_mob = (LevelMob * client.randomFloat(ennemi.ranMin, ennemi.ranMax)) / (dbUser.level * client.randomFloat(ranMin, ranMax));
 
+        const embed = new MessageEmbed();
+        
         //message.channel.send(`**${message.author.username}** Niveau ${dbUser.level} - Puissance : ${final_user} \n**${ennemi.name}** Niveau ${LevelMob} - Puissance : ${final_mob}`);
         if(final_user > final_mob) { //win
-            message.channel.send(`${phrase} ${ennemi.name}, Vous gagnez !`); //? DraxyNote : Ici (et aussi en dessous) tu peux mettre plus d'infos, genre nom du mob, son niveau etc... enfin ce qui est dispo dans la BDD ennemis.json
-            //await client.setXp(client, message.member, 10) //! TEMP 
             eval(ennemi.gains);
+            embed.setAuthor(`Victoire !`, message.author.displayAvatarURL())
+            .setColor('3F992D')
+            .setDescription(`${phrase[client.randomInt(0, phrase.length - 1)]} un(e) **${ennemi.name}** de niveau **${LevelMob}** !\n**${gagner}**`); // ? RomarNote
+            message.channel.send({embeds:[embed]});
+            //await client.setXp(client, message.member, 10) //! TEMP 
+
         } else { //lose
-            message.channel.send(`${ennemi.name} ${ennemi.attaques[client.randomInt(0, ennemi.attaques.length - 1)]} Vous perdez !`);
+            embed.setAuthor(`Défaite...`, message.author.displayAvatarURL())
+            .setColor('BF2F00')
+            .setDescription(`**${ennemi.name}** ${ennemi.attaques[client.randomInt(0, ennemi.attaques.length - 1)]}${phrasePerdre[client.randomInt(0, phrasePerdre.length - 1)]}...`);
+            message.channel.send({embeds:[embed]});
         }
         await client.updateUser(message.member, {cooldown_ennemi: Date.now()});
     }
@@ -52,7 +64,7 @@ module.exports.help = {
     name: "ennemi",
     aliases: ['enm'],
     category: "generalrpg",
-    desription: "Battez vous contre un ennemi pour gagner de l'xp",
+    desription: "Tentez de vous battre contre un ennemi pour possiblement gagner diverses récompenses.",
     usage: '',
     cooldown: 3, 
     permissions: false,

@@ -53,7 +53,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             // TODO: POST BETA: Ajouter un point d'amitié avec la faction de l'utilisateur cible (voir cahier des charges. #idées-bonnes).
         } */
 
-        let randomPiete = client.randomInt(4, 6); // ? DraxyNote à équilibrer peut être
+        let randomPiete = client.randomInt(4, 5);
     
         const m = message.channel.send("Vous recherchez un SDF ...").then(async msg => {
             if(member_ran == message.member) {

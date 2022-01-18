@@ -1,15 +1,22 @@
+const {MessageEmbed} = require('discord.js');
+
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
     if(!args[0]) { // consultation
+        const embed = new MessageEmbed()
+        .setAuthor(`Personnes présentes dans les cachots :`, message.author.displayAvatarURL())
+        .setColor('303133');
         var nombre = 0;
         client.getUsersInjail().then(p => { 
             p.forEach(e => { 
                 nombre++;
                 if(e.faction == dbUser.faction) { 
-                   message.channel.send(`${e.username} se trouve dans les cachots de votre faction.`); // ? DraxyNote : on pourra ici faire comme avec les points vénitienne, un embed pour que ça fasse un seul et beau message.
+                    embed.addField(`** **`, `${e.username}`, true);
+                    //message.channel.send(`${e.username} se trouve dans les cachots de votre faction.`);
                 }
             }) 
             if(nombre == 0) return message.channel.send("Il n'y a personne dans les cachots de votre faction.");
+            else return message.channel.send({embeds:[embed]}); // ? RomarNote
         }).catch(c => {message.channel.send("Il n'y a personne dans les cachots de votre faction. Ou une erreur s'est produite : " + c);});
 
        
@@ -67,7 +74,7 @@ module.exports.help = {
     name: "cachots",
     aliases: ['cachot', 'prison'],
     category: "faction",
-    desription: "Gestion des cachots",
+    desription: "Permet de gérer les cachots de votre faction. Soit enfermer, soit libérer quelqu'un.",
     usage: '<enfermer/libérer> <@USER>',
     cooldown: 3,  
     permissions: false,
