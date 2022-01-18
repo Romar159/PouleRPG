@@ -55,11 +55,41 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     //if(dbUser.training == true) message.reply("OUI ! D'accord ! Il s'entraine.");
 
-    
+    /*
     client.channels.cache.get("415947202649653249").messages.fetch("930886480895823892")
     .then(message => message.react(`❄️`))
-    .catch(console.error);
+    .catch(console.error); */
 
+
+
+    /*let nb_gains = client.randomInt(1, 3);
+
+    for(i=0, i<nb_gains, i++) {
+        let id_gain = client.randomInt(1, 3);
+        let buffer = id_gain;
+        if(id_gain = 0)
+    }*/
+
+
+/* GAINS MULTIPLE ENNEMIS
+    //xp = 1, or = 2, piete = 3
+    let a = [1, 2, 3];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    let final_array = a.slice(0, client.randomInt(1, 3)).sort();
+    let gagner = ` `;
+    for(i=0; i<final_array.length; i++) {
+        if(final_array[i] == 1) { gagner = gagner + `+50xp`; client.setXp(client, message.member, 50)}
+        if(final_array[i] == 2) { gagner = gagner + `+2 or`; client.setOr(client, message.member, 2, message)}
+        if(final_array[i] == 3) { gagner = gagner + `+5 piété `; client.editPoint(client, message.member, 5, `piete`)}
+        if(i<final_array.length - 1) gagner = gagner + " | ";
+    }
+    message.channel.send(`${gagner}`);
+*/
+
+    
 };
   
 module.exports.help = {

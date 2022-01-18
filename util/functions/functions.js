@@ -199,6 +199,12 @@ module.exports = client => {
         return result = jsonObject.filter(obj => obj.rarete == rarete);
     }
 
+    client.filterByLevel = (jsonObject, dbUser) => { // s'utilise que pour les ennemis
+        //return jsonObject.filter(function(jsonObject) { return (jsonObject['rarete'] == rarete);})[0];
+
+        return result = jsonObject.filter(obj => obj.levelMin > dbUser.level - 5 && obj.levelMax < dbUser.level + 5);
+    }
+
     // POINTS :
 
     // ex editpoint(50, "piete")

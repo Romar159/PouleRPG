@@ -32,7 +32,17 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             return message.reply("Vous devez posséder une classe avant de lancer un combat. faites `p<préférencecsguerre` pour selectionner votre classe.");
         }
 
-        let ennemi = ennemis[client.randomInt(0, ennemis.length - 1)];
+        //let ennemi = ennemis[client.randomInt(0, ennemis.length - 1)];
+
+        let f_enm = client.filterByLevel(ennemis, dbUser);
+        let ennemi = f_enm[client.randomInt(0, f_enm.length - 1)];
+
+        if(!ennemi) ennemi = ennemis[client.randomInt(0, ennemis.length - 1)];
+
+
+        //recup tous les mobs compris entre dbUser.level - 5 et dbUser.level + 5;
+        //while(ennemi.levelMax > dbUser.level + 5)
+
         let LevelMob = client.randomInt(ennemi.levelMin, ennemi.levelMax);
 
         
@@ -53,7 +63,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         } else { //lose
             embed.setAuthor(`Défaite...`, message.author.displayAvatarURL())
             .setColor('BF2F00')
-            .setDescription(`**${ennemi.name}** ${ennemi.attaques[client.randomInt(0, ennemi.attaques.length - 1)]}${phrasePerdre[client.randomInt(0, phrasePerdre.length - 1)]}...`);
+            .setDescription(`**${ennemi.name}** de niveau **${LevelMob}** ${ennemi.attaques[client.randomInt(0, ennemi.attaques.length - 1)]}${phrasePerdre[client.randomInt(0, phrasePerdre.length - 1)]}...`);
             message.channel.send({embeds:[embed]});
         }
         await client.updateUser(message.member, {cooldown_ennemi: Date.now()});
@@ -66,30 +76,7 @@ module.exports.help = {
     category: "generalrpg",
     desription: "Tentez de vous battre contre un ennemi pour possiblement gagner diverses récompenses.",
     usage: '',
-    cooldown: 3, 
+    cooldown: 1, 
     permissions: false,
     args: false,
 };
-
-/* Ennemis random dev
-
-    {
-        "id": 0,
-        "name": "Slime",
-        "levelMin": 1,
-        "levelMax": 6,
-        "ranMin": 0.5,
-        "ranMax": 1.3,
-        "attaques": ["lance de la gêlée", "vous étouffe"]
-    },
-    {
-        "id": 1,
-        "name": "Satanas Chicken",
-        "levelMin": 150,
-        "levelMax": 300,
-        "ranMin": 0.950,
-        "ranMax": 3.5,
-        "attaques": ["Fait apparaître un restaurant KFC", "vous dit qu'il va anéantir tous les poulets du monde pour les manger !"]
-    }
-
-*/
