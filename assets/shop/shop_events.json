@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "name": "pack civil 1",
+        "description": "Un premier pack d'event pour la vie civil",
+        "price": 25,
+        "action": "message.channel.send(`Le pack d'event **pack civil 1** est maintenant activé (c fo)`);"
+    },
+    {
+        "id": 2,
+        "name": "pack riche 1",
+        "description": "Un premier pack d'event pour les riches",
+        "price": 500,
+        "action": "message.channel.send(`Le pack d'event **pack riche 1** est maintenant activé (c fo)`);"
+    }
+]

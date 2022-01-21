@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "Bâton super nul",
+        "description" : "ça sert à r ptdr",
+        "price": 50,
+        "action": "message.channel.send(`Ajout de l'item effectué (c fo)`);"
+
+    },
+    {
+        "id": 2,
+        "name": "Un tasse",
+        "description" : "t'as cru la céramique c t cool ?",
+        "price": 25,
+        "action": "message.channel.send(`Ajout de l'item effectué (c fo)`);"
+
+    },
+    {
+        "id": 3,
+        "name": "Statue à l'éfigie de meeh",
+        "description" : "C'est pas bg tout ça ?",
+        "price": 50000,
+        "action": "message.channel.send(`Ajout de l'item effectué (c fo)`);"
+
+    }
+]

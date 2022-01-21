@@ -11,7 +11,7 @@
     },
     {
         "id" : 1,
-        "name" : "Accident de scene",
+        "name" : "L'accident de scène",
         "rarete" : 800,
         "condition" : "/",
         "description" : "Jacqueline tombe de la scène ! Une de ses pièces tombe de sa poche, que faite-vous ?\n\n💰 : Vous récupérez la pièce pour vous.\n🤚 : Vous aidez Jacqueline à se relever.\n🗣️ : Vous rigolez de la situation.",
