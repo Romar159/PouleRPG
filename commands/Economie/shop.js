@@ -1,74 +1,252 @@
-const {MessageEmbed} = require('discord.js');
+const {MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
+var json_shop;
+var is_event = false;
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
-    // ! INFONCTIONNEL -> Sera rework dans une prochaine màj
-    let items = [];
-    const shop = require('../../assets/shop/shop.json');
-    let or = dbUser.or;
 
-    const embed = new MessageEmbed()
-    .setTitle(":shopping_cart: Magasin civil :shopping_bags:")
-    .setColor('#F2DB0C')
-  
-    shop.map(e => { items.push(`${e.id} • ${e.name} | ${e.price} Or`) });
-    embed.setDescription(`Voici les différents objets disponibles :\n\n${items.map(item => `• **${item}**`).join('\n')}`);
-    message.channel.send({embeds:[embed]});
+    if(!args[0]) {
+        const filter = i => (i.customId === 'pts' || i.customId === 'itm' || i.customId === "evt") && i.user.id === message.author.id;
+        const filterItems = i2 => (i2.customId === 'expe' || i2.customId === 'craft' || i2.customId === "eqip") && i2.user.id === message.author.id;
 
-    const filter = m => (message.author.id === m.author.id);
-    const userEntry = await message.channel.awaitMessages(filter, {
-        max:1, time:60000, errors: ['time']
-    });
+    
+        const collector = message.channel.createMessageComponentCollector({ filter, time: 15000 });
+        const row = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+                .setCustomId('pts')
+                .setLabel('Points')
+                .setStyle('PRIMARY'),
+            new MessageButton()
+                .setCustomId('itm')
+                .setLabel('Items')
+                .setStyle('PRIMARY'),
+            new MessageButton()
+                .setCustomId('evt')
+                .setLabel('Events')
+                .setStyle('PRIMARY'), 
+        );
 
- 
-    if(userEntry.first().content) {
-        let args2 = userEntry.first().content.split(/ +/);
-        let quantity = 0;
-        let item;
-        
-        if(isNaN(userEntry.first().content)) {
-            if(client.filterByName(shop, userEntry.first().content.toLowerCase())) {
-                item = client.filterByName(shop, userEntry.first().content.toLowerCase());
-            } else {
-                return message.channel.send("Cet item n'existe pas attardé de première.");
+        const items_collector = message.channel.createMessageComponentCollector({ filterItems, time: 15000 });
+        const items_row = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+                .setCustomId('expe')
+                .setLabel('Expédition')
+                .setStyle('SECONDARY'),
+            new MessageButton()
+                .setCustomId('craft')
+                .setLabel('Crafts')
+                .setStyle('SECONDARY'),
+            new MessageButton()
+                .setCustomId('eqip') 
+                .setLabel('⚔️ Équipement')
+                .setStyle('SECONDARY'),
+        );
+
+        const embed = new MessageEmbed()
+        .setColor('BF2F00')
+        .setAuthor(`List item`, client.user.displayAvatarURL());
+
+
+        collector.on('collect', async i => {
+            if (i.customId === 'pts') {
+                await i.deferUpdate();
+                json_shop = require('../../assets/shop/shop_points.json');
+                json_shop.forEach(element => {
+                    embed.addField(`\`${element.id}\` - ${element.name}`, `${element.description} | ${element.price} :coin:`)
+                });
+                await i.editReply({ embeds:[embed], components: [] });
             }
-        } else {
-            if(isNaN(args2[0])) return message.channel.send(`Cet item n'existe pas fils de con.`);
+            else if (i.customId === 'itm') {
+                await i.deferUpdate();
+                items_collector.on('collect', async i2 => {
+                    if (i2.customId === 'expe') {
+                        await i2.deferUpdate();
+                        json_shop = require('../../assets/shop/items/shop_items_expedition.json');
 
-            if(client.filterById(shop, args2[0])) {
-                item = client.filterById(shop, args2[0]);
-            } else {
-                return message.reply("Cet item n'existe pas enculé.");
+                        json_shop.forEach(element => {
+                            embed.addField(`\`${element.id}\` - ${element.name}`, `${element.description} | ${element.price} :coin:`)
+                        });
+                        await i2.editReply({ embeds:[embed], components: [] });
+                        
+                    }
+                    else if (i2.customId === 'craft') {
+                        await i2.deferUpdate();
+                        json_shop = require('../../assets/shop/items/shop_items_craft.json');
+                        json_shop.forEach(element => {
+                            embed.addField(`\`${element.id}\` - ${element.name}`, `${element.description} | ${element.price} :coin:`)
+                        });
+                        await i2.editReply({ embeds:[embed], components: [] });
+
+                    }
+                    else if (i2.customId === 'eqip') {
+                        await i2.deferUpdate();
+                        json_shop = require('../../assets/shop/items/shop_items_equipement.json');
+
+                        json_shop.forEach(element => {
+                            embed.addField(`\`${element.id}\` - ${element.name}`, `${element.description} | ${element.price} :coin:`)
+                        });
+                        await i2.editReply({ embeds:[embed], components: [] });
+                        
+
+
+                    }
+
+                    
+                    // Pour choisir les items
+                    /*let filter = m => m.author.id === message.author.id;
+                    let collectorsd = message.channel.createMessageCollector({ filter, time: 15000, maxProcessed: 1 });
+                        
+                    await collectorsd.on('collect', m => {
+                        let choix = m.content.split(' ');
+                        let quantité = 1;
+                        if(!isNaN(choix[0])) {
+                            if(choix[1]) {
+                                if(!isNaN(choix[1])) {
+                                    if(choix[1] < 1) return message.reply(`Quantité invalide. Ne peut être en dessous de 1`);
+                                    quantité = choix[1]
+                                } else {
+                                    return message.reply(`Quantité invalide.`);
+                                }
+                            }
+
+                            if(choix[0] <= json_shop.length && choix[0] > 0) {
+                                quantité = parseInt(quantité);
+
+                                //message.channel.send(`Collected ${json_shop[choix[0] - 1].name} * ${quantité}`); //*debug
+                                let prix_total = json_shop[choix[0] - 1].price * quantité;
+                                if(prix_total > dbUser.or) return message.reply(`Vous n'avez pas assez d'or pour payer ${prix_total}. Vous possédez actuellement ${dbUser.or}`);
+                                client.setOr(client, message.member, -prix_total, message);
+                                eval(json_shop[choix[0] - 1].action);
+                                return message.channel.send(`Merci pour votre achat de ${quantité} ${json_shop[choix[0] - 1].name} pour un total de ${prix_total} :coin: DBG`);
+                                
+                            }
+                            
+                        }
+                    });*/
+                });
+                await i.editReply({ content:`Choisissez la catégorie d'Item que vous souhaitez consulter.`, components: [items_row] });
+
             }
-        }
+            else if (i.customId === 'evt') {
+                await i.deferUpdate();
+                json_shop = require('../../assets/shop/shop_events.json');
+                json_shop.forEach(element => {
+                    embed.addField(`\`${element.id}\` - ${element.name}`, `${element.description} | ${element.price} :coin:`)
+                });
+                is_event = true;
+                await i.editReply({ embeds:[embed], components: [] });
+            }
 
-        if(!args2[0]) return message.reply("Item invalide. T'es vraiment con toi"); // Impossible
+            //pour choisir les points ou events
+            
+            let filterreste = m => m.author.id === message.author.id;
+            let collectorsd2 = message.channel.createMessageCollector({ filterreste, time: 15000, maxProcessed: 1 });
+                        
+                    await collectorsd2.on('collect', m => {
+                        let choix = m.content.split(' ');
+                        let quantité = 1;
+                        if(!isNaN(choix[0])) {
+                            if(choix[1]) {
+                                if(!isNaN(choix[1])) {
+                                    if(choix[1] < 1) return message.reply(`Quantité invalide. Ne peut être en dessous de 1`);
+                                    quantité = choix[1]
+                                } else {
+                                    return message.reply(`Quantité invalide.`);
+                                }
+                            }
 
-
-        if(item.price > or) return message.channel.send("T'as pas assez de frique sous merde.");
-        message.channel.send(`Machin cul t'as choisi cette merde : ${item.name} ! T'en veux combien fils de pute ?`);
-        // ? DraxyNote : alors dans le json il y a la ligne "description" cependant je l'ai pas inclu ici parce que 
-        // ? je sais pas si on fait une commande infoitem, ou alors quand on choisit l'item (juste au dessus) ça nous 
-        // ? dit juste à quoi il sert ? (pour l'utiliser -> 'item.description')
-
-        const filter2 = m => (message.author.id === m.author.id);
-        const userEntry2 = await message.channel.awaitMessages(filter2, {
-            max:1, time:15000, errors: ['time']
+                            if(is_event) quantité = 1; // * pas besoin de quantité, inutile d'acheter plusieurs fois un pack d'event.
+                            quantité = parseInt(quantité);
+                            // ! Il faudra également verifier si on n'a pas déjà ce pack, dans ce cas empêcher l'achat.
+                            if(choix[0] <= json_shop.length && choix[0] > 0) {
+                                //message.channel.send(`Collected ${json_shop[choix[0] - 1].name} * ${quantité}`); //*debug
+                                let prix_total = json_shop[choix[0] - 1].price * quantité;
+                                if(prix_total > dbUser.or) return message.reply(`Vous n'avez pas assez d'or pour payer ${prix_total}. Vous possédez actuellement ${dbUser.or}`);
+                                client.setOr(client, message.member, -prix_total, message);
+                                eval(json_shop[choix[0] - 1].action);
+                                return message.channel.send(`Merci pour votre achat de ${quantité} ${json_shop[choix[0] - 1].name} pour un total de ${prix_total} :coin:`);
+                            
+                            }
+                            
+                        }
+                    });
         });
 
-        if(userEntry2.first().content) {
-            let args3 = userEntry2.first().content.split(/ +/);
+        message.reply({ content:`Choisissez la catégorie que vous souhaitez consulter`, components: [row] });
 
-            if(args3[0] && isNaN(args3[0]) || args3[0] < 1) return message.reply("Quantité Invalide.");
-            if(!args3[0]) quantity = 1;
-            else quantity = args3[0];
 
-            let total = item.price * quantity;        
-            if(total > or) return message.reply(`Vous n'avez pas assez d'argent.\n Vous avez ${or} et le prix est ${total}`);
-        
-            message.channel.send(`${quantity} ${item.name} acheté(es) pour un total de **${total}** :coin:.\nMerci de votre confiance et à bientôt chez Poulamazon.`);
-            client.addItemById(client, message, message.member, dbUser, item.id, quantity);
+
+    } else { //Achat rapide en une commande
+        let quantité = 1;
+        if(isNaN(args[0])) return message.reply(`Cette catégorie n'existe pas.`);
+        if(args[0] < 1 || args[0] > 3) return message.reply(`Cette catégorie n'existe pas.`);
+        if(args[0] == 2 && isNaN(args[1])) return message.reply(`Cette sous-catégorie d'item n'existe pas.`);
+        if(args[0] == 2 && args[1] > 3) return message.reply(`Cette catégorie d'item n'existe pas.`);
+        if(args[0] == 2 && args[1] < 1) return message.reply(`Cette catégorie d'item n'existe pas.`);
+
+        if(args[0] == 1) { // points
+
+            json_shop = require('../../assets/shop/shop_points.json');
+
+            if(!args[1]) return message.reply(`Veuillez renseigner un identifiant valide.`);
+            if(args[1] > json_shop.length) return message.reply(`Cet item n'existe pas.`);
+            if(args[1] < 1) return message.reply(`Cet item n'existe pas`);
+            if(args[2]) {
+                if(!isNaN(args[2])) {
+                    quantité = args[2];
+                }
+            }
+            quantité = parseInt(quantité);
+
+            let prix_total = json_shop[args[1] - 1].price * quantité;
+            if(prix_total > dbUser.or) return message.reply(`Vous n'avez pas assez d'or pour payer ${prix_total}. Vous possédez actuellement ${dbUser.or}`);
+            await client.setOr(client, message.member, -prix_total, message);
+            eval(json_shop[args[1] - 1].action)
+            return message.channel.send(`Merci pour votre achat de ${quantité} ${json_shop[args[1] - 1].name} pour un total de ${prix_total} :coin:`);
+        }
+        else if(args[0] == 2) { // items
+            if(args[1] > 3) return message.reply(`Cette sous-catégorie d'item n'existe pas.`);
+            if(args[1] < 1) return message.reply(`Cette sous-catégorie d'item n'existe pas.`);
+            if(!args[1]) return message.reply(`Veuillez renseigner une sous-catégorie d'item valide.`);
+
+            if(args[1] == 1) json_shop = require('../../assets/shop/items/shop_items_expedition.json');
+            else if(args[1] == 2) json_shop = require('../../assets/shop/items/shop_items_craft.json');
+            else if(args[1] == 3) json_shop = require('../../assets/shop/items/shop_items_equipement.json');
+
+            if(args[2] > json_shop.length) return message.reply(`Cet item n'existe pas.`);
+            if(args[2] < 1) return message.reply(`Cet item n'existe pas`);
+            if(!args[2]) return message.reply(`Veuillez renseigner un identifiant valide.`);
+
+            if(args[3]) {
+                if(!isNaN(args[3])) {
+                    quantité = args[3];
+                }
+            }
+            quantité = parseInt(quantité);
+
+            let prix_total = json_shop[args[2] - 1].price * quantité;
+            if(prix_total > dbUser.or) return message.reply(`Vous n'avez pas assez d'or pour payer ${prix_total}. Vous possédez actuellement ${dbUser.or}`);
+            await client.setOr(client, message.member, -prix_total, message);
+            eval(json_shop[args[2] - 1].action)
+            return message.channel.send(`Merci pour votre achat de ${quantité} ${json_shop[args[2] - 1].name} pour un total de ${prix_total} :coin:`);
+
+        }
+        else if(args[0] == 3) { // events
+
+            json_shop = require('../../assets/shop/shop_events.json');
+
+            if(!args[1]) return message.reply(`Cet item n'existe pas.`);
+            if(args[1] > json_shop.length) return message.reply(`Cet item n'existe pas.`);
+            if(args[1] < 1) return message.reply(`Cet item n'existe pas`);
             
+            // * pas besoin de quantité, inutile d'acheter plusieurs fois un pack d'event.
+            let prix_total = json_shop[args[1] - 1].price;
+            if(prix_total > dbUser.or) return message.reply(`Vous n'avez pas assez d'or pour payer ${prix_total}. Vous possédez actuellement ${dbUser.or}`);
+            await client.setOr(client, message.member, -prix_total, message);
+            eval(json_shop[args[1] - 1].action)
+            return message.channel.send(`Merci pour votre achat de ${json_shop[args[1] - 1].name} pour un total de ${prix_total} :coin:`);
         }
     } 
 };

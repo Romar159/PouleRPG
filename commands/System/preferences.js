@@ -1,11 +1,12 @@
 module.exports.run = async (client, message, args, settings, dbUser) => {
+    const json_armes = require('../../assets/rpg/armes.json');
     if(!args[0]) {
-        return message.channel.send(`**Options modifiables**\n\n**[defautArene]** : Arme par défaut dans l'arène : \nActuel : **${dbUser.preferences_defaultArene}** \noptions : dague/glaive/lance/arbalète/claymore`);
+        return message.channel.send(`**Options modifiables**\n\n**[ArmeFavorite]** : Votre arme favorite que vous utilisez partout : \nActuel : **${json_armes[dbUser.armeFavorite].name}** \noptions : ${json_armes[0].name};${json_armes[1].name};${json_armes[2].name};${json_armes[3].name};${json_armes[4].name}`);
     }
 
-    else if(args[0] == 'defautArene') {
-        if(args[1] === "dague" || args[1] == "glaive" || args[1] == "lance" || args[1] == "arbalète" || args[1] == "claymore") {
-            await client.updateUser(message.member, {preferences_defaultArene : args[1]});
+    else if(args[0] == 'armefavorite') {
+        if(args[1] === "épée" || args[1] == "arc" || args[1] == "pique" || args[1] == "bouclier" || args[1] == "marteau") {
+            await client.updateUser(message.member, {armeFavorite : client.filterByName(json_armes, args[1]).id});
             return message.reply(`Votre arme par défaut est à présent : **${args[1]}**`);
         } 
         return message.reply("Cette arme n'existe pas.");

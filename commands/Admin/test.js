@@ -89,6 +89,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     message.channel.send(`${gagner}`);
 */
 
+message.channel.send(`Coucou`);
     
 };
   

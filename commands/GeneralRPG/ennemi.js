@@ -1,11 +1,12 @@
 const { MessageEmbed } = require("discord.js");
-const ennemis = require("../../assets/rpg/ennemis.json")
+const ennemis = require("../../assets/rpg/ennemis.json");
+const armes = require("../../assets/rpg/armes.json");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
     const dailyCD = 3600000 * 2;
     
     const lastDaily = await dbUser.cooldown_ennemi;
-    if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) < 0) { //cooldown pas encore passé.
+    if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
         const cdTime = dailyCD - (Date.now() - lastDaily);
         message.reply(`Il vous reste encore **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes à attendre avant de pouvoir combattre un ennemi de nouveau !`);
     } else { // Si le cooldown est passé.
@@ -13,23 +14,33 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         let ranMin;
         let ranMax;
         let phrase;
-        let phrasePerdre = [" cependant, vous n'arrivez pas à encaisser le choc", ", cela vous détruit", " et vous n'arrivez pas à le supporter", ", la force de cette attaque vous tétanise", ", cela vous donne le cancer", " et vous tombez au sol", ", vous essayez d'esquiver mais ce fut un échec"]
+        let phrasePerdre = [" cependant, vous n'arrivez pas à encaisser le choc", ", cela vous détruit", " et vous n'arrivez pas à le supporter", ", la force de cette attaque vous tétanise", ", cela vous donne le cancer", " et vous tombez au sol", ", vous essayez d'esquiver mais c'est un échec"]
         let gagner;
 
-        if(dbUser.class == "guerrier") {
-            ranMin = 0.8;
+        if(dbUser.armeFavorite == 0) {
+            ranMin = 0.8; // ? DraxyNote : Il faudra certainement revoir ici les ranMin et ranMax de chaque arme ; Ainsi que probablement les ajouter au json des armes.
             ranMax = 1.2;
-            phrase = ["Vous donnez un violent coup d'épée sur", "Vous tranchez violemment"]
-        } else if(dbUser.class == "archer") {
+            phrase = armes[0].attaques;
+        } 
+        else if(dbUser.armeFavorite == 1) {
             ranMin = 0.7;
             ranMax = 1.3;
-            phrase = ["Vous tirez une flèche très puissante sur", "Vous tirez une pluie de flèches sur", "Vous décochez une sublime flèche sur"]
-        } else if(dbUser.class == "cavalier") {
+            phrase = armes[1].attaques;
+        } 
+        else if(dbUser.armeFavorite == 2) {
             ranMin = 0.9;
             ranMax = 1.1;
-            phrase = ["Vous foncez avec votre cheval sur"]
-        } else {
-            return message.reply("Vous devez posséder une classe avant de lancer un combat. faites `p<préférencecsguerre` pour selectionner votre classe.");
+            phrase = armes[2].attaques;
+        } 
+        else if(dbUser.armeFavorite == 3) {
+            ranMin = 0.9;
+            ranMax = 1.1;
+            phrase = armes[3].attaques;
+        }
+        else if(dbUser.armeFavorite == 4) {
+            ranMin = 0.9;
+            ranMax = 1.1;
+            phrase = armes[4].attaques;
         }
 
         //let ennemi = ennemis[client.randomInt(0, ennemis.length - 1)];
@@ -40,12 +51,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         if(!ennemi) ennemi = ennemis[client.randomInt(0, ennemis.length - 1)];
 
 
-        //recup tous les mobs compris entre dbUser.level - 5 et dbUser.level + 5;
-        //while(ennemi.levelMax > dbUser.level + 5)
-
         let LevelMob = client.randomInt(ennemi.levelMin, ennemi.levelMax);
 
-        
         let final_user = (dbUser.level * client.randomFloat(ranMin, ranMax)) / (LevelMob * client.randomFloat(ennemi.ranMin, ennemi.ranMax));
         let final_mob = (LevelMob * client.randomFloat(ennemi.ranMin, ennemi.ranMax)) / (dbUser.level * client.randomFloat(ranMin, ranMax));
 
@@ -76,7 +83,7 @@ module.exports.help = {
     category: "generalrpg",
     desription: "Tentez de vous battre contre un ennemi pour possiblement gagner diverses récompenses.",
     usage: '',
-    cooldown: 1, 
+    cooldown: 3, 
     permissions: false,
     args: false,
 };

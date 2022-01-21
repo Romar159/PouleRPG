@@ -41,10 +41,7 @@ const userSchema = mongoose.Schema({
         "default": 0
     },
 
-    powerpoints : { // points de puissance
-        "type": Number,
-        "default": 0
-    },
+    
 
 
     metier : {
@@ -174,6 +171,11 @@ const userSchema = mongoose.Schema({
         "default" : "dague"
     },
 
+    armeFavorite : {
+        "type" : Number,
+        "default" : 0
+    },
+
     // états précis :
 
     in_jail : {
@@ -207,7 +209,10 @@ const userSchema = mongoose.Schema({
 
     // pts
 
-    // les points de puissance sont plus haut étant donné qu'ils sont un peu spéciaux.
+    powerpoints : { // points de puissance
+        "type": Number,
+        "default": 0
+    },
 
     piete : {
         "type": Number,

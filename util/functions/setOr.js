@@ -1,4 +1,14 @@
 module.exports = (client, member, message) => {
+
+    /**
+     * Ajoute ou retire de l'or à un utilisateur
+     *
+     * @author: Romar1
+     * @param {Client} client le client.
+     * @param {GuildMember} member le membre à éditer.
+     * @param {number} or quantité négative ou positive à éditer.
+     * @param {Message} message évènement message pour interragir à l'écrit.
+     */
     client.setOr = async (client, member, or, message) => {
 
         await client.updateMaxBank(client, member);
@@ -19,7 +29,7 @@ module.exports = (client, member, message) => {
             updatedOr = parseInt(userToUpdate.maxbank);
         }
 
-        //if (updatedOr < 0) updatedOr = 0; // ! Avoir de l'argent en négatif.
+        if (updatedOr < 0) updatedOr = 0; // * Avoir de l'argent en négatif.
         await client.updateUser(member, { or: updatedOr});
     }
 };
