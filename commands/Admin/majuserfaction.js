@@ -12,8 +12,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 };
   
 module.exports.help = {
-    name: "majbdduser",
-    aliases: ['mbu'],
+    name: "majuserfaction",
+    aliases: ['muf', 'leProfLol'],
     category: "admin",
     desription: "Mets à jour la faction d'un utilisateur dans la base de données.",
     usage: '<@user>',
