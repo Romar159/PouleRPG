@@ -1,0 +1,11 @@
+[
+    {
+        "id" : 0,
+        "name" : "Ouaaaais hehe la mission",
+        "rarete" : 1000,
+        "condition" : "/",
+        "description" : "En mission tu fais quoi woula",
+        "reactions" : ["🔓", "😴"],
+        "commands" : ["message.channel.send('Je régule');", "message.channel.send('Je ne fous rien');"]
+    }
+]

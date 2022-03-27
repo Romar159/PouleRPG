@@ -1,0 +1,11 @@
+[
+    {
+        "id" : 0,
+        "name" : "Ouaaaais hehe la strat",
+        "rarete" : 1000,
+        "condition" : "/",
+        "description" : "Trop la machiavélence",
+        "reactions" : ["🔓", "😴"],
+        "commands" : ["message.channel.send('C'est fermé :)');", "message.channel.send('Tu ne fous rien :)');"]
+    }
+]

@@ -1,0 +1,11 @@
+[
+    {
+        "id" : 0,
+        "name" : "Travail",
+        "rarete" : 1000,
+        "condition" : "/",
+        "description" : "Il se passe quoi là",
+        "reactions" : ["🔓", "😴"],
+        "commands" : ["message.channel.send('Je fais des cadenas ?');", "message.channel.send('Je dors ?');"]
+    }
+]
