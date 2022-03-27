@@ -4,6 +4,7 @@ const {DEFAULTSETTINGS: defaults} = require("../config");
 const factionSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: String,
+    displayname: String,
     channelid : String,
     roleid: String,
 
@@ -54,6 +55,14 @@ const factionSchema = mongoose.Schema({
         "type": String,
         "default": "NULL"
     },
+
+    joueurs_sur_le_territoire: {
+        "type": Array,
+        "default": ['']
+    },
+
+    cachot: Array,
+    
 
     ptsami_epsilon: Number,
     ptsami_dairos: Number,

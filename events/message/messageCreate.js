@@ -49,6 +49,14 @@ module.exports = async (client, message) => {
                 if(message.member.roles.cache.has('415947455582961686')) return await client.updateUser(message.member, {faction: "daïros"});
                 if(message.member.roles.cache.has('415947456342130699')) return await client.updateUser(message.member, {faction: "lyomah"});
                 if(message.member.roles.cache.has('665340021640921099')) return await client.updateUser(message.member, {faction: "alpha"});
+            } else {
+                if(message.member.roles.cache.has('415947454626660366')) {      await client.updateUser(message.member, {faction: "epsilon"}); }
+                else if(message.member.roles.cache.has('415947455582961686')) { await client.updateUser(message.member, {faction: "daïros"}); }
+                else if(message.member.roles.cache.has('415947456342130699')) { await client.updateUser(message.member, {faction: "lyomah"}); }
+                else if(message.member.roles.cache.has('665340021640921099')) { await client.updateUser(message.member, {faction: "alpha"}); }
+                else {
+                    await client.updateUser(message.member, {faction: "NULL"});
+                }
             }
         }
     }

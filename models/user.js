@@ -119,6 +119,10 @@ const userSchema = mongoose.Schema({
         "type": Number,
         "default": 0
     },
+    localisation_expedition : {
+        "type": String,
+        "default": "NULL"
+    },
 
     level_mee6 : {
         "type": Number,
@@ -247,6 +251,15 @@ const userSchema = mongoose.Schema({
     moral : {
         "type": Number,
         "default": 0
+    },
+
+    ranMinEnnemi : {
+        "type": Number,
+        "default": 0.7
+    },
+    ranMaxEnnemi : {
+        "type": Number,
+        "default": 1.3
     }
 });
 

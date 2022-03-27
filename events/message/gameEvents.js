@@ -5,8 +5,12 @@ let events = require("../../assets/rpg/events/events.json");
 module.exports = async (client, message, args, settings) => { 
 
 
-    let general_events_rarity = [4000, 800, 500];
+    let general_events_rarity = [4000, 800, 600];
     let cachot_events_rarity = [1000, 900];
+    let mission_events_rarity = [1000];
+    let working_events_rarity = [1000];
+    let expedition_events_rarity = [1000, 500];
+    let conspiring_events_rarity = [1000];
 
 
     let rarity_sorting = general_events_rarity; // de base on prend les events généraux.
@@ -17,6 +21,30 @@ module.exports = async (client, message, args, settings) => {
     if(dbUser.in_jail == 'true') { // Si l'utilisateur est au cachot on utilise le json des events de cachot (et ses raretés)
         events = require("../../assets/rpg/events/events_cachots.json");
         rarity_sorting = cachot_events_rarity; // on prend donc les raretés des events cachots.
+    } 
+    
+    else if(dbUser.on_mission == 'true') {
+        events = require("../../assets/rpg/events/events_mission.json");
+        rarity_sorting = mission_events_rarity; // on prend donc les raretés des events mission.
+    } 
+    
+    else if(dbUser.working == 'true') {
+        events = require("../../assets/rpg/events/events_work.json");
+        rarity_sorting = working_events_rarity; // on prend donc les raretés des events travail.
+    }
+
+    else if(dbUser.expedition_duration != 0) {
+        events = require("../../assets/rpg/events/events_expedition.json");
+        rarity_sorting = expedition_events_rarity; // on prend donc les raretés des events expédition.
+    }
+
+    else if(dbUser.conspiring == 'true') {
+        events = require("../../assets/rpg/events/events_conspiration.json");
+        rarity_sorting = conspiring_events_rarity; // on prend donc les raretés des events expédition.
+    } else {
+        events = require("../../assets/rpg/events/events.json");
+        rarity_sorting = general_events_rarity;
+
     }
 
     // Selecteur d'event
@@ -41,6 +69,7 @@ module.exports = async (client, message, args, settings) => {
     //console.log(`DEBUG: ${final_event.name}`); // debug 
     //console.log(`DEBUG: ${ran_key}`);
     
+    //console.log(final_event);
     if(client.randomInt(0, final_event.rarete) == 1) { // faire le random entre 0 et final_event.rarete pour définir si on lance l'event ou non.
         if(final_event.condition == "/") { // il n'y a pas de condition
         } else {
