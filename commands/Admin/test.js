@@ -1,4 +1,4 @@
-const { MessageActionRow, MessageButton, MessageCollector } = require("discord.js");
+const { MessageActionRow, MessageButton, MessageCollector, MessageEmbed } = require("discord.js");
 const {PREFIX} = require('../../config');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
@@ -89,8 +89,25 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     message.channel.send(`${gagner}`);
 */
 
-message.channel.send(`Coucou`);
-    
+//message.channel.send(`Coucou`);
+let epsilon = await client.getFaction('epsilon');
+let dairos = await client.getFaction('daïros');
+let lyomah = await client.getFaction('lyomah');
+let alpha = await client.getFaction('alpha');
+
+/*let array = epsilon.joueurs_sur_le_territoire;
+array.push(dbUser.userID.toString());
+message.channel.send("DBG: " + array);
+await client.updateFaction(epsilon.name, {joueurs_sur_le_territoire: array});
+*/
+//message.channel.send(`${faction.joueurs_sur_le_territoire}`);
+//await client.updateFaction(faction, {joueurs_sur_le_territoire: faction.joueurs_sur_le_territoire.push(dbUser.userID)});
+//message.channel.send(`Ep: ${epsilon.joueurs_sur_le_territoire} Da: ${dairos.joueurs_sur_le_territoire} Ly: ${lyomah.joueurs_sur_le_territoire} Al: ${alpha.joueurs_sur_le_territoire}`);
+
+
+            /*let arr = epsilon.joueurs_sur_le_territoire;
+            arr = arr.filter(e => e !== dbUser.userID);
+            message.channel.send("data: " + arr + " debug: " + dbUser.userID);*/
 };
   
 module.exports.help = {

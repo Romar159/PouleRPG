@@ -53,11 +53,11 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
 module.exports.help = {
     name: "profil",
-    aliases: ['utilisateur'],
+    aliases: ['utilisateur', 'pr'],
     category: "generalrpg",
     desription: "Affiche votre profil complet.",
     usage: "",
     cooldown: 1,
     permissions: false,
     args: false
-};
+}; 

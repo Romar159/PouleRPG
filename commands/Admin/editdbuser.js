@@ -202,6 +202,14 @@ module.exports.run = async (client, message, args, settings) => {
             message.channel.send(`Actuel : ${dbMember.training} \n\ntrue;false`);
             break;
         }
+        case "on_mission": {
+            if(newSetting) {
+                await client.updateUser(member, {on_mission: newSetting});
+                return message.channel.send(`on_mission mise à jour : \`${dbMember.on_mission}\`->\`${newSetting}\``);
+            }
+            message.channel.send(`Actuel : ${dbMember.on_mission} \n\ntrue;false`);
+            break;
+        }
     }
  };
    

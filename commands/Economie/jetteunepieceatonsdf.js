@@ -59,7 +59,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             if(member_ran == message.member) {
                 msg.edit(`:coin: Vous avez jeté un sous à ce SDF de **${member_ran.displayName}**`);
             } else {
-                await client.editPoint(client, member_ran, randomPiete, "piete");
+                await client.editPoint(client, message.member, randomPiete, "piete");
                 msg.edit(`:coin: Vous avez jeté un sous à ce SDF de **${member_ran.displayName}** et vous gagnez donc ${randomPiete} points de piété pour cette bonne action.`); // \nDebug: executed in ${msg.createdTimestamp - message.createdTimestamp}ms
             }
         });

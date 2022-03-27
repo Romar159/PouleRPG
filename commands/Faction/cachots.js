@@ -1,11 +1,31 @@
 const {MessageEmbed} = require('discord.js');
+const factionModel = require('../../models/faction');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
+
+    try {
+        var faction = await client.getFaction(dbUser.faction);
+    } catch (error) {
+        return message.reply("Vous n'avez pas de faction.");
+    }
+    
 
     if(!args[0]) { // consultation
         const embed = new MessageEmbed()
         .setAuthor(`Personnes présentes dans les cachots :`, message.author.displayAvatarURL())
         .setColor('303133');
+
+        console.log(faction.cachot.length);
+        if(faction.cachot.length < 1) {
+            return message.channel.send("Il n'y a personne dans les cachots de votre faction.");
+        }
+        return message.channel.send(`data: ${faction.cachot.join(' - ')}`);
+        
+
+        //return message.channel.send({embeds:[embed]});
+        
+
+        /*
         var nombre = 0;
         client.getUsersInjail().then(p => { 
             p.forEach(e => { 
@@ -18,7 +38,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             if(nombre == 0) return message.channel.send("Il n'y a personne dans les cachots de votre faction.");
             else return message.channel.send({embeds:[embed]}); // ? RomarNote
         }).catch(c => {message.channel.send("Il n'y a personne dans les cachots de votre faction. Ou une erreur s'est produite : " + c);});
-
+        */
        
         
 
@@ -46,21 +66,35 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         let cMembre = message.guild.members.cache.get(message.mentions.users.first().id);
         let dbMembre = await client.getUser(cMembre);
         // console.log(dbMembre.in_jail); // debug
-        if(dbMembre.faction != dbUser.faction) return message.channel.send("Cet utilisateur n'est pas membre de votre faction.");
+        if(dbMembre.faction != dbUser.faction) {
+            if(faction.joueurs_sur_le_territoire.indexOf(dbMembre.userID) == -1) {
+                return message.channel.send("Cet utilisateur n'est pas sur votre territoire.");
+            }
+        }
+        //if(dbMembre.faction != dbUser.faction ) return message.channel.send("Cet utilisateur n'est pas membre de votre faction ou n'est pas sur votre territoire.");
         
         if(args[0].toLowerCase() == "enfermer") {
-            if(dbMembre.in_jail == "true") return message.channel.send("Cet utilisateur est déjà aux cachots.");
+            if(dbMembre.in_jail == "true") return message.channel.send("Cet utilisateur est déjà dans vos cachots.");
 
-                client.updateUser(cMembre, {in_jail: true});
-                message.channel.send(`${cMembre} a été enfermé dans les cachots de la faction ${dbUser.faction} par <@${dbUser.userID}>`);
-            
+                await client.updateUser(cMembre, {in_jail: true});
+
+                let new_array = faction.cachot;
+                new_array.push(dbMembre.userID.toString());
+
+                await client.updateFaction(faction.name, {cachot: new_array});
+                message.channel.send(`${cMembre} de ${dbMembre.faction} a été enfermé dans les cachots de la faction ${dbUser.faction} par <@${dbUser.userID}>`);
         }
         else if(args[0].toLowerCase() == "libérer" || args[0].toLowerCase() == "liberer") {
-            if(dbMembre.in_jail == "false") return message.channel.send("Cet utilisateur n'est pas dans vos cachots. Vous ne vouliez pas plutôt l'enfermer ? **:)**");
+                if(dbMembre.in_jail == "false") return message.channel.send("Cet utilisateur n'est pas dans vos cachots. Vous ne vouliez pas plutôt l'enfermer ? **:)**");
 
-            
                 await client.updateUser(cMembre, {in_jail: false});
-                message.channel.send(`${cMembre} a été libéré des cachots de la faction ${dbUser.faction} par <@${dbUser.userID}>`)
+
+                let arr = faction.cachot;
+                arr = arr.filter(e => e !== dbMembre.userID);
+
+                await client.updateFaction(faction.name, {cachot: arr});
+
+                message.channel.send(`${cMembre} de ${dbMembre.faction} a été libéré des cachots de la faction ${dbUser.faction} par <@${dbUser.userID}>`)
                        
         } else {
             return message.reply("action invalide.");
