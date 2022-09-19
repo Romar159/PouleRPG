@@ -1,8 +1,13 @@
-const {MessageEmbed} = require('discord.js');
+const {EmbedBuilder} = require('discord.js');
 
 module.exports.run = (client, message, args) => {
-    if(!args[0] || !args[1]) return message.channel.send("Argument(s) attendu(s).");
-    const embed = new MessageEmbed()
+    
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
+
+    if(!args[0] || !args[1]) return message.channel.send("Argument(s) attendu(s).") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Arguments Attendus. MESSAGE=${message.content}`, "err");
+    ;
+    const embed = new EmbedBuilder()
     .setColor('BF2F00')
     .setDescription(`:game_die: Résultat : **${parseInt(client.randomInt(parseInt(args[0]), parseInt(args[1])))}**`);
 
@@ -11,7 +16,7 @@ module.exports.run = (client, message, args) => {
 
 module.exports.help = {
     name: "aléatoire",
-    aliases: ['aleatoire', 'aléa', 'alea'],
+    aliases: ['aleatoire', 'aléa', 'alea', 'random'],
     category: "entertainment",
     desription: "Renvoie un entier aléatoire compris entre le minimum et maximum définis.",
     usage: '<minimum> <maximum>',

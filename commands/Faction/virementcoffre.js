@@ -1,4 +1,4 @@
-const {MessageEmbed} = require('discord.js');
+const {EmbedBuilder} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
     var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
@@ -47,9 +47,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     await client.updateFaction(dbUser.faction, {bank: faction.bank - or});
     await client.setOr(client, member_ran, args[1], message);
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
     .setColor('F2F23C')
-    .setAuthor(`Virement effectué !`, message.author.displayAvatarURL())
+    .setAuthor({name:`Virement effectué !`, iconURL:message.author.displayAvatarURL()})
     .setDescription(`**${or}** :coin: versé à ${member_ran} du coffre de la faction **${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}**.`);
 
     message.channel.send({ embeds: [embed] });

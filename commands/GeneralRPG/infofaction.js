@@ -1,4 +1,4 @@
-const {MessageEmbed} = require("discord.js");
+const {EmbedBuilder} = require("discord.js");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
     message.guild.members.fetch().then(async fetchAll => {
@@ -15,12 +15,10 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 ppmaitre = client;
             }
 
-            const embed = new MessageEmbed()
-            .setAuthor(`Faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}`, ppmaitre.user.displayAvatarURL())
-            .addField(`:mortar_board: Maître`, maitre)
-            .addField(`:busts_in_silhouette: Nombre de membres`, `${members.size}`, true)
-            .addField(`:dart: Points de victoire`, `${faction.ptsvictoire}`, true)
-            .addField(`** **`, `** **`);
+            const embed = new EmbedBuilder()
+            .setAuthor({name:`Faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}`, iconURL: ppmaitre.user.displayAvatarURL()})
+            .addFields([{name:`:mortar_board: Maître`, value:`${maitre}`}, {name:`:busts_in_silhouette: Nombre de membres`, value:`${members.size}`}, {name:`:dart: Points de victoire`, value:`${faction.ptsvictoire}`}])
+            
 
                 //Couleurs
                 if(faction.factionid == 0)          //Epsilon
@@ -33,38 +31,36 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                     embed.setColor('F0C800');
 
                 if(faction.en_guerre)
-                    embed.addField(`:crossed_swords: ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)} est actuellement en guerre contre`, `${faction.ennemy.charAt(0).toUpperCase() + faction.ennemy.slice(1)}`);
+                    embed.addFields([{name:`:crossed_swords: ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)} est actuellement en guerre contre`, value:`${faction.ennemy.charAt(0).toUpperCase() + faction.ennemy.slice(1)}`}]);
                 else
-                    embed.addField(`:crossed_swords: ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)} n'est en guerre contre personne.`, `Relations diplomatiques stables.`, true);    
+                    embed.addFields([{name:`:crossed_swords: ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)} n'est en guerre contre personne.`, value:`Relations diplomatiques stables.`}]);    
 
                 if(faction.ally)
-                    embed.addField(`:heart: Allié`, `${faction.ally}`, true);
+                    embed.addFields([{name:`:heart: Allié`, value:`${faction.ally}`}]);
                 else
-                    embed.addField(`:heart: Allié`, `Aucune faction alliée.`, true);
+                    embed.addFields([{name:`:heart: Allié`, value:`Aucune faction alliée.`}]);
 
         
             if(message.channel.id == faction.channelid) {
-                embed.addField(`** **`, `** **`)
-                .addField(`:bank: Bank`, `${faction.bank}`, true)
-                .addField(`:money_with_wings: Taxe`, `${faction.taxe}`, true)
-                .addField(`** **`, `** **`);
+                embed.addFields([{name:`** **`, value:`** **`},{name:`:bank: Bank`, value:`${faction.bank}`},{name:`:money_with_wings: Taxe`, value:`${faction.taxe}`}])
+               
                 
                 if(faction.factionid == 0) {            //Epsilon
-                    embed.addField(`:blue_heart: Points d'amitié avec Daïros`, `${faction.ptsami_dairos}`, true)
-                    .addField(`:green_heart: Points d'amitié avec Lyomah`, `${faction.ptsami_lyomah}`, true)
-                    .addField(`:yellow_heart: Points d'amitié avec Alpha`, `${faction.ptsami_alpha}`, true);
+                    embed.addFields([{name:`:blue_heart: Points d'amitié avec Daïros`, value:`${faction.ptsami_dairos}`},{name:`:green_heart: Points d'amitié avec Lyomah`, value:`${faction.ptsami_lyomah}`},{name:`:yellow_heart: Points d'amitié avec Alpha`, value:`${faction.ptsami_alpha}`}]);
+
+                    
+                    
+                    
+                    
                 } else if(faction.factionid == 1) {     //Daïros
-                    embed.addField(`:orange_heart: Points d'amitié avec Epsilon`, `${faction.ptsami_epsilon}`, true)
-                    .addField(`:green_heart: Points d'amitié avec Lyomah`, `${faction.ptsami_lyomah}`, true)
-                    .addField(`:yellow_heart: Points d'amitié avec Alpha`, `${faction.ptsami_alpha}`, true);
+                    embed.addFields([{name:`:blue_heart: Points d'amitié avec Epsilon`, value:`${faction.ptsami_epsilon}`},{name:`:green_heart: Points d'amitié avec Lyomah`, value:`${faction.ptsami_lyomah}`},{name:`:yellow_heart: Points d'amitié avec Alpha`, value:`${faction.ptsami_alpha}`}]);
+                    
                 } else if(faction.factionid == 2) {     //Lyomah
-                    embed.addField(`:orange_heart: Points d'amitié avec Epsilon`, `${faction.ptsami_epsilon}`, true)
-                    .addField(`:blue_heart: Points d'amitié avec Daïros`, `${faction.ptsami_dairos}`, true)
-                    .addField(`:yellow_heart: Points d'amitié avec Alpha`, `${faction.ptsami_alpha}`, true);
+                    embed.addFields([{name:`:blue_heart: Points d'amitié avec Epsilon`, value:`${faction.ptsami_epsilon}`},{name:`:green_heart: Points d'amitié avec Daïros`, value:`${faction.ptsami_dairos}`},{name:`:yellow_heart: Points d'amitié avec Alpha`, value:`${faction.ptsami_alpha}`}]);
+                    
                 } else if(faction.factionid == 3) {     //Alpha
-                    embed.addField(`:orange_heart: Points d'amitié avec Epsilon`, `${faction.ptsami_epsilon}`, true)
-                    .addField(`:blue_heart: Points d'amitié avec Daïros`, `${faction.ptsami_dairos}`, true)
-                    .addField(`:green_heart: Points d'amitié avec Lyomah`, `${faction.ptsami_lyomah}`, true);
+                    embed.addFields([{name:`:blue_heart: Points d'amitié avec Epsilon`, value:`${faction.ptsami_epsilon}`},{name:`:green_heart: Points d'amitié avec Daïros`, value:`${faction.ptsami_dairos}`},{name:`:yellow_heart: Points d'amitié avec Lyomah`, value:`${faction.ptsami_lyomah}`}]);
+                    
                 }
             }
             message.channel.send(`Lois de la faction en vigueur : ...`);
@@ -74,7 +70,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         }
         catch(e) { //Mettre le ICI! <-
             if(args.length)
-                message.reply("Faction Inexistante");
+                message.reply("Faction Inexistante. " + e);
         }
     });
 }

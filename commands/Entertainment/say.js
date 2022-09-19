@@ -1,11 +1,18 @@
 module.exports.run = (client, message, args) => {
+    
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
+    
     message.delete();
 
     if(message.content.indexOf('@everyone') >= 0) {
+        client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - @everyone trouvé !`, "warn");
+
         return message.channel.send('Le contenu du message est innaproprié.');
     } else {
         message.channel.send(args.join(" "));
-    }
+        client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - MESSAGE=${args.join(" ")}`);
+    } 
 }
 
 module.exports.help = {

@@ -1,4 +1,4 @@
-const {MessageEmbed} = require('discord.js');
+const {EmbedBuilder} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
     return;
@@ -30,7 +30,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         }
         client.setOr(client, message.member, or, message);
         client.updateUser(message.member, {daily: Date.now()});
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
         .setColor('F2DB0C')
         .setAuthor('Revenue quotidien', message.author.displayAvatarURL())
         .setDescription(`**+${or}** :coin:\nVous avez actuellement **${dbUser.or + or}/${dbUser.maxbank}** :coin:`);

@@ -1,15 +1,17 @@
-const {MessageEmbed} = require('discord.js');
+const {EmbedBuilder} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
-    if(isNaN(args[0])) return message.reply("Veuillez entrer une valeur numérique.") 
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
+    if(isNaN(args[0])) return message.reply("Veuillez entrer une valeur numérique.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Valeur Invalide. MESSAGEE=${message.content}.`, "err"); 
     let x = parseInt(args[0]);
     let o = 0;
     let prestige = "";
     let richesse = "";
 
-    if(x > dbUser.or) return message.reply("Vous n'avez pas assez d'or.");
-    if(x < 5) return message.reply("Cette valeur est trop faible. Minimum 5 or");
+    if(x > dbUser.or) return message.reply("Vous n'avez pas assez d'or.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - quantité d'or trop faible. NECESSAIRE=${x} | ACTUEL=${dbUser.or} MESSAGE=${message.content}`, "err");
+    if(x < 5) return message.reply("Cette valeur est trop faible. Minimum 5 or") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Valeur trop faible. NECESSAIRE=5. MESSAGE=${message.content}`);
 
     const dailyCD = 7200000; 
     
@@ -17,6 +19,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
         const cdTime = dailyCD - (Date.now() - lastDaily);
         message.reply(`Il n'y a plus de combats sur lesquels parier ! Attendez encore **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes, il devrait y en avoir de nouveau. :hourglass:`);
+        client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - wait cooldown : ${Math.floor(cdTime / (1000*60*60) % 24)}:${Math.floor(cdTime / (1000*60) % 60)}:${Math.floor(cdTime / (1000) % 60)} | lastdaily=${lastDaily} | dailycd=${dailyCD} | Date: ${Date.now()}`);
+
     } else { // Si le cooldown est passé.
         await client.updateUser(message.member, {cooldown_pari: Date.now()});
 
@@ -59,9 +63,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             }
             
             await client.setOr(client, message.member, Math.round(o), message);
-            return message.channel.send(`Bravo ! Vous avez parié juste ! Vous gagnez ${Math.round(o)} :coin: ${prestige}${richesse}`);
+            return message.channel.send(`Bravo ! Vous avez parié juste ! Vous gagnez ${Math.round(o)} :coin: ${prestige}${richesse}`) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Pari réussi.`);
         }
-        return message.channel.send(`Vous avez perdu votre pari ! -${x} :coin:`);
+        return message.channel.send(`Vous avez perdu votre pari ! -${x} :coin:`) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Pari perdu. -${x} or.`);
         
     }
 };

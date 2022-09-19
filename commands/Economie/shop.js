@@ -1,9 +1,11 @@
-const {MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
+const {EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require('discord.js');
 var json_shop;
 var is_event = false;
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+    message.channel.send("/!\\ ATTENTION Le Shop est obsolète et est en cours de réaménagement /!\\");
 
     if(!args[0]) {
         const filter = i => (i.customId === 'pts' || i.customId === 'itm' || i.customId === "evt") && i.user.id === message.author.id;
@@ -11,42 +13,42 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     
         const collector = message.channel.createMessageComponentCollector({ filter, time: 15000 });
-        const row = new MessageActionRow()
+        const row = new ActionRowBuilder()
         .addComponents(
-            new MessageButton()
+            new ButtonBuilder()
                 .setCustomId('pts')
                 .setLabel('Points')
-                .setStyle('PRIMARY'),
-            new MessageButton()
+                .setStyle(ButtonStyle.Primary),
+            new ButtonBuilder()
                 .setCustomId('itm')
                 .setLabel('Items')
-                .setStyle('PRIMARY'),
-            new MessageButton()
+                .setStyle(ButtonStyle.Primary),
+            new ButtonBuilder()
                 .setCustomId('evt')
                 .setLabel('Events')
-                .setStyle('PRIMARY'), 
+                .setStyle(ButtonStyle.Primary), 
         );
 
         const items_collector = message.channel.createMessageComponentCollector({ filterItems, time: 15000 });
-        const items_row = new MessageActionRow()
+        const items_row = new ActionRowBuilder()
         .addComponents(
-            new MessageButton()
+            new ButtonBuilder()
                 .setCustomId('expe')
                 .setLabel('Expédition')
-                .setStyle('SECONDARY'),
-            new MessageButton()
+                .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder()
                 .setCustomId('craft')
                 .setLabel('Crafts')
-                .setStyle('SECONDARY'),
-            new MessageButton()
+                .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder()
                 .setCustomId('eqip') 
                 .setLabel('⚔️ Équipement')
-                .setStyle('SECONDARY'),
+                .setStyle(ButtonStyle.Secondary),
         );
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
         .setColor('BF2F00')
-        .setAuthor(`List item`, client.user.displayAvatarURL());
+        .setAuthor({name: `List item`, iconURL: client.user.displayAvatarURL()});
 
 
         collector.on('collect', async i => {
@@ -54,7 +56,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 await i.deferUpdate();
                 json_shop = require('../../assets/shop/shop_points.json');
                 json_shop.forEach(element => {
-                    embed.addField(`\`${element.id}\` - ${element.name}`, `${element.description} | ${element.price} :coin:`)
+                    embed.addFields({name: `\`${element.id}\` - ${element.name}`, value: `${element.description} | ${element.price} :coin:`})
                 });
                 await i.editReply({ embeds:[embed], components: [] });
             }
@@ -66,7 +68,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                         json_shop = require('../../assets/shop/items/shop_items_expedition.json');
 
                         json_shop.forEach(element => {
-                            embed.addField(`\`${element.id}\` - ${element.name}`, `${element.description} | ${element.price} :coin:`)
+                            embed.addFields({name:`\`${element.id}\` - ${element.name}`, value:`${element.description} | ${element.price} :coin:`})
                         });
                         await i2.editReply({ embeds:[embed], components: [] });
                         
@@ -75,7 +77,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                         await i2.deferUpdate();
                         json_shop = require('../../assets/shop/items/shop_items_craft.json');
                         json_shop.forEach(element => {
-                            embed.addField(`\`${element.id}\` - ${element.name}`, `${element.description} | ${element.price} :coin:`)
+                            embed.addFields({name:`\`${element.id}\` - ${element.name}`, value: `${element.description} | ${element.price} :coin:`})
                         });
                         await i2.editReply({ embeds:[embed], components: [] });
 
@@ -85,7 +87,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                         json_shop = require('../../assets/shop/items/shop_items_equipement.json');
 
                         json_shop.forEach(element => {
-                            embed.addField(`\`${element.id}\` - ${element.name}`, `${element.description} | ${element.price} :coin:`)
+                            embed.addFields({name: `\`${element.id}\` - ${element.name}`, value: `${element.description} | ${element.price} :coin:`})
                         });
                         await i2.editReply({ embeds:[embed], components: [] });
                         
@@ -133,7 +135,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 await i.deferUpdate();
                 json_shop = require('../../assets/shop/shop_events.json');
                 json_shop.forEach(element => {
-                    embed.addField(`\`${element.id}\` - ${element.name}`, `${element.description} | ${element.price} :coin:`)
+                    embed.addFields({name: `\`${element.id}\` - ${element.name}`, value:`${element.description} | ${element.price} :coin:`})
                 });
                 is_event = true;
                 await i.editReply({ embeds:[embed], components: [] });

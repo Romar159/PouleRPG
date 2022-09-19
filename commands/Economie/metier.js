@@ -1,23 +1,25 @@
-const {MessageEmbed, MessageActionRow, MessageButton} = require('discord.js');
+const {EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require('discord.js');
 const metiers = require("../../assets/rpg/metiers/metiers.json");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
     const filter = i => (i.customId === 'postuler' || i.customId == 'demission') && i.user.id === message.author.id;
     const collector = message.channel.createMessageComponentCollector({ filter, time: 15000 });
-    const row = new MessageActionRow()
+    const row = new ActionRowBuilder()
     .addComponents(
-        new MessageButton()
+        new ButtonBuilder()
             .setCustomId('postuler')
             .setLabel('Postuler')
-            .setStyle('PRIMARY'),
+            .setStyle(ButtonStyle.Primary),
     );
-    const rowDm = new MessageActionRow()
+    const rowDm = new ActionRowBuilder()
     .addComponents(
-        new MessageButton()
+        new ButtonBuilder()
             .setCustomId('demission')
             .setLabel('Démissionner')
-            .setStyle('DANGER'),
+            .setStyle(ButtonStyle.Danger),
     );
     
     if(!args[0]) { 
@@ -29,6 +31,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                     string_metier = string_metier + `*${e.name}*\n`;            
                 }
         });
+        client.writeLog(`Commande ${this.help.name}: ${message.author.tag} (${message.author.id}) - ${metiers.length} métiers listés.`);
         return message.channel.send("Liste des métiers : \n" + string_metier);
     }
 
@@ -52,6 +55,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         } else {
             mt = client.filterByName(metiers, metier);
         }
+
+        client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Métier initial: ${client.filterById(metiers, dbUser.metier).id}`);
              
         
         collector.on('collect', async i => {
@@ -62,20 +67,20 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 } else {
                     var result = eval('(function() {' + mt.prerequis + '}())');
                     if(result == true) {} // continuer
-                    else return await i.editReply({ content:`Vous n'avez pas les qualifications nécessaires !\n${mt.infos}`, components: [] });
+                    else return await i.editReply({ content:`Vous n'avez pas les qualifications nécessaires !\n${mt.infos}`, components: [] }) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - qualités nécéssaires manquantes pour le métier ${mt.name}`, "err");
                     
                 }
                 if(dbUser.metier > 900) {
-                    return await i.editReply({ content:`Vous ne pouvez pas exercez un autre métier que celui défini par votre titre politique ou si vous êtes maître de faction !`, components: [] });
+                    return await i.editReply({ content:`Vous ne pouvez pas exercez un autre métier que celui défini par votre titre politique ou si vous êtes maître de faction !`, components: [] }) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - possède un métier obligatoire. METIER_ID=${dbUser.metier}`, "err");;
                 }
 
                 await i.editReply({ content:`Vous exercez à présent le métier de **${mt.name}**. Pour commencer, consultez la commande p<travail !`, components: [] });
-                return await client.updateUser(message.member, {metier: mt.id});
+                return await client.updateUser(message.member, {metier: mt.id}) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ${mt.name} commencé`, "err");;
             }
             if(i.customId === 'demission') {
                 await i.deferUpdate();
                 await i.editReply({ content:`Vous avec démissioné du métier de **${mt.name}**.`, components: [] });
-                return await client.updateUser(message.member, {metier: 0});
+                return await client.updateUser(message.member, {metier: 0}) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ${mt.name} démissioné`, "err");;
             }
         });
         if(mt.id == dbUser.metier) { // a déjà ce métier
@@ -95,12 +100,14 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     } catch (error) {
         message.channel.send("Ce métier n'existe pas.");
+        client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Métier inexistant OU Erreur. ${error}`, "err");
+        console.log(error);
     }
 };
 
 module.exports.help = {
     name: "métier",
-    aliases: ["metiers", "metier"],
+    aliases: ["metiers", "metier", "métiers"],
     category: "economie",
     desription: "Trouvez un métier.",
     usage: "[metier/moi]",

@@ -1,5 +1,11 @@
 module.exports.run = async (client, message, args, settings, dbUser) => {
-    if(!message.mentions.users.first()) return message.reply("Utilisateur invalide.");
+
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
+    if(!message.mentions.users.first()) {
+        client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) : Mention Invalide. Message=${message.content}`, "err");
+        return message.reply("Utilisateur invalide.");
+    } 
     let member = message.guild.members.cache.get(message.mentions.users.first().id);
 
     if(member.roles.cache.has('415947454626660366')) await client.updateUser(member, {faction: "epsilon"});
@@ -9,6 +15,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     else await client.updateUser(member, {faction: "NULL"});
 
     message.channel.send(`**${member.user.username} mis à jour avec succès !**`);
+    client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) : Faction Update pour ${member.user.tag} (${member.user.id}) vers ${client.getUser(member).faction}.`);
 };
   
 module.exports.help = {

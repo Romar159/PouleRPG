@@ -1,7 +1,26 @@
-const { MessageActionRow, MessageButton, MessageCollector, MessageEmbed } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, MessageCollector, EmbedBuilder, Client } = require("discord.js");
 const {PREFIX} = require('../../config');
 
+const metiers = require("../../assets/rpg/metiers/metiers.json");
+
+
+
+
 module.exports.run = async (client, message, args, settings, dbUser) => {
+
+    
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`)
+
+    message.channel.send(client.filterById(metiers, 1).description);
+
+
+
+    // require("../../util/objects/armes")(client);
+
+    // let poney = new animal("Poulet", 42);
+    // message.channel.send(poney.getAge());
+
+
     /*let jours = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
     message.reply(jours[new Date().getDay()]);*/
 
@@ -90,10 +109,10 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 */
 
 //message.channel.send(`Coucou`);
-let epsilon = await client.getFaction('epsilon');
-let dairos = await client.getFaction('daïros');
-let lyomah = await client.getFaction('lyomah');
-let alpha = await client.getFaction('alpha');
+// let epsilon = await client.getFaction('epsilon');
+// let dairos = await client.getFaction('daïros');
+// let lyomah = await client.getFaction('lyomah');
+// let alpha = await client.getFaction('alpha');
 
 /*let array = epsilon.joueurs_sur_le_territoire;
 array.push(dbUser.userID.toString());

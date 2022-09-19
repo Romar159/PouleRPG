@@ -1,18 +1,22 @@
-const { MessageActionRow, MessageButton } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 module.exports.run = async (client, message, args) => {
+
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
 
     
 
     if(!args[0]) {
+        client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Pile ou Face solo.`);
+
         if(client.randomInt(1,2) == 1)
             return message.channel.send(`:coin: **PILE !**`);
         else   
             return message.channel.send(`**FACE !** :coin:`);
     }
 
-    if(!message.mentions.users.first() || message.mentions.users.first().id == message.author.id) return message.reply("ERROR, mention invalide");
-    if(isNaN(args[1]) || args[1] <= 0) return message.reply("ERROR, valeur invalide");
+    if(!message.mentions.users.first() || message.mentions.users.first().id == message.author.id) return message.reply("ERROR, mention invalide") &client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Mention Invalide. MESSAGE=${message.content}.`, "err");
+    if(isNaN(args[1]) || args[1] <= 0) return message.reply("ERROR, valeur invalide") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Valeur Invalide. MESSAGE=${mesasge.content}.`, "err");
 
     let memberp2 = message.guild.members.cache.get(message.mentions.users.first().id);
 
@@ -24,11 +28,12 @@ module.exports.run = async (client, message, args) => {
     let choix_p1, choix_p2;
     let choix_p2_nom;
 
-    if(or_parie > player1.or || or_parie > player2.or) return message.reply("ERROR, un ou les deux membres n'ont pas assez d'or");
+    if(or_parie > player1.or || or_parie > player2.or) return message.reply("ERROR, un ou les deux membres n'ont pas assez d'or") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Un membre ou les deux n'a pas assez d'or. OR=${or_parie} | OR_J1=${player1.or} | OR_J2=${player2.or}. MESSAGE=${message.content}`, "err");
 
     if(!args[2]) return message.reply("Veuillez choisir pile ou face");
     if(args[2].toLowerCase() != "pile") {
         if(args[2].toLowerCase() != "face") {
+            client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Face de pièce inexistante. MESSAGE=${message.content}`, "err");
             return message.reply("ERROR, cette face de la pièce n'existe pas.");
         }
     }  
@@ -50,16 +55,16 @@ module.exports.run = async (client, message, args) => {
     const filter = i => (i.customId === 'confirmation' || i.customId === 'refus') && i.user.id === message.mentions.users.first().id;
     
     const collector = message.channel.createMessageComponentCollector({ filter, time: 15000 });
-    const row = new MessageActionRow()
+    const row = new ActionRowBuilder()
     .addComponents(
-        new MessageButton()
+        new ButtonBuilder()
             .setCustomId('confirmation')
             .setLabel('Oui !')
-            .setStyle('SUCCESS'),
-        new MessageButton()
+            .setStyle(ButtonStyle.Success),
+        new ButtonBuilder()
             .setCustomId('refus')
             .setLabel('Non')
-            .setStyle('DANGER'),
+            .setStyle(ButtonStyle.Danger),
     );
 
     collector.on('collect', async i => {

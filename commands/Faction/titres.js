@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
@@ -18,9 +18,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     if(!est_maitre) return message.reply("commande utilisable que par les maîtres de faction.");
 
     if(!args[0]) {
-        const listE = new MessageEmbed()
+        const listE = new EmbedBuilder()
         .setColor('FF2FEE')
-        .setAuthor(`Liste des titres honorifique`, client.user.displayAvatarURL());
+        .setAuthor({name:`Liste des titres honorifique`, iconURL: client.user.displayAvatarURL()});
 
         for(i=0;i<titres_honorifiques.length;i++) {
 
@@ -32,7 +32,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             } else {
                 usr = "libre";
             }
-            listE.addField(`** **`, `${titres_honorifiques[i]} - **${usr}**`);
+            listE.addFields([{name:`** **`, value:`${titres_honorifiques[i]} - **${usr}**`}]);
         }
 
         return message.channel.send({embeds:[listE]});

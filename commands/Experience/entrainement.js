@@ -1,5 +1,8 @@
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
+
     const dailyCD = dbUser.heure_entrainement * 3600000;
     
     const lastDaily = await dbUser.cooldown_entrainement;

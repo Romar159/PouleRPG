@@ -1,7 +1,9 @@
-const {MessageEmbed} = require('discord.js');
+const {EmbedBuilder} = require('discord.js');
 const factionModel = require('../../models/faction');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
+
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
 
     try {
         var faction = await client.getFaction(dbUser.faction);
@@ -11,18 +13,20 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     
 
     if(!args[0]) { // consultation
-        const embed = new MessageEmbed()
-        .setAuthor(`Personnes présentes dans les cachots :`, message.author.displayAvatarURL())
+        const embed = new EmbedBuilder()
+        .setAuthor({name : `Personnes présentes dans les cachots ${dbUser.faction} :`, iconURL: message.author.displayAvatarURL()})
         .setColor('303133');
 
-        console.log(faction.cachot.length);
         if(faction.cachot.length < 1) {
             return message.channel.send("Il n'y a personne dans les cachots de votre faction.");
         }
-        return message.channel.send(`data: ${faction.cachot.join(' - ')}`);
-        
+        let totalite = [];
+        faction.cachot.forEach(element => {
+            totalite.push(message.guild.members.cache.get(element));
+        }); 
+        embed.setDescription(totalite.join("\n"))
 
-        //return message.channel.send({embeds:[embed]});
+        return message.channel.send({embeds:[embed]});
         
 
         /*
@@ -99,9 +103,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         } else {
             return message.reply("action invalide.");
         } 
-
     }
-
 }
 
 module.exports.help = {

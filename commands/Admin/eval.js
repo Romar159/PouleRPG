@@ -1,4 +1,7 @@
  module.exports.run = async (client, message, args) => {
+  
+  client.writeLog(`Commande ${this.help.name} a subit une tentation d'execution par ${message.author.tag} (${message.author.id})`, "warn");
+  
   function clean(text) {
     if (typeof text === "string") 
       return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
@@ -6,6 +9,7 @@
   }
  
   if (message.author.id !== "421400262423347211") return;
+  
   const code = args.join(" ");
   const evaled = eval(code);
   const cleanCode = await clean(evaled);

@@ -1,7 +1,10 @@
-const {MessageEmbed} = require('discord.js');
+const {EmbedBuilder} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
-    const embed = new MessageEmbed()
+
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
+    const embed = new EmbedBuilder()
     .setColor('F2DB0C');
 
     if(message.mentions.users.first()) {
@@ -15,8 +18,11 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             // else { // !
                 await client.updateMaxBank(client, usr_member);
                 const usr = await client.getUser(usr_member);
-                embed.setAuthor(`Banque de ${client.users.cache.get(usr.userID).username}`, client.users.cache.get(usr.userID).displayAvatarURL())
+                embed.setAuthor({ name:`Banque de ${client.users.cache.get(usr.userID).username}`, iconURL: client.users.cache.get(usr.userID).displayAvatarURL()})
                 .setDescription(`:coin: ${usr_member} à **${usr.or}/${usr.maxbank}** or.`);
+
+                client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) : a  ${usr.or}/${usr.maxbank} or ${client.users.cache.get(usr.userID).tag} (${client.users.cache.get(usr.userID).id})`);
+
                 return message.channel.send({embeds:[embed]});
             // } // !
         } catch (e) {
@@ -27,12 +33,16 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 userID: mention.id,
                 username: mention.user.tag,
             }); 
+            client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) : Utilisateur Inexistant dans la BDD crée ${mention.username} (${mention.id})`, `warn`);
             return message.channel.send("Erreur, l'utilisateur n'existait probablement pas dans la base de donnée.\nEssayez de retaper la commande");
         }
     } else {
         await client.updateMaxBank(client, message.member);
-        embed.setAuthor(`Votre banque`, message.author.displayAvatarURL())
+        embed.setAuthor({name: `Votre banque`, iconURL: message.author.displayAvatarURL()})
         .setDescription(`:coin: Vous avez **${dbUser.or}/${dbUser.maxbank}** or.`);
+
+        client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) : a  ${dbUser.or}/${dbUser.maxbank} or ${message.author.tag} (${message.author.id})`);
+
         return message.channel.send({embeds:[embed]});
     }
 };

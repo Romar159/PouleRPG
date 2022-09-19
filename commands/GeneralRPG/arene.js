@@ -1,4 +1,4 @@
-const {guild, MessageEmbed} = require("discord.js");
+const {guild, EmbedBuilder} = require("discord.js");
 const {PREFIX} = require('../../config');
 
 
@@ -31,8 +31,8 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
     //const weapon_name = ["la dague", "le glaive", "la lance", "l'arbalète", "la claymore"];
 
 
-    const embed = new MessageEmbed()
-    .setAuthor(`Un combat a lieu !`, message.author.displayAvatarURL());
+    const embed = new EmbedBuilder()
+    .setAuthor({name:`Un combat a lieu !`, iconURL: message.author.displayAvatarURL()});
 
     let userWeaponID = dbUser.armeFavorite;
     if(args[0]) usr_c = args[0].toLowerCase();
