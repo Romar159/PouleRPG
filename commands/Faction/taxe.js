@@ -1,7 +1,9 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const faction = require("../../models/faction");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
+
+    return message.reply("IN DEV");
 
     if(!args[0]) {
         if(dbUser.faction == 'NULL') return message.reply('Vous n`êtes pas membre d\'une faction.');
@@ -74,7 +76,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
             let nombre = 0;
 
-            const taxeEmbed = new MessageEmbed()
+            const taxeEmbed = new EmbedBuilder()
             .setColor('BF2F00')
             .setAuthor(`Taxe`, client.user.displayAvatarURL());
 

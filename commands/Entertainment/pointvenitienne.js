@@ -1,5 +1,8 @@
-const {MessageEmbed} = require('discord.js');
+const {EmbedBuilder} = require('discord.js');
 module.exports.run = async (client, message, args, settings, dbUser) => {
+
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
 
     const list_badges = require('../../assets/rpg/badges.json');
 
@@ -15,11 +18,11 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     
 
     if(args[0].toLowerCase() == 'voir') {
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
         .setColor('BF2F00');
         if(!args[1] || !message.mentions.users.first()) {
             if(message.author.id == '421400262423347211')
-                embed.setDescription(`:woman_red_haired: Oh, La vénitiene ! Tu as bien évidemment **∞** point(s) vénitienne.`);
+                embed.setDescription(`:woman_red_haired: Oh, La vénitiene ! Tu as bien évidemment **∞ +0.5** point(s) vénitienne.`);
             else
                 embed.setDescription(`:woman_red_haired: Vous avez **${dbUser.pointsvenitienne}** point(s) vénitienne.`);
 
@@ -27,7 +30,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         }
         else {
             if(message.mentions.users.first().id == '421400262423347211') {
-                embed.setDescription(`:woman_red_haired: ${message.mentions.users.first()} a **∞** point(s) vénitienne.`);
+                embed.setDescription(`:woman_red_haired: ${message.mentions.users.first()} a **∞ +0.5** point(s) vénitienne.`);
             } else {
                 const usr = await client.getUser(user);
                 embed.setDescription(`:woman_red_haired: ${user} a **${usr.pointsvenitienne}** point(s) vénitienne.`);
@@ -66,14 +69,14 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     }
 
     if(args[0].toLowerCase() == 'classement') {
-        const leadEmbed = new MessageEmbed()
+        const leadEmbed = new EmbedBuilder()
         .setColor('BF2F00')
-        .setAuthor(`Classement des points vénitienne`, client.user.displayAvatarURL());
+        .setAuthor({name: `Classement des points vénitienne`, iconURL: client.user.displayAvatarURL()});
 
         await client.getUsers(message.guild).then(p => {
-                leadEmbed.addField(`** **`, `**:woman_red_haired: ${message.guild.members.cache.get('421400262423347211').user.username}** - **∞ + 0.5** point(s) vénitienne.`);
+                leadEmbed.addFields({name: `** **`, value: `**:woman_red_haired: ${message.guild.members.cache.get('421400262423347211').user.username}** - **∞ + 0.5** point(s) vénitienne.`});
             p.sort((a, b) => (a.pointsvenitienne < b.pointsvenitienne) ? 1 : -1).splice(0, 5).forEach(e => {
-                leadEmbed.addField(`** **`, `**${client.users.cache.get(e.userID).username}** - **${e.pointsvenitienne}** point(s) vénitienne.`);
+                leadEmbed.addFields({name: `** **`, value: `**${client.users.cache.get(e.userID).username}** - **${e.pointsvenitienne}** point(s) vénitienne.`});
             });
         });
         message.channel.send({embeds:[leadEmbed]});

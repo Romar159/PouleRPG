@@ -1,6 +1,8 @@
-const {MessageEmbed} = require("discord.js");
+const {EmbedBuilder} = require("discord.js");
 
 module.exports.run = async (client, message, args, settings, dbUser, command) => {
+    
+    return message.reply("WIP");
 
     if(message.channel.id != "616652710942343222") return message.reply('Cette commande ne peut être executée que dans le salon <#616652710942343222>');
     if(!args[0]) return message.reply("veuillez entrer une faction valide.");

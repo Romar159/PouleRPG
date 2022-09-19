@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const ennemis = require("../../assets/rpg/ennemis.json");
 const armes = require("../../assets/rpg/armes.json");
 
@@ -56,19 +56,19 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         let final_user = (dbUser.level * client.randomFloat(ranMin, ranMax)) / (LevelMob * client.randomFloat(ennemi.ranMin, ennemi.ranMax));
         let final_mob = (LevelMob * client.randomFloat(ennemi.ranMin, ennemi.ranMax)) / (dbUser.level * client.randomFloat(ranMin, ranMax));
 
-        const embed = new MessageEmbed();
+        const embed = new EmbedBuilder();
         
         //message.channel.send(`**${message.author.username}** Niveau ${dbUser.level} - Puissance : ${final_user} \n**${ennemi.name}** Niveau ${LevelMob} - Puissance : ${final_mob}`);
         if(final_user > final_mob) { //win
             eval(ennemi.gains);
-            embed.setAuthor(`Victoire !`, message.author.displayAvatarURL())
+            embed.setAuthor({name:`Victoire !`, iconURL: message.author.displayAvatarURL()})
             .setColor('3F992D')
             .setDescription(`${phrase[client.randomInt(0, phrase.length - 1)]} un(e) **${ennemi.name}** de niveau **${LevelMob}** !\n**${gagner}**`); // ? RomarNote
             message.channel.send({embeds:[embed]});
             //await client.setXp(client, message.member, 10) //! TEMP 
 
         } else { //lose
-            embed.setAuthor(`Défaite...`, message.author.displayAvatarURL())
+            embed.setAuthor({name:`Défaite...`, iconURL:message.author.displayAvatarURL()})
             .setColor('BF2F00')
             .setDescription(`**${ennemi.name}** de niveau **${LevelMob}** ${ennemi.attaques[client.randomInt(0, ennemi.attaques.length - 1)]}${phrasePerdre[client.randomInt(0, phrasePerdre.length - 1)]}...`);
             message.channel.send({embeds:[embed]});

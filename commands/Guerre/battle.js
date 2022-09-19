@@ -1,7 +1,9 @@
-const {MessageEmbed} = require('discord.js');
+const {EmbedBuilder} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
+    return message.reply("WIP");
+    
     var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
     var est_maitre = false;
 

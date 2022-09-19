@@ -1,4 +1,4 @@
-const {Collection} = require('discord.js');
+const {Collection,  ChannelType} = require('discord.js');
 const {PREFIX} = require('../../config');
 
 module.exports = async (client, message) => {
@@ -7,7 +7,6 @@ module.exports = async (client, message) => {
         let phrases = ["CHEH :)", "T'es PD ! :)", "Olala Draxy parle :)", "T'es beau :)", "Je suis un fanboy de toi !", "Je peux avoir un autographe stppppp ?"];
         return message.reply(phrases[client.randomInt(0, phrases.length - 1)]);
     }
-
 
     if(!message.author.bot && message.content.startsWith(PREFIX)) {
         if(message.author.id !== "421400262423347211") {
@@ -20,7 +19,7 @@ module.exports = async (client, message) => {
             }  
         }
     }
-    if(message.channel.type === "dm") return;
+    if(message.channel.type === ChannelType.DM) return;
     
     const dbUser = await client.getUser(message.member);
     const settings = await client.getGuild(message.guild);
@@ -72,9 +71,10 @@ module.exports = async (client, message) => {
 
     //if (message.channel.type === "dm") return client.emit("directMessage", message);
     
-    if (!message.content.startsWith(PREFIX) && !message.author.bot) return client.emit("commandWithoutPrefix", message);
+    if (!message.content.startsWith(PREFIX) && !message.author.bot) return client.emit("commandWithoutPrefix", message); //!
     if (!message.content.startsWith(PREFIX) || message.author.bot) return;
 
+    
     const args = message.content.slice(PREFIX.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
     const mentionnedUser = message.mentions.users.first();
@@ -82,7 +82,9 @@ module.exports = async (client, message) => {
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
     if(!command) return;
 
+
     if(command.help.permissions && !message.member.permissions.has('ADMINISTRATOR')) return message.reply("commande administrateur, permissions requise.");
+
 
     if(command.help.args && !args.length) {
         let noArgsReply = `Argument(s) attendu(s) ${message.author}`;
@@ -107,6 +109,7 @@ module.exports = async (client, message) => {
             return message.reply(`veuillez attendre **${timeLeft.toFixed(0)}** seconde(s) avant de réutiliser la commande.`);
         }
     }
+
 
     tStamps.set(message.author.id, timeNow);
     setTimeout(() => tStamps.delete(message.author.id), cdAmount);

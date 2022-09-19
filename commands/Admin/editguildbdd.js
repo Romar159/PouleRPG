@@ -1,4 +1,7 @@
 module.exports.run = async (client, message, args, settings) => {
+   
+   client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
    const getSetting = args[0];
    const newSetting = args.slice(1).join(" ");
 

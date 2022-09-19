@@ -1,4 +1,4 @@
-const {MessageEmbed} = require("discord.js");
+const {EmbedBuilder} = require("discord.js");
 module.exports.run = (client, message, args) => {
     message.guild.members.fetch().then(fetchAll => {
        
@@ -7,16 +7,13 @@ module.exports.run = (client, message, args) => {
         const lyomah = fetchAll.filter(m => m.roles.cache.get('415947456342130699'));
         const alpha = fetchAll.filter(m => m.roles.cache.get('665340021640921099'));
         
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
         
         // Si aucun argument n'est passé, envoyer la liste de toutes les factions.
         if(!args.length) {
             embed.setColor('5E6366')
-            embed.setAuthor(`Listes des factions`, client.user.displayAvatarURL());
-            embed.addField(`:regional_indicator_e: Membres de la faction Epsilon`, `\`${epsilon.map(m => m.user.tag).join('` • `')}\``)
-            embed.addField(`:regional_indicator_d: Membres de la faction Daïros`, `\`${dairos.map(m => m.user.tag).join('` • `')}\``)
-            embed.addField(`:regional_indicator_l: Membres de la faction Lyomah`, `\`${lyomah.map(m => m.user.tag).join('` • `')}\``)
-            embed.addField(`:regional_indicator_a: Membres de la faction Alpha`, `\`${alpha.map(m => m.user.tag).join('` • `')}\``)
+            embed.setAuthor({name:`Listes des factions`, iconURL:client.user.displayAvatarURL()});
+            embed.addFields([{name:`:regional_indicator_e: Membres de la faction Epsilon`, value:`\`${epsilon.map(m => m.user.tag).join('` • `')}\``},{name:`:regional_indicator_d: Membres de la faction Daïros`, value:`\`${dairos.map(m => m.user.tag).join('` • `')}\``},{name:`:regional_indicator_l: Membres de la faction Lyomah`, value:`\`${lyomah.map(m => m.user.tag).join('` • `')}\``},{name:`:regional_indicator_a: Membres de la faction Alpha`, value:`\`${alpha.map(m => m.user.tag).join('` • `')}\``}]);
 
             return message.channel.send({embeds:[embed]});
         }
@@ -24,26 +21,26 @@ module.exports.run = (client, message, args) => {
         // Sinon, on analyse les arguments pour chaque faction.
         if(args[0].toLowerCase() == "epsilon") {
             embed.setColor('AA3C00')
-            embed.setAuthor(`Liste d'Epsilon`, client.user.displayAvatarURL());
-            embed.addField(`:regional_indicator_e: Membres de la faction Epsilon : ${epsilon.size}`, `\`${epsilon.map(m => m.user.tag).join('` • `')}\``);
+            embed.setAuthor({name:`Liste d'Epsilon`, iconURL: client.user.displayAvatarURL()});
+            embed.addFields([{name:`:regional_indicator_e: Membres de la faction Epsilon : ${epsilon.size}`, value:`\`${epsilon.map(m => m.user.tag).join('` • `')}\``}]);
             message.channel.send({embeds:[embed]});
         }
         if(args[0].toLowerCase() == "daïros") {
             embed.setColor('0078F0')
-            embed.setAuthor(`Liste de Daïros`, client.user.displayAvatarURL());
-            embed.addField(`:regional_indicator_d: Membres de la faction Daïros : ${dairos.size}`, `\`${dairos.map(m => m.user.tag).join('` • `')}\``);
+            embed.setAuthor({name:`Liste de Daïros`, iconURL: client.user.displayAvatarURL()});
+            embed.addFields([{name:`:regional_indicator_d: Membres de la faction Daïros : ${dairos.size}`, value:`\`${dairos.map(m => m.user.tag).join('` • `')}\``}]);
             message.channel.send({embeds:[embed]});
         }
         if(args[0].toLowerCase() == "lyomah") {
             embed.setColor('00A00A')
-            embed.setAuthor(`Liste de Lyomah`, client.user.displayAvatarURL());
-            embed.addField(`:regional_indicator_l: Membres de la faction Lyomah : ${lyomah.size}`, `\`${lyomah.map(m => m.user.tag).join('` • `')}\``);
+            embed.setAuthor({name:`Liste de Lyomah`, iconURL: client.user.displayAvatarURL()});
+            embed.addFields([{name:`:regional_indicator_l: Membres de la faction Lyomah : ${lyomah.size}`, value:`\`${lyomah.map(m => m.user.tag).join('` • `')}\``}]);
             message.channel.send({embeds:[embed]});
         }
         if(args[0].toLowerCase() == "alpha") {
             embed.setColor('F0C800')
-            embed.setAuthor(`Liste d'Alpha`, client.user.displayAvatarURL());
-            embed.addField(`:regional_indicator_a: Membres de la faction Alpha : ${alpha.size}`, `\`${alpha.map(m => m.user.tag).join('` • `')}\``);
+            embed.setAuthor({name:`Liste d'Alpha`, iconURL: client.user.displayAvatarURL()});
+            embed.addFields([{name:`:regional_indicator_a: Membres de la faction Alpha : ${alpha.size}`, value:`\`${alpha.map(m => m.user.tag).join('` • `')}\``}]);
             message.channel.send({embeds:[embed]});
         }
         

@@ -1,12 +1,20 @@
-const {MessageEmbed} = require('discord.js');
+const {EmbedBuilder} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
+    
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
+    // TODO PRE-BETA :
+    /*
+        UN PEU CHANGER Pour accepter avec des boutons par exemple.
+    */
 
     /*
-    ? TODO    Vérifie le nombre de points d'amitié -> POST BETA ?
+      TODO POST BETA
+    ? TODO    Vérifie le nombre de points d'amitié
     ? TODO    S'il est suffisant POUR LES DEUX factions -> faire une demande d'alliance
     */
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
     .setColor('41D8D8');
 
     if(message.channel.id != "616652710942343222") return message.reply('cette commande ne peut être executée que dans le salon <#616652710942343222>.');
@@ -43,7 +51,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         await client.updateFaction(dbUser.faction, {ally: ""});
         await client.updateFaction(args[0].toLowerCase(), {ally: ""});
         
-        embed.setAuthor(`Alliance brisée !`, client.user.displayAvatarURL());
+        embed.setAuthor({name: `Alliance brisée !`, iconURL: client.user.displayAvatarURL()});
         embed.setDescription(`**<@&${faction.roleid}>** a brisé son alliance avec **<@&${faction2.roleid}>** !\n **<@${message.author.id}>** perd **500** points de prestige.`);
         client.editPiete(client, message.member, -500);
 
@@ -66,7 +74,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         });
 
         if(userEntry.first().content.toLowerCase() === "accepter") {
-            embed.setAuthor(`Nouvelle alliance !`, client.user.displayAvatarURL())
+            embed.setAuthor({name: `Nouvelle alliance !`, iconURL: client.user.displayAvatarURL()})
             embed.setDescription(`**<@&${faction.roleid}>** est désormais alliée à **<@&${faction2.roleid}>** !`);
             
             message.channel.send({ embeds: [embed] });

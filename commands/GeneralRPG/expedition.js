@@ -1,4 +1,4 @@
-const {MessageEmbed, Message} = require('discord.js')
+const {EmbedBuilder, Message} = require('discord.js')
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
@@ -38,9 +38,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         
         await client.setOr(client, message.member, - or_apporter, message);
 
-        const debutEmbed = new MessageEmbed()
+        const debutEmbed = new EmbedBuilder()
         .setColor('5E6366')
-        .setAuthor(`Expédition lancée !`, message.author.displayAvatarURL())
+        .setAuthor({name: `Expédition lancée !`, iconURL: message.author.displayAvatarURL()})
         .setDescription(`L'expédition va durer **${expedition_duration / 3600000}h** avec **${or_apporter}** or !`); //? DraxyNote : Il faut ici ajouter l'affichage du Pays dans lequel on va. (avec 'localisation')
 
         message.channel.send({embeds:[debutEmbed]});
@@ -70,12 +70,11 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             const final_xp = Math.round((12.5 * (time * level_user + (bonus_or * level_user / 3))/ Math.sqrt(level_user)));
             const final_or = Math.round(10 - dbUser.or_expedition * 0.10);
             
-            const finEmbed = new MessageEmbed()
+            const finEmbed = new EmbedBuilder()
             .setColor('3F992D')
-            .setAuthor(`Expédition terminée !`, message.author.displayAvatarURL())
-            .addField(`** **`, `**:test_tube: +${final_xp} XP**`, true)
-            .addField(`** **`, `** **`, true)
-            .addField(`** **`, `:coin: **+${final_or} Or**`, true);
+            .setAuthor({name:`Expédition terminée !`, iconURL:message.author.displayAvatarURL()})
+            .addFields([{name: `** **`, value:`**:test_tube: +${final_xp} XP**`},{name: `** **`, value: `:coin: **+${final_or} Or**`}])
+            
 
             message.channel.send({embeds:[finEmbed]});
             await client.setOr(client, message.member, dbUser.or_expedition, message);

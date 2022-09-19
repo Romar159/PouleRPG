@@ -1,7 +1,10 @@
-const {MessageEmbed} = require("discord.js");
+const {EmbedBuilder} = require("discord.js");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
-    const embed = new MessageEmbed()
+
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
+    const embed = new EmbedBuilder()
     .setColor('3F992D');
 
     if(message.mentions.users.first()) {
@@ -13,7 +16,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             } else {
                 const usr = await client.getUser(member);
                 const needxp_usr = Math.round((700 * parseInt(usr.level)) / Math.sqrt(parseInt(usr.level)));
-                embed.setAuthor(`Experience de ${member.user.username}`, member.user.displayAvatarURL());
+                embed.setAuthor({name: `Experience de ${member.user.username}`, iconURL: member.user.displayAvatarURL()});
                 embed.setDescription(`:bar_chart: Niveau : **${usr.level}**\n\n:test_tube: XP : **${usr.experience}/${needxp_usr}**`);
                 message.channel.send({embeds:[embed]});
             }
@@ -29,7 +32,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         }
     } else {
         const needxp_dbuser = Math.round((700 * parseInt(dbUser.level)) / Math.sqrt(parseInt(dbUser.level)));
-        embed.setAuthor(`Votre experience`, message.author.displayAvatarURL());
+        embed.setAuthor({name: `Votre experience`, iconURL: message.author.displayAvatarURL()});
         embed.setDescription(`:bar_chart: Niveau :** ${dbUser.level}**\n\n:test_tube: XP : **${dbUser.experience}/${needxp_dbuser}**`);
         message.channel.send({embeds:[embed]});
     }

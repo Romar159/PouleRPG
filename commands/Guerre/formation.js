@@ -1,11 +1,14 @@
-const {MessageEmbed} = require('discord.js');
+const {EmbedBuilder} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
+
+    return message.reply("WIP");
+    
     let faction1db = await client.getFaction(dbUser.faction);
     
    
     if(args[0].toLowerCase() == "voir") {
-        const embedView = new MessageEmbed()
+        const embedView = new EmbedBuilder()
             .setColor('8C4638')
             .setAuthor(`Visualisation de la formation`, client.user.displayAvatarURL())
             .addField(`A1`, `<@${faction1db.a1}>`, true) .addField(`A2`, `<@${faction1db.a2}>`, true) .addField(`A3`, `<@${faction1db.a3}>`, true)
@@ -95,7 +98,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     if(mention == "NULL" && membre_retire == "NULL") return message.channel.send(`Il n'y a personne à cette position.`);
 
     faction1db = await client.getFaction(dbUser.faction); //update.
-    const embedFormation = new MessageEmbed()
+    const embedFormation = new EmbedBuilder()
         .setColor('8C4638')
         .setAuthor(`${mention.user.username} a été placé en ${args[0]}`, client.user.displayAvatarURL())
         .addField(`A1`, `<@${faction1db.a1}>`, true) .addField(`A2`, `<@${faction1db.a2}>`, true) .addField(`A3`, `<@${faction1db.a3}>`, true)

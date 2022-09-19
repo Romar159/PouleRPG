@@ -1,7 +1,10 @@
-const {MessageEmbed} = require("discord.js");
+const {EmbedBuilder} = require("discord.js");
 
 module.exports.run = async (client, message, args, settings, dbUser, command) => {
    
+    return message.reply("WIP");
+
+    
     if(message.channel.id != "616652710942343222") return message.reply('cette commande ne peut être executée que dans le salon <#616652710942343222>');
 
     const faction = await client.getFaction(dbUser.faction);
@@ -21,7 +24,7 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
         await client.updateFaction(dbUser.faction, {en_guerre: false, ennemy: "", ptsvictoire: 0});
         //Todo: post bêta il y aura probablement de nouvelles choses qui se passe à la fin de la guerre.
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
         .setColor('BF2F00')
 	    .setAuthor("Résultats de la guerre !", client.user.displayAvatarURL())
         .setDescription(`**Guerre entre <@&${faction.roleid}> et <@&${factionEnemy.roleid}>.**

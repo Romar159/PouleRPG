@@ -1,5 +1,7 @@
 module.exports.run = (client, message, args) => {
-   
+    
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
     const tonnalités = ["do", "do#", "ré", "ré#", "mi", "fa", "fa#", "sol", "sol#", "la", "la#", "si", "do", "do#", "ré", "ré#", "mi", "fa", "fa#", "sol", "sol#", "la", "la#", "si"];
     const mode = ["majeur", "mineur"];
 

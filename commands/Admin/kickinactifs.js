@@ -1,4 +1,8 @@
 module.exports.run = async (client, message, args) => {
+
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
+
     message.guild.members.fetch().then(async fetchAll => {
         const dailyCD = (8.64e+7) * 7;
         const inactifs = fetchAll.filter(m => (dailyCD - (Date.now() -  m.joinedAt) < 0));
@@ -20,7 +24,8 @@ module.exports.run = async (client, message, args) => {
             });
     
             if(userEntry.first().content.toLowerCase() === "oui") {
-                inactifs2.map(m=> m.kick());            
+                inactifs2.map(m=> m.kick());    
+                client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) | ${inactifs2.map(m=>m.user.id).join('-')}} ont été kické du serveur.`);        
             } else {
                 message.channel.send('Timeout.');
             }

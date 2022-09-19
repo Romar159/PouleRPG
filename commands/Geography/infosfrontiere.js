@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
@@ -17,17 +17,17 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         
     let faction = await client.getFaction(dbUser.faction);
 
-    const emb = new MessageEmbed()
+    const emb = new EmbedBuilder()
     .setColor('BF2F00')
-    .setAuthor(`Membres actuellement en expédition sur votre territoire.`, client.user.displayAvatarURL());
+    .setAuthor({name:`Membres actuellement en expédition sur votre territoire.`, iconURL:client.user.displayAvatarURL()});
 
     faction.joueurs_sur_le_territoire.forEach(element => {
         
-        emb.addField(`** **`, `${message.guild.members.cache.get(element)}`);
+        emb.addFields({name:`** **`, value:`${message.guild.members.cache.get(element)}`});
         
     });
     if(!faction.joueurs_sur_le_territoire[0]) {
-        emb.addField(`** **`, `Personne n'a franchit vos frontières.`);
+        emb.addFields({name:`** **`, value:`Personne n'a franchit vos frontières.`});
     }
 
     message.channel.send({embeds:[emb]});

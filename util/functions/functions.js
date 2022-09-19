@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { Guild, User, Faction } = require("../../models/index");
 const {randomInt} = require("./randoms");
+const fs = require("fs");
 
 module.exports = client => {
     client.createGuild = async guild => {
@@ -129,7 +130,38 @@ module.exports = client => {
         require("./randoms")(client);
         require("./updateMaxBank")(client);
         //require("./edit_points.js")(client);
+         
+    } 
+
+    /**
+     * 
+     * @param {string} log Message log
+     * @param {string} type Type de log [ERR, WARN, INFO] default : "INFO"
+     * Write a text (log) in the file ./logs/logs.log
+     */
+    client.writeLog = (log, type) => {
         
+        let date_time = new Date();
+        let date = ("0" + date_time.getDate()).slice(-2);
+        let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
+        let year = date_time.getFullYear();
+        let hours = date_time.getHours();
+        let minutes = date_time.getMinutes();
+        let seconds = date_time.getSeconds();
+
+        if(hours.toString().length < 2) hours = "0" + hours;
+        if(minutes.toString().length < 2) minutes = "0" + minutes;
+        if(seconds.toString().length < 2) seconds = "0" + seconds;
+
+        if(type == undefined) type = "info";
+
+        let line = `${year}-${month}-${date} ${hours}:${minutes}:${seconds} [${type.toUpperCase()}] | ${log}\n`;
+
+        fs.appendFile("./logs/logs.log", line, function(err) {
+            if(err) {
+                return console.log(err);
+            }
+        });  
     }
 
     client.addBadge = async (client, member, dbUser, badgeid) => {

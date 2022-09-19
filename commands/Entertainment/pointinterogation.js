@@ -1,5 +1,11 @@
 module.exports.run = (client, message, args, settings, dbUser) => {
+    
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
+
     client.addFoundedEasterEgg(client, message.member, dbUser, 1); // ! BUG ici
+    client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Easter Egg ID=1 ajouté.`);
+
 }
 
 module.exports.help = {

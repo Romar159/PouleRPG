@@ -1,13 +1,14 @@
 var counter = 0; 
 var already_started = false;
 
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const culureG_json = require("../../assets/quiz/culture_general.json");
 const culturePOP_json = require("../../assets/quiz/culture_populaire.json");
 
 
 module.exports.run = async (client, message, args) => {
 
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
 
         if(already_started == true) return message.reply("WESH LOL Y'EN A DEJA UN EN COURS >:(")
         
@@ -20,14 +21,14 @@ module.exports.run = async (client, message, args) => {
         if(!args[0]) {}
         else {
             if(args[0] == "classement") {
-                const leadEmbed = new MessageEmbed()
+                const leadEmbed = new EmbedBuilder()
                 .setColor('BF2F00')
-                .setAuthor(`Classement des meilleurs joueurs du quiz`, client.user.displayAvatarURL());
+                .setAuthor({name: `Classement des meilleurs joueurs du quiz`, iconURL: client.user.displayAvatarURL()});
         
                 await client.getUsers(message.guild).then(p => {
                     p.sort((a, b) => (a.wins_quiz < b.wins_quiz) ? 1 : -1).splice(0, 5).forEach(e => {
                         if(e.wins_quiz > 0)
-                            leadEmbed.addField(`** **`, `**${e.username.split('#')[0]}** a gagné **${e.wins_quiz}** fois le quiz !`);
+                            leadEmbed.addFields({name: `** **`, value: `**${e.username.split('#')[0]}** a gagné **${e.wins_quiz}** fois le quiz !`});
                     });
                 });
                 return message.channel.send({embeds:[leadEmbed]});

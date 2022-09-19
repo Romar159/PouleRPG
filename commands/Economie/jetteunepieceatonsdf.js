@@ -1,5 +1,8 @@
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
+
     const list_badges = require('../../assets/rpg/badges.json');
 
     const dailyCD = 36000000;
@@ -8,6 +11,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
         const cdTime = dailyCD - (Date.now() - lastDaily);
         message.reply(`Il n'y a plus aucun SDF dans le coin, attendez encore **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes, il devrait y en avoir de nouveau. :dash:`);
+        client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - wait cooldown : ${Math.floor(cdTime / (1000*60*60) % 24)}:${Math.floor(cdTime / (1000*60) % 60)}:${Math.floor(cdTime / (1000) % 60)} | lastdaily=${lastDaily} | dailycd=${dailyCD} | Date: ${Date.now()}`);
+
     } else { // Si le cooldown est passé.
 
         if(dbUser.or <= 0) return message.channel.send(":money_with_wings: Vous êtes vous même un SDF, vous ne pouvez pas donner d'argent.");
@@ -68,9 +73,12 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         await client.setOr(client, message.member, -1, message);
         client.updateUser(message.member, {cooldown_tacty: Date.now()});
 
+        client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - pièce jetée de ${message.author.tag} (${message.author.id}) à ${member_ran.user.tag} (${member_ran.user.id})`);
+
         if(member_ran == message.member) {
             if(await client.addBadge(client, message.member, dbUser, "2")) {
                 message.channel.send(`WOW !! ${message.member} vient de gagner le badge **${client.filterById(list_badges, 2).name}** !`);
+                client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - badge ID=2 obtenu pour ${message.member}`)
             }
         }
     }

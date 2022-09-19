@@ -2,7 +2,13 @@ const fs = require("fs");
 const jsondata = require("../../assets/rpg/archivesmaitres.json");
 
 module.exports.run = async (client, message, args) => {
-    if(!message.mentions.members.first()) return message.reply("Veuillez renseigner un utilisateur valide.");
+
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
+    if(!message.mentions.members.first()) {
+        client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Mention Invalide. Message=${message.content}`, "err");
+        return message.reply("Veuillez renseigner un utilisateur valide.");
+    } 
     
     const fac = args[1].toLowerCase();
     const member = message.guild.members.cache.get(message.mentions.users.first().id);
@@ -27,7 +33,8 @@ module.exports.run = async (client, message, args) => {
             break;
 
         default:
-        return message.reply("veuillez entrer une faction valide.");
+            client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Faction Invalide. Message=${message.content}`, "err");
+            return message.reply("veuillez entrer une faction valide.");
     }
 
     let dbFaction = await client.getFaction(fac);
@@ -40,8 +47,9 @@ module.exports.run = async (client, message, args) => {
     
     client.editPoint(client, member, 500, "prestige");
 
-    client.updateUser(member, {metier: 904});
     client.updateUser(ancienmaitre, {metier: 0});
+    client.updateUser(member, {metier: 904});
+    
 
     let dbNouveauMaitre = client.getUser(member);
     if(dbNouveauMaitre.titre_politique != "NULL") {
@@ -50,6 +58,8 @@ module.exports.run = async (client, message, args) => {
     }
 
     await message.channel.send(`${message.mentions.users.first()} est à présent le nouveau Maître de la faction ${fac}`);
+    client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ${message.mentions.users.first().tag} (${message.mentions.users.first().id}) remplace ${ancienmaitre.user.tag} (${ancienmaitre.user.id}) dans ${fac}`);
+
 
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
@@ -83,6 +93,8 @@ module.exports.run = async (client, message, args) => {
             });
         }
         });
+
+        client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - JSON ArchivesMaitre édité. ID: ${addition.id}`);
     
 
 }

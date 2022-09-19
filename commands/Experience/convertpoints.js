@@ -2,6 +2,8 @@ const {guild} = require("discord.js");
 const {db} = require("../../models/user");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
     const points = parseInt(args[0]);
     let final_xp = 0;
     if(points > 30) return message.channel.send("Veuillez entrer un nombre plus petit. (max : 30)");

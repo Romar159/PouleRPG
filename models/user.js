@@ -260,6 +260,11 @@ const userSchema = mongoose.Schema({
     ranMaxEnnemi : {
         "type": Number,
         "default": 1.3
+    },
+
+    poulets : {
+        "type": Number, 
+        "default": 0
     }
 });
 

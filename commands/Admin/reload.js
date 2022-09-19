@@ -1,4 +1,6 @@
 module.exports.run = async (client, message, args) => {
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
     await message.channel.send("Redémarrage en cours...");
     await message.delete();
     process.exit();

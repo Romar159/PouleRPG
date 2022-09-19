@@ -1,6 +1,11 @@
 module.exports.run = async (client, message, args, settings) => {
 
-    if(!message.mentions.members.first()) return message.reply("ERROR: Mentionnez un utilisateur valide.");
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
+    if(!message.mentions.members.first()) {
+        client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) : Mention Utilisateur invalide. MESSAGE=${message.content}`, "err");
+        return message.reply("ERROR: Mentionnez un utilisateur valide.");
+    } 
     const mention = message.mentions.members.first()
 
     
@@ -12,6 +17,8 @@ module.exports.run = async (client, message, args, settings) => {
             username: mention.user.tag,
         }); 
         message.channel.send("Utilisateur crée.");
+        client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) : Utilisateur crée dans le base de donnée dbUser. MENTION=${mention}`, "err");
+        
  };
    
  module.exports.help = {

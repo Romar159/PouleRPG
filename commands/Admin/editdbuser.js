@@ -1,4 +1,7 @@
 module.exports.run = async (client, message, args, settings) => {
+    
+    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+    
     const json_armes = require('../../assets/rpg/armes.json');
 
     const getSetting = args[1];
@@ -7,7 +10,7 @@ module.exports.run = async (client, message, args, settings) => {
     const all_elements = ['**class** [string]', '**combat_favoriteposition** [string]', '**combat_hatedposition** [string]', '**level** [int]', '**metier** [int]', 
     '**cooldown_metier** [Date]', '**cooldown_arene** [Date]', '**cooldown_pray** [Date]', '**cooldown_tacty** [Date]', '**cooldown_pari** [Date]', '**cooldown_ennemi** [Date]', '**cooldown_entrainement** [Date]', '**cooldown_expedition** [Date]',
     '**badges_possedes** [string]', '**foundedeastereggs** [string]', '**arene_streak** [int]', '**titre_honorifique** [string]', '**preferences_defaultarene** [string]', '**armefavorite** [int]', '**in_jail** [boolean]',
-    '**on_mission** [boolean]', '**conspiring** [boolean]', '**working** [boolean]', '**working** [boolean]']
+    '**on_mission** [boolean]', '**conspiring** [boolean]', '**working** [boolean]', '**working** [boolean]', '**poulets** [int]']
 
     if(!args[0]) {
         return message.channel.send(`${all_elements.join(`\n`)}`);
@@ -127,7 +130,7 @@ module.exports.run = async (client, message, args, settings) => {
                 await client.updateUser(member, {badges_possedes: newSetting});
                 return message.channel.send(`badges_possedes mise à jour : \`${dbMember.badges_possedes}\`->\`${newSetting}\``);
             }
-            message.channel.send(`Actuel : ${dbMember.cooldown_expedition} \n\nDate;0 (reset)`);
+            message.channel.send(`Actuel : ${dbMember.badges_possedes} \n\nstring de int: 0-6`);
             break;
         }
         case "foundedeastereggs": {
@@ -208,6 +211,14 @@ module.exports.run = async (client, message, args, settings) => {
                 return message.channel.send(`on_mission mise à jour : \`${dbMember.on_mission}\`->\`${newSetting}\``);
             }
             message.channel.send(`Actuel : ${dbMember.on_mission} \n\ntrue;false`);
+            break;
+        }
+        case "poulets": {
+            if(newSetting) {
+                await client.updateUser(member, {poulets: newSetting});
+                return message.channel.send(`poulets mise à jour : \`${dbMember.poulets}\`->\`${newSetting}\``);
+            }
+            message.channel.send(`Actuel : ${dbMember.poulets} \n\n0+`);
             break;
         }
     }
