@@ -1,13 +1,13 @@
-const {Client, Collection, Intents} = require('discord.js');
+const {Client, Collection, GatewayIntentBits, Partials} = require('discord.js');
 const {loadCommands, loadEvents} = require('./util/loader');
 const {TOKEN, PREFIX} = require('./config');
 const user = require('./models/user');
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_PRESENCES] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildPresences, GatewayIntentBits.MessageContent], partials: [Partials.Channel, Partials.Message, Partials.GuildMember, Partials.Reaction] });
 
 require("./util/functions/functions")(client);
 client.loadDependencies(client);
-
+ 
 ["commands", "cooldowns"].forEach(x => client[x] = new Collection());
  
 loadCommands(client);

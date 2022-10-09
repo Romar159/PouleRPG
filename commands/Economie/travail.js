@@ -1,7 +1,9 @@
 const metiers = require("../../assets/rpg/metiers/metiers.json");
 
-module.exports.run = async (client, message, args, settings, dbUser) => {
+module.exports.run = async (client, message, args, settings, dbUser) => { 
     client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+
+    client.checkTaxes(message); //on vérifie l'état des taxes.
 
     if(dbUser.expedition_duration != 0) return message.reply("Vous ne pouvez pas travailler si vous êtes en expédition.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ne peut pas travailler - expédition en cours.`, `ERR`);
     if(dbUser.in_jail == 'true') return message.reply("Aux cachots vous ne pouvez pas travailler.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ne peut pas travailler - actuellement aux cachots.`, `ERR`);

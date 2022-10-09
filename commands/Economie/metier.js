@@ -1,6 +1,7 @@
 const {EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require('discord.js');
 const metiers = require("../../assets/rpg/metiers/metiers.json");
 
+
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
     client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
@@ -33,7 +34,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         });
         client.writeLog(`Commande ${this.help.name}: ${message.author.tag} (${message.author.id}) - ${metiers.length} métiers listés.`);
         return message.channel.send("Liste des métiers : \n" + string_metier);
-    }
+    } 
 
     
 

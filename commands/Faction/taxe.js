@@ -3,119 +3,78 @@ const faction = require("../../models/faction");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
-    return message.reply("IN DEV");
+    client.checkTaxes(message); // on vérifie d'abord l'état des taxes de cette faction.
 
+    // S'il n'y a pas d'argument
     if(!args[0]) {
         if(dbUser.faction == 'NULL') return message.reply('Vous n`êtes pas membre d\'une faction.');
-        let faction = await client.getFaction(dbUser.faction);
-        return message.reply(`Le taux de taxe de votre faction est actuellement de ${faction.taxe}% revenue/semaine`);
-    }
 
+        let faction = await client.getFaction(dbUser.faction); // get db Faction
+        return message.reply(`Le taux de taxe de votre faction est actuellement de ${faction.taxe}% du revenue max`);
+    } 
+
+    // Si l'on choisit de définir la taxe
     if(args[0] == "définir" || args[0] == "definir" || args[0] == "d") {
-        var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
-        var est_maitre = false;
+       
+        if(!client.isMaster(message)) return message.reply("Commande utilisable que par les maîtres de faction.");  //verification maître.
 
-        for(let y=0; y<roles_maitre.length; y++) {
-            if(message.member.roles.cache.has(roles_maitre[y])) {
-                est_maitre = true;
-                break;
-            } else {
-                est_maitre = false;
-            }
-        }
-        if(!est_maitre) return message.reply("commande utilisable que par les maîtres de faction.");
-
-        // --
         
         if(isNaN(args[1])) return message.reply("Veuillez renseigner une valeur numérique.");
         if(args[1] < 0) return message.reply("La taxe ne peut être négative.");
-        if(args[1] > 100) return message.reply("La taxe ne peut être supérieur à 100% du revenue");
+        if(args[1] > 100) return message.reply("La taxe ne peut être supérieur à 100% du revenue"); //temp pré-bêta
 
         let faction = await client.getFaction(dbUser.faction);
         let taxe = parseInt(args[1]);
-        
-        message.channel.send(`La faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)} à désormais une taxe de ${taxe}% revenue/semaine.`);
+
         await client.updateFaction(faction.name, {taxe: taxe});
+        return message.channel.send(`La faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)} à désormais une taxe de ${taxe}% revenue max.`);
     }
 
-    if(args[0] == "prélever" || args[0] == "prelever" || args[0] == "p") {
+    if(args[0] == "endettement") {
+        return message.channel.send("Vous êtes endetté personnellement à hauteur de: " + dbUser.endettement + " :coin:");
+    }
 
-        var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
-            var est_maitre = false;
-
-            for(let y=0; y<roles_maitre.length; y++) {
-                if(message.member.roles.cache.has(roles_maitre[y])) {
-                    est_maitre = true;
-                    break;
-                } else {
-                    est_maitre = false;
-                }
-            }
-            if(!est_maitre) return message.reply("commande utilisable que par les maîtres de faction.");
-
-            // --
-
-        let faction = await client.getFaction(dbUser.faction);
+    //TODO: DEBUG
+    if(args[0] == "comptes") {
         
-
-        const dailyCD = 8.64e+7 * 7; // Une semaine.
-        const lastDaily = faction.cooldown_taxe; // Dernière fois qu'on a récup la taxe
         
+        message.guild.members.fetch().then(async fetchAll => { 
             
-        if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
-            const cdTime = dailyCD - (Date.now() - lastDaily);
-            
-            message.reply(`il reste **${Math.floor(cdTime / (1000*60*60) % 7)}** jours, **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes avant de pouvoir de nouveau récupérer les taxes. :hourglass:`);
-        
-        } else { // Si le cooldown est passé.
-            
+            let members;
+            var itemsProcessed = 0;
+            var total = 0;
+            var arrayComptes = [];
+
+            if(faction.name = "epsilon") members = fetchAll.filter(m => m.roles.cache.get('415947454626660366'));
+            else if(faction.name = "daïros") members = fetchAll.filter(m => m.roles.cache.get('415947455582961686'));
+            else if(faction.name = "lyomah") members = fetchAll.filter(m => m.roles.cache.get('415947456342130699'));
+            else if(faction.name = "alpha") members = fetchAll.filter(m => m.roles.cache.get('665340021640921099'));
 
             
-            const metiers = require("../../assets/rpg/metiers/metiers.json");
-            let mt;
-
-            let nombre = 0;
-
-            const taxeEmbed = new EmbedBuilder()
-            .setColor('BF2F00')
-            .setAuthor(`Taxe`, client.user.displayAvatarURL());
-
-            client.getUsersByFaction(dbUser.faction).then(p => { 
-                p.forEach(async e => { 
+            await members.forEach(async element => {
+                let usr = await client.getUser(element);
+                itemsProcessed++;
+                if(usr !== undefined) {
                     
-                    
-                    if(e.metier != 0) {
-                        if(e.metier != 904) {
-                            nombre++;
-                            mt = client.filterById(metiers, e.metier);
-                            let max = mt.salaire * mt.horaires;
-                            let debit = Math.round(((faction.taxe / 100) * max));
-                            if(e.or < debit) {
-                                taxeEmbed.addField(`** **`, `<@${e.userID}> n'a pas assez d'or pour payer la taxe (${debit}).`)
-                            } else {
-                                taxeEmbed.addField(`** **`, `<@${e.userID}> paye ${debit} or de taxe.`); 
-                                await client.setOr(client, message.guild.members.cache.get(e.userID), -debit, message);
-                                await client.updateFaction(dbUser.faction, {bank : faction.bank + debit});
-                            }
-                        }
+                    total = total + usr.endettement;
+                    if(usr.endettement > 0) {
+                        arrayComptes.push(`${element.user.username} doit **${usr.endettement}** :coin:`);
                     }
-                }); 
-                if(nombre == 0) return message.channel.send("Il n'y a personne dans cette faction.");
-                
-                message.channel.send({embeds:[taxeEmbed]});
-
-            }).catch(c => {message.channel.send("Une erreur s'est produite : " + c);});
-            await client.updateFaction(dbUser.faction, {cooldown_taxe: Date.now()});
-        }
+                }
+                if(itemsProcessed === members.size) {
+                    return message.channel.send(arrayComptes.join("\n") + "\n\nAu total vos membres vous doivent **" + total + "** :coin:");
+                }
+            });
+        });
     }
 }
 
 module.exports.help = {
-    name: "taxeindev",
+    name: "taxe",
     aliases: ['tx'],
     category: "faction",
     desription: "Gérez tout ce qui s'apporte aux taxes.",
-    usage: '[définir/prélever] [montant]',
+    usage: '[endettement/comptes/[{définir} {montant}]]',
     cooldown: 3, 
     permissions: false,
     args: false,
