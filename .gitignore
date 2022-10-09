@@ -1,3 +1,11 @@
+# General
+/base.png
+/config.js
+/logs
+/node_modules
+/package-lock.json
+/package.json
+
 # Logs
 logs
 *.log
