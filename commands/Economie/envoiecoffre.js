@@ -1,6 +1,6 @@
 const {EmbedBuilder} = require('discord.js');
 
-module.exports.run = async (client, message, args, settings, dbUser) => {
+module.exports.run = async (client, message, args, settings, dbUser) => { 
 
     client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
 
@@ -14,6 +14,13 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     const faction = await client.getFaction(dbUser.faction);
     await client.updateFaction(dbUser.faction, {bank: (faction.bank + parseInt(args[0]))});
     await client.setOr(client, message.member, - args[0], message);
+
+    // retrait de l'endettement
+    let endettement_maj = dbUser.endettement - parseInt(args[0]);
+    if(endettement_maj <= 0) endettement_maj = 0;
+    await client.updateUser(message.member, {endettement: endettement_maj});
+    //--
+
     let ppmaitre = message.guild.members.cache.get(faction.idmaitre);
     const embed = new EmbedBuilder()
     .setColor('5E6366')

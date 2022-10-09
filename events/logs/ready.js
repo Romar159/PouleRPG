@@ -5,4 +5,6 @@ module.exports = (client) => {
    
     client.user.setPresence({ activities: [{ name: 'comment fonctionne p<aide', type: 'WATCHING'}] });
      
+    const devGuild = client.guilds.cache.get('415943423636537344');
+    devGuild.commands.set(client.commands.map(cmd => cmd));
 } 

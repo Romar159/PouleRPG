@@ -306,4 +306,77 @@ module.exports = client => {
         //console.log("HERE : " + collection.length);
         return collection[client.randomInt(0, collection.length - 1)];
     };
+
+    /**
+     * @Param {Client} client
+     * @Param {GuildMember} member
+     */
+    client.isMaster = (message) => {
+        //verification du rôle de maître
+        const roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
+
+        for(let y=0; y<roles_maitre.length; y++) {
+            if(message.member.roles.cache.has(roles_maitre[y])) return true;
+            else return false;
+        }
+    };
+
+    client.checkTaxes = async (message) => {
+
+        let members; // declaration de la liste des membres.
+        const metiers = require("../../assets/rpg/metiers/metiers.json");
+
+        const bdd_user = await client.getUser(message.member);
+        const dbFaction = await client.getFaction(bdd_user.faction);
+
+        if(dbFaction === undefined || bdd_user === undefined) return;
+
+        let last_check = dbFaction.cooldown_taxe;
+
+        var Difference_In_Time = Date.now() - last_check.getTime();
+        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+        
+        // /*debug:*/ message.channel.send(last_check.toString() + " \n dif: " + Math.floor(Difference_In_Days));
+
+        if(Math.floor(Difference_In_Days) >= 7) { //fait au moins 7 jours.
+            //on définit la nouvelle date de test au Lundi de cette semaine.
+            const today = new Date();
+            const first = today.getDate() - today.getDay() + 1;
+            const monday = new Date(today.setDate(first));
+            await client.updateFaction(dbFaction.name, {cooldown_taxe: monday});
+
+            // et on calcul les montants
+
+            //récupération des membres de chaque faction.
+            message.guild.members.fetch().then(fetchAll => { 
+                if(dbFaction.name = "epsilon") members = fetchAll.filter(m => m.roles.cache.get('415947454626660366'));
+                else if(dbFaction.name = "daïros") members = fetchAll.filter(m => m.roles.cache.get('415947455582961686'));
+                else if(dbFaction.name = "lyomah") members = fetchAll.filter(m => m.roles.cache.get('415947456342130699'));
+                else if(dbFaction.name = "alpha") members = fetchAll.filter(m => m.roles.cache.get('665340021640921099'));
+
+                members.forEach(async element => {
+                    let usr = await client.getUser(element);
+                    let metier = await client.filterById(metiers, usr.metier);
+                    //console.log("ELEMENT: " + element + "\nusr: " + usr + "\nMETIER: " + metier);
+                    if(metier !== undefined) {
+                        if(metier.id != "904") { //sauf le maître
+
+                            //On calcul le pourcentage de la taxe en fonction du salaire.
+                            let salaire_max = metier.salaire * metier.horaires;
+                            let taxe = parseInt((dbFaction.taxe / 100) * salaire_max);
+                            let endettement_final = usr.endettement + taxe;
+                            await client.updateUser(element, {endettement: endettement_final})
+                        }
+                    }
+                });
+            });
+
+        } else {
+            //pas 7 jours
+            console.log("Ça ne fait pas au moins 7 jours que la dernière taxe à été check, mais: " + Math.round(Difference_In_Days) + " jours.");
+        }
+    }
+
+
 };

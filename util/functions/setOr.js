@@ -24,12 +24,18 @@ module.exports = (client, member, message) => {
                 const fac = await client.getFaction(userToUpdate.faction);
                 await client.updateFaction(userToUpdate.faction, {bank: fac.bank + buffer});
 
+                // retrait de l'endettement
+                let endettement_maj = userToUpdate.endettement - buffer;
+                if(endettement_maj <= 0) endettement_maj = 0;
+                await client.updateUser(member, {endettement: endettement_maj});
+                //--
+
                 message.channel.send(`${message.guild.members.cache.get(userToUpdate.userID).user.username}, **${buffer}** :coin: ajouté(s) au coffre de votre faction.`) // ? DraxyNote : Ici faut styliser :)
             }
             updatedOr = parseInt(userToUpdate.maxbank);
         }
 
-        if (updatedOr < 0) updatedOr = 0; // * Avoir de l'argent en négatif.
+        if (updatedOr < 0) updatedOr = 0; // * Avoir de l'argent en négatif ou non.
         await client.updateUser(member, { or: updatedOr});
-    }
+    } 
 };
