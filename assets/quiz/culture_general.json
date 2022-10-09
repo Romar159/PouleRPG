@@ -100,5 +100,17 @@
         "categorie": "Science",
         "question" : "Quelle est la vitesse de la lumière en mettre par seconde ?",
         "reponses" : ["299 792 458", "299792458"]
-    }
+    },
+    {
+        "id" : 17,
+        "categorie": "Architecture",
+        "question": "De quel bâtiment fait partie la tour Élisabeth contenant la cloche Big-Ben ?",
+        "reponses": ["palais de westminster", "westminster", "westminster palace", "palace of westminster", "chambres du parlement", "chambre du parlement"]
+    },
+    {
+        "id" : 18,
+        "categorie": "Architecture",
+        "question": "Pour quel évènement la Tour Eiffel a t-elle était construite ?",
+        "reponses": ["exposition universelle", "éxposition universelle", "exposition universelle de paris", "exposition universelle de paris de 1889", "exposition universelle de 1889", "centenaire de la révolution française", "100 ans de la révolution française"]
+    } 
 ]

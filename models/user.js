@@ -39,7 +39,7 @@ const userSchema = mongoose.Schema({
     pointsvenitienne : {
         "type": Number,
         "default": 0
-    },
+    }, 
 
     
 
@@ -63,6 +63,10 @@ const userSchema = mongoose.Schema({
         "default": 0
     },
     maxbank : {
+        "type": Number,
+        "default": 0
+    },
+    endettement : {
         "type": Number,
         "default": 0
     },

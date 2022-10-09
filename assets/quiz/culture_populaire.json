@@ -58,5 +58,11 @@
         "categorie": "Animé",
         "question" : "Trouvez l'animé à partir des émoticônes suivants : \n 🚶‍♀️ 🚜 🚶‍♂️ -> 💧 💥 ⚔️ ✋",
         "reponses" : ["konosuba", "kono subarashii", "kono subarashii sekai ni shukufuku o!", "kono subarashii sekai ni shukufuku o", "kono subarashii sekai ni shukufuku wo!", "kono subarashii sekai ni shukufuku wo"]
-    }
+    },
+    {
+        "id" : 10,
+        "categorie": "Jeux Vidéo",
+        "question" : "Trouvez le jeu à partir des émoticônes suivants : \n🚀 🕵️ 🔪",
+        "reponses" : ["among us", "amongus", "sus", "amongrusse", "amogus", "among-us"]
+    } 
 ]
