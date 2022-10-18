@@ -378,5 +378,40 @@ module.exports = client => {
         }
     }
 
+    /**
+     * @Description return true si le joueur a au minimum le rôle Mee6 passé en paramètre !
+     * @Param {GuildMember} member
+     * @Param {String} role
+     */
+    client.hasMinRole = (member, role) => {
+
+        roles_id = ["445253268176633891", "445253591465328660", "445253561648021514", "445253809640308746", "445257669918588948", "650832087993024522", "445257144011587594", "612469098466639893", "650828967716192269"];
+        index = -1;
+
+        if(role == "paysan") index = 0;
+        else if(role == "artisan") index = 1;
+        else if(role == "bourgeois") index = 2;
+        else if(role == "courtisan") index = 3;
+        else if(role == "baron") index = 4;
+        else if(role == "comte") index = 5;
+        else if(role == "marquis") index = 6;
+        else if(role == "duc") index = 7;
+        else if(role == "vassal") index = 8;
+
+
+        console.log(index);
+        if(member.roles.cache.has(roles_id[0]) && index <= 0) return true; // il a au moins Paysan
+        if(member.roles.cache.has(roles_id[1]) && index <= 1) return true; // il a au moins Artisan
+        if(member.roles.cache.has(roles_id[2]) && index <= 2) return true; // il a au moins Bourgeois
+        if(member.roles.cache.has(roles_id[3]) && index <= 3) return true; // il a au moins Courtisan
+        if(member.roles.cache.has(roles_id[4]) && index <= 4) return true; // il a au moins Baron
+        if(member.roles.cache.has(roles_id[5]) && index <= 5) return true; // il a au moins Comte
+        if(member.roles.cache.has(roles_id[6]) && index <= 6) return true; // il a au moins Marquis
+        if(member.roles.cache.has(roles_id[7]) && index <= 7) return true; // il a au moins Duc      
+        if(member.roles.cache.has(roles_id[8]) && index <= 8) return true; // il a au moins Vassal
+        
+        return false;
+    };
+
 
 };
