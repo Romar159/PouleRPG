@@ -97,13 +97,13 @@
     },
     {
         "id" : 16,
-        "categorie" : "Jeu vidéo",
+        "categorie" : "Jeux vidéo",
         "question" : "Comment s'appelle la protagoniste de Control ?",
         "reponses" : ["jesse faden", "jesse"],
     },
     {
         "id" : 17,
-        "categorie" : "Jeu vidéo",
+        "categorie" : "Jeux vidéo",
         "question" : "Dans quel Mega Man, le chien Rush fait-il son apparition pour la première fois ?",
         "reponses" : ["3", "iii", "mega man 3", "mega man iii"],
     },
@@ -121,7 +121,7 @@
     },
     {
         "id" : 20,
-        "categorie" : "Jeu vidéo",
+        "categorie" : "Jeux vidéo",
         "question" : "Dans Death Stranding, Sam Porter Bridges possède un DOOMS de niveau combien ?",
         "reponses" : ["2", "deux"],
     }
