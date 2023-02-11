@@ -7,6 +7,8 @@ module.exports.run = async (client, message, args) => {
     var cat = "vérité";
     var arr = [];
 
+    if(!args[1]) return message.reply("Veuillez entrer un texte valide.");
+
     //Vérficiation de la catégorie en prenant en compte les fautes de frapes.
     if(levenshtein(args[0].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""), 'verite') > levenshtein(args[0].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""), 'action')) {
         cat = "action"
@@ -17,6 +19,8 @@ module.exports.run = async (client, message, args) => {
         arr.push(args[i]);
     }
     var str = arr.join(' ');
+
+    
 
     //création de l'entrée DB
     const newAov = {
