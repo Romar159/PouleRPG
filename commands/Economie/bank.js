@@ -2,7 +2,8 @@ const {EmbedBuilder} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
-    client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+    //client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+    client.logCommandExecution(message, this);
 
     const embed = new EmbedBuilder()
     .setColor('F2DB0C');
