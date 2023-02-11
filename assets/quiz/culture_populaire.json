@@ -64,5 +64,72 @@
         "categorie": "Jeux Vidéo",
         "question" : "Trouvez le jeu à partir des émoticônes suivants : \n🚀 🕵️ 🔪",
         "reponses" : ["among us", "amongus", "sus", "amongrusse", "amogus", "among-us"]
-    } 
+    },
+    {
+        "id" : 11,
+        "categorie" : "Animé",
+        "question" : "Comment s'appelle l'arme impérial de Sheele dans Akame ga Kill! ?",
+        "reponses" : ["extase", "ecstasy", "ekusutasu", "ciseau de la création extase", "ciseau de la creation extase", "cutter of creation: extase"]
+    },
+    {
+        "id" : 12,
+        "categorie" : "Délire",
+        "question" : "Trouvez le mot à partir des émoticônes suivants.\n🥰💊",
+        "reponses" : ["ecstasy"]
+    },
+    {
+        "id" : 13,
+        "categorie" : "Série",
+        "question" : "Comment s'appelle le personnage qui a des pouvoirs télékinésiques dans Stranger Things ?",
+        "reponses" : ["onze", "eleven", "el", "elfe", "jane ives", "011", "11"]
+    },
+    {
+        "id" : 14,
+        "categorie" : "Délire",
+        "question" : "Hey, salut à tous les amis, c'est David Lafarge Pokémon, j'espère que vous allez très bien, moi en tout cas ça va super, ça va extrêmement bien, je suis avec Miss Jirachi !",
+        "reponses" : ["coucou", "coucou !"]
+    },
+    {
+        "id" : 15,
+        "categorie" : "Jeux vidéo",
+        "question" : "Quel est le grand méchant de la série Mario ?",
+        "reponses" : ["bowser"]
+    },
+    {
+        "id" : 16,
+        "categorie" : "Jeux vidéo",
+        "question" : "Comment s'appelle la protagoniste de Control ?",
+        "reponses" : ["jesse faden", "jesse"]
+    },
+    {
+        "id" : 17,
+        "categorie" : "Jeux vidéo",
+        "question" : "Dans quel Mega Man, le chien Rush fait-il son apparition pour la première fois ?",
+        "reponses" : ["3", "iii", "mega man 3", "mega man iii"]
+    },
+    {
+        "id" : 18,
+        "categorie" : "Internet",
+        "question" : "Quel moteur de recherche possède un canard comme logo ?",
+        "reponses" : ["duckduckgo", "duck duck go"]
+    },
+    {
+        "id" : 19,
+        "categorie" : "Délire",
+        "question" : "Qui n'était pas un délire, puis en est devenu un ?",
+        "reponses" : ["zheonixx", "zheo", "zézé", "zeze"]
+    },
+    {
+        "id" : 20,
+        "categorie" : "Jeux vidéo",
+        "question" : "Dans Death Stranding, Sam Porter Bridges possède un DOOMS de niveau combien ?",
+        "reponses" : ["2", "deux"]
+    }, 
+    {
+        "id" : 21,
+        "categorie" : "Délire",
+        "question" : "Quelle est objectivement la commande PouleRPG qui fonctionne le mieux ?",
+        "reponses" : ["action ou verite", "action ou vérité", "aov", "p<aov", "action", "verite", "vérité"]
+    }
+    
 ]
