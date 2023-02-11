@@ -24,7 +24,7 @@ module.exports.run = async (client, message, args, settings, dbUser, command, me
 
     const embedaov = new EmbedBuilder()
         .setAuthor({name: user.username, iconURL: user.displayAvatarURL()})
-        .setDescription(obj.texte);
+        .setDescription("**" + obj.texte + "**");
 
     if(cat == "action") embedaov.setColor('D53B3E');
     else if(cat == "vérité") embedaov.setColor('359553');
@@ -56,8 +56,12 @@ module.exports.run = async (client, message, args, settings, dbUser, command, me
             if (i.customId === `act`) { 
                 await i.deferUpdate();
                 collector.stop();
-                this.run(client, msg, ["action"], settings, dbUser, command, mentionnedUser, i.user);
 
+                /*
+                    on émet la commande avec comme message déclencheur msg (plus bas), l'args[0] = "action" et le user c'est i.user, 
+                    les autres paramètres sont les même qu'au premier lancement
+                */
+                this.run(client, msg, ["action"], settings, dbUser, command, mentionnedUser, i.user); 
             } else if (i.customId === `vrt`) {
                 await i.deferUpdate();
                 collector.stop();
