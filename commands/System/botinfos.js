@@ -14,7 +14,7 @@ module.exports.run = (client, message, args) => {
         **Date de début de la reprogrammation :** 26/01/2021
         **Date de Bêta :** TBA
 
-        **Programmation :** <@421400262423347211> | **Design Graphique :** <@211911771433205760>
+        **Développement :** <@421400262423347211> | **Aide à la conception :** <@211911771433205760>
         
         **Sources d'information principales :** ISBN-9782035053749 | Cours d'Histoire et divers livres du Romar | wikipedia.org | Paradox Interactive
 
