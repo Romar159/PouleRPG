@@ -117,18 +117,18 @@
         "id" : 19,
         "categorie" : "Géographie",
         "question" : "Quelle est la capitale de la Norvège ?",
-        "reponses" : ["oslo"],
+        "reponses" : ["oslo"]
     },
     {
         "id" : 20,
         "categorie" : "Zoologie",
         "question" : "Combien de griffes possède une patte de poulet ?",
-        "reponses" : ["4", "quatre"],
+        "reponses" : ["4", "quatre"]
     },
     {
         "id" : 21,
         "categorie" : "Géographie",
         "question" : "Dans quel océan se situe l'archipel des Bermudes ?",
-        "reponses" : ["atlantique", "l'antlantique"],
+        "reponses" : ["atlantique", "l'antlantique"]
     }
 ]
