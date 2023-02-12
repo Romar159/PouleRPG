@@ -19,7 +19,7 @@ module.exports.run = (client, message, args) => {
         **Sources d'information principales :** ISBN-9782035053749 | Cours d'Histoire et divers livres du Romar | wikipedia.org | Paradox Interactive
 
         **Lien utiles :**
-        [Discord Empire](https://discord.gg/n6xxGQs) • [Github](https://github.com/Romar159/PouleRPG) • [Site](https://romar159.github.io/PouleRPGweb/)`)
+        [Discord Empire](https://discord.gg/Y4YZw2FK2Q) • [Github](https://github.com/Romar159/PouleRPG) • [Site](https://romar159.github.io/PouleRPGweb/)`)
 
     message.channel.send({ embeds: [embed] });
 }
