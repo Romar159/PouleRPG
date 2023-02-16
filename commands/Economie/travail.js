@@ -28,7 +28,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     } else { // Si le cooldown est passé.
         
         let salaire = dbUser.heure_travail * mt.salaire;
-        let random = client.randomFloat(1.15, 1.95);
+        let random = client.randomFloat(0.6, 1.4);
         let points_travail = parseInt(dbUser.heure_travail * random);
 
         client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - SALAIRE=${salaire} | RANDOM=${random} | POINTS_TRAVAIL=${points_travail} | HEURE_TRAVAIL=${dbUser.heure_travail}`);
