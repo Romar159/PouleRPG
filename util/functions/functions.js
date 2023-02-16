@@ -1,9 +1,43 @@
 const mongoose = require("mongoose");
-const { Guild, User, Faction } = require("../../models/index");
+const { Guild, User, Faction, Aov, Aovtp } = require("../../models/index");
 const {randomInt} = require("./randoms");
 const fs = require("fs");
 
 module.exports = client => {
+
+    //crée une entrée dans la db R18
+    client.createAov = async aov => {
+        const merged = Object.assign({_id: mongoose.Types.ObjectId()}, aov);
+        const createAov = await new Aov(merged);
+        createAov.save().then(g => console.log(`R18: Nouveau ${g.categorie} -> ${g.texte}`));    
+    };
+
+    //crée une entrée dans la db tout public
+    client.createAovtp = async aovtp => {
+        const merged = Object.assign({_id: mongoose.Types.ObjectId()}, aovtp);
+        const createAovtp = await new Aovtp(merged);
+        createAovtp.save().then(g => console.log(`TP: Nouveau ${g.categorie} -> ${g.texte}`));    
+    };
+
+    client.getRandomAov = async (category, rating) => {
+        if(rating == "R18") {
+            const data = await Aov.find({ categorie: category});
+            if(data) {
+                console.log(data[0]);
+                return data[client.randomInt(0, data.length - 1)]
+            }
+            else return;
+        } else {
+            const data = await Aovtp.find({ categorie: category});
+            if(data) {
+                console.log(data[0]);
+                return data[client.randomInt(0, data.length - 1)]
+            }
+            else return;
+        }
+    }
+
+
     client.createGuild = async guild => {
         const merged = Object.assign({_id: mongoose.Types.ObjectId()}, guild);
         const createGuild = await new Guild(merged);
@@ -13,7 +47,7 @@ module.exports = client => {
     client.getGuild = async guild => {
         const data = await Guild.findOne({ guildID: guild.id});
         if(data) return data;
-        return client.config.DEFAULTSETTINGS;
+        return client.config.DEFAULTSETTINGS; 
     };
 
     client.updateGuild = async (guild, settings) => {
@@ -156,6 +190,28 @@ module.exports = client => {
         if(type == undefined) type = "info";
 
         let line = `${year}-${month}-${date} ${hours}:${minutes}:${seconds} [${type.toUpperCase()}] | ${log}\n`;
+
+        fs.appendFile("./logs/logs.log", line, function(err) {
+            if(err) {
+                return console.log(err);
+            }
+        });  
+    }
+
+    client.logCommandExecution = (message, command) => {
+        
+        let date_time = new Date();
+        let date = ("0" + date_time.getDate()).slice(-2);
+        let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
+        let year = date_time.getFullYear();
+        let hours = date_time.getHours();
+        let minutes = date_time.getMinutes();
+        let seconds = date_time.getSeconds();
+
+        if(hours.toString().length < 2) hours = "0" + hours;
+        if(minutes.toString().length < 2) minutes = "0" + minutes;
+        if(seconds.toString().length < 2) seconds = "0" + seconds;
+        let line = `${year}-${month}-${date} ${hours}:${minutes}:${seconds} [EXECUTION] | ${command.help.name} executée par ${message.author.tag} (${message.author.id}) \n`;
 
         fs.appendFile("./logs/logs.log", line, function(err) {
             if(err) {

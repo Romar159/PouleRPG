@@ -23,6 +23,7 @@ module.exports = async (client, message) => {
     
     const dbUser = await client.getUser(message.member);
     const settings = await client.getGuild(message.guild);
+    const user = message.member.user;
 
     // Dès qu'un utilisateur parle on vérifie s'il existe dans la bdd, sinon on l'ajoute
     if(!dbUser && !message.author.bot) {
@@ -114,5 +115,5 @@ module.exports = async (client, message) => {
     tStamps.set(message.author.id, timeNow);
     setTimeout(() => tStamps.delete(message.author.id), cdAmount);
 
-    command.run(client, message, args, settings, dbUser, command, mentionnedUser);
+    command.run(client, message, args, settings, dbUser, command, mentionnedUser, user);
 }
