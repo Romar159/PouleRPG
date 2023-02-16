@@ -78,7 +78,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         //if(dbMembre.faction != dbUser.faction ) return message.channel.send("Cet utilisateur n'est pas membre de votre faction ou n'est pas sur votre territoire.");
         
         if(args[0].toLowerCase() == "enfermer") {
-            if(dbMembre.in_jail == "true") return message.channel.send("Cet utilisateur est déjà dans vos cachots.");
+            if(dbMembre.in_jail == "true") return message.channel.send("Cet utilisateur est déjà dans des cachots.");
 
                 await client.updateUser(cMembre, {in_jail: true});
 
