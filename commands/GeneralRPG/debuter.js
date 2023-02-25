@@ -5,6 +5,11 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, SelectMenuBu
 module.exports.run = async (client, message, args, settings, dbUser) => {
     var index = 0;
 
+    var db_e = await client.getFaction('epsilon');
+    var db_d = await client.getFaction('daïros');
+    var db_l = await client.getFaction('lyomah');
+    var db_a = await client.getFaction('alpha');
+
     const page1 = new EmbedBuilder()
         .setColor('1ABC9C')
         .setAuthor({name: message.member.user.username + " (1/10)", iconURL: message.member.user.displayAvatarURL()})
@@ -13,7 +18,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     const page2 = new EmbedBuilder()
         .setColor('1ABC9C')
         .setAuthor({name: message.member.user.username + " (2/10)", iconURL: message.member.user.displayAvatarURL()})
-        .setDescription("**Le RPG**\n\nComme vous le savez peut-être déjà, PouleRPG possède un côté **RPG** *(comme son nom l'indique)*. Vous allez pouvoir découvrir tout un système d'**économie**, de **stats** et d'**expérience** !\n\nEn exerçant le **métier** de votre choix vous allez pouvoir gagner la majorité de votre **or** ! Il existe cependant beaucoup d'**autres manières** d'en obtenir !\n Pour gagner en **expérience**, tout comme l'or il existe **de nombreuses manières** comme: partir en **expédition**, vous **entraîner** ou encore en **combattant des ennemis** !\n\nLe bot <@159985870458322944> a aussi son importance dans le jeu. Plus vous **parlez** plus vous **gagnez** en XP. Il existe **plusieurs palliers** d'XP qui vous donne accès à un **rôle** de plus en plus **important** vous permettant de **débloquer** diverses choses, par exemple, une **capacité** plus élevé de **votre banque**. \nN'hésitez pas à executer les commandes `!rank` vous permettant de voir votre **classement** d'XP et `!leaderboard` pour voir celui **des autres** ainsi que les **différents palliers** d'XP atteignables.");
+        .setDescription("**Le RPG**\n\nComme vous le savez peut-être déjà, PouleRPG possède un côté **RPG** *(comme son nom l'indique)*. Vous allez pouvoir découvrir tout un système d'**économie**, de **stats** et d'**expérience** !\n\nEn exerçant le **métier** de votre choix vous allez pouvoir gagner la majorité de votre **or** ! Il existe cependant beaucoup d'**autres manières** d'en obtenir !\n Pour gagner en **expérience**, tout comme l'or il existe **de nombreuses manières** comme: partir en **expédition**, vous **entraîner** ou encore en **combattant des ennemis** !\n\nLe bot <@159985870458322944> a aussi son importance dans le jeu. Plus vous **parlez** plus vous **gagnez** en XP. Il existe **plusieurs palliers** d'XP qui vous donnent accès à des **rôles** de plus en plus **importants** vous permettant de **débloquer** diverses choses, comme une **capacité** plus élevé pour **votre banque**. \nN'hésitez pas à executer les commandes `!rank` vous permettant de voir votre **classement** d'XP et `!leaderboard` pour voir celui **des autres** ainsi que les **différents palliers** d'XP atteignables.");
 
     const page3 = new EmbedBuilder()
         .setColor('1ABC9C')
@@ -30,39 +35,44 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     const page5 = new EmbedBuilder() 
         .setColor('1ABC9C')
         .setAuthor({name: message.member.user.username + " (5/10)", iconURL: message.member.user.displayAvatarURL()})
-        .setDescription("**Le choix de votre Faction**\n\nVous y voilà ! Le choix de la faction est **très important**. Elle vous **représente** comme tous **les autres membres** et vous en faite partie **intégralement**, vous vous devez d'y être **loyal** !\nChaque faction est **très différente des autres**, vous devez choisir celle **qui vous ressemble** le plus, la plus proche de votre vision ; votre faction est **votre façon de penser** ! Attention, ce choix est définitif, il n'y a que de rare cas où vous pouvez changer ! (voir Loi P4 A1)\n\nCependant, il peut s'avérer que ce soit un choix **complexe**. Et que même après avoir lu chaques descriptions de chaques factions vous vous trouvez encore **empli de doutes** sur votre choix, vous pouvez effectuer **\"Le Test\"**. C'est un test de **personnalité** qui va vous permettre de définir **quelle faction vous correspond le mieux**, bien sûr vous pourrez toujours choisir. Le test sert simplement à vous **aiguiller** ! Pour faire le test exécutez la commande ``p<test-de-faction``.\n\nDans les **pages suivantes** vous allez être amenez à **découvrir** chaque faction et à la fin de ces dernières vous aurez la possibilité de **choisir** la votre !\n*Dieu Poulet veille sur vous ; que votre choix soit judicieux !* <:EP_Pfier:867163346319179817>");
+        .setDescription("**Le choix de votre Faction**\n\nVous y voilà ! Le choix de la faction est **très important**. Elle vous **représente** comme tous **les autres membres** et vous en faite partie **intégralement**, vous vous devez d'y être **loyal** !\nChaque faction est **très différente des autres**, vous devez choisir celle **qui vous ressemble** le plus, la plus proche de votre vision ; votre faction est **votre façon de penser** ! Attention, ce choix est définitif, il n'y a que de rare cas où vous pouvez changer ! (voir Loi P4 A1)\n\nCependant, il peut s'avérer que ce soit un choix **complexe**. Et que même après avoir lu chaque descriptions de chaque factions vous vous trouvez encore **emplis de doutes** sur votre choix, vous pouvez effectuer **\"Le Test\"**. C'est un test de **personnalité** qui va vous permettre de définir **quelle faction vous correspond le mieux**, bien sûr vous pourrez toujours choisir. Le test sert simplement à vous **aiguiller** ! Pour faire le test exécutez la commande ``p<test-de-faction``.\n\nDans les **pages suivantes** vous allez être amenez à **découvrir** chaque faction et à la fin de ces dernières vous aurez la possibilité de **choisir** la votre !\n*Dieu Poulet veille sur vous ; que votre choix soit judicieux !* <:EP_Pfier:867163346319179817>");
  
 
 
     const page6 = new EmbedBuilder() 
         .setColor('AA3C00')
         .setAuthor({name: message.member.user.username + " (6/10)", iconURL: message.member.user.displayAvatarURL()})
+        .setTitle(`**Epsilon**`)
         .setThumbnail('https://i.imgur.com/K9CXVaO.png')
-        .setDescription("Epsilon - Maître  - Emblème. Deux mots. Définition rédigée.");
+        .setDescription(`${(!db_e.idmaitre) ? "**Maître vacant**" : "Gouverné par **<@" + db_e.idmaitre + ">**"} \n\n\n**La Stratégie et la Diplomatie**\n\nMalgré leur attitude **calme** voir parfois froide, les Epsilon sont de **puissants diplomates** et de **fins stratèges** ! \n\nIls sont connus pour leur **érudition** et utilisent leur **savoir** et leur **éloquence** pour résoudre la plupart des problèmes. \n\nLors des conflits ils vont prioriser la **diplomatie** plutôt que la violence. \nMais, lorsque cela ne suffit guère, leur grande **connaissance** en **stratégie** leur permet de mener leurs armées au combat en **réfléchissant** plutôt sur une **carte** et un **plan** que de partir tête baissée et miser uniquement sur le grand nombre et la puissance de leurs troupes !`);
 
     const page7 = new EmbedBuilder() 
         .setColor('0078F0')
         .setAuthor({name: message.member.user.username + " (7/10)", iconURL: message.member.user.displayAvatarURL()})
+        .setTitle(`**Daïros**`)
         .setThumbnail('https://i.imgur.com/sh3wjrv.png')
-        .setDescription("Daïros - Maître  - Emblème. Deux mots. Définition rédigée.");
+        .setDescription(`${(!db_d.idmaitre) ? "**Maître vacant**" : "Gouverné par **<@" + db_d.idmaitre + ">**"} \n\n\n**L'Exploration et l'Amélioration**\n\nLes Daïros sont de grands **explorateurs**. Leur **curiosité**, parfois intrusive, leur est fort utile pour apprendre de leur environnement. \n\nIls sont connus pour leur **indépendance**, ainsi que pour **chercher les limites** de chaque domaine pour les maîtriser au mieux. \n\nDe par leur façon d’être, ils **éviteront** au maximum les conflits. Mais si cela arrive, leurs nombreuses **expériences** leurs permettent d’agir en **toutes circonstances** ! \nLeur curiosité leur permet d'**évaluer** les tactiques de l’adversaire pour mieux y répondre, et chaque erreur est pour eux, source d'**amélioration**.`);
         
     const page8 = new EmbedBuilder() 
         .setColor('00A00A')
         .setAuthor({name: message.member.user.username + " (8/10)", iconURL: message.member.user.displayAvatarURL()})
+        .setTitle(`**Lyomah**`)
         .setThumbnail('https://i.imgur.com/uj8TLad.png')
-        .setDescription("Lyomah - Maître  - Emblème. Deux mots. Définition rédigée.");
+        .setDescription(`${(!db_l.idmaitre) ? "**Maître vacant**" : "Gouverné par **<@" + db_l.idmaitre + ">**"} \n\n\n**La Loyauté et la Solidarité**\n\nLes Lyomah sont **loyaux** et **solidaires**, ils **s’entraident** et ne se laissent **jamais tomber**. \n\nIls sont connus pour leur **esprit d’équipe** et leur **dévouement** sans faille. Ils veillent **les uns sur les autres** ; et grâce à leur grand **sens de l'honneur**, ils savent qu’ils peuvent se faire **confiance**. \n\nLors des conflits ils **combinent** leurs forces et **coopèrent** tous **ensemble** pour gagner. Et ce, même s’ils devaient se **sacrifier** pour les autres.`);
         
     const page9 = new EmbedBuilder() 
         .setColor('F0C800')
         .setAuthor({name: message.member.user.username + " (9/10)", iconURL: message.member.user.displayAvatarURL()})
+        .setTitle(`**Alpha**`)
         .setThumbnail('https://i.imgur.com/tIwuxXD.png')
-        .setDescription("Alpha - Maître - Emblème. Deux mots. Définition rédigée.");
+        .setDescription(`${(!db_a.idmaitre) ? "**Maître vacant**" : "Gouverné par **<@" + db_a.idmaitre + ">**"} \n\n\n**La Vigueur et la Persévérance**\n\nGrâce à leur **vigueur** et leur **persévérance**, les Alpha obtiennent souvent ce qu’ils **veulent**. \nIls **n’abandonnent jamais** leurs objectifs et font tout pour **arriver à leur fin** même s’ils doivent employer la **force** quitte à perdre leur sang-froid. \n\nIls sont connus pour leur **efficacité** et leur **performance** ce qui leur permet d’atteindre tous leurs buts. \n\nLors des conflits ils ne se laissent pas **intimider**, ce sont eux qui **imposent** leur force aux autres !`);
+        
 
 
     const page10 = new EmbedBuilder() 
         .setColor('1ABC9C')
         .setAuthor({name: message.member.user.username + " (10/10)", iconURL: message.member.user.displayAvatarURL()})
-        .setDescription(`**Choisissez... Judicieusement !** \n\n N'oubliez pas. Votre choix est définitif !${dbUser.faction == "NULL" ? "" : "\n\n**/!\\ ATTENTION /!\\ ** \nVous êtes déjà dans une faction. Vous ne pourrez pas en changer ici !"} ${client.hasMinRole(message.member, "paysan") == false ? "\n\n**/!\\ ATTENTION /!\\ ** \nPour choisir une faction vous devez au moins être Paysan, c'est à dire le Niveau 2 du bot Mee6. Essayez de parler un petit peu avant de commencer à jouer <:EP_Pjoie:867163422662852648>" : ""}`);
+        .setDescription(`**Choisissez... Judicieusement !** \n\n N'oubliez pas. Votre choix est définitif !${dbUser.faction == "NULL" ? "" : "\n\n:warning: **ATTENTION** :warning: \nVous êtes déjà dans une faction. Vous ne pourrez pas en changer ici !"} ${client.hasMinRole(message.member, "paysan") == false ? "\n\n**/!\\ ATTENTION /!\\ ** \nPour choisir une faction vous devez au moins être Paysan, c'est à dire le Niveau 2 du bot Mee6. Essayez de parler un petit peu avant de commencer à jouer <:EP_Pjoie:867163422662852648>" : ""}`);
 
 
     const embedBvnEpsilon = new EmbedBuilder()
@@ -88,7 +98,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     all_pages.push(page1, page2, page3, page4, page5, page6, page7, page8, page9, page10);
 
     const filter = i => (i.customId === 'gauche' || i.customId === 'droite' || i.customId === 'select') && i.user.id === message.author.id;
-    const collector = message.channel.createMessageComponentCollector({ filter, time: 300000 }); //5 minutes
+    const collector = message.channel.createMessageComponentCollector({ filter, time: 360000 }); //6 minutes
         const row = new ActionRowBuilder()
         .addComponents(
             new ButtonBuilder()
