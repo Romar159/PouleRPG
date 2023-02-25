@@ -2,7 +2,7 @@ const {Collection,  ChannelType} = require('discord.js');
 const {PREFIX} = require('../../config');
 
 module.exports = async (client, interaction) => {
-
+    
     if(interaction.isCommand()) {
         const cmd = client.commands.get(interaction.commandName);
         if(!cmd) return interaction.reply("Cette commande n'existe pas");

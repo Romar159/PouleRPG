@@ -1,9 +1,43 @@
 const mongoose = require("mongoose");
-const { Guild, User, Faction } = require("../../models/index");
+const { Guild, User, Faction, Aov, Aovtp } = require("../../models/index");
 const {randomInt} = require("./randoms");
 const fs = require("fs");
 
 module.exports = client => {
+
+    //crée une entrée dans la db R18
+    client.createAov = async aov => {
+        const merged = Object.assign({_id: mongoose.Types.ObjectId()}, aov);
+        const createAov = await new Aov(merged);
+        createAov.save().then(g => console.log(`R18: Nouveau ${g.categorie} -> ${g.texte}`));    
+    };
+
+    //crée une entrée dans la db tout public
+    client.createAovtp = async aovtp => {
+        const merged = Object.assign({_id: mongoose.Types.ObjectId()}, aovtp);
+        const createAovtp = await new Aovtp(merged);
+        createAovtp.save().then(g => console.log(`TP: Nouveau ${g.categorie} -> ${g.texte}`));    
+    };
+
+    client.getRandomAov = async (category, rating) => {
+        if(rating == "R18") {
+            const data = await Aov.find({ categorie: category});
+            if(data) {
+                console.log(data[0]);
+                return data[client.randomInt(0, data.length - 1)]
+            }
+            else return;
+        } else {
+            const data = await Aovtp.find({ categorie: category});
+            if(data) {
+                console.log(data[0]);
+                return data[client.randomInt(0, data.length - 1)]
+            }
+            else return;
+        }
+    }
+
+
     client.createGuild = async guild => {
         const merged = Object.assign({_id: mongoose.Types.ObjectId()}, guild);
         const createGuild = await new Guild(merged);
@@ -13,7 +47,7 @@ module.exports = client => {
     client.getGuild = async guild => {
         const data = await Guild.findOne({ guildID: guild.id});
         if(data) return data;
-        return client.config.DEFAULTSETTINGS;
+        return client.config.DEFAULTSETTINGS; 
     };
 
     client.updateGuild = async (guild, settings) => {
@@ -156,6 +190,28 @@ module.exports = client => {
         if(type == undefined) type = "info";
 
         let line = `${year}-${month}-${date} ${hours}:${minutes}:${seconds} [${type.toUpperCase()}] | ${log}\n`;
+
+        fs.appendFile("./logs/logs.log", line, function(err) {
+            if(err) {
+                return console.log(err);
+            }
+        });  
+    }
+
+    client.logCommandExecution = (message, command) => {
+        
+        let date_time = new Date();
+        let date = ("0" + date_time.getDate()).slice(-2);
+        let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
+        let year = date_time.getFullYear();
+        let hours = date_time.getHours();
+        let minutes = date_time.getMinutes();
+        let seconds = date_time.getSeconds();
+
+        if(hours.toString().length < 2) hours = "0" + hours;
+        if(minutes.toString().length < 2) minutes = "0" + minutes;
+        if(seconds.toString().length < 2) seconds = "0" + seconds;
+        let line = `${year}-${month}-${date} ${hours}:${minutes}:${seconds} [EXECUTION] | ${command.help.name} executée par ${message.author.tag} (${message.author.id}) \n`;
 
         fs.appendFile("./logs/logs.log", line, function(err) {
             if(err) {
@@ -377,6 +433,41 @@ module.exports = client => {
             console.log("Ça ne fait pas au moins 7 jours que la dernière taxe à été check, mais: " + Math.round(Difference_In_Days) + " jours.");
         }
     }
+
+    /**
+     * @Description return true si le joueur a au minimum le rôle Mee6 passé en paramètre !
+     * @Param {GuildMember} member
+     * @Param {String} role
+     */
+    client.hasMinRole = (member, role) => {
+
+        roles_id = ["445253268176633891", "445253591465328660", "445253561648021514", "445253809640308746", "445257669918588948", "650832087993024522", "445257144011587594", "612469098466639893", "650828967716192269"];
+        index = -1;
+
+        if(role == "paysan") index = 0;
+        else if(role == "artisan") index = 1;
+        else if(role == "bourgeois") index = 2;
+        else if(role == "courtisan") index = 3;
+        else if(role == "baron") index = 4;
+        else if(role == "comte") index = 5;
+        else if(role == "marquis") index = 6;
+        else if(role == "duc") index = 7;
+        else if(role == "vassal") index = 8;
+
+
+        console.log(index);
+        if(member.roles.cache.has(roles_id[0]) && index <= 0) return true; // il a au moins Paysan
+        if(member.roles.cache.has(roles_id[1]) && index <= 1) return true; // il a au moins Artisan
+        if(member.roles.cache.has(roles_id[2]) && index <= 2) return true; // il a au moins Bourgeois
+        if(member.roles.cache.has(roles_id[3]) && index <= 3) return true; // il a au moins Courtisan
+        if(member.roles.cache.has(roles_id[4]) && index <= 4) return true; // il a au moins Baron
+        if(member.roles.cache.has(roles_id[5]) && index <= 5) return true; // il a au moins Comte
+        if(member.roles.cache.has(roles_id[6]) && index <= 6) return true; // il a au moins Marquis
+        if(member.roles.cache.has(roles_id[7]) && index <= 7) return true; // il a au moins Duc      
+        if(member.roles.cache.has(roles_id[8]) && index <= 8) return true; // il a au moins Vassal
+        
+        return false;
+    };
 
 
 };

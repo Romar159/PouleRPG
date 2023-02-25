@@ -12,7 +12,7 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
 
     const list_badges = require('../../assets/rpg/badges.json');
     const armes = require('../../assets/rpg/armes.json');
-    const dailyCD = 60000;
+    const dailyCD = 300000;
     let user_weapon;
     let bot_weapon = armes[client.randomInt(0, 4)];
     //let bot_weapon_name = "";

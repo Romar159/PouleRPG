@@ -66,18 +66,22 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             const bonus_or = 0.125 * or_apporter;
             const level_user = dbUser.level;
             const time = Math.floor(dbUser.expedition_duration / (1000*60*60) % 24);
+            console.log(time);
             
             const final_xp = Math.round((12.5 * (time * level_user + (bonus_or * level_user / 3))/ Math.sqrt(level_user)));
             const final_or = Math.round(10 - dbUser.or_expedition * 0.10);
+            const final_savoir = parseInt(time * client.randomFloat(0.6, 1.4));
+            
             
             const finEmbed = new EmbedBuilder()
             .setColor('3F992D')
             .setAuthor({name:`Expédition terminée !`, iconURL:message.author.displayAvatarURL()})
-            .addFields([{name: `** **`, value:`**:test_tube: +${final_xp} XP**`},{name: `** **`, value: `:coin: **+${final_or} Or**`}])
+            .addFields([{name: `** **`, value:`**:test_tube: +${final_xp} XP**`},{name: `** **`, value: `:coin: **+${final_or} Or**`},{name: `** **`, value: `:brain: **+${final_savoir} points de savoir**`}])
             
 
             message.channel.send({embeds:[finEmbed]});
             await client.setOr(client, message.member, dbUser.or_expedition, message);
+            await client.editPoint(client, message.member, final_savoir, "savoir");
             await client.updateUser(message.member, {expedition_duration: 0, or_expedition: 0, cooldown_expedition: 0});
             await client.setXp(client, message.member, final_xp);
             await client.setOr(client, message.member, final_or, message);

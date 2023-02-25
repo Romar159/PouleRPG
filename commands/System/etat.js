@@ -1,6 +1,6 @@
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
-    let infos_travail, infos_arene, infos_tacty, infos_pari, infos_ennemi, infos_entrainement, infos_expedition;
+    let infos_travail, infos_arene, infos_tacty, infos_pari, infos_ennemi, infos_entrainement, infos_expedition, infos_prison, infos_streak_arene;
 
     let dailyCD = dbUser.heure_travail * 3600000;
     
@@ -85,7 +85,38 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     }
 
 
-    message.channel.send(`${infos_travail} \n${infos_arene} \n${infos_tacty} \n${infos_pari} \n${infos_ennemi} \n${infos_entrainement} \n${infos_expedition}`); //? DraxyNote, tu peux évidemment changer les phrases d'affichage et les mots en gras, j'ai mit un truc générique pour l'instant.
+
+    infos_streak_arene = `Vous avez gagner **${dbUser.arene_streak} fois de suite** dans l'arène.`;
+
+    
+    if(dbUser.in_jail == 'true') {
+        var factions = ['epsilon', 'daïros', 'lyomah', 'alpha'];
+        var item_processed = 0;
+        factions.forEach(async e => {
+            item_processed++;
+
+            var faction = await client.getFaction(e);
+            faction.cachot.forEach(element => {
+                if(message.member == message.guild.members.cache.get(element)) {
+                    infos_prison = `Vous **êtes** en prison dans les geôles de **${e}**`; 
+                }
+            }) 
+
+            if(item_processed == e.length - 1) {
+                finality();
+            }
+        })
+        
+    } else {
+        infos_prison = `Vous **n'êtes pas** en prison`;
+        finality();
+    }
+
+
+
+    function finality() {
+        message.channel.send(`${infos_travail} \n${infos_arene} \n${infos_streak_arene} \n${infos_tacty} \n${infos_pari} \n${infos_ennemi} \n${infos_entrainement} \n${infos_expedition} \n${infos_prison}`); //? DraxyNote, tu peux évidemment changer les phrases d'affichage et les mots en gras, j'ai mit un truc générique pour l'instant.
+    }
 }
 
 module.exports.help = {

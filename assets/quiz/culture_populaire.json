@@ -124,5 +124,11 @@
         "categorie" : "Jeux vidéo",
         "question" : "Dans Death Stranding, Sam Porter Bridges possède un DOOMS de niveau combien ?",
         "reponses" : ["2", "deux"]
+    }, 
+    {
+        "id" : 21,
+        "categorie" : "Délire",
+        "question" : "Quelle est objectivement la commande PouleRPG qui fonctionne le mieux ?",
+        "reponses" : ["action ou verite", "action ou vérité", "aov", "p<aov", "action", "verite", "vérité"]
     }
 ]

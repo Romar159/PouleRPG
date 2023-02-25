@@ -51,7 +51,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
 module.exports.help = {
     name: "coffre",
-    aliases: ['coffre de faction'],
+    aliases: ['coffre_de_faction'],
     category: "economie",
     desription: "Affiche la quantité d'or du coffre de faction.",
     usage: "",
