@@ -469,5 +469,27 @@ module.exports = client => {
         return false;
     };
 
+    /**
+     * @Description Récupère le rôle Mee6 du member !
+     * @Param {GuildMember} member
+     * @returns {Role} rôle mee6
+     */
+    client.getMee6Role = (member) => {
+
+        roles_id = ["445253268176633891", "445253591465328660", "445253561648021514", "445253809640308746", "445257669918588948", "650832087993024522", "445257144011587594", "612469098466639893", "650828967716192269"];
+        
+        if(member.roles.cache.has(roles_id[0])) return member.roles.cache.get(roles_id[0]); // Paysan
+        if(member.roles.cache.has(roles_id[1])) return member.roles.cache.get(roles_id[1]); // Artisan
+        if(member.roles.cache.has(roles_id[2])) return member.roles.cache.get(roles_id[2]); // Bourgeois
+        if(member.roles.cache.has(roles_id[3])) return member.roles.cache.get(roles_id[3]); // Courtisan
+        if(member.roles.cache.has(roles_id[4])) return member.roles.cache.get(roles_id[4]); // Baron
+        if(member.roles.cache.has(roles_id[5])) return member.roles.cache.get(roles_id[5]); // Comte
+        if(member.roles.cache.has(roles_id[6])) return member.roles.cache.get(roles_id[6]); // Marquis
+        if(member.roles.cache.has(roles_id[7])) return member.roles.cache.get(roles_id[7]); // Duc      
+        if(member.roles.cache.has(roles_id[8])) return member.roles.cache.get(roles_id[8]); // Vassal
+        
+        return false;
+    };
+
 
 };
