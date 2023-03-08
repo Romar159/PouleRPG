@@ -23,10 +23,10 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
     else if(bot_weapon == 5) bot_weapon_name = "la claymore";     //> 2 & 4  •  < 1 & 3*/
     let bot_weapon_name = bot_weapon.arene_name;
 
-    const xp_defaite = 3;
-    const xp_egalite = 3;
-    const xp_win = 8;
-    const or_win = 1; 
+    const xp_defaite = dbUser.level;
+    const xp_egalite = dbUser.level;
+    const xp_win = (dbUser.level * 2);
+    const or_win = 3; 
 
     //const weapon_name = ["la dague", "le glaive", "la lance", "l'arbalète", "la claymore"];
 
@@ -45,7 +45,7 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
     const lastDaily = await dbUser.cooldown_arene;
     if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
         const cdTime = dailyCD - (Date.now() - lastDaily);
-        message.reply(`Il reste **${Math.floor(cdTime / (1000) % 60)}** secondes avant de retourner dans l'arène. :hourglass:`);
+        message.reply(`Il reste **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes avant de retourner dans l'arène. :hourglass:`);
     } else { // Si le cooldown est passé.
 
         // Calcul de l'arme choisit par l'utilisateur.
@@ -77,7 +77,8 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
         || user_weapon == 4 && bot_weapon == 1 || user_weapon == 4 && bot_weapon == 3
         || user_weapon == 5 && bot_weapon == 4 || user_weapon == 5 && bot_weapon == 2) {*/ // Gagner
         if(userWeapon.fort[0] == bot_weapon.id || userWeapon.fort[1] == bot_weapon.id) {
-			if(client.randomInt(1, 3) == 3) {
+            //victoire
+			if(client.randomInt(1, 5) == 5) {
 				embed.setDescription(`Vous utilisez **${userWeapon.arene_name}** et prenez l'avantage alors que votre adversaire utilise **${bot_weapon.arene_name}** !\nVous **gagnez**, **+${xp_win}xp** et **+${or_win}:coin:**.`);
 				await client.setOr(client, message.member, or_win, message);
 			} else {
