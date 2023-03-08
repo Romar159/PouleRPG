@@ -2,6 +2,7 @@ const {guild} = require("discord.js");
 const {db} = require("../../models/user");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
+    return;
     client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
 
     const points = parseInt(args[0]);
@@ -24,7 +25,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 module.exports.help = {
     name: "convertirpoints",
     aliases: ['cp', 'convertirpoint'],
-    category: "experience",
+    category: "",
     desription: "Convertissez vos points de puissance en xp.",
     usage: '<points>',
     cooldown: 3, 
