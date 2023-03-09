@@ -2,6 +2,8 @@ const { EmbedBuilder } = require("discord.js");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
+    return message.channel.send("Cette commande est obsolète. D'ailleurs, comment avez-vous fait pour la trouver ?? :O");
+
     var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
     var est_maitre = false;
 
@@ -114,7 +116,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 module.exports.help = {
     name: "titre",
     aliases: ['titres'],
-    category: "faction",
+    category: "",
     desription: "Accordez ou révoquez un titre honorifique à un membre de votre faction. 'p<titre' permet de voir les titres disponibles.",
     usage: '[<@USER> <action:accorder/révoquer> <ID_titre>]',
     cooldown: 3, 
