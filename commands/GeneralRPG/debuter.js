@@ -58,7 +58,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         .setAuthor({name: message.member.user.username + " (8/10)", iconURL: message.member.user.displayAvatarURL()})
         .setTitle(`**Lyomah**`)
         .setThumbnail('https://i.imgur.com/uj8TLad.png')
-        .setDescription(`${(!db_l.idmaitre) ? "**Maître vacant**" : "Gouverné par **<@" + db_l.idmaitre + ">**"} \n\n\n**La Loyauté et la Solidarité**\n\nLes Lyomah sont **loyaux** et **solidaires**, ils **s’entraident** et ne se laissent **jamais tomber**. \n\nIls sont connus pour leur **esprit d’équipe** et leur **dévouement** sans faille. Ils veillent **les uns sur les autres** ; et grâce à leur grand **sens de l'honneur**, ils savent qu’ils peuvent se faire **confiance**. \n\nLors des conflits ils **combinent** leurs forces et **coopèrent** tous **ensemble** pour gagner. Et ce, même s’ils devaient se sacrifier pour les autres.`);
+        .setDescription(`${(!db_l.idmaitre) ? "**Maître vacant**" : "Gouverné par **<@" + db_l.idmaitre + ">**"} \n\n\n**La Loyauté et l'Altruisme**\n\nLes Lyomah sont **loyaux** et **altruistes**, ils **s’entraident** et ne se laissent **jamais tomber**. \n\nIls sont connus pour leur **esprit d’équipe** et leur **dévouement** sans faille. Ils veillent **les uns sur les autres** ; et grâce à leur grand **sens de l'honneur**, ils savent qu’ils peuvent se faire **confiance**. \n\nLors des conflits ils **combinent** leurs forces et **coopèrent** tous **ensemble** pour gagner. Et ce, même s’ils devaient se sacrifier pour les autres.`);
         
     const page9 = new EmbedBuilder() 
         .setColor('F0C800')
