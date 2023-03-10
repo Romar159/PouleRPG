@@ -39,6 +39,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     
 
     let metier = args[0];
+    metier = metier[0].toUpperCase() + metier.slice(1).toLowerCase()
+    
     if(args[1]) { // formation du métier pour la recherche.
         metier = args[0] + " " + args[1];
         if(args[2]) {
