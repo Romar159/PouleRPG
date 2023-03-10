@@ -89,7 +89,6 @@ module.exports.run = async (client, message, args) => {
                 if(iter == 1) { 
                     faction_name = "Epsilon"; 
                     faction_color = 'AA3C00'; 
-                    message.channel.send(dbEpsilon.idmaitre)
                     if(!dbEpsilon.idmaitre) maitreiconURL = client.user.displayAvatarURL();
                     else maitreiconURL = message.guild.members.cache.get(dbEpsilon.idmaitre).user.displayAvatarURL();
                 }
