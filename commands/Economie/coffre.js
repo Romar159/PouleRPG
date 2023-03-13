@@ -13,7 +13,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     if(message.channel.id == '445289059892461578' && faction.factionid == 0) { //Epsilon
         embed.setColor('AA3C00')
         .setAuthor({name: `Coffre d'Epsilon`, iconURL: ppmaitre.user.displayAvatarURL()})
-        .setDescription(`**:bank: ${faction.bank} or.**`);
+        .setDescription(`**:bank: ${faction.bank} poyn.**`);
 
         client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ${faction.name} a ${faction.bank} or`);
 
@@ -22,7 +22,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     if(message.channel.id == '445289032419770378' && faction.factionid == 1) { //Daïros
         embed.setColor('0078F0')
         .setAuthor({name: `Coffre de Daïros`, iconURL: ppmaitre.user.displayAvatarURL()})
-        .setDescription(`**:bank: ${faction.bank} or.**`);
+        .setDescription(`**:bank: ${faction.bank} poyn.**`);
 
         client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ${faction.name} a ${faction.bank} or`);
 
@@ -31,7 +31,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     if(message.channel.id == '445289003156242434' && faction.factionid == 2) { //Lyomah
         embed.setColor('00A00A')
         .setAuthor({name: `Coffre de Lyomah`, iconURL: ppmaitre.user.displayAvatarURL()})
-        .setDescription(`**:bank: ${faction.bank} or.**`);
+        .setDescription(`**:bank: ${faction.bank} poyn.**`);
 
         client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ${faction.name} a ${faction.bank} or`);
 
@@ -40,7 +40,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     if(message.channel.id == '667858618342834216' && faction.factionid == 3) { //Alpha
         embed.setColor('F0C800')
         .setAuthor({name: `Coffre d'Alpha`, iconURL: ppmaitre.user.displayAvatarURL()})
-        .setDescription(`**:bank: ${faction.bank} or.**`);
+        .setDescription(`**:bank: ${faction.bank} poyn.**`);
 
         client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ${faction.name} a ${faction.bank} or`);
 
@@ -53,7 +53,7 @@ module.exports.help = {
     name: "coffre",
     aliases: ['coffre_de_faction'],
     category: "economie",
-    desription: "Affiche la quantité d'or du coffre de faction.",
+    desription: "Affiche la quantité de poyn du coffre de faction.",
     usage: "",
     cooldown: 3,
     permissions: false,

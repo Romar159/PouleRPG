@@ -20,9 +20,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 await client.updateMaxBank(client, usr_member);
                 const usr = await client.getUser(usr_member);
                 embed.setAuthor({ name:`Banque de ${client.users.cache.get(usr.userID).username}`, iconURL: client.users.cache.get(usr.userID).displayAvatarURL()})
-                .setDescription(`:coin: ${usr_member} à **${usr.or}/${usr.maxbank}** or.`);
+                .setDescription(`:coin: ${usr_member} à **${usr.or}/${usr.maxbank}** poyn.`);
 
-                client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) : a  ${usr.or}/${usr.maxbank} or ${client.users.cache.get(usr.userID).tag} (${client.users.cache.get(usr.userID).id})`);
+                client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) : a  ${usr.or}/${usr.maxbank} poyn ${client.users.cache.get(usr.userID).tag} (${client.users.cache.get(usr.userID).id})`);
 
                 return message.channel.send({embeds:[embed]});
             // } // !
@@ -39,10 +39,12 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         }
     } else {
         await client.updateMaxBank(client, message.member);
-        embed.setAuthor({name: `Votre banque`, iconURL: message.author.displayAvatarURL()})
-        .setDescription(`:coin: Vous avez **${dbUser.or}/${dbUser.maxbank}** or.`);
+        const dbmembre = await client.getUser(message.member);
 
-        client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) : a  ${dbUser.or}/${dbUser.maxbank} or ${message.author.tag} (${message.author.id})`);
+        embed.setAuthor({name: `Votre banque`, iconURL: message.author.displayAvatarURL()})
+        .setDescription(`:coin: Vous avez **${dbmembre.or}/${dbmembre.maxbank}** poyn.`);
+
+        client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) : a  ${dbmembre.or}/${dbmembre.maxbank} poyn ${message.author.tag} (${message.author.id})`);
 
         return message.channel.send({embeds:[embed]});
     }
@@ -50,9 +52,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
 module.exports.help = {
     name: "banque",
-    aliases: ['or'],
+    aliases: ['poyn', 'or'],
     category: "economie",
-    desription: "Affiche votre quantité d'or ou celle d'un utilisateur.",
+    desription: "Affiche votre quantité de poyn ou celle d'un utilisateur.",
     usage: "[@user]",
     cooldown: 3,
     permissions: false,

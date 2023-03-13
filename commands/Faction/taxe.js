@@ -31,7 +31,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     }
 
     if(args[0] == "endettement") {
-        return message.channel.send("Vous êtes endetté personnellement à hauteur de: " + dbUser.endettement + " :coin:");
+        return message.channel.send("Vous êtes endetté personnellement à hauteur de: " + dbUser.endettement + " :coin:"); //oui c'est une ref à Pécresse 2022
     }
 
     //TODO: DEBUG
@@ -58,11 +58,11 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                     
                     total = total + usr.endettement;
                     if(usr.endettement > 0) {
-                        arrayComptes.push(`${element.user.username} doit **${usr.endettement}** :coin:`);
+                        arrayComptes.push(`${element.user.username} doit **${usr.endettement}** poyn :coin:`);
                     }
                 }
                 if(itemsProcessed === members.size) {
-                    return message.channel.send(arrayComptes.join("\n") + "\n\nAu total vos membres vous doivent **" + total + "** :coin:");
+                    return message.channel.send(arrayComptes.join("\n") + "\n\nAu total vos membres vous doivent **" + total + "** poyn :coin:");
                 }
             });
         });

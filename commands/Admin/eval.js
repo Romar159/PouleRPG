@@ -2,7 +2,8 @@
   
   client.writeLog(`Commande ${this.help.name} a subit une tentation d'execution par ${message.author.tag} (${message.author.id})`, "warn");
   
-  function clean(text) {
+  return message.channel.send("Par mesure de sécurité. Cette commande est complètement desactivée.")
+  /*function clean(text) {
     if (typeof text === "string") 
       return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
     return text;
@@ -13,13 +14,13 @@
   const code = args.join(" ");
   const evaled = eval(code);
   const cleanCode = await clean(evaled);
-  message.channel.send(cleanCode, { code: "js" });
+  message.channel.send(cleanCode, { code: "js" });*/
 };
 
 module.exports.help = {
     name: "eval",
     aliases: ['eval'],
-    category: "admin",
+    category: "",
     desription: "renvoie un code JS testé.",
     usage: '<code>',
     cooldown: 2, 

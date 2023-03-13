@@ -26,7 +26,7 @@ module.exports.help = {
     name: "convertirpoints",
     aliases: ['cp', 'convertirpoint'],
     category: "",
-    desription: "Convertissez vos points de puissance en xp.",
+    desription: "Convertissez vos points de puissance en xp. Deprecated !",
     usage: '<points>',
     cooldown: 3, 
     permissions: false,

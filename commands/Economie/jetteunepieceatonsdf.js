@@ -15,7 +15,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     } else { // Si le cooldown est passé.
 
-        if(dbUser.or <= 0) return message.channel.send(":money_with_wings: Vous êtes vous même un SDF, vous ne pouvez pas donner d'argent.");
+        if(dbUser.or <= 0) return message.channel.send(":money_with_wings: Vous êtes vous même un SDF, vous ne pouvez pas donner de poyn.");
         
 
         /*let member_ran;
@@ -62,10 +62,10 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     
         const m = message.channel.send("Vous recherchez un SDF ...").then(async msg => {
             if(member_ran == message.member) {
-                msg.edit(`:coin: Vous avez jeté un sous à ce SDF de **${member_ran.displayName}**`);
+                msg.edit(`:coin: Vous avez jeté un sou à ce SDF de **${member_ran.displayName}**`);
             } else {
                 await client.editPoint(client, message.member, randomPiete, "piete");
-                msg.edit(`:coin: Vous avez jeté un sous à ce SDF de **${member_ran.displayName}** et vous gagnez donc ${randomPiete} points de piété pour cette bonne action.`); // \nDebug: executed in ${msg.createdTimestamp - message.createdTimestamp}ms
+                msg.edit(`:coin: Vous avez jeté un sou à ce SDF de **${member_ran.displayName}** et vous gagnez donc ${randomPiete} points de piété pour cette bonne action.`); // \nDebug: executed in ${msg.createdTimestamp - message.createdTimestamp}ms
             }
         });
 

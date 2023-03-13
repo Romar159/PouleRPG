@@ -1,0 +1,50 @@
+[
+    {
+        "id": 0,
+        "name": "infantrie légère",
+        "attaque": 26,
+        "defense": 28,
+        "faible_contre": [1, 2, 4],
+        "resistant_contre": [5]
+    },
+    {
+        "id": 1,
+        "name": "infantrie lourde",
+        "attaque": 31,
+        "defense": 46,
+        "faible_contre": [2, 4],
+        "resistant_contre": [0, 5]
+    },
+    {
+        "id": 2,
+        "name": "cavalerie légère",
+        "attaque": 39,
+        "defense": 52,
+        "faible_contre": [5],
+        "resistant_contre": [0, 4]
+    },
+    {
+        "id": 3,
+        "name": "cavalerie lourde",
+        "attaque": 45,
+        "defense": 95,
+        "faible_contre": [5],
+        "resistant_contre": [0, 2, 4]
+    },
+    {
+        "id": 4,
+        "name": "archers",
+        "attaque": 4,
+        "defense": 19,
+        "faible_contre": [0, 1, 2, 3],
+        "resistant_contre": []
+    },
+    {
+        "id": 5,
+        "name": "piquiers",
+        "attaque": 13,
+        "defense": 25,
+        "faible_contre": [0, 1, 4],
+        "resistant_contre": [2]
+    }
+]

@@ -79,7 +79,7 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
         if(userWeapon.fort[0] == bot_weapon.id || userWeapon.fort[1] == bot_weapon.id) {
             //victoire
 			if(client.randomInt(1, 5) == 5) {
-				embed.setDescription(`Vous utilisez **${userWeapon.arene_name}** et prenez l'avantage alors que votre adversaire utilise **${bot_weapon.arene_name}** !\nVous **gagnez**, **+${xp_win}xp** et **+${or_win}:coin:**.`);
+				embed.setDescription(`Vous utilisez **${userWeapon.arene_name}** et prenez l'avantage alors que votre adversaire utilise **${bot_weapon.arene_name}** !\nVous **gagnez**, **+${xp_win}xp** et **+${or_win} poyn :coin:**.`);
 				await client.setOr(client, message.member, or_win, message);
 			} else {
 				embed.setDescription(`Vous utilisez **${userWeapon.arene_name}** et prenez l'avantage alors que votre adversaire utilise **${bot_weapon.arene_name}** !\nVous **gagnez**, **+${xp_win}xp**.`);
@@ -121,7 +121,7 @@ module.exports.help = {
     name: "arène",
     aliases: ['arene'],
     category: "generalrpg",
-    desription: "Entraînez-vous dans l'arène.",
+    desription: "Entraînez-vous dans l'arène pour gagner de l'xp... ou en perdre.",
     usage: '[épée/arc/pique/bouclier/marteau]',
     cooldown: 3, 
     permissions: false,

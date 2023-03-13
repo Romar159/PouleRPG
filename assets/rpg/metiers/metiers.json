@@ -1,11 +1,11 @@
 [
     {
         "id" : 1,
-        "name": "Commerçant",
+        "name": "Bucheron",
         "salaire": 10,
-        "horaires": 9,
+        "horaires": 10,
         "prerequis": "/",
-        "description": "Que ce soit dans son échope au cœur du bourg, ou en sillonant le pays avec sa charette, le commerçant vend tous types de produits.",
+        "description": "Le bûcheron découpe le bois, et le vend.",
         "infos": "Pour exercer ce métier vous n'avez besoin d'aucun prérequis."
     }, 
     {
@@ -21,13 +21,22 @@
         "id" : 3,
         "name": "Fossoyeur",
         "salaire": 10,
-        "horaires": 3,
+        "horaires": 4,
         "prerequis": "/",        
         "description": "Le fossoyeur a un rôle plus qu'important dans les métiers de la mort. C'est lui qui inhume et exhume les défunts, il creuse les tombes et entretien les cimetières.",
         "infos": "Pour exercer ce métier vous n'avez besoin d'aucun prérequis."
     },
     {
         "id" : 4,
+        "name": "Marchand",
+        "salaire": 10,
+        "horaires": 9,
+        "prerequis": "/",
+        "description": "Que ce soit dans son échope au cœur du bourg, ou en sillonant le pays avec sa charette, le marchand vend tous types de produits.",
+        "infos": "Pour exercer ce métier vous n'avez besoin d'aucun prérequis."
+    },
+    {
+        "id" : 5,
         "name": "Pêcheur",
         "salaire": 10,
         "horaires": 18,
@@ -36,34 +45,34 @@
         "infos": "Pour exercer ce métier vous n'avez besoin d'aucun prérequis."
     },
     {
-        "id" : 5,
-        "name": "Bourreau",
+        "id" : 6,
+        "name": "Charpentier",
         "salaire": 15,
-        "horaires": 4,
-        "prerequis": "if(dbUser.piete <= 200) return true;",
-        "description": "Le bourreau est payé par l'état pour executer les condamnés à mort. Il est aussi celui qui applique les tortures si l'état la pratique.",
-        "infos": "Pour exercer ce métier vous devez avoir **-200** points de **piété** ou moins."
-    },
-    {
-        "id": 6,
-        "name": "Copiste",
-        "salaire": 15,
-        "horaires": 6,
-        "prerequis": "if(dbUser.savoir >= 75) return true;",
-        "description": "Réaliser plusieurs exemplaire d'un ouvrage était le rôle du copiste, qui ne faisait rien d'autre que recopier des livres et autres traités officiels.",
-        "infos": "Pour exercer ce métier vous devez avoir **75** points de **savoir** ou plus."
+        "horaires": 10,
+        "prerequis": "if(dbUser.forme >= 100) return true;",
+        "description": "Le charpentier est celui qui conçois la charpente des maisons mais aussi celle des bâteaux et parfois d'autres structures.",
+        "infos": "Pour exercer ce métier vous devez avoir **100** points de **forme** ou plus."
     },
     {
         "id": 7,
+        "name": "Copiste",
+        "salaire": 15,
+        "horaires": 6,
+        "prerequis": "if(dbUser.savoir >= 100) return true;",
+        "description": "Réaliser plusieurs exemplaire d'un ouvrage était le rôle du copiste, qui ne faisait rien d'autre que recopier des livres et autres traités officiels.",
+        "infos": "Pour exercer ce métier vous devez avoir **100** points de **savoir** ou plus."
+    },
+    {
+        "id": 8,
         "name": "Diacre",
         "salaire": 15,
-        "horaires": 7,
+        "horaires": 8,
         "prerequis": "if(dbUser.piete >= 100) return true;",
         "description": "Le diacre assiste le dirigeant religieux. Il l'aide dans diverses tâches liées à la religion ou lors des messes.",
         "infos": "Pour exercer ce métier vous devez avoir **100** points de **piété** ou plus."
     },
     {
-        "id": 8,
+        "id": 9,
         "name": "Échanson",
         "salaire": 15,
         "horaires": 3,
@@ -72,7 +81,7 @@
         "infos": "Pour exercer ce métier vous devez avoir **50** points de **prestige** ou plus."
     },
     {
-        "id": 9,
+        "id": 10,
         "name": "Garde",
         "salaire": 15,
         "horaires": 6,
@@ -81,139 +90,148 @@
         "infos": "Pour exercer ce métier vous devez avoir un **niveau** de **5** ou plus."
     },
     {
-        "id": 10,
+        "id": 11,
         "name": "Geôlier",
         "salaire": 15,
-        "horaires": 9,
-        "prerequis": "/",
+        "horaires": 12,
+        "prerequis": "if(dbUser.level >= 3 && dbUser.travail >= 40) return true;",
         "description": "Les prisons et cachots sont des endroits très sécurisés c'est pourquoi il est nécéssaire d'avoir un garde uniquement attitré à ce lieu, le geôlier.",
-        "infos": "Pour exercer ce métier vous n'avez besoin d'aucun prérequis."
-    },
-    {
-        "id" : 11,
-        "name": "Apothicaire",
-        "salaire": 20,
-        "horaires": 5,
-        "prerequis": "if(dbUser.savoir >= 150) return true;",
-        "description": "L'aphoticaire est celui qui est en charge de préparer les remèdes que prescrivent les médecins. Il les fabrique à base de plantes et de produits naturels.",
-        "infos": "Pour exercer ce métier vous devez avoir **150** points de **savoir** ou plus."
+        "infos": "Pour exercer ce métier vous devez avoir un **niveau** de **3** ou plus et **40** points de travail ou plus."
     },
     {
         "id": 12,
-        "name": "Armateur",
-        "salaire": 20,
-        "horaires": 18,
-        "prerequis": "if(dbUser.travail >= 150) return true;",
-        "description": "L'armateur possède divers navires que ce soit pour le commerce ou pour la pêche, et les exploitent en fonction. Il a la responsabilité de la quasi-totalité des aspects commerciaux et maritimes.",
-        "infos": "Pour exercer ce métier vous devez avoir **150** points de **travail** ou plus."
+        "name": "Tanneur",
+        "salaire": 15,
+        "horaires": 9,
+        "prerequis": "if(dbUser.travail >= 100) return true;",
+        "description": "Le tanneur est celui qui tanne les peaux d'animaux pour en faire du cuir et le vendre. Son travail consiste à préparer les peaux avec du tan évitant ainsi de pourrir notamment.",
+        "infos": "Pour exercer ce métier vous devez avoir **100** points de **travail** ou plus."
     },
     {
-        "id": 13,
-        "name": "Barde",
+        "id" : 13,
+        "name": "Apothicaire",
         "salaire": 20,
-        "horaires": 4,
-        "prerequis": "if(dbUser.savoir >= 100 && dbUser.moral >= 50) return true;",
-        "description": "La musique avait une place importante lors des banquet et fêtes de nobles. Le barde était présent lors de ces rassemblement pour faire danser les gens ou simplement pour ajouter une ambiance. Ces musiciens pouvaient aussi se trouver dans certains lieux plus populaires.\n Les bardes pouvaient chanter eux même ou bien étaient accompagnés par des chanteurs ou chanteuse. La musique vocale étant la majeure partie de la musique médiévale.",
-        "infos": "Pour exercer ce métier vous devez avoir **100** points ou plus de **savoir** et **50** points ou plus de **moral**."
+        "horaires": 6,
+        "prerequis": "if(dbUser.savoir >= 250) return true;",
+        "description": "L'aphoticaire est celui qui est en charge de préparer les remèdes que prescrivent les médecins. Il les fabrique à base de plantes et de produits naturels.",
+        "infos": "Pour exercer ce métier vous devez avoir **250** points de **savoir** ou plus."
     },
     {
         "id": 14,
+        "name": "Armateur",
+        "salaire": 20,
+        "horaires": 18,
+        "prerequis": "if(dbUser.travail >= 200 && dbUser.prestige >= 25) return true;",
+        "description": "L'armateur possède divers navires que ce soit pour le commerce ou pour la pêche, et les exploitent en fonction. Il a la responsabilité de la quasi-totalité des aspects commerciaux et maritimes.",
+        "infos": "Pour exercer ce métier vous devez avoir **200** points de **travail** ou plus et **25** points de prestige ou plus."
+    },
+    {
+        "id": 15,
+        "name": "Barde",
+        "salaire": 20,
+        "horaires": 4,
+        "prerequis": "if(dbUser.savoir >= 100 && dbUser.moral >= 150) return true;",
+        "description": "La musique avait une place importante lors des banquet et fêtes de nobles. Le barde était présent lors de ces rassemblement pour faire danser les gens ou simplement pour ajouter une ambiance. Ces musiciens pouvaient aussi se trouver dans certains lieux plus populaires.\n Les bardes pouvaient chanter eux même ou bien étaient accompagnés par des chanteurs ou chanteuse. La musique vocale étant la majeure partie de la musique médiévale.",
+        "infos": "Pour exercer ce métier vous devez avoir **100** points ou plus de **savoir** et **150** points ou plus de **moral**."
+    },
+    {
+        "id": 16,
         "name": "Brigand",
         "salaire": 20,
         "horaires": 8,
         "prerequis": "if(dbUser.piete <= 250) return true;",
-        "description": "Le brigand gagne son pain de manière peu orthodoxe. Son activité est principalement basée sur le vol d'or ou de marchandises aux commerçants et voyageurs.",
+        "description": "Le brigand gagne son pain de manière peu orthodoxe. Son activité est principalement basée sur le vol de poyn ou de marchandises aux commerçants et voyageurs.",
         "infos": "Pour exercer ce métier vous devez avoir **-250** points de **piété** ou moins."
     },
     {
-        "id": 15,
+        "id": 17,
         "name": "Forgeron",
         "salaire": 20,
-        "horaires": 6,
-        "prerequis": "if(dbUser.travail >= 150) return true;",
+        "horaires": 9,
+        "prerequis": "if(dbUser.travail >= 125 && dbUser.forme >= 125) return true;",
         "description": "La forge est un lieu de travail dur, mais valorisant et important ! Le forgeron crée armes, armures, matériaux pour le bâtiment et autres objets à base de métal.",
-        "infos": "Pour exercer ce métier vous devez avoir **150** points de **travail** ou plus."
+        "infos": "Pour exercer ce métier vous devez avoir **125** points de **travail** ou plus et **125** points de **forme** ou plus."
     },
     {
-        "id": 16,
+        "id": 18,
         "name": "Fou",
         "salaire": 20,
         "horaires": 5,
-        "prerequis": "if(dbUser.prestige >= 25 && dbUser.moral <= 150) return true;",
+        "prerequis": "if(dbUser.prestige >= 50 && dbUser.moral >= 150) return true;",
         "description": "Le rôle du fou était de divertir les haut-gradés durant les festivités. Les rois avaient bien souvent leurs fous attitrés ! L'humour était beaucoup basé sur le ridicule.",
-        "infos": "Pour exercer ce métier vous devez avoir **25** points de **prestige** ou plus. Et **-150** **moral** ou moins."
+        "infos": "Pour exercer ce métier vous devez avoir **50** points de **prestige** ou plus. Et **150** **moral** ou plus."
     },
     {
-        "id": 17,
+        "id": 19,
         "name": "Prêtre",
         "salaire": 20,
-        "horaires": 8,
+        "horaires": 10,
         "prerequis": "if(dbUser.piete >= 250) return true;",
         "description": "Il est le dirigeant du lieu de culte local. Il avait un pouvoir politique fort. C'est lui qui dit la messe et maintient la religion dans sa ville ou son village. C'est aussi à lui que se tournent les populations quand elles veulent parler de leurs pêchés et en être expiées.",
         "infos": "Pour exercer ce métier vous devez avoir **250** points de **piété** ou plus."
     },
     {
-        "id": 18,
+        "id": 20,
         "name": "Verrier",
         "salaire": 20,
         "horaires": 9,
-        "prerequis": "if(dbUser.travail >= 150) return true;",
+        "prerequis": "if(dbUser.travail >= 150 && dbUser.savoir >= 100) return true;",
         "description": "L'artisant du verre, il fabrique divers objets à base de verre. Ces objets étant principalement reservés aux riches en vu de leurs matériaux coûteux.\nLes vitrailliste sont des verriers spécialisés dans la création de vitraux, principalement utilisés dans les églises et cathédrales.",
-        "infos": "Pour exercer ce métier vous devez avoir **150** points de **travail** ou plus."
-    },
-    {
-        "id": 19,
-        "name": "Banquier",
-        "salaire": 25,
-        "horaires": 4,
-        "prerequis": "if(dbUser.richesse >= 30) return true;",
-        "description": "Permettre une gestion de l'argent, des revenues des nobles et des prêts d'or aux citoyens est une tâche importante dans une ville. Le banquier s'approche de l'or et de l'économie des populations.",
-        "infos": "Pour exercer ce métier vous devez avoir **30** points de **richesse** ou plus."
-    },
-    {
-        "id": 20,
-        "name": "Chirurgien Barbier",
-        "salaire": 25,
-        "horaires": 10,
-        "prerequis": "if(dbUser.savoir >= 150 && dbUser.travail >= 150) return true;",
-        "description": "Le chirurgien était assimilé au barbier pendant longtemps. Il accomplissait les tâches interdites aux médecins, pratiquant sa spécialité. L'opération la plus courante était la saignée.",
-        "infos": "Pour exercer ce métier vous devez avoir **150** points ou plus de **travail** et de savoir."
+        "infos": "Pour exercer ce métier vous devez avoir **150** points de **travail** ou plus et **100** points de **savoir** ou plus."
     },
     {
         "id": 21,
-        "name": "Orfèvre",
+        "name": "Banquier",
         "salaire": 25,
-        "horaires": 7,
-        "prerequis": "if(dbUser.travail >= 150 && dbUser.richesse >= 10) return true;",
-        "description": "Portés surtout par les rois, les reines ou encore les nobles ; participant également aux trésors des plus riches, les bijoux à base de métaux précieux, comme l'or principalement, mais aussi l'argent et le platine sont confectionnés par l'orfèvre.",
-        "infos": "Pour exercer ce métier vous devez avoir **150** points de **travail** ou plus ainsi que **10** points de **richesse** ou plus."
+        "horaires": 4,
+        "prerequis": "if(dbUser.richesse >= 100) return true;",
+        "description": "Permettre une gestion de l'argent, des revenues des nobles et des prêts de poyn aux citoyens est une tâche importante dans une ville. Le banquier s'approche des poyn et de l'économie des populations.",
+        "infos": "Pour exercer ce métier vous devez avoir **100** points de **richesse** ou plus."
     },
     {
         "id": 22,
-        "name": "Garde impérial",
-        "salaire": 30,
-        "horaires": 6,
-        "prerequis": "if(dbUser.prestige >= 150 && dbUser.level >= 25) return true;",
-        "description": "Il n'y a pas métier plus prestigieux que d'être responsable de la sécurité du souverain et de sa famille.",
-        "infos": "Pour exercer ce métier vous devez avoir **150** points de **prestige** ou plus, Et un **niveau** de **25** ou plus."
+        "name": "Chirurgien Barbier",
+        "salaire": 25,
+        "horaires": 10,
+        "prerequis": "if(dbUser.savoir >= 250 && dbUser.travail >= 250) return true;",
+        "description": "Le chirurgien était assimilé au barbier pendant longtemps. Il accomplissait les tâches interdites aux médecins, pratiquant sa spécialité. L'opération la plus courante était la saignée.",
+        "infos": "Pour exercer ce métier vous devez avoir **250** points ou plus de **travail** et **250** points de **savoir**."
     },
     {
         "id": 23,
-        "name": "Marchand de soie",
-        "salaire": 30,
-        "horaires": 9,
-        "prerequis": "if(dbUser.prestige >= 50 && dbUser.richesse >= 40) return true;",
-        "description": "La soie est un des tissus les plus onéreux à cette époque. Il était aisé de reconnaître un bourgeois voir même un souverrain ou sa famille uniquement à la matière de ses vêtements.",
-        "infos": "Pour exercer ce métier vous devez avoir **50** points de **prestige** ou plus ainsi que **40** points de **richesse** ou plus."
+        "name": "Orfèvre",
+        "salaire": 25,
+        "horaires": 7,
+        "prerequis": "if(dbUser.richesse >= 50 && dbUser.prestige >= 125) return true;",
+        "description": "Portés surtout par les rois, les reines ou encore les nobles ; participant également aux trésors des plus riches, les bijoux à base de métaux précieux, comme l'or principalement, mais aussi l'argent et le platine sont confectionnés par l'orfèvre.",
+        "infos": "Pour exercer ce métier vous devez avoir **50** points de **richesse** ou plus ainsi que **125** points de **prestige** ou plus."
     },
     {
         "id": 24,
+        "name": "Garde impérial",
+        "salaire": 30,
+        "horaires": 6,
+        "prerequis": "if(dbUser.prestige >= 250 && dbUser.level >= 25) return true;",
+        "description": "Il n'y a pas métier plus prestigieux que d'être responsable de la sécurité du souverain et de sa famille.",
+        "infos": "Pour exercer ce métier vous devez avoir **250** points de **prestige** ou plus, Et un **niveau** de **25** ou plus."
+    },
+    {
+        "id": 25,
+        "name": "Marchand de soie",
+        "salaire": 30,
+        "horaires": 9,
+        "prerequis": "if(dbUser.travail >= 625 && dbUser.richesse >= 75) return true;",
+        "description": "La soie est un des tissus les plus onéreux à cette époque. Il était aisé de reconnaître un bourgeois voir même un souverrain ou sa famille uniquement à la matière de ses vêtements.",
+        "infos": "Pour exercer ce métier vous devez avoir **625** points de **travail** ou plus ainsi que **75** points de **richesse** ou plus."
+    },
+    {
+        "id": 26,
         "name": "Médecin de la cour",
         "salaire": 30,
         "horaires": 12,
-        "prerequis": "if(dbUser.prestige >= 150 && dbUser.savoir >= 250) return true;",
+        "prerequis": "if(dbUser.prestige >= 250 && dbUser.savoir >= 500) return true;",
         "description": "Le médecin comparé au chirurgien soigne les troubles internes comme les humeurs, alors que ce dernier soigne les atteintes externes. Les médecins sont très rare si ce n'est inexistant dans les campagnes, la plupart s'efforcent d'être employés à la cour d'un roi ou d'être au service d'un riche bourgeois.",
-        "infos": "Pour exercer ce métier vous devez avoir **150** points de **prestige** ou plus ainsi que **250** points de **savoir** ou plus."
+        "infos": "Pour exercer ce métier vous devez avoir **250** points de **prestige** ou plus ainsi que **500** points de **savoir** ou plus."
     },
 
 
@@ -241,7 +259,7 @@
         "name": "Maréchal",
         "prerequis": "if(dbUser.titre_politique == 'Maréchal') return true;",
         "description": "Le maréchal est celui qui gère les armées de la faction. C'est à lui que la plupart des questions militaires remontent. Il est également chargé des affaires étrangères. Il est un des conseillers de faction.",
-        "infos": "Pour exercer ce métier vous devez être le maréchal d'une faction.",
+        "infos": "Pour exercer ce métier vous devez être nommé maréchal d'une faction.",
         "salaire": 40,
         "horaires": 10
     },
@@ -250,7 +268,7 @@
         "name": "Intendant",
         "prerequis": "if(dbUser.titre_politique == 'Intendant') return true;",
         "description": "L'intendant est chargé de gérer efficacement et avec soin l'économie de la faction et assurer sa prospérité financière. Il est également chargé des affaires intérieures. Il est un des conseillers de faction.",
-        "infos": "Pour exercer ce métier vous devez être l'intendant d'une faction.",
+        "infos": "Pour exercer ce métier vous devez être nommé intendant d'une faction.",
         "salaire": 40,
         "horaires": 10
     },
@@ -259,7 +277,7 @@
         "name": "Chapelain",
         "prerequis": "if(dbUser.titre_politique == 'Chapelain') return true;",
         "description": "Le Chapelain dirige et ordonne tous les aspects religieux de la faction. Notamment les ordres religieux et les affaires politique. Il est un des conseillers de faction.",
-        "infos": "Pour exercer ce métier vous devez être le chapelain d'une faction.",
+        "infos": "Pour exercer ce métier vous devez être nommé chapelain d'une faction.",
         "salaire": 40,
         "horaires": 10
     },
@@ -268,7 +286,7 @@
         "name": "Maître de faction",
         "prerequis": "if(client.getFaction(dbUser.faction).idmaitre == dbUser.userid) return true;",
         "description": "Il n'y a pas plus haut gradé et puissant dans une faction, c'est lui qui dirige la totalité de la faction, de son conseil et de ses membres.",
-        "infos": "Pour exercer ce métier vous devez être maître d'une faction.",
+        "infos": "Pour exercer ce métier vous devez être élu maître d'une faction.",
         "salaire": 50,
         "horaires": 10
     }

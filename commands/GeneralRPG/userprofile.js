@@ -51,7 +51,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     .addFields({name:`:test_tube: **Expérience**`, value:`${dbUser.experience.toString()}/${needxp_usr}`, inline:true})
     .addFields({name:'** **', value:'** **'})
 
-    .addFields({name:`**:coin: Or**`, value:dbUser.or.toString(), inline:true})
+    .addFields({name:`**:coin: Poyn**`, value:dbUser.or.toString(), inline:true})
     if(message.author.id == '421400262423347211')
         embed.addFields({name:`:woman_red_haired: **Points(s) vénitienne**`, value:`∞`, inline:true});
     else

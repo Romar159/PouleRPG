@@ -258,7 +258,7 @@ module.exports.help = {
     name: "magasin",
     aliases: ['shop'],
     category: "",
-    desription: "Ouvre le magasin.",
+    desription: "Ouvre le magasin. Deprecated !",
     usage: "",
     cooldown: 5,
     permissions: false,

@@ -63,8 +63,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                     
                 }
             }
-            message.channel.send(`Lois de la faction en vigueur : ...`);
-            message.channel.send(`Gouvernement actuel : Conseillers ; Intendant ; Maréchal ; Chapelain`);
+            //message.channel.send(`Lois de la faction en vigueur : ...`);
+            //message.channel.send(`Gouvernement actuel : Conseillers ; Intendant ; Maréchal ; Chapelain`);
 
             message.channel.send({embeds:[embed]});
         }

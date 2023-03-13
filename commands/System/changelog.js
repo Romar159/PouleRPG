@@ -10,9 +10,7 @@ module.exports.run = (client, message, args) => {
 	    .setAuthor({name: "Changelog", iconURL:client.user.displayAvatarURL()})
 	    .setDescription(`**Version :** ${VERSION}
 
-        **Ajouts :**
-            - La commande \`p<débuter\` permettant de bien commencer le jeu et de choisir sa faction.
-            - La commande \`p<changelog\`
+            - Cette version est la première Alpha. Les prochaines notes des mises à jour s'afficherons ici lorsqu'il y en aura.
         
         `)
 

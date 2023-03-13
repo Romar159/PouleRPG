@@ -43,7 +43,7 @@ module.exports.help = {
     name: "revenue",
     aliases: ['thune'],
     category: "",
-    desription: "Récupère son revenue du jour.",
+    desription: "Récupère son revenue du jour. deprecated !",
     usage: '',
     cooldown: 4, 
     permissions: false,

@@ -4,7 +4,7 @@
         "name" : "Thune par terre",
         "rarete" : 4000,
         "condition" : "/",
-        "description" : "Oh, sur les pavés de la rue se trouve une bourse avec quelques pièces d'or.\n\n💰 : Récupérer pour soit.\n💸 : Donner aux plus pauvres.",
+        "description" : "Oh, sur les pavés de la rue se trouve une bourse avec quelques poyn.\n\n💰 : Récupérer pour soit.\n💸 : Donner aux plus pauvres.",
         "reactions" : ["💰", "💸"],
         "commands" : ["client.setOr(client, message.member, 3, message); message.channel.send(`Vous récupérez tout l'argent pour vous. \n\n+3 :coin: \n-10 points de piété`); client.editPoint(client, message.member, -10, 'piete');", 
             "message.channel.send(`Vous allez donner l'argent à des mandiants assis sur les marches de la cathédrale Saint Poulet.\n\n+ 10 points de piété. ||Et Dieu Poulet est content **:)**||`); client.editPoint(client, message.member, 10, 'piete');"]
@@ -16,7 +16,7 @@
         "condition" : "/",
         "description" : "Jacqueline tombe de la scène ! Une de ses pièces tombe de sa poche, que faite-vous ?\n\n💰 : Vous récupérez la pièce pour vous.\n🤚 : Vous aidez Jacqueline à se relever.\n🗣️ : Vous rigolez de la situation.",
         "reactions" : ["💰", "🤚", "🗣️"],
-        "commands" : ["message.channel.send('Vous vous empressez de récupérer la pièce avant les autres ! +1 Or -3 piété'); client.setOr(client, message.member, 1, message); client.editPoint(client, message.member, -3, 'piete')", 
+        "commands" : ["message.channel.send('Vous vous empressez de récupérer la pièce avant les autres ! +1 Poyn -3 piété'); client.setOr(client, message.member, 1, message); client.editPoint(client, message.member, -3, 'piete')", 
             "message.channel.send(`Vous vous approchez de Jacqueline et lui tendez la main pour l'aider. Elle vous remercie avant de récupérer sa pièce. +5 piété`); client.editPoint(client, message.member, 5, 'piete');", 
             "message.channel.send('On entend que vous dans la pièce, qui rit aux éclats de cette chute... +3 moral -2 piété'); client.editPoint(client, message.member, -2, 'piete'); client.editPoint(client, message.member, 3, 'moral');"]
     },

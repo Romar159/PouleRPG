@@ -117,7 +117,7 @@ module.exports.help = {
     name: "titre",
     aliases: ['titres'],
     category: "",
-    desription: "Accordez ou révoquez un titre honorifique à un membre de votre faction. 'p<titre' permet de voir les titres disponibles.",
+    desription: "Accordez ou révoquez un titre honorifique à un membre de votre faction. 'p<titre' permet de voir les titres disponibles. Deprecated !",
     usage: '[<@USER> <action:accorder/révoquer> <ID_titre>]',
     cooldown: 3, 
     permissions: false,

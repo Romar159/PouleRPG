@@ -130,5 +130,84 @@
         "categorie" : "Délire",
         "question" : "Quelle est objectivement la commande PouleRPG qui fonctionne le mieux ?",
         "reponses" : ["action ou verite", "action ou vérité", "aov", "p<aov", "action", "verite", "vérité"]
+    },
+    {
+        "id": 22,
+        "categorie" : "Informatique",
+        "question" : "Que recommande Microsoft à chaque fois qu'un problème se présente sur un ordinateur Windows ?",
+        "reponses" : ["installer windows", "installé windows", "installe windows", "réinstaller windows", "réinstallé windows", "réinstalle windows", "reinstaller windows", "reinstallé windows", "reinstalle windows"] 
+    },
+    {
+        "id": 23,
+        "categorie" : "Empire du Poulet",
+        "question" : "Qui a dessiné toutes les emotes poulet du serveur ?",
+        "reponses" : ["draxy", "draxydow", "shadowblue4"]
+    },
+    {
+        "id": 24,
+        "categorie" : "Empire du Poulet",
+        "question" : "En quelle année PouleRPG a t-il commencé à être développé ?",
+        "reponses" : ["2019", "deux mille dix neuf", "deux mille dix-neuf"]
+    },
+    {
+        "id": 25,
+        "categorie" : "Empire du Poulet",
+        "question" : "Quel est l'émoji le plus vieux de l'Empire ?",
+        "reponses" : ["linkssou", "ep_linkssou", ":ep_linkssou:"]
+    },
+    {
+        "id": 26,
+        "categorie" : "Empire du Poulet",
+        "question" : "Quand se déroule le Goc International ?",
+        "reponses" : ["25 10", "25/10", "25 octobre", "vingt cinq octobre", "vingt-cinq octobre", "vingt cinq 10", "vingt-cinq 10"]
+    },
+    {
+        "id": 27,
+        "categorie" : "Empire du Poulet",
+        "question" : "Quand se déroule la fête de la Rëpa ?",
+        "reponses" : ["01 06", "01/06", "01 juin", "premier juin", "un juin", "premier 06", "un 06", "1 juin"]
+    },
+    {
+        "id": 28,
+        "categorie" : "Empire du Poulet",
+        "question" : "Quel est le jour de la Datette ?",
+        "reponses" : ["15 09", "15/09", "15 septembre", "quinze septembre", "quinze 09"]
+    },
+    {
+        "id": 29,
+        "categorie" : "Jeux vidéo",
+        "question" : "Combien de couleurs de personnage sont disponible dans Among Us ?",
+        "reponses" : ["18", "dix huit", "dix-huit"]
+    },
+    {
+        "id": 30,
+        "categorie" : "Jeux vidéo",
+        "question" : "Comment s'appelle le jeu de rythme où vous controllez un carré bleu qui doit esquiver des attaques roses ?",
+        "reponses" : ["just shapes and beats", "just shapes & beats", "jsab", "jsb", "bites et formes"]
+    },
+    {
+        "id": 31,
+        "categorie" : "Jeu vidéo",
+        "question" : "Comment se nomme le groupe des 3 idoles de Splatoon 3 ?",
+        "reponses" : ["les tridenfers", "tridenfers", "tridenfer"]
+    },
+    {
+        "id": 32,
+        "categorie" : "Jeux vidéo",
+        "question" : "Comment se nomme le vieux du mode aventure de Splatoon ?",
+        "reponses" : ["macalamar", "amiral macalamar", "anastase macalamar", "amiral anastase macalamar"]
+    },
+    {
+        "id": 33,
+        "categorie" : "Jeux vidéo",
+        "question" : "Quel est le sniper qui vise le plus loin dans Splatoon ?",
+        "reponses" : ["l'extraceur", "extraceur", "l'extraceur zoom", "extraceur zoom", "extraceur +"]
+    },
+    {
+        "id": 34,
+        "categorie" : "Jeux vidéo",
+        "question" : "Quel est le rang le plus élevé dans le Salmon Run de Splatoon 2 ?",
+        "reponses" : ["prodige"]
     }
+    
 ]

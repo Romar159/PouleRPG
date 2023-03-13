@@ -130,5 +130,41 @@
         "categorie" : "Géographie",
         "question" : "Dans quel océan se situe l'archipel des Bermudes ?",
         "reponses" : ["atlantique", "l'antlantique"]
-    }
+    },
+    {
+        "id" : 22,
+        "categorie" : "Langue",
+        "question" : "Comment dit-on \"patate\" en Allemand ?",
+        "reponses" : ["kartoffel"]
+    },
+    {
+        "id" : 23,
+        "categorie" : "Langue",
+        "question" : "Comment dit-on \"poulet\" en Polonais ?",
+        "reponses" : ["kurczak"]
+    },
+    {
+        "id" : 24,
+        "categorie" : "Géographie",
+        "question" : "Parmi les drapeaux suivants, lequel est celui de l'Italie ? (Répondre avec 1, 2 ou 3, ou avec le drapeau)\n🇭🇺 🇧🇬 🇮🇹",
+        "reponses" : ["3", "trois", "🇮🇹"]
+    },
+    {
+        "id" : 25,
+        "categorie" : "Géographie",
+        "question" : "Parmi les drapeaux suivants, lequel est celui de la Côte d'Ivoire ? (Répondre avec 1, 2 ou 3, ou avec le drapeau)\n🇮🇪 🇨🇮 🇳🇪",
+        "reponses" : ["2", "deux", "🇨🇮"]
+    },
+    {
+        "id" : 26,
+        "categorie" : "Art",
+        "question" : "Quelle est la couleur contraire du orange ?",
+        "reponses" : ["le bleu", "bleu", "blue", "le blue"]
+    },
+    {
+        "id" : 27,
+        "categorie" : "Art",
+        "question" : "Quelle est la couleur contraire du violet ?",
+        "reponses" : ["le jaune", "jaune"]
+      }
 ]
