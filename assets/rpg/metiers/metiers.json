@@ -1,5 +1,14 @@
 [
     {
+        "id" : 0,
+        "name": "Chômage",
+        "salaire": 0,
+        "horaires": 0,
+        "prerequis": "/",
+        "description": "Vous n'avez tout simplement pas de travail !",
+        "infos": ""
+    }, 
+    {
         "id" : 1,
         "name": "Bucheron",
         "salaire": 10,

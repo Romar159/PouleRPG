@@ -26,10 +26,12 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     if(!args[0]) { 
         let string_metier = "";
         metiers.forEach(e => {
-                if(e.id == dbUser.metier) {
-                    string_metier = string_metier + `🛠️ **${e.name}** 🛠️\n`;
-                } else {
-                    string_metier = string_metier + `*${e.name}*\n`;            
+                if(e.id != 0) {
+                    if(e.id == dbUser.metier) {
+                        string_metier = string_metier + `🛠️ **${e.name}** 🛠️\n`;
+                    } else {
+                        string_metier = string_metier + `*${e.name}*\n`;            
+                    }
                 }
         });
         client.writeLog(`Commande ${this.help.name}: ${message.author.tag} (${message.author.id}) - ${metiers.length} métiers listés.`);
@@ -54,9 +56,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     try {
         let mt;
         if(args[0] == "moi") {
-            mt = client.filterById(metiers, dbUser.metier);
+            mt = await client.filterById(metiers, dbUser.metier);
         } else {
-            mt = client.filterByName(metiers, metier);
+            mt = await client.filterByName(metiers, metier);
         }
 
         client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Métier initial: ${client.filterById(metiers, dbUser.metier).id}`);
@@ -65,6 +67,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         collector.on('collect', async i => {
             if (i.customId === 'postuler') {
                 await i.deferUpdate();
+                await collector.stop("time");
 
                 if(mt.prerequis == "/") { // il n'y a pas de condition
                 } else {
@@ -82,18 +85,19 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             }
             if(i.customId === 'demission') {
                 await i.deferUpdate();
+                await collector.stop("time");
                 await i.editReply({ content:`Vous avez démissioné du métier de **${mt.name}**.`, components: [] });
                 return await client.updateUser(message.member, {metier: 0}) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ${mt.name} démissioné`, "err");;
             }
         });
         if(mt.id == dbUser.metier) { // a déjà ce métier
-            if(mt.id > 900) { // métier non démisionable ainsi
+            if(mt.id > 900 || mt.id == 0) { // métier non démisionable ainsi
                 message.channel.send({content: `**${mt.name}**\n${mt.description}\nVous exercez ce métier.\n**${mt.salaire}** :coin: de l'heure\n**${mt.horaires}** heures d'affilées maximum.\n\n${mt.infos}`, components: [] });
             } else {
                 message.channel.send({content: `**${mt.name}**\n${mt.description}\nVous exercez ce métier.\n**${mt.salaire}** :coin: de l'heure\n**${mt.horaires}** heures d'affilées maximum.\n\n${mt.infos}`, components: [rowDm] });
             }
         } else {
-            if(mt.id > 900) { // métier ne peut pas être pratiqué ainsi
+            if(mt.id > 900 || mt.id == 0) { // métier ne peut pas être pratiqué ainsi
                 message.channel.send({content: `**${mt.name}**\n${mt.description}\n**${mt.salaire}** :coin: de l'heure\n**${mt.horaires}** heures d'affilées maximum.\n\n${mt.infos}`});
             } else {
                 message.channel.send({content: `**${mt.name}**\n${mt.description}\n**${mt.salaire}** :coin: de l'heure\n**${mt.horaires}** heures d'affilées maximum.\n\n${mt.infos}`, components: [row] });
