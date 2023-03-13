@@ -13,10 +13,12 @@ module.exports = async (client, message) => {
             if(message.author.id !== "211911771433205760") {
                 if(message.author.id !== "405420810933895168") {
                     if(message.author.id !== "517723558806552596") {
-                        return message.reply(`vous n'avez pas la permission requise pour utiliser le bot. DEBUG: MESSAGE AUTHOR ID: ${message.author.id}`);
+                        
+                            return message.reply(`vous n'avez pas la permission requise pour utiliser le bot. DEBUG: MESSAGE AUTHOR ID: ${message.author.id}`);
+                        
                     }
                 }
-            }  
+            }
         }
     }
     if(message.channel.type === ChannelType.DM) return;

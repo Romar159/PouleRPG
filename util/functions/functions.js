@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { Guild, User, Faction, Aov, Aovtp } = require("../../models/index");
 const {randomInt} = require("./randoms");
 const fs = require("fs");
+const gameconfig = require("../../assets/gameconfigs");
 
 module.exports = client => {
 
@@ -147,8 +148,8 @@ module.exports = client => {
         await client.updateMaxBank(client, mention);
         const dbmention = await client.getUser(mention);
 
-        var mxbk = [10, 35, 80, 120, 200, 350, 550, 800, 1000];
-        var levels_pelos = [1, 5, 10, 20, 35, 50, 70, 85, 100];
+        var mxbk = [gameconfig.MAXBANQUE_PAYSAN, gameconfig.MAXBANQUE_ARTISAN, gameconfig.MAXBANQUE_BOURGEOIS, gameconfig.MAXBANQUE_COURTISAN, gameconfig.MAXBANQUE_BARON, gameconfig.MAXBANQUE_COMTE, gameconfig.MAXBANQUE_MARQUIS, gameconfig.MAXBANQUE_DUC, gameconfig.MAXBANQUE_VASSAL];
+        var levels_pelos = [gameconfig.MEE6LEVEL_PAYSAN, gameconfig.MEE6LEVEL_ARTISAN, gameconfig.MEE6LEVEL_BOURGEOIS, gameconfig.MEE6LEVEL_COURTISAN, gameconfig.MEE6LEVEL_BARON, gameconfig.MEE6LEVEL_COMTE, gameconfig.MEE6LEVEL_MARQUIS, gameconfig.MEE6LEVEL_DUC, gameconfig.MEE6LEVEL_VASSAL];
 
         for(let i=0;i<mxbk.length;i++) {
             if(dbmention.maxbank == mxbk[i])
