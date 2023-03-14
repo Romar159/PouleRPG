@@ -250,8 +250,8 @@ module.exports = client => {
         // item spéciaux -> On fait une action spécifique. :
         if(itemid == 1) { // * Point de puissance.
             await client.setOr(client, member, -price, message);
-            let items = parseInt(dbUser.powerpoints) + parseInt(quantity);
-            await client.updateUser(member, {"powerpoints": items});
+            let items = parseInt(dbUser.puissance) + parseInt(quantity);
+            await client.updateUser(member, {"puissance": items});
         }
 
         // ---
@@ -264,8 +264,8 @@ module.exports = client => {
         // ---
         // item spéciaux -> On fait une action spécifique. :
         if(itemid == 1) { // * Point de puissance.
-            let items = parseInt(dbUser.powerpoints) - parseInt(quantity);
-            await client.updateUser(member, {"powerpoints": items});
+            let items = parseInt(dbUser.puissance) - parseInt(quantity);
+            await client.updateUser(member, {"puissance": items});
         }
 
         // ---
@@ -306,9 +306,9 @@ module.exports = client => {
 
         switch(point) {
             case "puissance":
-                if(userToUpdate.powerpoints == undefined) point_base = 0;
-                else point_base = userToUpdate.powerpoints
-                await client.updateUser(member, { powerpoints: point_base + quantity});
+                if(userToUpdate.puissance == undefined) point_base = 0;
+                else point_base = userToUpdate.puissance
+                await client.updateUser(member, { puissance: point_base + quantity});
             break;
 
             case "piete":

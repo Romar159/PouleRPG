@@ -78,7 +78,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     .addFields({name:'** **', value:'** **'})
 
     .addFields({name:`:gem: **Richesse**`, value:`${dbUser.richesse}`, inline:true})
-    .addFields({name:`:dart: **Puissance**`, value:`${dbUser.powerpoints}`, inline:true})
+    .addFields({name:`:dart: **Puissance**`, value:`${dbUser.puissance}`, inline:true})
     .addFields({name:'** **', value:'** **'})
 
     .addFields({name:`:muscle: **Forme**`, value:`${dbUser.forme}`, inline:true})
