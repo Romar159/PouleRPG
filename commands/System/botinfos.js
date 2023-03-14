@@ -12,7 +12,7 @@ module.exports.run = (client, message, args) => {
 
         **Date de début du projet :** 19/09/2019 - 23:31
         **Date de début de la reprogrammation :** 26/01/2021
-        **Date de Bêta :** TBA
+        **Date de Alpha :** TBA
 
         **Développement :** <@421400262423347211> | **Aide à la conception :** <@211911771433205760>
         
