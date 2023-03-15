@@ -6,7 +6,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     const faction = await client.getFaction(dbUser.faction);
 
-    const emote_faction = dbUser.profil_emote_faction;
+    const emote_faction = ":house:";
 
     const arme_name = client.filterById(armes, dbUser.armeFavorite).name;
     const arme_emote = client.filterById(armes, dbUser.armeFavorite).emote;

@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
 const faction = require("../../models/faction");
+const metiers = require("../../assets/rpg/metiers/metiers.json");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
@@ -10,7 +11,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         if(dbUser.faction == 'NULL') return message.reply('Vous n`êtes pas membre d\'une faction.');
 
         let faction = await client.getFaction(dbUser.faction); // get db Faction
-        return message.reply(`Le taux de taxe de votre faction est actuellement de ${faction.taxe}% du revenue max`);
+        return message.reply(`Le taux de taxe de votre faction est actuellement de ${faction.taxe}% du revenue max\nChaque semaine vous devez ${(faction.taxe * (client.filterById(metiers, dbUser.metier).salaire * client.filterById(metiers, dbUser.metier).horaires)) / 100} Poyn :coin:`);
     } 
 
     // Si l'on choisit de définir la taxe
