@@ -22,6 +22,7 @@ module.exports = async (client, message) => {
         }
     }
     if(message.channel.type === ChannelType.DM) return;
+    if(!message.member) return;
     
     const dbUser = await client.getUser(message.member);
     const settings = await client.getGuild(message.guild);
