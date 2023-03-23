@@ -5,13 +5,13 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     if(isNaN(args[1]) || args[1] < 1) return message.reply("vous devez définir un nombre valide.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Nombre Invalide. MESSAGE=${message.content}`, "err");
     if(!message.mentions.users.first()) return message.reply("vous devez spécifier un utilisateur.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Utilisateur Invalide. MESSAGE=${message.content}`, "err");
-    if(dbUser.or < parseInt(args[1])) return message.reply("vous n'avez pas assez d'argent dans votre banque pour en donner autant.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Or Insuffisant. MESSAGE=${message.content} - OR=${dbUser.or}`, "err");
+    if(dbUser.or < parseInt(args[1])) return message.reply("vous n'avez pas assez de poyn dans votre banque pour en donner autant.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Poyn Insuffisant. MESSAGE=${message.content} - poyn=${dbUser.or}`, "err");
 
     const mention = message.guild.members.cache.get(message.mentions.users.first().id);
     const embed = new EmbedBuilder()
     .setColor('5E6366')
     .setAuthor({name: `Virement effectué`, iconURL: message.author.displayAvatarURL()})
-    .setDescription(`:money_with_wings: ${message.author} a envoyé **${args[1]} or** à ${mention}.`)
+    .setDescription(`:money_with_wings: ${message.author} a envoyé **${args[1]} poyn** à ${mention}.`)
 
     message.channel.send({embeds:[embed]});
 
@@ -28,8 +28,8 @@ module.exports.help = {
     name: "virement",
     aliases: [],
     category: "economie",
-    desription: "Envoie de l'argent à un utilisateur.",
-    usage: "<@user> <or>",
+    desription: "Envoie des poyn à un utilisateur.",
+    usage: "<@user> <poyn>",
     cooldown: 3,
     permissions: false,
     args: true

@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { Guild, User, Faction, Aov, Aovtp } = require("../../models/index");
 const {randomInt} = require("./randoms");
 const fs = require("fs");
+const gameconfig = require("../../assets/gameconfigs");
 
 module.exports = client => {
 
@@ -147,8 +148,8 @@ module.exports = client => {
         await client.updateMaxBank(client, mention);
         const dbmention = await client.getUser(mention);
 
-        var mxbk = [10, 35, 80, 120, 200, 350, 550, 800, 1000];
-        var levels_pelos = [1, 5, 10, 20, 35, 50, 70, 85, 100];
+        var mxbk = [gameconfig.MAXBANQUE_PAYSAN, gameconfig.MAXBANQUE_ARTISAN, gameconfig.MAXBANQUE_BOURGEOIS, gameconfig.MAXBANQUE_COURTISAN, gameconfig.MAXBANQUE_BARON, gameconfig.MAXBANQUE_COMTE, gameconfig.MAXBANQUE_MARQUIS, gameconfig.MAXBANQUE_DUC, gameconfig.MAXBANQUE_VASSAL];
+        var levels_pelos = [gameconfig.MEE6LEVEL_PAYSAN, gameconfig.MEE6LEVEL_ARTISAN, gameconfig.MEE6LEVEL_BOURGEOIS, gameconfig.MEE6LEVEL_COURTISAN, gameconfig.MEE6LEVEL_BARON, gameconfig.MEE6LEVEL_COMTE, gameconfig.MEE6LEVEL_MARQUIS, gameconfig.MEE6LEVEL_DUC, gameconfig.MEE6LEVEL_VASSAL];
 
         for(let i=0;i<mxbk.length;i++) {
             if(dbmention.maxbank == mxbk[i])
@@ -249,8 +250,8 @@ module.exports = client => {
         // item spéciaux -> On fait une action spécifique. :
         if(itemid == 1) { // * Point de puissance.
             await client.setOr(client, member, -price, message);
-            let items = parseInt(dbUser.powerpoints) + parseInt(quantity);
-            await client.updateUser(member, {"powerpoints": items});
+            let items = parseInt(dbUser.puissance) + parseInt(quantity);
+            await client.updateUser(member, {"puissance": items});
         }
 
         // ---
@@ -263,8 +264,8 @@ module.exports = client => {
         // ---
         // item spéciaux -> On fait une action spécifique. :
         if(itemid == 1) { // * Point de puissance.
-            let items = parseInt(dbUser.powerpoints) - parseInt(quantity);
-            await client.updateUser(member, {"powerpoints": items});
+            let items = parseInt(dbUser.puissance) - parseInt(quantity);
+            await client.updateUser(member, {"puissance": items});
         }
 
         // ---
@@ -305,9 +306,9 @@ module.exports = client => {
 
         switch(point) {
             case "puissance":
-                if(userToUpdate.powerpoints == undefined) point_base = 0;
-                else point_base = userToUpdate.powerpoints
-                await client.updateUser(member, { powerpoints: point_base + quantity});
+                if(userToUpdate.puissance == undefined) point_base = 0;
+                else point_base = userToUpdate.puissance
+                await client.updateUser(member, { puissance: point_base + quantity});
             break;
 
             case "piete":
@@ -465,6 +466,28 @@ module.exports = client => {
         if(member.roles.cache.has(roles_id[6]) && index <= 6) return true; // il a au moins Marquis
         if(member.roles.cache.has(roles_id[7]) && index <= 7) return true; // il a au moins Duc      
         if(member.roles.cache.has(roles_id[8]) && index <= 8) return true; // il a au moins Vassal
+        
+        return false;
+    };
+
+    /**
+     * @Description Récupère le rôle Mee6 du member !
+     * @Param {GuildMember} member
+     * @returns {Role} rôle mee6
+     */
+    client.getMee6Role = (member) => {
+
+        roles_id = ["445253268176633891", "445253591465328660", "445253561648021514", "445253809640308746", "445257669918588948", "650832087993024522", "445257144011587594", "612469098466639893", "650828967716192269"];
+        
+        if(member.roles.cache.has(roles_id[0])) return member.roles.cache.get(roles_id[0]); // Paysan
+        if(member.roles.cache.has(roles_id[1])) return member.roles.cache.get(roles_id[1]); // Artisan
+        if(member.roles.cache.has(roles_id[2])) return member.roles.cache.get(roles_id[2]); // Bourgeois
+        if(member.roles.cache.has(roles_id[3])) return member.roles.cache.get(roles_id[3]); // Courtisan
+        if(member.roles.cache.has(roles_id[4])) return member.roles.cache.get(roles_id[4]); // Baron
+        if(member.roles.cache.has(roles_id[5])) return member.roles.cache.get(roles_id[5]); // Comte
+        if(member.roles.cache.has(roles_id[6])) return member.roles.cache.get(roles_id[6]); // Marquis
+        if(member.roles.cache.has(roles_id[7])) return member.roles.cache.get(roles_id[7]); // Duc      
+        if(member.roles.cache.has(roles_id[8])) return member.roles.cache.get(roles_id[8]); // Vassal
         
         return false;
     };

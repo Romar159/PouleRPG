@@ -6,6 +6,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
     message.channel.send("/!\\ ATTENTION Le Shop est obsolète et est en cours de réaménagement /!\\");
+    return;
 
     if(!args[0]) {
         const filter = i => (i.customId === 'pts' || i.customId === 'itm' || i.customId === "evt") && i.user.id === message.author.id;
@@ -256,8 +257,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 module.exports.help = {
     name: "magasin",
     aliases: ['shop'],
-    category: "economie",
-    desription: "Ouvre le magasin.",
+    category: "",
+    desription: "Ouvre le magasin. Deprecated !",
     usage: "",
     cooldown: 5,
     permissions: false,

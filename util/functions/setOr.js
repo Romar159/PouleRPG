@@ -19,7 +19,7 @@ module.exports = (client, member, message) => {
             const buffer = updatedOr - parseInt(userToUpdate.maxbank);
 
             if(userToUpdate.faction == "NULL") {
-                message.channel.send(`Vous n'avez pas de faction, l'or est alors rendu à PouleRPG.`);
+                message.channel.send(`Vous n'avez pas de faction, les poyn sont alors rendu à PouleRPG.`);
             } else {
                 const fac = await client.getFaction(userToUpdate.faction);
                 await client.updateFaction(userToUpdate.faction, {bank: fac.bank + buffer});
@@ -30,7 +30,7 @@ module.exports = (client, member, message) => {
                 await client.updateUser(member, {endettement: endettement_maj});
                 //--
 
-                message.channel.send(`${message.guild.members.cache.get(userToUpdate.userID).user.username}, **${buffer}** :coin: ajouté(s) au coffre de votre faction.`) // ? DraxyNote : Ici faut styliser :)
+                message.channel.send(`${message.guild.members.cache.get(userToUpdate.userID).user.username}, **${buffer}** poyn :coin: ajouté(s) au coffre de votre faction.`)
             }
             updatedOr = parseInt(userToUpdate.maxbank);
         }

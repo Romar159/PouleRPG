@@ -1,7 +1,9 @@
 const {EmbedBuilder} = require("discord.js");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
+
     client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
+    return message.channel.send("Cette commande est en cours de refonte. A bientôt dans une prochaine update :EP_Pclin_oeil:")
 
     const bdd_faction = [':house:', ':house_abandoned:', ':house_with_garden:', ':european_castle:', ':japanese_castle:'];
     const bdd_position = [':black_heart:', ':blue_heart:', ':brown_heart:', ':white_heart:', ':purple_heart:', ':green_heart:', ':orange_heart:', ':yellow_heart:', ':heart:'];
@@ -40,7 +42,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 module.exports.help = {
     name: "designprofil",
     aliases: ['desprof'],
-    category: "entertainment",
+    category: "",
     desription: "Design votre profil utilisateur.",
     usage: "<bdd/emote_a_modifier:faction/position> [id]",
     cooldown: 5,

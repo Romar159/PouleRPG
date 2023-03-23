@@ -207,7 +207,7 @@ module.exports.help = {
     aliases: ['c', 'conseiller'],
     category: "faction",
     desription: "Gérez ou consultez les conseils. 'p<conseil <faction>' pour lister les conseillers d'une faction.",
-    usage: '[<nommer>|<retirer> <@USER> <titre>]',
+    usage: '[<nommer/retirer> <@USER> <titre>]',
     cooldown: 3, 
     permissions: false,
     args: false,

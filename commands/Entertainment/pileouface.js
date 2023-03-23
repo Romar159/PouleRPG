@@ -28,7 +28,7 @@ module.exports.run = async (client, message, args) => {
     let choix_p1, choix_p2;
     let choix_p2_nom;
 
-    if(or_parie > player1.or || or_parie > player2.or) return message.reply("ERROR, un ou les deux membres n'ont pas assez d'or") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Un membre ou les deux n'a pas assez d'or. OR=${or_parie} | OR_J1=${player1.or} | OR_J2=${player2.or}. MESSAGE=${message.content}`, "err");
+    if(or_parie > player1.or || or_parie > player2.or) return message.reply("ERROR, un ou les deux membres n'ont pas assez de poyn") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Un membre ou les deux n'a pas assez de poyn. OR=${or_parie} | OR_J1=${player1.or} | OR_J2=${player2.or}. MESSAGE=${message.content}`, "err");
 
     if(!args[2]) return message.reply("Veuillez choisir pile ou face");
     if(args[2].toLowerCase() != "pile") {
@@ -76,13 +76,13 @@ module.exports.run = async (client, message, args) => {
                 if(choix_p1 == 1 && choix_p2 == 2) {
                     await client.setOr(client, message.member, or_parie, message);
                     await client.setOr(client, memberp2, -or_parie, message);
-                    await i.editReply({ content:`PILE, ${player1.username} GAGNE et récupère ${or_parie} :coin: à ${player2.username}`, components: [] });
+                    await i.editReply({ content:`PILE, ${player1.username} GAGNE et récupère ${or_parie} poyn :coin: à ${player2.username}`, components: [] });
                 } 
                 if(choix_p2 == 1 && choix_p1 == 2) {
                     
                     await client.setOr(client, message.member, -or_parie, message);
                     await client.setOr(client, memberp2, or_parie, message);
-                    await i.editReply({ content:`PILE, ${player2.username} GAGNE et récupère ${or_parie} :coin: à ${player1.username}`, components: [] });
+                    await i.editReply({ content:`PILE, ${player2.username} GAGNE et récupère ${or_parie} poyn :coin: à ${player1.username}`, components: [] });
                     
                 } 
     
@@ -92,13 +92,13 @@ module.exports.run = async (client, message, args) => {
     
                     await client.setOr(client, message.member, -or_parie, message);
                     await client.setOr(client, memberp2, or_parie, message);
-                    await i.editReply({ content:`FACE, ${player2.username} GAGNE et récupère ${or_parie} :coin: à ${player1.username}`, components: [] });
+                    await i.editReply({ content:`FACE, ${player2.username} GAGNE et récupère ${or_parie} poyn :coin: à ${player1.username}`, components: [] });
                 } 
                 if(choix_p2 == 1 && choix_p1 == 2) {
                     
                     await client.setOr(client, message.member, or_parie, message);
                     await client.setOr(client, memberp2, -or_parie, message);
-                    await i.editReply({ content:`FACE, ${player1.username} GAGNE et récupère ${or_parie} :coin: à ${player2.username}`, components: [] });
+                    await i.editReply({ content:`FACE, ${player1.username} GAGNE et récupère ${or_parie} poyn :coin: à ${player2.username}`, components: [] });
                 } 
                 
             }
@@ -110,7 +110,7 @@ module.exports.run = async (client, message, args) => {
         }
     });
 
-    message.channel.send({content: `<@${player2.userID}>, <@${player1.userID}> vous a défié au pile ou face ! Voulez vous parier **${or_parie}** :coin: sur **${choix_p2_nom}** ?`, components: [row]});
+    message.channel.send({content: `<@${player2.userID}>, <@${player1.userID}> vous a défié au pile ou face ! Voulez vous parier **${or_parie}** poyn :coin: sur **${choix_p2_nom}** ?`, components: [row]});
     
 }
 
@@ -118,9 +118,9 @@ module.exports.help = {
     name: "pileouface",
     aliases: ['pof'],
     category: "entertainment",
-    desription: "Lance une pièce pour faire un pile ou face. Ou pariez de l'or avec un membre.",
-    usage: "[@USER] [or] [pile/face]",
-    cooldown: 1,
+    desription: "Lance une pièce pour faire un pile ou face. Ou pariez des poyn avec un membre.",
+    usage: "[{@USER} {or} {pile/face}]",
+    cooldown: 3,
     permissions: false,
     args: false
 };

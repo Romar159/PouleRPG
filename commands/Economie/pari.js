@@ -10,8 +10,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     let prestige = "";
     let richesse = "";
 
-    if(x > dbUser.or) return message.reply("Vous n'avez pas assez d'or.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - quantité d'or trop faible. NECESSAIRE=${x} | ACTUEL=${dbUser.or} MESSAGE=${message.content}`, "err");
-    if(x < 5) return message.reply("Cette valeur est trop faible. Minimum 5 or") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Valeur trop faible. NECESSAIRE=5. MESSAGE=${message.content}`);
+    if(x > dbUser.or) return message.reply("Vous n'avez pas assez de poyn.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - quantité de poyn trop faible. NECESSAIRE=${x} | ACTUEL=${dbUser.or} MESSAGE=${message.content}`, "err");
+    if(x < 5) return message.reply("Cette valeur est trop faible. Minimum 5 poyn") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Valeur trop faible. NECESSAIRE=5. MESSAGE=${message.content}`);
 
     const dailyCD = 7200000; 
     
@@ -46,7 +46,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 }
 
                 await client.setOr(client, message.member, Math.round(o), message);
-                return message.channel.send(`Bravo ! Vous avez parié juste ! Vous gagnez ${Math.round(o)} :coin: ${prestige}${richesse}`);
+                return message.channel.send(`Bravo ! Vous avez parié juste ! Vous gagnez ${Math.round(o)} poyn :coin: ${prestige}${richesse}`);
             }
 
             o = (x * 1.1) * client.randomFloat(1, 1.1);
@@ -63,9 +63,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             }
             
             await client.setOr(client, message.member, Math.round(o), message);
-            return message.channel.send(`Bravo ! Vous avez parié juste ! Vous gagnez ${Math.round(o)} :coin: ${prestige}${richesse}`) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Pari réussi.`);
+            return message.channel.send(`Bravo ! Vous avez parié juste ! Vous gagnez ${Math.round(o)} poyn :coin: ${prestige}${richesse}`) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Pari réussi.`);
         }
-        return message.channel.send(`Vous avez perdu votre pari ! -${x} :coin:`) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Pari perdu. -${x} or.`);
+        return message.channel.send(`Vous avez perdu votre pari ! -${x} poyn :coin:`) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Pari perdu. -${x} poyn.`);
         
     }
 };
@@ -74,8 +74,8 @@ module.exports.help = {
     name: "pari",
     aliases: [],
     category: "economie",
-    desription: "Pariez une somme d'or sur un combattant pour possiblement gagner plus !",
-    usage: "<somme>",
+    desription: "Pariez une somme de poyn sur un combattant pour possiblement gagner plus !",
+    usage: "<poyn>",
     cooldown: 2,
     permissions: false,
     args: true

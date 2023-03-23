@@ -1,17 +1,9 @@
 {
-  "name": "poulerpg",
-  "version": "0.4.1",
-  "description": "Discord Bot RPG pour l'Empire du Poulet, recodé entièrement.",
-  "main": "main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node main.js"
-  },
-  "author": "Romar1",
-  "license": "MIT",
   "dependencies": {
-    "discord.js": "^13.3.1",
+    "canvas": "^2.10.1",
+    "discord.js": "^14.8.0",
+    "js-levenshtein": "^1.1.6",
     "mongoose": "^5.13.15",
-    "pm2": "^5.1.2"
+    "pm2": "^5.2.0"
   }
 }

@@ -14,9 +14,9 @@ module.exports.help = {
     name: "auto-actualisation",
     aliases: ['updateme', 'aa'],
     category: "system",
-    desription: "Permet de mettre à jour votre fichier utilisateur s'il ne l'est pas.",
+    desription: "Permet de mettre à jour votre fichier utilisateur s'il ne l'est pas. C'est une commande de debug sans risque que tout le monde peut executer.",
     usage: '',
-    cooldown: 15, 
+    cooldown: 30, 
     permissions: false,
     args: false,
 };

@@ -33,7 +33,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
         client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - SALAIRE=${salaire} | RANDOM=${random} | POINTS_TRAVAIL=${points_travail} | HEURE_TRAVAIL=${dbUser.heure_travail}`);
 
-        message.channel.send(`Après avoir travaillé dur pendant **${dbUser.heure_travail}** heures, vous récupérez votre salaire qui est de **${salaire}** :coin: et vous gagnez **${points_travail}** points de travail !`);
+        message.channel.send(`Après avoir travaillé dur pendant **${dbUser.heure_travail}** heures, vous récupérez votre salaire qui est de **${salaire}** poyn :coin: et vous gagnez **${points_travail}** points de travail !`);
         await client.setOr(client, message.member, salaire, message);
         await client.editPoint(client, message.member, points_travail, "travail");
         await client.updateUser(message.member, {working: false});
@@ -71,7 +71,7 @@ module.exports.help = {
     name: "travail",
     aliases: ['t'],
     category: "economie",
-    desription: "Exercez votre métier pour gagner de l'or et des points de travail.",
+    desription: "Exercez votre métier pour gagner des poyn et des points de travail.",
     usage: '[heures]',
     cooldown: 2, 
     permissions: false,

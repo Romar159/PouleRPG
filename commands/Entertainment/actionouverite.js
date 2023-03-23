@@ -56,7 +56,7 @@ module.exports.run = async (client, message, args, settings, dbUser, command, me
    
 
     const filter = i => (i.customId === 'act' || i.customId === 'vrt' || i.customId === 'ran' || i.customId === 'stop');
-    const collector = message.channel.createMessageComponentCollector({ filter, time: 300000, error:["time"] }); //5 minutes
+    const collector = message.channel.createMessageComponentCollector({ filter, time: 720000, error:["time"] }); //5 minutes
         const row = new ActionRowBuilder()
         .addComponents(
             new ButtonBuilder()

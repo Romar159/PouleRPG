@@ -15,7 +15,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         if(!or_apporter && or_apporter != 0) return message.reply("vous devez renseigner une valeur numérique.");
         if(or_apporter > 100) or_apporter = 100;
         if(or_apporter < 10) or_apporter = 0; // Ici c'est défini à 0 pour l'affichage.
-        if(or_apporter > dbUser.or) return message.reply("vous n'avez pas assez d'argent.");
+        if(or_apporter > dbUser.or) return message.reply("vous n'avez pas assez de poyn.");
         //if(!args[1]) return message.reply("vous devez sélectionner le pays")
 
         let localisation;
@@ -41,7 +41,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         const debutEmbed = new EmbedBuilder()
         .setColor('5E6366')
         .setAuthor({name: `Expédition lancée !`, iconURL: message.author.displayAvatarURL()})
-        .setDescription(`L'expédition va durer **${expedition_duration / 3600000}h** avec **${or_apporter}** or !`); //? DraxyNote : Il faut ici ajouter l'affichage du Pays dans lequel on va. (avec 'localisation')
+        .setDescription(`L'expédition va durer **${expedition_duration / 3600000}h** avec **${or_apporter}** poyn sur les terres de la faction ${localisation} !`);
 
         message.channel.send({embeds:[debutEmbed]});
         await client.updateUser(message.member, {expedition_duration: expedition_duration, or_expedition: or_apporter, cooldown_expedition: Date.now()});
@@ -76,7 +76,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             const finEmbed = new EmbedBuilder()
             .setColor('3F992D')
             .setAuthor({name:`Expédition terminée !`, iconURL:message.author.displayAvatarURL()})
-            .addFields([{name: `** **`, value:`**:test_tube: +${final_xp} XP**`},{name: `** **`, value: `:coin: **+${final_or} Or**`},{name: `** **`, value: `:brain: **+${final_savoir} points de savoir**`}])
+            .addFields([{name: `** **`, value:`**:test_tube: +${final_xp} XP**`},{name: `** **`, value: `:coin: **+${final_or} Poyn**`},{name: `** **`, value: `:brain: **+${final_savoir} points de savoir**`}])
             
 
             message.channel.send({embeds:[finEmbed]});
@@ -110,7 +110,7 @@ module.exports.help = {
     aliases: ['e', 'expedition'],
     category: "generalrpg",
     desription: "Partez en expédition pour gagner richesses, expériences et items.",
-    usage: '<or> [localisation:epsilon/daïros/lyomah/alpha]',
+    usage: '<poyn> [localisation:epsilon/daïros/lyomah/alpha]',
     cooldown: 3, 
     permissions: false,
     args: false

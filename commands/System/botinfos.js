@@ -12,11 +12,11 @@ module.exports.run = (client, message, args) => {
 
         **Date de début du projet :** 19/09/2019 - 23:31
         **Date de début de la reprogrammation :** 26/01/2021
-        **Date de Bêta :** TBA
+        **Date de Alpha :** TBA
 
         **Développement :** <@421400262423347211> | **Aide à la conception :** <@211911771433205760>
         
-        **Sources d'information principales :** ISBN-9782035053749 | Cours d'Histoire et divers livres du Romar | wikipedia.org | Paradox Interactive
+        **Sources d'information principales :** ISBN-9782035053749 | Cours d'Histoire ; divers livres ; ainsi que les connaissances du Romar | wikipedia.org | Paradox Interactive
 
         **Lien utiles :**
         [Discord Empire](https://discord.gg/Y4YZw2FK2Q) • [Github](https://github.com/Romar159/PouleRPG) • [Site](https://romar159.github.io/PouleRPGweb/)`)

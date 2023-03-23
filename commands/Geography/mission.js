@@ -31,7 +31,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 module.exports.help = {
     name: "[WIP] mission",
     aliases: [],
-    category: "geography",
+    category: "",
     desription: "[WIP] Envoyez en mission vos membres pour récolter des ressources naturelles ou diriger des travaux.",
     usage: '<@USER> <mission>',
     cooldown: 3, 

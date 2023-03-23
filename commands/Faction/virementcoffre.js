@@ -42,7 +42,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     
     const or = parseInt(args[1]);
 
-    if(faction.bank < or) return message.reply("il n'y a pas assez d'argent dans le coffre de faction.");
+    if(faction.bank < or) return message.reply("il n'y a pas assez de poyn dans le coffre de faction.");
 
     await client.updateFaction(dbUser.faction, {bank: faction.bank - or});
     await client.setOr(client, member_ran, args[1], message);
@@ -50,7 +50,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     const embed = new EmbedBuilder()
     .setColor('F2F23C')
     .setAuthor({name:`Virement effectué !`, iconURL:message.author.displayAvatarURL()})
-    .setDescription(`**${or}** :coin: versé à ${member_ran} du coffre de la faction **${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}**.`);
+    .setDescription(`**${or}** poyn :coin: versé à ${member_ran} du coffre de la faction **${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}**.`);
 
     message.channel.send({ embeds: [embed] });
 };
@@ -59,8 +59,8 @@ module.exports.help = {
     name: "virementcoffre",
     aliases: ['vc'],
     category: "faction",
-    desription: "Transfère de l'or du coffre de faction vers la banque personnel d'un membre.",
-    usage: "<@USER> <or>",
+    desription: "Transfère de poyn du coffre de faction vers la banque personnel d'un membre.",
+    usage: "<@USER> <poyn>",
     cooldown: 3,
     permissions: false,
     args: true,
