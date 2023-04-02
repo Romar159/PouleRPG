@@ -2,7 +2,11 @@ module.exports.run = (client, message, args) => {
     client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`, "warn");
 
     message.guild.members.fetch().then(fetchAll => {
-        fetchAll.map(m => m.send(":fish:"));
+	   try { 
+            fetchAll.map(m => m.send(":fish:"));
+        } catch(e) { 
+            console.log(e); 
+        }  
     });
 }
 
