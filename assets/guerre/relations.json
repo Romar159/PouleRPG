@@ -1,0 +1,32 @@
+[
+    {
+        "id":0,
+        "name":"neutre",
+        "display_name":"Neutre",
+        "description":"Cette faction est neutre"
+    },
+    {
+        "id":1,
+        "name":"non-agression",
+        "display_name":"Pacte de Non-Agression",
+        "description":"Cette faction ne peux pas vous déclarer la guerre sans rompre le pacte."
+    },
+    {
+        "id":2,
+        "name":"commercial",
+        "display_name":"Traité Commercial",
+        "description":"Cette faction peux commercer avec vous et ne peux vous déclarer la guerre sans rompre le traité"
+    },
+    {
+        "id":3,
+        "name":"alliance",
+        "display_name":"Alliance",
+        "description":"Cette faction est votre alliée. Elle ne peut vous déclarer la guerre et au contraire elle peut vous aider."
+    },
+    {
+        "id":4,
+        "name":"ennemie",
+        "display_name":"Ennemie",
+        "description":"Cette faction est votre ennemie. Cela signifie que vous êtes en guerre contre cette faction !"
+    }
+]

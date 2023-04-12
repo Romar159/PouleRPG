@@ -492,5 +492,79 @@ module.exports = client => {
         return false;
     };
 
+    client.getRelation = async (faction1, faction2) => {
+        var fac1 = await client.getFaction(faction1);
+        if(faction2 == "epsilon") fac2 = 0;
+        else if(faction2 == "daïros") fac2 = 1;
+        else if(faction2 == "lyomah") fac2 = 2;
+        else if(faction2 == "alpha") fac2 = 3;
+
+        var relid = fac1.relations[fac2];
+
+        //NB: Commercial n'existe pas en Alpha
+        const relations = require("../../assets/guerre/relations.json");
+
+        return relations[relid]
+    }
+
+    client.getAllFactionPoints = async (faction1, message) => {
+        //console.log(faction1);
+        var roleid = "";
+        var all_values = [0, 0, 0, 0, 0, 0, 0, 0];
+        var points = [0, 0, 0, 0, 0, 0, 0, 0];
+      
+        if (faction1 == "epsilon") {
+          roleid = "415947454626660366";
+        } else if (faction1 == "daïros") {
+          roleid = "415947455582961686";
+        } else if (faction1 == "lyomah") {
+          roleid = "415947456342130699";
+        } else if (faction1 == "alpha") {
+          roleid = "665340021640921099";
+        }
+
+        const faction = await client.getFaction(faction1);
+      
+        const membres = message.guild.roles.cache.get(roleid).members.map(m => m);
+      
+        /*
+        Pour chaque membre on récupère ses points et on aditionne aux autres membres.
+        Mais pour le maître et son conseil, on multiplie par 3 les points en rapport avec son métier.
+
+        Maître :
+            - Prestige
+            - Puissance/redoutabilité
+        Intendant :
+            - Richesse
+            - Savoir
+        Maréchal:
+            - Forme
+            - Travail
+        Chapelain :
+            - Piete
+            - Moral
+
+        */
+          for (const m of membres) {
+            let dbmembre = await client.getUser(m);
+            points.push((m.user.id == faction.idmaitre) ? (parseInt(dbmembre.prestige) * 3) : parseInt(dbmembre.prestige));
+            points.push((m.user.id == faction.chapelain) ? (parseInt(dbmembre.piete) * 3) : parseInt(dbmembre.piete));
+            points.push((m.user.id == faction.intendant) ? (parseInt(dbmembre.richesse) * 3) : parseInt(dbmembre.richesse));
+            points.push((m.user.id == faction.idmaitre) ? (parseInt(dbmembre.puissance) * 3) : parseInt(dbmembre.puissance));
+            points.push((m.user.id == faction.marechal) ? (parseInt(dbmembre.forme) * 3) : parseInt(dbmembre.forme));
+            points.push((m.user.id == faction.chapelain) ? (parseInt(dbmembre.moral) * 3) : parseInt(dbmembre.moral));
+            points.push((m.user.id == faction.marechal) ? (parseInt(dbmembre.travail) * 3) : parseInt(dbmembre.travail));
+            points.push((m.user.id == faction.intendant) ? (parseInt(dbmembre.savoir) * 3) : parseInt(dbmembre.savoir));
+      
+            for (let i = 0; i < 8; i++) {
+              all_values[i] = parseInt(all_values[i]) + parseInt(points[i]);
+            }
+            points = [];
+          }
+      
+        return all_values;
+      }
+      
+
 
 };

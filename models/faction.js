@@ -57,6 +57,11 @@ const factionSchema = mongoose.Schema({
         "default": ['']
     },
 
+    relations: {
+        "type": Array,
+        "default": [0, 0, 0, 0]
+    },
+
     cachot: Array,
     
 
@@ -66,8 +71,7 @@ const factionSchema = mongoose.Schema({
     ptsami_alpha: Number,
 
     en_guerre: Boolean,
-    ennemy: String,
-    ally: String,
+    
 
 });
 

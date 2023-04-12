@@ -94,16 +94,19 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     const pages = [embed, embedPts];
     index = 0;
 
-    const filter = i => (i.customId === 'gauche' || i.customId === 'droite' || i.customId === 'select') && i.user.id === message.author.id;
+    
+    const dateActuel = new Date();
+
+    const filter = i => (i.customId === 'usrprofilegauche' + message.author.id + dateActuel || i.customId === 'usrprofiledroite' + message.author.id + dateActuel) && i.user.id === message.author.id;
     const collector = message.channel.createMessageComponentCollector({ filter, time: 120000 }); //2 minutes
         const row = new ActionRowBuilder()
         .addComponents(
             new ButtonBuilder()
-                .setCustomId(`gauche`)
+                .setCustomId(`usrprofilegauche` + message.author.id + dateActuel)
                 .setLabel('🡠')
                 .setStyle(ButtonStyle.Secondary),
             new ButtonBuilder()
-                .setCustomId(`droite`)
+                .setCustomId(`usrprofiledroite` + message.author.id + dateActuel)
                 .setLabel('🡢')
                 .setStyle(ButtonStyle.Secondary)
         ); 
@@ -113,7 +116,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         
         if(i.isButton()) {
             //console.log("Button");
-            if (i.customId === `gauche` || i.customId === `droite`) {
+            if (i.customId === `usrprofilegauche` + i.user.id + dateActuel || i.customId === `usrprofiledroite` + i.user.id + dateActuel) {
                     await i.deferUpdate();
                     await i.editReply({embeds:[pages[(index == 0) ? 1 : 0]], components: [row] });
 

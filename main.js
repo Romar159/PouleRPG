@@ -1,5 +1,5 @@
 const {Client, Collection, GatewayIntentBits, Partials} = require('discord.js');
-const {loadCommands, loadEvents} = require('./util/loader');
+const {loadCommands, loadEvents, loadGlobalVariables} = require('./util/loader');
 const {TOKEN, PREFIX} = require('./config');
 const user = require('./models/user');
 
@@ -12,6 +12,7 @@ client.loadDependencies(client);
  
 loadCommands(client);
 loadEvents(client);
+loadGlobalVariables(client);
 
 client.mongoose.init();
 

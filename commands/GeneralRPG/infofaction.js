@@ -1,7 +1,6 @@
-const {EmbedBuilder} = require("discord.js");
+const {EmbedBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder} = require("discord.js");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
-    
     message.guild.members.fetch().then(async fetchAll => {
         try {
             let faction = await client.getFaction(dbUser.faction);
@@ -21,6 +20,28 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
             //message.channel.send(`Gouvernement actuel : Conseillers ; Intendant ; Maréchal ; Chapelain`);
 
+            
+            const faction_points = await client.getAllFactionPoints(faction.name, message);
+
+            const embedPoints = new EmbedBuilder()
+                .setAuthor({name:`Points de la faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}`, iconURL: ppmaitre.user.displayAvatarURL()})
+                .addFields({name:`:crown: **Prestige**`, value: `${faction_points[0]}`, inline:true})
+                .addFields({name:`:pray: **Piété**`, value: `${faction_points[1]}`, inline:true})
+                .addFields({name:'** **', value:'** **'})
+
+                .addFields({name:`:gem: **Richesse**`, value:`${faction_points[2]}`, inline:true})
+                .addFields({name:`:dart: **Puissance**`, value:`${faction_points[3]}`, inline:true})
+                .addFields({name:'** **', value:'** **'})
+
+                .addFields({name:`:muscle: **Forme**`, value:`${faction_points[4]}`, inline:true})
+                .addFields({name:`:sunflower: **Moral**`, value:`${faction_points[5]}`, inline:true})
+                .addFields({name:'** **', value:'** **'})
+
+                .addFields({name:`:pick: **Travail**`, value:`${faction_points[6]}`, inline:true})
+                .addFields({name:`:brain: **Savoir**`, value:`${faction_points[7]}`, inline:true})
+            
+
+
             const embed = new EmbedBuilder()
             .setAuthor({name:`Faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}`, iconURL: ppmaitre.user.displayAvatarURL()})
             .addFields([{name:`:mortar_board: Maître`, value:`${maitre}`, inline:true}, {name:`:busts_in_silhouette: Nombre de membres`, value:`${members.size}`, inline:true}, {name:`** **`, value:`** **`, inline:true}])
@@ -30,31 +51,27 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
              
             
                 //Couleurs
-                if(faction.factionid == 0)          //Epsilon
+                if(faction.factionid == 0)   {       //Epsilon
                     embed.setColor('AA3C00');
-                else if(faction.factionid == 1)     //Daïros
+                    embedPoints.setColor('AA3C00');
+                }
+                else if(faction.factionid == 1) {    //Daïros
                     embed.setColor('0078F0');
-                else if(faction.factionid == 2)     //Lyomah
+                    embedPoints.setColor('0078F0');
+                }
+                else if(faction.factionid == 2) {    //Lyomah
                     embed.setColor('00A00A');
-                else if(faction.factionid == 3)     //Alpha
+                    embedPoints.setColor('00A00A');
+                }
+                else if(faction.factionid == 3){     //Alpha
                     embed.setColor('F0C800');
-
-                if(faction.en_guerre)
-                    embed.addFields([{name:`:crossed_swords: Guerre`, value:`${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)} est actuellement en guerre contre ${faction.ennemy.charAt(0).toUpperCase() + faction.ennemy.slice(1)}`, inline:true}]);
-                else
-                    embed.addFields([{name:`:crossed_swords: Guerre`, value:`${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)} n'est en guerre contre personne.`, inline:true}]);    
-
-                //embed.addFields([{name:"** **", value:"** **", inline:true}]);
-
-                if(faction.ally)
-                    embed.addFields([{name:`:handshake: Alliance`, value:`${faction.ally}`, inline:true}]);
-                else
-                    embed.addFields([{name:`:handshake: Alliance`, value:`Aucune faction alliée.`, inline:true}]);
+                    embedPoints.setColor('F0C800');
+                }
 
         
             if(message.channel.id == faction.channelid) {
                 //embed.addFields([{name:`** **`, value:`** **`, inline:true}]);
-                embed.addFields([{name:`** **`, value:`** **`},{name:`:moneybag: Coffre`, value:`${faction.bank.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} Poyn :coin:`, inline:true}, {name:`:money_with_wings: Taxe`, value:`${faction.taxe}%`, inline:true}])
+                embed.addFields([{name:`:moneybag: Coffre`, value:`${faction.bank.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} Poyn :coin:`, inline:true}, {name:`:money_with_wings: Taxe`, value:`${faction.taxe}%`, inline:true}])
                
             
                 
@@ -73,14 +90,82 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                     
                 // }
             } else {
-                embed.addFields([{name:`** **`, value:`** **`, inline:true},{name:`:money_with_wings: Taxe`, value:`${faction.taxe}%`}]);
+                embed.addFields([{name:`:money_with_wings: Taxe`, value:`${faction.taxe}%`}]);
             }
             //lois de faction Pas encore en vigueur dans cette version
             //message.channel.send(`Lois de la faction en vigueur : ...`);
 
+            const rel_e = await client.getRelation(faction.name, "epsilon");
+            const rel_d = await client.getRelation(faction.name, "daïros");
+            const rel_l = await client.getRelation(faction.name, "lyomah");
+            const rel_a = await client.getRelation(faction.name, "alpha");
+
+            const fields = [
+                [
+                    {name:`Daïros`,value:`**${rel_d.display_name}** \n${rel_d.description}`, inline:true},
+                    {name:`Lyomah`,value:`**${rel_l.display_name}** \n${rel_l.description}`, inline:true},
+                    {name:`Alpha`,value:`**${rel_a.display_name}** \n${rel_a.description}`, inline:true}
+                ],
+                [
+                    {name:`Epsilon`,value:`**${rel_e.display_name}** \n${rel_e.description}`, inline:true},
+                    {name:`Lyomah`,value:`**${rel_l.display_name}** \n${rel_l.description}`, inline:true},
+                    {name:`Alpha`,value:`**${rel_a.display_name}** \n${rel_a.description}`, inline:true}
+                ],
+                [
+                    {name:`Epsilon`,value:`**${rel_e.display_name}** \n${rel_e.description}`, inline:true},
+                    {name:`Daïros`,value:`**${rel_d.display_name}** \n${rel_d.description}`, inline:true},
+                    {name:`Alpha`,value:`**${rel_a.display_name}** \n${rel_a.description}`, inline:true}
+                ],
+                [
+                    {name:`Epsilon`,value:`**${rel_e.display_name}** \n${rel_e.description}`, inline:true},
+                    {name:`Daïros`,value:`**${rel_d.display_name}** \n${rel_d.description}`, inline:true},
+                    {name:`Lyomah`,value:`**${rel_l.display_name}** \n${rel_l.description}`, inline:true}
+                ]
+            ]
+
+            embed.addFields({name:"** **", value:"** **"},{name:"RELATIONS", value:"** **"});
+            embed.addFields(fields[faction.factionid]);
             
 
-            message.channel.send({embeds:[embed]});
+            const pages = [embed, embedPoints];
+            index = 0;
+
+            const filter = i => (i.customId === `infofacgauche` + message.author.id + dateActuel || i.customId === `infofacdroite` + message.author.id + dateActuel) && i.user.id === message.author.id;
+            const collector = message.channel.createMessageComponentCollector({ filter, time: 60000 }); //1 minute
+
+            const dateActuel = new Date();
+
+                const row = new ActionRowBuilder()
+                .addComponents(
+                    new ButtonBuilder()
+                        .setCustomId(`infofacgauche` + message.author.id + dateActuel)
+                        .setLabel('🡠')
+                        .setStyle(ButtonStyle.Secondary),
+                    new ButtonBuilder()
+                        .setCustomId(`infofacdroite` + message.author.id + dateActuel)
+                        .setLabel('🡢')
+                        .setStyle(ButtonStyle.Secondary)
+                ); 
+
+
+            await collector.on('collect', async i => {
+                //console.log(`Debug: isButton : ${i.isButton()} | isSelectMenu: ${i.isSelectMenu()} | i.user.id: ${i.user.id} | message.author.id: ${message.author.id} | i.customId: ${i.customId} | endsWith: ${i.customId.endsWith(i.user.id)}`);
+                if(i.user.id != message.author.id) return;
+                
+                if(i.isButton()) {
+                    //console.log("Button");
+                    if (i.customId === `infofacgauche` + i.user.id + dateActuel || i.customId === `infofacdroite` + i.user.id + dateActuel) {
+                            await i.deferUpdate();
+                            await i.editReply({embeds:[pages[(index == 0) ? 1 : 0]], components: [row] });
+                            //console.log(client.getAllFactionPoints("epsilon", message)[0]);
+
+                            if(index == 0) index = 1;
+                            else index = 0;
+                    }
+                }
+            });
+            
+            message.channel.send({embeds:[embed], components:[row]});
         }
         catch(e) { //Mettre le ICI! <-
             if(args.length)
