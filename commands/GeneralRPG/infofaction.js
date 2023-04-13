@@ -30,7 +30,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 .addFields({name:'** **', value:'** **'})
 
                 .addFields({name:`:gem: **Richesse**`, value:`${faction_points[2]}`, inline:true})
-                .addFields({name:`:dart: **Puissance**`, value:`${faction_points[3]}`, inline:true})
+                .addFields({name:`:dart: **Redoutabilité**`, value:`${faction_points[3]}`, inline:true})
                 .addFields({name:'** **', value:'** **'})
 
                 .addFields({name:`:muscle: **Forme**`, value:`${faction_points[4]}`, inline:true})

@@ -188,7 +188,7 @@ const userSchema = mongoose.Schema({
         "type": Number,
         "default": 0
     },
-    puissance : { // points de puissance (ancien powerpoints)
+    redoutabilite : { // points de redoutabilité (ancien powerpoints et ancien points de puissance)
         "type": Number,
         "default": 0
     },

@@ -248,6 +248,7 @@ module.exports = client => {
 
         // ---
         // item spéciaux -> On fait une action spécifique. :
+        return; // temporairement invalide
         if(itemid == 1) { // * Point de puissance.
             await client.setOr(client, member, -price, message);
             let items = parseInt(dbUser.puissance) + parseInt(quantity);
@@ -260,7 +261,7 @@ module.exports = client => {
 
     client.removeItemById = async(client, member, dbUser, itemid, quantity) => {
         let item = await client.filterById(shop, itemid);
-        
+        return; // temporairement invalide
         // ---
         // item spéciaux -> On fait une action spécifique. :
         if(itemid == 1) { // * Point de puissance.
@@ -297,7 +298,7 @@ module.exports = client => {
     // POINTS :
 
     // ex editpoint(50, "piete")
-    // puissance, piete, prestige, richesse, travail, forme, savoir, moral
+    // redoutabilité, piete, prestige, richesse, travail, forme, savoir, moral
 
     client.editPoint = async (client, member, quantity, point) => {
 
@@ -305,10 +306,10 @@ module.exports = client => {
         let point_base = 0;
 
         switch(point) {
-            case "puissance":
-                if(userToUpdate.puissance == undefined) point_base = 0;
-                else point_base = userToUpdate.puissance
-                await client.updateUser(member, { puissance: point_base + quantity});
+            case "redoutabilite":
+                if(userToUpdate.redoutabilite == undefined) point_base = 0;
+                else point_base = userToUpdate.redoutabilite
+                await client.updateUser(member, { redoutabilite: point_base + quantity});
             break;
 
             case "piete":
@@ -533,7 +534,7 @@ module.exports = client => {
 
         Maître :
             - Prestige
-            - Puissance/redoutabilité
+            - Redoutabilité
         Intendant :
             - Richesse
             - Savoir
@@ -550,7 +551,7 @@ module.exports = client => {
             points.push((m.user.id == faction.idmaitre) ? (parseInt(dbmembre.prestige) * 3) : parseInt(dbmembre.prestige));
             points.push((m.user.id == faction.chapelain) ? (parseInt(dbmembre.piete) * 3) : parseInt(dbmembre.piete));
             points.push((m.user.id == faction.intendant) ? (parseInt(dbmembre.richesse) * 3) : parseInt(dbmembre.richesse));
-            points.push((m.user.id == faction.idmaitre) ? (parseInt(dbmembre.puissance) * 3) : parseInt(dbmembre.puissance));
+            points.push((m.user.id == faction.idmaitre) ? (parseInt(dbmembre.redoutabilite) * 3) : parseInt(dbmembre.redoutabilite));
             points.push((m.user.id == faction.marechal) ? (parseInt(dbmembre.forme) * 3) : parseInt(dbmembre.forme));
             points.push((m.user.id == faction.chapelain) ? (parseInt(dbmembre.moral) * 3) : parseInt(dbmembre.moral));
             points.push((m.user.id == faction.marechal) ? (parseInt(dbmembre.travail) * 3) : parseInt(dbmembre.travail));

@@ -15,7 +15,7 @@
         "condition" : "/",
         "description" : "Lors de votre expédition, vous rencontrez un poulet, que faites-vous ? \n\n⚔️ : Vous le tuez.\n🙏 : Vous vous agenouillez et priez le Dieu Poulet pour son bien.",
         "reactions" : ["⚔️", "🙏"],
-        "commands" : ["message.channel.send(`Dieu Poulet est très déçu de vous ! (-10 piété, +1 puissance)`); client.editPoint(client, message.member, -10, 'piete'); client.editPoint(client, message.member, +1, 'puissance');",
+        "commands" : ["message.channel.send(`Dieu Poulet est très déçu de vous ! (-10 piété, +1 redoutabilité)`); client.editPoint(client, message.member, -10, 'piete'); client.editPoint(client, message.member, +1, 'redoutabilite');",
                       "message.channel.send(`Dieu Poulet est content ! (+10 piété)`); client.editPoint(client, message.member, 10, 'piete');"]
     }
 ]
