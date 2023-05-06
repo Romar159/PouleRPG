@@ -93,7 +93,7 @@
         "id" : 15,
         "categorie": "Littérature",
         "question" : "Qui a écrit 'Alice au Pays des Merveilles' ?",
-        "reponses" : ["lewis carroll", "carroll"]
+        "reponses" : ["lewis carroll", "carroll", "charles lutwidge dodgson", "dodgson", "lutwidge dodgson"]
     },
     {
         "id" : 16,
