@@ -166,5 +166,23 @@
         "categorie" : "Art",
         "question" : "Quelle est la couleur contraire du violet ?",
         "reponses" : ["le jaune", "jaune"]
-      }
+    },
+    {
+        "id" : 28,
+        "categorie" : "Littérature",
+        "question" : "Qui est l'auteur du recueil de poèmes intitulé 'Les Fleurs du mal' ?",
+        "reponses" : ["charles baudelaire", "baudelaire"]
+    },
+    {
+        "id" : 29,
+        "categorie" : "Littérature",
+        "question" : "Dans quel pays se déroule 'Les Misérables' de Victor Hugo ?",
+        "reponses" : ["france"]
+    },
+    {
+        "id" : 30,
+        "categorie" : "Littérature",
+        "question" : "Quand arrive 'Godot' dans la pièce de théatre 'En attendant Godot' ?",
+        "reponses" : ["jamais", "à aucun moment", "** **"]
+    }
 ]
