@@ -1,0 +1,17 @@
+[
+    {
+        "id":0,
+        "name":"Emprisonnement",
+        "description":"Délivrez des prisons ennemies tous les membres de votre faction !"
+    },
+    {
+        "id":1,
+        "name":"Alliance rompue",
+        "description":"Exigez réparation pour cette trahison ! Récupérez de l'or, du prestige et de la redoutabilité à la faction adverse et forcez la signature d'un pacte de non-agression !"
+    },
+    {
+        "id":2,
+        "name":"Vengeance - Emprisonnement",
+        "description":"Vengez-vous, enfermez le membre de votre choix de la faction adverse ! Mais attention... si vous échouez, c'est cette faction adverse qui pourra enfermer qui elle veut de votre faction..."
+    }
+]

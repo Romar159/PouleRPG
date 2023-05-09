@@ -62,6 +62,7 @@ const factionSchema = mongoose.Schema({
         "default": [0, 0, 0, 0]
     },
 
+    casusbelli: Array,
     cachot: Array,
     
 

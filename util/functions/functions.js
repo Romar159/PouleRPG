@@ -372,11 +372,13 @@ module.exports = client => {
     client.isMaster = (message) => {
         //verification du rôle de maître
         const roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
-
+        let est_maitre = false;
+        
         for(let y=0; y<roles_maitre.length; y++) {
-            if(message.member.roles.cache.has(roles_maitre[y])) return true;
-            else return false;
+            if(message.member.roles.cache.has(roles_maitre[y])) { est_maitre = true; break;}
+            else est_maitre = false;
         }
+        return est_maitre;
     };
 
     client.checkTaxes = async (message) => {

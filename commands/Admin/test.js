@@ -3,12 +3,61 @@ const {PREFIX} = require('../../config');
 
 const metiers = require("../../assets/rpg/metiers/metiers.json");
 
+const casusb = require("../../assets/guerre/casusbelli.json");
+
 
 
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
+    // embed_declarerGuerreMenu = new EmbedBuilder()
+    //         .setColor('3C4C66')
+    //         .setAuthor({name: `${message.author.username}`, iconURL: message.author.displayAvatarURL()})
+    //         .setTitle(`Déclarer la guerre !`)
+    //         .setDescription(`Sélectionnez le casus belli de votre choix avec les flèches et confirmez avec le bouton "Déclarer" lorsque vous êtes sûr de votre décision !\n\n:warning: **Attention** :warning:\nDéclarer une guerre ne peut être annulé sans vous rendre ou sans que l'adversaire n'accepte une paix blanche. `)
+    //         .addFields([
+    //             {name:`Cible: XXX`, value:`Titre - Description`}, 
+    //             {name:`Cible2: XXX2`, value:`Titre2 - Description2`}, 
+    //         ])
+
+    // message.channel.send({embeds:[embed_declarerGuerreMenu]})
+
+
+    // embed_declarerGuerreMenu = new EmbedBuilder()
+    // .setColor('3C4C66')
+    // .setAuthor({name: `${message.author.username}`, iconURL: message.author.displayAvatarURL()})
+    // .setTitle(`Déclarer la guerre !`)
+    // .setDescription(`Sélectionnez le casus belli de votre choix avec les flèches et confirmez avec le bouton "Déclarer" lorsque vous êtes sûr de votre décision !\n\n:warning: **Attention** :warning:\nDéclarer une guerre ne peut être annulé sans vous rendre ou sans que l'adversaire n'accepte une paix blanche. `)
+    // .addFields([
+    //     {name:`** **`, value:`** **`}, 
+    //     {name:`${casusb[1].name} • Contre : **Daïros**`, value:`${casusb[1].description}`}, 
+    // ])
     
+    
+
+    // message.channel.send({embeds:[embed_declarerGuerreMenu]})
+
+
+    // return;
+
+    
+
+    await client.updateFaction("epsilon", {casusbelli: [{"id":"1","cible":"lyomah"}, {"id":"0","cible":"lyomah"}, {"id":"1","cible":"daïros"}, {"id":"2","cible":"alpha"}]})
+
+    //const faction = await client.getFaction("epsilon");
+    //message.channel.send(`data: ${client.filterById(casusb, faction.casusbelli[1].id).name} ${faction.casusbelli[1].cible}`);
+
+    // const faction = await client.getFaction("epsilon");
+
+    // let tmp = faction.casusbelli;
+
+    // tmp.push({"id":"1","cible":"lyomah"});
+
+    // await client.updateFaction("epsilon", {casusbelli: tmp})
+    // //const faction = await client.getFaction("epsilon");
+    // message.channel.send(`data: ${client.filterById(casusb, faction.casusbelli[1].id).name} ${faction.casusbelli[1].cible}`);
+
+    return;
     client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`)
 
     message.channel.send(client.filterById(metiers, 1).description);

@@ -2,6 +2,7 @@ const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, Button
 
 const units = require("../../../assets/guerre/units.json");
 const fs = require("fs");
+const casusbellijson = require("../../../assets/guerre/casusbelli.json")
 
 const diplomatie = async (client, message, dbUser) => {
     if(global.users_use_guerre_cmd.indexOf(message.author.id) != -1) {
@@ -127,6 +128,15 @@ const diplomatie = async (client, message, dbUser) => {
         ])
         .setFooter({text:`${selected_faction_string} - ${selected_traite_string}`})
 
+    var embed_declarerGuerreMenu = new EmbedBuilder()
+        .setColor('3C4C66')
+        .setAuthor({name: `${message.author.username}`, iconURL: message.author.displayAvatarURL()})
+        .setTitle(`Déclarer la guerre !`)
+        .setDescription(`Sélectionnez le casus belli (votre raison et objectif de guerre) de votre choix avec les flèches et confirmez avec le bouton "Déclarer" lorsque vous êtes sûr de votre décision !\n\n:warning: **Attention** :warning:\nDéclarer une guerre ne peut être annulé sans vous rendre ou sans que l'adversaire n'accepte une paix blanche. `)
+        .addFields([
+            {name:`** **`, value:`** **`}, 
+            {name:`** ** • Contre : ** **`, value:`** **`}, 
+        ])
 
     //row Menu
 
@@ -209,6 +219,31 @@ const diplomatie = async (client, message, dbUser) => {
     var rowChoixActionTraite = rowChoixActionTraitePeutBriser;
 
 
+    const rowChoixCasusBelli = new ActionRowBuilder()
+        .addComponents(
+        
+        new ButtonBuilder()
+            .setCustomId(`btnflechegauche` + message.author.id)
+            .setLabel('🡠')
+            .setStyle(ButtonStyle.Primary),
+        new ButtonBuilder()
+            .setCustomId(`btnflechedroite` + message.author.id)
+            .setLabel('🡢')
+            .setStyle(ButtonStyle.Primary),
+        new ButtonBuilder()
+            .setCustomId(`btndeclarer` + message.author.id)
+            .setLabel('Déclarer !')
+            .setStyle(ButtonStyle.Danger)
+            ,
+        new ButtonBuilder()
+            .setCustomId(`btnretour` + message.author.id)
+            .setLabel('Retour')
+            .setStyle(ButtonStyle.Secondary)
+    );
+
+    var index_choix_casusBelli = 0;
+    var faccasbel = await client.getFaction(dbUser.faction);
+
 
 
 
@@ -220,7 +255,11 @@ const diplomatie = async (client, message, dbUser) => {
 
         i.customId === 'btnsigner' + message.author.id || 
         i.customId === 'btnbriser' + message.author.id || 
+        i.customId === 'btnbriserfake' + message.author.id ||
         i.customId === 'btndeclarerguerre' + message.author.id || 
+        i.customId === 'btndeclarer' + message.author.id ||
+        i.customId === 'btnflechedroite' + message.author.id ||
+        i.customId === 'btnflechegauche' + message.author.id ||
         i.customId === 'btntraite' + message.author.id ||
         i.customId === 'btnretour' + message.author.id) && 
         i.user.id === message.author.id;
@@ -245,6 +284,46 @@ const diplomatie = async (client, message, dbUser) => {
                 await i.editReply({embeds:[embed_traitesMenu], components:[selectMenu_choixFaction, selectMenu_choixTraite, rowChoixActionTraite]})
             }
 
+            
+            if(i.customId == "btndeclarerguerre" + i.user.id) {
+                await i.deferUpdate();
+
+                if(faccasbel.casusbelli.length <= 0) {
+
+                    embed_declarerGuerreMenu = new EmbedBuilder()
+                    .setColor('3C4C66')
+                    .setAuthor({name: `${message.author.username}`, iconURL: message.author.displayAvatarURL()})
+                    .setTitle(`Déclarer la guerre !`)
+                    .setDescription(`Sélectionnez le casus belli (votre raison et objectif de guerre) de votre choix avec les flèches et confirmez avec le bouton "Déclarer" lorsque vous êtes sûr de votre décision !\n\n:warning: **Attention** :warning:\nDéclarer une guerre ne peut être annulé sans vous rendre ou sans que l'adversaire n'accepte une paix blanche. `)
+                    .addFields([
+                        {name:`** **`, value:`** **`}, 
+                        {name:`Vous ne possédez aucun casus belli`, value:`** **`}, 
+                    ])
+                    
+                    await i.editReply({embeds:[embed_declarerGuerreMenu], components:[rowChoixCasusBelli]})
+                    //await i.editReply({embeds:[embed_declarerGuerreMenu], components:[selectMenu_choixFactionDeclarerGuerre, selectMenu_choixCasusBeli, rowChoixActionDeclarerGuerre]})
+                
+
+                } else {
+                    embed_declarerGuerreMenu = new EmbedBuilder()
+                    .setColor('3C4C66')
+                    .setAuthor({name: `${message.author.username}`, iconURL: message.author.displayAvatarURL()})
+                    .setTitle(`Déclarer la guerre !`)
+                    .setDescription(`Sélectionnez le casus belli (votre raison et objectif de guerre) de votre choix avec les flèches et confirmez avec le bouton "Déclarer" lorsque vous êtes sûr de votre décision !\n\n:warning: **Attention** :warning:\nDéclarer une guerre ne peut être annulé sans vous rendre ou sans que l'adversaire n'accepte une paix blanche. `)
+                    .addFields([
+                        {name:`** **`, value:`** **`}, 
+                        {name:`${casusbellijson[faccasbel.casusbelli[index_choix_casusBelli].id].name} • Contre : **${faccasbel.casusbelli[index_choix_casusBelli].cible.charAt(0).toUpperCase() + faccasbel.casusbelli[index_choix_casusBelli].cible.slice(1)}**`, value:`${casusbellijson[faccasbel.casusbelli[index_choix_casusBelli].id].description}`}, 
+                    ])
+                    
+                    await i.editReply({embeds:[embed_declarerGuerreMenu], components:[rowChoixCasusBelli]})
+                    //await i.editReply({embeds:[embed_declarerGuerreMenu], components:[selectMenu_choixFactionDeclarerGuerre, selectMenu_choixCasusBeli, rowChoixActionDeclarerGuerre]})
+                
+                }
+
+            }
+
+            
+
             if(i.customId == "btnretour" + i.user.id) {
                 await i.deferUpdate();
                 await i.editReply({embeds:[embed_diplomatieMenu], components:[rowChoixDiplomatie]})
@@ -253,6 +332,228 @@ const diplomatie = async (client, message, dbUser) => {
             if(i.customId == "btnbriserfake" + i.user.id) {
                 await i.reply({content:`Vous n'avez pas de traité à briser avec cette faction.`, ephemeral:true})
             }
+
+
+
+
+
+
+
+
+
+            // --- debut btnsigner ---
+            if(i.customId == "btnsigner" + i.user.id) {
+                await i.deferUpdate();
+
+                const factionCible = await client.getFaction(selected_faction_string.toLowerCase());
+                const faction = await client.getFaction(dbUser.faction);
+
+                if(selected_traite_id == 0 && factionCible.relations[faction.factionid] != 0) //non-agression que si on est neutre 
+                {
+                    message.reply("La faction cible n'est pas neutre. Un pacte de non-agression ne peut être signée si vous possédez un traité plus puissant ou si vous êtes en guerre avec la faction cible.")
+                    collector.stop();
+                    return;
+                } 
+                else if(selected_traite_id == 1) //alliance
+                {
+                    //on peut alliance que si l'on est pas ennemie ou déjà allié
+                    if(factionCible.relations[faction.factionid] == 3) {
+                        message.reply("La faction cible est déjà votre alliée. Une alliance ne peut donc pas être signée à nouveau.")
+                        collector.stop();
+                        return;
+                    } else if(factionCible.relations[faction.factionid] == 4) {
+                        message.reply("La faction cible est votre ennemie. Une alliance ne peut donc pas être signée tant que vous serez en guerre.")
+                        collector.stop();
+                        return;
+                    }
+                }
+
+                if(factionCible.idmaitre == "") {
+                    message.reply("La faction cible n'a pas de maître. Aucun traité ne peut être signé.")
+                    collector.stop();
+                    return;
+                } else {
+
+
+                    const rowChoixSigner = new ActionRowBuilder()
+                    .addComponents(
+                    
+                    new ButtonBuilder()
+                        .setCustomId(`btnaccepter` + factionCible.idmaitre)
+                        .setLabel('Accepter')
+                        .setStyle(ButtonStyle.Success),
+                    new ButtonBuilder()
+                        .setCustomId(`btnrefuser` + factionCible.idmaitre)
+                        .setLabel('Refuser')
+                        .setStyle(ButtonStyle.Danger)
+                    );
+
+                    const filterSigner = i2 => (
+                        i2.customId === 'btnaccepter' + factionCible.idmaitre ||
+                        i2.customId === 'btnrefuser' + factionCible.idmaitre) && 
+                        i2.user.id === factionCible.idmaitre;
+                    const collectorSigner = message.channel.createMessageComponentCollector({ filterSigner, time: 60000 }); //1 minutes
+                
+                    let message_demande = message.channel.send({content:`<@${factionCible.idmaitre}> la faction ${dbUser.faction} souhaite établir une ${selected_traite_string}.`, components:[rowChoixSigner]})
+                        //console.log("i.user.id = " + i2.user.id)
+
+                    await collectorSigner.on('collect', async i2 => {
+                        console.log("i.user.id = " + i2.user.id)
+
+                        if(i2.isButton()) {
+                            if(i2.customId == "btnaccepter" + i2.user.id) {
+                                i2.deferUpdate();
+                                
+                                message.reply(`La demande a été accepter ! Les factions ${dbUser.faction.charAt(0).toUpperCase() + dbUser.faction.slice(1)} et ${factionCible.displayname} ont signé ${(selected_traite_id == 0) ? "un pacte de non-agression" : "une alliance" }.`)
+                                
+
+                                
+
+                                let arrayTmp = faction.relations;
+                                let arrayTmpFactionCible = factionCible.relations;
+
+
+                                if(selected_traite_id == 0) { //non-aggression
+                                    arrayTmp[factionCible.factionid] = 1;
+                                    arrayTmpFactionCible[faction.factionid] = 1;
+                                } 
+                                else if(selected_traite_id == 1) { //alliance
+                                    arrayTmp[factionCible.factionid] = 3;
+                                    arrayTmpFactionCible[faction.factionid] = 3;
+                                }
+
+                                //console.log("selectedTraiteId = " + selected_traite_id + "\n ArrayTMP = " + arrayTmp);
+
+
+                                await client.updateFaction(dbUser.faction, {relations: arrayTmp})
+                                await client.updateFaction(factionCible.name, {relations: arrayTmpFactionCible})
+
+                                
+                                collectorSigner.stop();
+                                collector.stop();
+                                return;
+                            }
+                            if(i2.customId == "btnrefuser" + i2.user.id) {
+                                i2.deferUpdate();
+                                collectorSigner.stop();
+                                message.reply("La demande a été rejeter.")
+                                collector.stop();
+                            }
+                        }
+                    });
+
+
+                }
+
+            }
+
+            // --- fin btnsigner ---
+
+
+
+
+
+
+
+
+            if(i.customId == "btnbriser" + i.user.id) {
+
+                await i.deferUpdate();
+
+                const factionCible = await client.getFaction(selected_faction_string.toLowerCase());
+                const faction = await client.getFaction(dbUser.faction);
+
+                if(selected_traite_id == 0 && factionCible.relations[faction.factionid] != 1) //check si on a non-agression vraiment
+                {
+                    await i.reply({content:`Vous ne possédez pas de pacte de non-agression avec cette faction.`, ephemeral:true})
+                    //collector.stop();
+                    //return;
+                } 
+                else if(selected_traite_id == 1 && factionCible.relations[faction.factionid] != 3) //alliance
+                {
+                    await i.reply({content:`Vous ne possédez pas d'alliance avec cette faction.`, ephemeral:true})
+                    //collector.stop();
+                    //return;
+                    
+                } else {
+
+                    const rowChoixBriser = new ActionRowBuilder()
+                    .addComponents(
+                    
+                    new ButtonBuilder()
+                        .setCustomId(`btnoui` + message.author.id)
+                        .setLabel('Oui')
+                        .setStyle(ButtonStyle.Success),
+                    new ButtonBuilder()
+                        .setCustomId(`btnnon` + message.author.id)
+                        .setLabel('Non')
+                        .setStyle(ButtonStyle.Danger)
+                    );
+
+                    const filterSigner = i3 => (
+                        i3.customId === 'btnoui' + message.author.id ||
+                        i3.customId === 'btnnon' + message.author.id) && 
+                        i3.user.id === message.author.id;
+                    const collectorBriser = message.channel.createMessageComponentCollector({ filterSigner, time: 60000 }); //1 minutes
+                
+                    let message_confirmation = message.channel.send({content:`Voulez-vous vraiment briser votre ${selected_traite_string} avec ${factionCible.name} ?`, components:[rowChoixBriser]})
+                        //console.log("i.user.id = " + i2.user.id)
+
+                    await collectorBriser.on('collect', async i3 => { 
+                        if(i3.isButton()) {
+                            if(i3.customId == "btnoui" + i3.user.id) {
+                                //faire les trucs
+                                i3.deferUpdate();
+                                message.reply(`Votre ${selected_traite_string} avec ${factionCible.name} est maintenant brisé(e) ! ${(selected_traite_id == 1) ? `\nLa faction ${factionCible.name} possède désormais un casus beli contre votre faction ! \nVous avez **perdu 1500** points de **prestige** et gagné **200** points de **redoutabilité**` : "Vous avez **perdu 500** points de **prestige** et gagné **25** points de **redoutabilité** !"}`)
+                                
+                                let arrayTmp = faction.relations;
+                                let arrayTmpFactionCible = factionCible.relations;
+
+
+                                if(selected_traite_id == 0) { //non-aggression
+                                    arrayTmp[factionCible.factionid] = 0;
+                                    arrayTmpFactionCible[faction.factionid] = 0;
+
+                                    await client.editPoint(client, message.member, -500, "prestige");
+                                    await client.editPoint(client, message.member, 25, "redoutabilite");
+                                } 
+
+
+                                else if(selected_traite_id == 1) { //alliance
+                                    arrayTmp[factionCible.factionid] = 0;
+                                    arrayTmpFactionCible[faction.factionid] = 0;
+
+                                    await client.editPoint(client, message.member, -1500, "prestige");
+                                    await client.editPoint(client, message.member, 200, "redoutabilite");
+
+                                    //TODO: Ajouter le casus beli
+                                }
+
+
+                                await client.updateFaction(dbUser.faction, {relations: arrayTmp})
+                                await client.updateFaction(factionCible.name, {relations: arrayTmpFactionCible})
+
+                                
+
+                               
+
+
+
+
+                                collectorBriser.stop();
+                                collector.stop();
+                            }
+                            if(i3.customId == "btnnon" + i3.user.id) {
+                                await i.reply({content:`Votre ${selected_traite_string} n'a pas été brisé.`, ephemeral:true})
+                                collectorBriser.stop();
+                            }
+                        }
+                    });
+                }
+            }
+
+            
+
         }
         if(i.isStringSelectMenu()) {
             if(i.customId == "selectFaction" + i.user.id) {
@@ -295,7 +596,131 @@ const diplomatie = async (client, message, dbUser) => {
                 
                 await i.deferUpdate();
                 await i.editReply({embeds:[embed_traitesMenu]})
+
         }
+
+        // --- FIN Traités ---
+
+
+
+
+
+
+        
+        // Declarer Guerre
+
+       
+
+            if(i.isButton()) {
+
+                if(faccasbel.casusbelli.length <= 0) {
+                    //rien
+                } else {
+
+                    
+
+
+                    if(i.customId == "btnflechegauche" + i.user.id) {
+
+                        
+                        
+                        if(index_choix_casusBelli == 0) {
+                            index_choix_casusBelli = faccasbel.casusbelli.length - 1;
+                        } else {
+                            index_choix_casusBelli--;
+                        }
+
+                        //securité
+                        if(index_choix_casusBelli < 0) 
+                                index_choix_casusBelli = 0;
+                        
+
+                        embed_declarerGuerreMenu = new EmbedBuilder()
+                        .setColor('3C4C66')
+                        .setAuthor({name: `${message.author.username}`, iconURL: message.author.displayAvatarURL()})
+                        .setTitle(`Déclarer la guerre !`)
+                        .setDescription(`Sélectionnez le casus belli (votre raison et objectif de guerre) de votre choix avec les flèches et confirmez avec le bouton "Déclarer" lorsque vous êtes sûr de votre décision !\n\n:warning: **Attention** :warning:\nDéclarer une guerre ne peut être annulé sans vous rendre ou sans que l'adversaire n'accepte une paix blanche. `)
+                        .addFields([
+                            {name:`** **`, value:`** **`}, 
+                            {name:`${casusbellijson[faccasbel.casusbelli[index_choix_casusBelli].id].name} • Contre : **${faccasbel.casusbelli[index_choix_casusBelli].cible.charAt(0).toUpperCase() + faccasbel.casusbelli[index_choix_casusBelli].cible.slice(1)}**`, value:`${casusbellijson[faccasbel.casusbelli[index_choix_casusBelli].id].description}`}, 
+                        ])
+
+                        await i.deferUpdate();
+                        await i.editReply({embeds:[embed_declarerGuerreMenu]});
+                    }
+
+                    if(i.customId == "btnflechedroite" + i.user.id) {
+
+                        if(index_choix_casusBelli == faccasbel.casusbelli.length - 1) {
+                            index_choix_casusBelli = 0;
+                        } else {
+                            index_choix_casusBelli++;
+                        }
+
+
+                        //securité
+                        if(index_choix_casusBelli >= faccasbel.casusbelli.length) 
+                                index_choix_casusBelli = 0;
+                        
+                            
+                        embed_declarerGuerreMenu = new EmbedBuilder()
+                        .setColor('3C4C66')
+                        .setAuthor({name: `${message.author.username}`, iconURL: message.author.displayAvatarURL()})
+                        .setTitle(`Déclarer la guerre !`)
+                        .setDescription(`Sélectionnez le casus belli (votre raison et objectif de guerre) de votre choix avec les flèches et confirmez avec le bouton "Déclarer" lorsque vous êtes sûr de votre décision !\n\n:warning: **Attention** :warning:\nDéclarer une guerre ne peut être annulé sans vous rendre ou sans que l'adversaire n'accepte une paix blanche. `)
+                        .addFields([
+                            {name:`** **`, value:`** **`}, 
+                            {name:`${casusbellijson[faccasbel.casusbelli[index_choix_casusBelli].id].name} • Contre : **${faccasbel.casusbelli[index_choix_casusBelli].cible.charAt(0).toUpperCase() + faccasbel.casusbelli[index_choix_casusBelli].cible.slice(1)}**`, value:`${casusbellijson[faccasbel.casusbelli[index_choix_casusBelli].id].description}`}, 
+                        ])
+
+                        await i.deferUpdate();
+                        await i.editReply({embeds:[embed_declarerGuerreMenu]});
+
+                    }
+
+                    if(i.customId == "btndeclarer" + i.user.id) {
+
+                        //* En Alpha, on ne peut pas gérer plusieurs guerres en même temps. Mais dans le futur, il sera très probable que l'on puisse être en guerre avec
+                        //* Plus d'une faction à la fois. se battre sur plusieurs front pourrait être intéressant, dangereux mais un gameplay cool !
+
+                        //TODO: Voir si on permet à une faction de faire la guerre à une faction qui ne possède pas de maître de faction.
+                        if(faccasbel.relations.indexOf(4) != -1) {
+                            i.reply({content:`Vous êtes déjà en guerre contre une faction !`, ephemeral:true})
+                            //collector.stop();
+                        } else {
+                            
+                            const faction_ennemy = await client.getFaction(faccasbel.casusbelli[index_choix_casusBelli].cible);
+                            
+                            if(faccasbel.relations[faction_ennemy.factionid] != 0) { //si la faction cible n'est PAS neutre
+                                i.reply({content:`Vous possédez un traité avec cette faction. Tant qu'il ne sera pas brisé vous ne pourrait pas déclarer la guerre à cette faction !`, ephemeral:true})
+                                //collector.stop();
+                            } else {
+                                let temp_relations_facenn = faction_ennemy.relations;
+                                let temps_relations_fac = faccasbel.relations;
+    
+                                temp_relations_facenn[faccasbel.factionid] = 4;
+                                temps_relations_fac[faction_ennemy.factionid] = 4;
+    
+                                await client.updateFaction(faction_ennemy.name, {relations:temp_relations_facenn});
+                                await client.updateFaction(faccasbel.name, {relations:temps_relations_fac});
+    
+                                i.deferUpdate();
+                                message.reply({content:`:crossed_swords: La guerre est déclarée entre ${faccasbel.displayname} et ${faction_ennemy.displayname}`});
+                                collector.stop();
+                            }
+                        }
+
+                        //! NB : C'est pas là que le casus belli est supprimé ! Il n'est supprimé qu'après. Au cas où on fait une paix blanche il est gardé !
+                    }
+
+                    
+                }    
+            }
+            
+
+            
+
+        // --- FIN Déclarer Guerre ---
     });
 
     await collector.on('end', async i => {
