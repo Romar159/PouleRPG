@@ -2,6 +2,7 @@ const {army_edition} = require("../../util/commands_modules/guerre_modules/army_
 const {units_achat} = require("../../util/commands_modules/guerre_modules/units_achat");
 const {units_vente} = require("../../util/commands_modules/guerre_modules/units_vente");
 const {diplomatie} = require("../../util/commands_modules/guerre_modules/diplomatie");
+const {nommer_commandants} = require("../../util/commands_modules/guerre_modules/nommer_commandants");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
@@ -23,8 +24,10 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
         diplomatie(client, message, dbUser);
 
-        // let rel = await client.getRelation("epsilon", "daïros");
-        // message.channel.send(`${rel.display_name}`)
+    } else if(args[0] == "commandants") {
+
+        nommer_commandants(client, message, dbUser);
+
     } 
     
 }
