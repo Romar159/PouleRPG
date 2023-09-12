@@ -2,7 +2,12 @@ const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, Button
 
 const units = require("../../../assets/guerre/units.json");
 const fs = require("fs");
+
 //TODO: LE REFAIRE ENTIEREMENT EN FAIT ?
+//? Ah bon ? En le testant il me semble correct ?
+//* note: je pense que ce todo date un peu. C'est vrai qu'un copié collé légèrement modifié est un peu étonnant mais ça fonctionne et c'est assez intuitif. 
+//* (peut être juste la formulation d'ajout et de retrait qui est un peu étonnante mais quand on a compris c'est bon).
+
 const units_vente = async (client, message, dbUser) => {
     if(global.users_use_guerre_cmd.indexOf(message.author.id) != -1) {
         //message.channel.send("DEBUG: " + global.users_use_guerre_cmd.join(" - "));
@@ -268,7 +273,7 @@ const units_vente = async (client, message, dbUser) => {
                 await i.editReply({components:[]});
 
                 var total = (units_in_panier[0] * units[0].prix_vente) + (units_in_panier[1] * units[1].prix_vente) + (units_in_panier[2] * units[2].prix_vente) + (units_in_panier[3] * units[3].prix_vente) + (units_in_panier[4] * units[4].prix_vente) + (units_in_panier[5] * units[5].prix_vente);
-
+                total = Math.floor(total);
                 
     
                     try {
@@ -366,7 +371,7 @@ const units_vente = async (client, message, dbUser) => {
                             {name:`**${caserne_file[5].units - units_in_panier[5]}** 🔪 Piquiers`, value:`**${units_in_panier[5] * units[5].prix_vente}** :coin: Poyn`, inline:true},
                             {name:"** **", value:"** **",inline:true},
                             {name:"** **", value:"** **"},
-                            {name:"Total", value:`${(units_in_panier[0] * units[0].prix_vente) + (units_in_panier[1] * units[1].prix_vente) + (units_in_panier[2] * units[2].prix_vente) + (units_in_panier[3] * units[3].prix_vente) + (units_in_panier[4] * units[4].prix_vente) + (units_in_panier[5] * units[5].prix_vente)} :coin: Poyn`,inline:true}
+                            {name:"Total", value:`${Math.floor((units_in_panier[0] * units[0].prix_vente) + (units_in_panier[1] * units[1].prix_vente) + (units_in_panier[2] * units[2].prix_vente) + (units_in_panier[3] * units[3].prix_vente) + (units_in_panier[4] * units[4].prix_vente) + (units_in_panier[5] * units[5].prix_vente))} :coin: Poyn`,inline:true}
                             )
                     .setFooter({text:`${selected_unit_string} selectionné`})
                 await i.editReply({embeds:[embed_Panier]})

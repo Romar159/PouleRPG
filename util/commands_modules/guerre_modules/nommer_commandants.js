@@ -2,7 +2,7 @@ const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, Button
 
 let epsilon = "";
 
-//todo:
+//cahier des charges (fait !):
 /*
     - Gérer toutes les faction, pas que epsilon
     - Gérer plusieurs pages de membres. Ne pas faire en page mais en genre de scroll (en gros n'afficher que les 5 premiers mais si on descends ça va afficher un de plus en bas mais un de moins en haut et inversement)
@@ -145,7 +145,7 @@ const nommer_commandants = async (client, message, dbUser) => {
                 await i.deferUpdate();
                 await i.editReply({components:[]})
 
-                message.reply({content: `Les changements n'ont pas été pris en compte.`, ephemeral:true})
+                message.reply({content: `S'il y a eu des changements ils ont bien été pris en compte.`, ephemeral:true})
                 collector.stop();
             }
 

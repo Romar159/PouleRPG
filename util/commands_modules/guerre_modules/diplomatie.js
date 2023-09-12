@@ -12,6 +12,14 @@ const diplomatie = async (client, message, dbUser) => {
         global.users_use_guerre_cmd.push(message.author.id);
     }
 
+     /* Valeurs reelations
+            0 = Neutre
+            1 = Non-Agression
+            2 = Commercial
+            3 = Alliance
+            4 = Ennemie
+    */
+
 
     var selected_faction_id = 0;
     var selected_faction_string = "Epsilon"
@@ -336,11 +344,6 @@ const diplomatie = async (client, message, dbUser) => {
 
 
 
-
-
-
-
-
             // --- debut btnsigner ---
             if(i.customId == "btnsigner" + i.user.id) {
                 await i.deferUpdate();
@@ -526,7 +529,7 @@ const diplomatie = async (client, message, dbUser) => {
                                     await client.editPoint(client, message.member, -1500, "prestige");
                                     await client.editPoint(client, message.member, 200, "redoutabilite");
 
-                                    //TODO: Ajouter le casus beli
+                                    await client.addCasusBelli(factionCible, faction, "1");
                                 }
 
 
@@ -683,31 +686,58 @@ const diplomatie = async (client, message, dbUser) => {
                         //* En Alpha, on ne peut pas gérer plusieurs guerres en même temps. Mais dans le futur, il sera très probable que l'on puisse être en guerre avec
                         //* Plus d'une faction à la fois. se battre sur plusieurs front pourrait être intéressant, dangereux mais un gameplay cool !
 
-                        //TODO: Voir si on permet à une faction de faire la guerre à une faction qui ne possède pas de maître de faction.
+                        //* TODO: Voir si on permet à une faction de faire la guerre à une faction qui ne possède pas de maître de faction.
+                        //! IL FAUT ABSOLUMENT PAS QU'ON PUISSE (en tout cas en alpha !!)
+                        // * CE TODO A ETE FAIT
+
+                        
+
                         if(faccasbel.relations.indexOf(4) != -1) {
                             i.reply({content:`Vous êtes déjà en guerre contre une faction !`, ephemeral:true})
                             //collector.stop();
                         } else {
                             
                             const faction_ennemy = await client.getFaction(faccasbel.casusbelli[index_choix_casusBelli].cible);
-                            
-                            if(faccasbel.relations[faction_ennemy.factionid] != 0) { //si la faction cible n'est PAS neutre
-                                i.reply({content:`Vous possédez un traité avec cette faction. Tant qu'il ne sera pas brisé vous ne pourrait pas déclarer la guerre à cette faction !`, ephemeral:true})
-                                //collector.stop();
+
+                            if(faction_ennemy.idmaitre == "") {
+                                i.reply({content:`La faction adverse n'a aucun maître qui gouverne. Il est donc impossible de lui déclarer la guerre.`});
                             } else {
-                                let temp_relations_facenn = faction_ennemy.relations;
-                                let temps_relations_fac = faccasbel.relations;
+                                if(faccasbel.relations[faction_ennemy.factionid] != 0) { //si la faction cible n'est PAS neutre
+                                    i.reply({content:`Vous possédez un traité avec cette faction. Tant qu'il ne sera pas brisé vous ne pourrait pas déclarer la guerre à cette faction !`, ephemeral:true})
+                                    //collector.stop();
+                                } else {
+                                    let temp_relations_facenn = faction_ennemy.relations;
+                                    let temps_relations_fac = faccasbel.relations;
+        
+                                    temp_relations_facenn[faccasbel.factionid] = 4;
+                                    temps_relations_fac[faction_ennemy.factionid] = 4;
+        
+                                    await client.updateFaction(faction_ennemy.name, {relations:temp_relations_facenn});
+                                    await client.updateFaction(faccasbel.name, {relations:temps_relations_fac});
     
-                                temp_relations_facenn[faccasbel.factionid] = 4;
-                                temps_relations_fac[faction_ennemy.factionid] = 4;
+                                    await client.updateFaction(faction_ennemy.name, {en_guerre:true});
+                                    await client.updateFaction(faccasbel.name, {en_guerre:true});
     
-                                await client.updateFaction(faction_ennemy.name, {relations:temp_relations_facenn});
-                                await client.updateFaction(faccasbel.name, {relations:temps_relations_fac});
+                                    await client.updateFaction(faction_ennemy.name, {attaquant:faccasbel.name});
+                                    await client.updateFaction(faccasbel.name, {attaquant:faccasbel.name});
     
-                                i.deferUpdate();
-                                message.reply({content:`:crossed_swords: La guerre est déclarée entre ${faccasbel.displayname} et ${faction_ennemy.displayname}`});
-                                collector.stop();
+                                    await client.updateFaction(faction_ennemy.name, {defensseur:faction_ennemy.name});
+                                    await client.updateFaction(faccasbel.name, {defensseur:faction_ennemy.name});
+    
+                                    await client.updateFaction(faction_ennemy.name, {casusbelli_utilise:faccasbel.casusbelli[index_choix_casusBelli].id});
+                                    await client.updateFaction(faccasbel.name, {casusbelli_utilise:faccasbel.casusbelli[index_choix_casusBelli].id});
+
+                                    await client.updateFaction(faction_ennemy.name, {date_debut_guerre: new Date()})
+                                    await client.updateFaction(faccasbel.name, {date_debut_guerre: new Date()})
+        
+                                    i.deferUpdate();
+                                    message.reply({content:`:crossed_swords: La guerre est déclarée entre ${faccasbel.displayname} et ${faction_ennemy.displayname}`});
+                                    //TODO envoyer ça dans le décision_rpg
+                                    collector.stop();
+                                }
                             }
+                            
+                            
                         }
 
                         //! NB : C'est pas là que le casus belli est supprimé ! Il n'est supprimé qu'après. Au cas où on fait une paix blanche il est gardé !

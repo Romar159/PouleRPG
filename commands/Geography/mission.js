@@ -1,4 +1,13 @@
 module.exports.run = async (client, message, args, settings, dbUser) => {
+    //TODO :
+    /*
+     rendre cette fonction plus intéressante. En gros, au lieu d'envoyer en mission en pigant le joueur, on pourra sélectionner le membre de notre choix
+     et en fonction de qui c'est, ses rôles, son métier et tout, différentes missions seront disponibles
+     par exemple, le chapelain pourra effectuer des missions relatives à la relgion
+     on peut bien sur s'envoyer nous même en mission quand on fait parti du conseil.
+     attention cette commande ne sera utilisable que par les conseillers bien sur !
+     les membres doivent se soumettre (en alpha du moins, car en bêta peut être qu'il faudra une certaine loi de faction) 
+     */
     return message.reply("Cette commande ne sera disponnible que dans une future mise à jour.");
     var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
     var est_maitre = false;

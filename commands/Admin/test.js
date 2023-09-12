@@ -10,6 +10,51 @@ const casusb = require("../../assets/guerre/casusbelli.json");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
+
+    return;
+    const factionCible = await client.getFaction("lyomah");
+    const faction = await client.getFaction(dbUser.faction);
+
+    await client.addCasusBelli(factionCible, faction, "1")
+
+    return;
+
+    message.channel.send(`Initiale redoutabilité: ${dbUser.redoutabilite}`)
+    await client.editPoint(client, message.member, Math.floor(-dbUser.redoutabilite + (dbUser.redoutabilite * 0.90)), "redoutabilite")
+    message.channel.send(`maintenant : ${dbUser.redoutabilite}`)
+
+    return;
+
+    function pourcentageDePerte(quantiteOr, A, B) {
+        return A * (1 - Math.exp(-B * quantiteOr));
+    }
+      
+      
+      const A = 0.2; // plus ce sera grand plus le pourcentage maximal perdu sera élevé
+      const B = 0.001; // plus ce sera petit plus la décroissance sera progressive.
+      const quantiteOrPersonne1 = 10000; // bank faction1.
+      const quantiteOrPersonne2 = 50000; // bank faction2.
+      
+      const pertePersonne1 = pourcentageDePerte(quantiteOrPersonne1, A, B);
+      const pertePersonne2 = pourcentageDePerte(quantiteOrPersonne2, A, B);
+      
+      console.log(`Personne 1 a ${quantiteOrPersonne1} perd ${pertePersonne1 * 100}% de son or. soit : ${Math.floor(quantiteOrPersonne1 * pertePersonne1)}`);
+      console.log(`Personne 2 a ${quantiteOrPersonne2} perd ${pertePersonne2 * 100}% de son or. soit : ${Math.floor(quantiteOrPersonne2 * pertePersonne2)}`);
+
+
+    return; 
+    message.channel.send(`:crossed_swords: La guerre entre **Epsilon** et **Daïros** est terminée ! :crossed_swords:\n\n**Epsilon** a gagné !\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par Daïros. Ce fut une réussite, un pacte de non-agression a également été signé entre les deux factions !\nEEpsilon a gagné beaucoup de redoutabilité et de prestige ainsi que des poyns, volés à la faction adverse ! Tandis que Daïros a perdu, en plus de ces poyns, du prestige et évidemment de la redoutabilité...`)
+
+
+    return;
+
+    let ep = await client.getFaction("epsilon");
+    let al = await client.getFaction("alpha");
+    await client.editRelation(ep, al, 0)
+    //excepted : arrayalpha: 3 0 0 0 | arrayepsilon = 0 0 4 3
+
+    return;
+
     // embed_declarerGuerreMenu = new EmbedBuilder()
     //         .setColor('3C4C66')
     //         .setAuthor({name: `${message.author.username}`, iconURL: message.author.displayAvatarURL()})
