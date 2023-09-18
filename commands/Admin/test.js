@@ -10,7 +10,7 @@ const casusb = require("../../assets/guerre/casusbelli.json");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
-
+    message.reply("Wesh alors");
     return;
     const factionCible = await client.getFaction("lyomah");
     const faction = await client.getFaction(dbUser.faction);

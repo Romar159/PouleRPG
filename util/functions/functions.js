@@ -394,6 +394,30 @@ module.exports = client => {
         }
     };
 
+    //vérifie si le membre est n'importe quel conseiller au moins.
+    client.isAnyConseiller = async (member) => {
+        //verification du rôle de conseiller
+
+        const dbMembre = await client.getUser(member);
+        if(dbMembre.metier == 901 || dbMembre.metier == 902 || dbMembre.metier == 903) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    //verification si le membre est dans le gouvernement (conseiller ou maitre)
+    client.isInGouv = async (member) => {
+        
+
+        const dbMembre = await client.getUser(member);
+        if(dbMembre.metier == 901 || dbMembre.metier == 902 || dbMembre.metier == 903 || dbMembre.metier == 904) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     client.isMaitre = async (member) => {
         //verification du rôle de maître
 

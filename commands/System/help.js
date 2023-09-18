@@ -32,7 +32,7 @@ module.exports.run = (client, message, args) => {
                     categoryName = `:archery: RPG`;
                     break;
                 case "Geography":
-                    categoryName = `:earth_africa: Géographie [WIP]`; // ? DraxyNote : lulz ici je sais pas quoi dire pour tout ce qui est géopolitique & partie gestion de terrain.
+                    categoryName = `:earth_africa: Territorialité et Géopolitique`; 
                     break;
                 case "Guerre":
                     categoryName = `:crossed_swords: Guerre`;

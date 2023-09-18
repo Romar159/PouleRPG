@@ -8,6 +8,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
      attention cette commande ne sera utilisable que par les conseillers bien sur !
      les membres doivent se soumettre (en alpha du moins, car en bêta peut être qu'il faudra une certaine loi de faction) 
      */
+    //* note, ce todo n'est pas le cahier des charges complet. Voir l'entrée du project InDev de PouleRPG
+
+     //* Note de dev: réutilisser le système qui permet de nommer des commandants. Sauf qu'au lieu de nommer on sélectionne pour choisir une mission ensuite.
     return message.reply("Cette commande ne sera disponnible que dans une future mise à jour.");
     var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
     var est_maitre = false;
@@ -38,12 +41,13 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
 
 module.exports.help = {
-    name: "[WIP] mission",
-    aliases: [],
-    category: "",
-    desription: "[WIP] Envoyez en mission vos membres pour récolter des ressources naturelles ou diriger des travaux.",
-    usage: '<@USER> <mission>',
+    name: "mission",
+    aliases: ["décision"],
+    category: "geography",
+    desription: "Effectuez diverses actions ou faites les faire par vos membres.",
+    usage: '',
     cooldown: 3, 
     permissions: false,
-    args: true,
+    args: false,
+    gouvernement: true
 };
