@@ -368,8 +368,9 @@ module.exports = client => {
     /**
      * @Param {Client} client
      * @Param {GuildMember} member
+     * @deprecated
      */
-    client.isMaster = (message) => {
+    client.isMaster = (message) => { 
         //verification du rôle de maître
         const roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
         let est_maitre = false;
@@ -379,6 +380,29 @@ module.exports = client => {
             else est_maitre = false;
         }
         return est_maitre;
+    };
+
+    // 901 = Maréchal ; 902 = Intendant ; 903 = Chapelain
+    client.isConseiller = async (member, id_metier_conseiller) => {
+        //verification du rôle de conseiller
+
+        const dbMembre = await client.getUser(member);
+        if(dbMembre.metier == id_metier_conseiller) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    client.isMaitre = async (member) => {
+        //verification du rôle de maître
+
+        const dbMembre = await client.getUser(member);
+        if(dbMembre.metier == 904) {
+            return true;
+        } else {
+            return false;
+        }
     };
 
     client.checkTaxes = async (message) => {
