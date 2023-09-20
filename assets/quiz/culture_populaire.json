@@ -141,7 +141,7 @@
         "id": 23,
         "categorie" : "Empire du Poulet",
         "question" : "Qui a dessiné toutes les emotes poulet du serveur ?",
-        "reponses" : ["draxy", "draxydow", "shadowblue4"]
+        "reponses" : ["draxy", "draxydow", "shadowblue4", "gaex dow", "gaexdow"]
     },
     {
         "id": 24,
@@ -208,6 +208,161 @@
         "categorie" : "Jeux vidéo",
         "question" : "Quel est le rang le plus élevé dans le Salmon Run de Splatoon 2 ?",
         "reponses" : ["prodige"]
+    },
+    {
+        "id": 35,
+        "categorie" : "Animé",
+        "question" : "Dans Attack on Titan (Shingeki no Kyojin) quel membre perd en premier Eren Jäger ?",
+        "reponses" : ["bras", "avant bras", "avant-bras"]
+    },
+    {
+        "id": 36,
+        "categorie" : "Animé",
+        "question" : "Dans Promised Neverland où se cache le traceur GPS des enfants de Gracefield House",
+        "reponses" : ["oreille", "dans l'oreille", "l'oreille"]
+    },
+    {
+        "id": 37,
+        "categorie" : "Animé",
+        "question" : "Combien y a t-il de tomes de Promised Neverland ?",
+        "reponses" : ["20", "vingt", "vin", "vint"]
+    },
+    {
+        "id": 38,
+        "categorie" : "Animé",
+        "question" : "Dans le manga Fairy Tale comment se prénomme le chat bleu ?",
+        "reponses" : ["happy"]
+    },
+    {
+        "id": 39,
+        "categorie": "Délire",
+        "question": "Quel est le meilleure plat au monde ?",
+        "reponses": ["poulet", "poulet basquaise"]
+    },
+    {
+        "id": 40,
+        "categorie": "Jeux Vidéo",
+        "question": "Quel est le nom du héros dans The Legend of Zelda ?",
+        "reponses": ["pas zelda", "link"]
+    },
+    {
+        "id": 41,
+        "categorie": "Jeux Vidéo",
+        "question": "Quel est la monnaie dans The Legend of Zelda ?",
+        "reponses": ["rubis"]
+    },
+    {
+        "id": 42,
+        "categorie" : "Animé",
+        "question" : "Dans Attack on Titan (Shingeki no Kyojin) quel est la couleur de l'écharpe de Miakasa ?",
+        "reponses" : ["rouge"]
+    },
+    {
+        "id": 43,
+        "categorie" : "Jeux Vidéo",
+        "question" : "Comment s'appelle le boss de fin dans Minecraft ?",
+        "reponses" : ["ender dragon", "dragon de l'ender", "dragon de l'end"]
+    },
+    {
+        "id": 44,
+        "categorie" : "Jeux Vidéo",
+        "question" : "Quel est le nom du jeu de course sur l'univers de Mario",
+        "reponses" : ["mario kart"]
+    },
+    {
+        "id": 45,
+        "categorie" : "Empire du Poulet",
+        "question" : "Comment s'appelait l'Empire lors de la guerre des Poulattes",
+        "reponses" : ["l'empire des patates", "empire patates", "empire des patates", "empire patate"]
+    },
+    {
+        "id": 46,
+        "categorie" : "Délire",
+        "question" : "Qui est Draxy ?",
+        "reponses" : ["un pd", "un bg", "pd", "bg", "bordel"]
+    },
+    {
+        "id": 47,
+        "categorie" : "Dessin Animé",
+        "question" : "Quel est le nom de la première princesse Disney ?",
+        "reponses" : ["blanche neige", "blanche-neige", "blanche fesse"]
+    },
+    {
+        "id": 48,
+        "categorie" : "Dessin Animé",
+        "question" : "Comment s'appelle la fille de la petite sirène ?",
+        "reponses" : ["melody", "mélodie", "melodie"]
+    },
+    {
+        "id": 49,
+        "categorie" : "Empire du Poulet",
+        "question" : "Comment s'appelle le bot développé par Romar1 spécialement pour l'Empire ?",
+        "reponses" : ["poulerpg", "poulerpd"]
+    },
+    {
+        "id": 50,
+        "categorie" : "Empire du Poulet",
+        "question" : "A quand est prévue la sortie de PouleRPG en version Alpha en Septembre 2023 ?",
+        "reponses" : ["automne 2023"]
+    },
+    {
+        "id": 51,
+        "categorie" : "Empire du Poulet",
+        "question" : "A quand est prévue la sortie de PouleRPG en version Bêta en Septembre 2023 ?",
+        "reponses" : ["hiver 2024"]
+    },
+    {
+        "id": 52,
+        "categorie" : "Empire du Poulet",
+        "question" : "A quand est prévue la sortie de PouleRPG en version Finale en Septembre 2023 ?",
+        "reponses" : ["2026"]
+    },
+    {
+        "id": 53,
+        "categorie" : "Délire",
+        "question" : "Quel est le pseudonyme de DraxyDow précédant GaexDow",
+        "reponses" : ["shadowblue4"]
+    },
+    {
+        "id": 54,
+        "categorie" : "Empire du Poulet",
+        "question" : "Comment s'appelait le salon #médias avant ?",
+        "reponses" : ["merde", "merdes"]
+    },
+    {
+        "id": 55,
+        "categorie" : "Géographie",
+        "question" : "Comment s'appelait le salon #médias avant ?",
+        "reponses" : ["merde", "merdes"]
+    },
+    {
+        "id": 56,
+        "categorie" : "Film",
+        "question" : "Quel est le titre du film Avatar 2 réalisé par James Cameron ?",
+        "reponses" : ["la voie de l'eau", "voie de l'eau", "avatar 2 la voie de l'eau", "avatar 2 : la voie de l'eau", "way of water", "the way of water"]
+    },
+    {
+        "id": 57,
+        "categorie" : "Film",
+        "question" : "Dans Hunger Games combien de district entourent le Capitole ?",
+        "reponses" : ["13", "treize"]
+    },
+    {
+        "id": 58,
+        "categorie" : "Film",
+        "question" : "Dans Hunger Games quel est le nom du personnage principal ?",
+        "reponses" : ["katniss everdeen", "everdeen", "katniss"]
+    },
+    {
+        "id": 59,
+        "categorie" : "Film",
+        "question" : "Dans Hunger Games à quel édition des Hunger Games participe Katniss pour la première fois ?",
+        "reponses" : ["74", "soixante-quatorze", "74e", "74 ème", "soixante quatorze"]
+    },
+    {
+        "id": 60,
+        "categorie" : "Jeux Vidéo",
+        "question" : "Dans The Legend of Zelda Twilight Princess comment s'appelle la princesse du crépuscule ?",
+        "reponses" : ["midona", "midna"]
     }
-    
 ]

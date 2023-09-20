@@ -244,5 +244,41 @@
         "categorie": "Philosophie",
         "question": "Quel philosophe grec a proposé la parabole de la caverne pour expliquer la réalité perçue et la réalité intelligible ?",
         "reponses": ["platon"]
+    },
+    {
+        "id": 41,
+        "categorie": "Biologie",
+        "question": "Quel est le nom de l'appareil reproducteur masculin ?",
+        "reponses": ["bite", "pénis", "penis", "teub", "zob", "popol", "zizi", "chibre", "chibrax", "la maxi teub de romar", "verge", "teube", "membre"]
+    },
+    {
+        "id": 42,
+        "categorie": "Gastronomie",
+        "question": "Quel est la marque connu principalement pour ses chips conditionné dans un tube en carton et à la forme de tuile.",
+        "reponses": ["pringles"]
+    },
+    {
+        "id": 43,
+        "categorie" : "Gastronomie",
+        "question" : "Quel est le nom des chips connu pour leur forme triangulaire",
+        "reponses" : ["doritos"]
+    },
+    {
+        "id": 44,
+        "categorie" : "Histoire",
+        "question" : "Quel était le nom de Paris avant qu'il ne s'appel paris.",
+        "reponses" : ["lutèce", "lutece", "lutetia"]
+    },
+    {
+        "id": 45,
+        "categorie" : "Musique",
+        "question" : "Qui est le compositeur de la bande originale du film Interstellar réalisé par Christopher Nolan",
+        "reponses" : ["zimmer", "hans zimmer"]
+    },
+    {
+        "id": 46,
+        "categorie" : "Géographie",
+        "question" : "Avec quel pays la France a la plus grande frontière terrestre ?",
+        "reponses" : ["bresil", "brésil", "brezil", "le brésil", "le bresil"]
     }
 ]
