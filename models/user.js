@@ -74,6 +74,10 @@ const userSchema = mongoose.Schema({
         "type": Date,
         "default": 0
     },
+    cooldown_mission : {
+        "type": Date,
+        "default": 0
+    },
 
     //travail
 

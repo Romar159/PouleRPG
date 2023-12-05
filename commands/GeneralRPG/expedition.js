@@ -1,9 +1,10 @@
 const {EmbedBuilder, Message} = require('discord.js')
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
+    const currentDate = new Date();
 
     if(dbUser.in_jail == 'true') return message.reply("Aux cachots vous ne pouvez pas partir (ou revenir hehe) d'expédition.");
-    if(dbUser.on_mission == 'true') return message.reply("Vous êtes en mission, il vous est donc impossible de partir en expédition.");
+    if(dbUser.cooldown_mission.getTime() > currentDate.getTime()) return message.reply("Vous êtes en mission, il vous est donc impossible de partir en expédition.");
     if(dbUser.working == 'true') return message.reply("Vous êtes en train de travailler, vous ne pouvez donc pas partir en expédition.");
     if(dbUser.training == true) return message.reply("Vous êtes en train de vous entrainez, vous ne pouvez donc pas partir en expédition.");
 

@@ -1,5 +1,7 @@
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
+    const currentDate = new Date();
+
     let infos_travail, infos_arene, infos_tacty, infos_pari, infos_ennemi, infos_entrainement, infos_expedition, infos_prison, infos_streak_arene;
 
     let dailyCD = dbUser.heure_travail * 3600000;
@@ -12,7 +14,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         
         infos_travail = `Vous **pouvez** travailler.`;
 
-        if(dbUser.in_jail == 'true' || dbUser.on_mission == 'true' || dbUser.training == true || dbUser.expedition_duration != 0) {
+        
+
+        if(dbUser.in_jail == 'true' || dbUser.cooldown_mission.getTime() > currentDate.getTime() || dbUser.training == true || dbUser.expedition_duration != 0) {
             infos_travail = `Vous ne pouvez **pas** travailler.`;
         }
     }
@@ -67,7 +71,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     } else { 
         infos_entrainement = `Vous **pouvez** vous entrainer.`;
 
-        if(dbUser.in_jail == 'true' || dbUser.on_mission == 'true' || dbUser.working == 'true' || dbUser.expedition_duration != 0) {
+        if(dbUser.in_jail == 'true' || dbUser.cooldown_mission.getTime() > currentDate.getTime() || dbUser.working == 'true' || dbUser.expedition_duration != 0) {
             infos_entrainement = `Vous ne pouvez **pas** vous entrainer.`;
         }
     }
@@ -79,7 +83,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     } else { 
         infos_expedition = `Vous **pouvez** partir en expédition.`;
 
-        if(dbUser.in_jail == 'true' || dbUser.on_mission == 'true' || dbUser.working == 'true' || dbUser.training == true) {
+        if(dbUser.in_jail == 'true' || dbUser.cooldown_mission.getTime() > currentDate.getTime() || dbUser.working == 'true' || dbUser.training == true) {
             infos_expedition = `Vous ne pouvez **pas** partir en expédition.`;
         }
     }

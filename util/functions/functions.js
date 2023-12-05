@@ -302,6 +302,7 @@ module.exports = client => {
 
     client.editPoint = async (client, member, quantity, point) => {
 
+        //console.log(member.user.username);
         const userToUpdate = await client.getUser(member);
         let point_base = 0;
 
@@ -848,6 +849,8 @@ module.exports = client => {
 
                     //attaquant
                     
+                    //!BUG //TODO: ICI si on a des points de redoutabilité négatifs le pourcentage est biaisé ! Voir comment le réparer... (reflexion en cours au 05/10/2023 21:12 sur le discord)
+                    //!On a le pourcentage toujours SAUF si on est en dessous de 25 (trop proche de 0) là c'est une somme fixe genre 50
                     let tenpercent_facdef = Math.floor(faction_defensseurs.bank * 0.1);
                     await client.updateFaction(faction_attaquants.name, {bank: faction_attaquants.bank + tenpercent_facdef}) //"- Récupère 10% de l'or de la faction adverse."
                     await client.editPoint(client, maitre_attaquant, Math.floor(maitre_defensseur.redoutabilite * 0.2), "redoutabilite"); //"- Récupère 20% de la redoutabilité de la faction adverse"

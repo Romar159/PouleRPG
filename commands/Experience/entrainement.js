@@ -48,9 +48,12 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             if(isNaN(t)) return message.reply("Veuillez renseigner un valeur numérique (minimum 2 et maximum 12)");
             if(t < 2 || t > 12) return message.reply("Vous ne pouvez pas vous entrainer plus que 12 heures ou moins de 2.");
 
+            const currentDate = new Date();
+
+
             if(dbUser.expedition_duration != 0) return message.reply("Vous ne pouvez pas vous entrainer si vous êtes en expédition.");
             if(dbUser.in_jail == 'true') return message.reply("Aux cachots vous ne pouvez pas vous entrainer.");
-            if(dbUser.on_mission == 'true') return message.reply("Vous êtes en mission, il vous est donc impossible de vous entrainer.");
+            if(dbUser.cooldown_mission.getTime() > currentDate.getTime()) return message.reply("Vous êtes en mission, il vous est donc impossible de vous entrainer.");
             if(dbUser.working == 'true') return message.reply("Vous êtes en train de travailler, vous ne pouvez donc pas vous entrainer.");
 
             await client.updateUser(message.member, {cooldown_entrainement : Date.now()});

@@ -5,9 +5,11 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     client.checkTaxes(message); //on vérifie l'état des taxes.
 
+    const currentDate = new Date();
+
     if(dbUser.expedition_duration != 0) return message.reply("Vous ne pouvez pas travailler si vous êtes en expédition.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ne peut pas travailler - expédition en cours.`, `ERR`);
     if(dbUser.in_jail == 'true') return message.reply("Aux cachots vous ne pouvez pas travailler.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ne peut pas travailler - actuellement aux cachots.`, `ERR`);
-    if(dbUser.on_mission == 'true') return message.reply("Vous êtes en mission, il vous est donc impossible de travailler.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ne peut pas travailler - en mission.`, `ERR`);
+    if(dbUser.cooldown_mission.getTime() > currentDate.getTime()) return message.reply("Vous êtes en mission, il vous est donc impossible de travailler.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ne peut pas travailler - en mission.`, `ERR`);
     if(dbUser.training == true) return message.reply("Vous êtes en train de vous entrainez, vous ne pouvez donc pas travailler.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ne peut pas travailler - entrainement en cours.`, `ERR`); //0x01pa
 
     if(dbUser.metier == 0) return message.reply('Vous devez d\'abord choisir un métier avec la commande p<métier') & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Métier Invalide || Métier Inexistant`, `ERR`);

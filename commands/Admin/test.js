@@ -5,10 +5,64 @@ const metiers = require("../../assets/rpg/metiers/metiers.json");
 
 const casusb = require("../../assets/guerre/casusbelli.json");
 
+const fs = require("fs");
+
+const User = require('../../util/objects/User');
 
 
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
+
+    message.channel.send("valeur: " + Math.floor(Math.max(0, Math.min(2500, dbUser.piete)) / 2500 * 95));
+
+    return;
+
+    const user = new User(message.member, dbUser); //celui qui execute la commande
+
+    console.log(await user.getMoney());
+
+
+    return;
+
+    const items = [
+        "bleach",
+        "disco_ball",
+        "flash_tracker",
+        "knife",
+        "medkit",
+        "pepper_spray",
+        "quoicouknife",
+        "radar",
+        "spring",
+        "stim_blue",
+        "stim_green",
+        "stim_pink",
+        "stim_purple",
+        "stim_white",
+        "stim_yellow",
+        "stink_bomb",
+        "unicorn_plush",
+        "utra"
+      ]
+
+    items.forEach(e => {
+        //message.channel.send()
+
+          fs.writeFile("generated/" + e + ".json", `{
+            "parent": "item/generated",
+            "textures": {
+              "layer0": "incomprehensiblemod:item/` + e + `"
+            }
+          }`, (err) => {
+            if (err) {
+              console.error("Une erreur s'est produite lors de l'écriture du fichier : ", err);
+            } else {
+              console.log(`Le contenu a été écrit dans le fichier ${nomFichier}`);
+            }
+          });
+    })
+
+    
 
     message.reply("Wesh alors");
     return;

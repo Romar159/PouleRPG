@@ -18,12 +18,15 @@ module.exports = async (client, message, args, settings) => {
 
     const dbUser = await client.getUser(message.member);
 
+    const currentDate = new Date();
+
+
     if(dbUser.in_jail == 'true') { // Si l'utilisateur est au cachot on utilise le json des events de cachot (et ses raretés)
         events = require("../../assets/rpg/events/events_cachots.json");
         rarity_sorting = cachot_events_rarity; // on prend donc les raretés des events cachots.
     } 
     
-    else if(dbUser.on_mission == 'true') {
+    else if(dbUser.cooldown_mission.getTime() > currentDate.getTime()) {
         events = require("../../assets/rpg/events/events_mission.json");
         rarity_sorting = mission_events_rarity; // on prend donc les raretés des events mission.
     } 
