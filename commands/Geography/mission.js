@@ -453,7 +453,7 @@ async function SelectMission(selected_member, dbFaction, client, message, args, 
                     }
 
                     //TEMP DEV RETOURNER LE >
-                    if(dbSelectedUser.cooldown_mission.getTime() < dt.getTime()) {
+                    if(dbSelectedUser.cooldown_mission.getTime() > dt.getTime()) {
                         await i.editReply({content: "Vous ne pouvez pas envoyer ce joueur en mission il est déjà en mission", embeds:[], components:[]});
                         first_coll.stop(); //stop le premier collector de membre.
                         second_collector.stop();
