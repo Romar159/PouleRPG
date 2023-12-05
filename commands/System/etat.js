@@ -21,12 +21,12 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         }
     }
 
-    dailyCD = 60000;
+    dailyCD = 300000;
 
     lastDaily = await dbUser.cooldown_arene;
     if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
         cdTime = dailyCD - (Date.now() - lastDaily);
-        infos_arene = `Vous ne pouvez **pas** retourner dans l'**arène** avant encore **${Math.floor(cdTime / (1000) % 60)}** secondes.`;
+        infos_arene = `Vous ne pouvez **pas** retourner dans l'**arène** avant encore **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes.`;
     } else { 
         infos_arene = `Vous **pouvez** retourner dans l'**arène**.`
 

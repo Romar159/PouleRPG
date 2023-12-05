@@ -6,6 +6,7 @@ module.exports.run = (client, message, args) => {
     const embed = new EmbedBuilder()
     // **Lignes de codes** : 5551 (c'est clairement obsolète il y en a 40x plus ptdr)
     //* AU 14/08/2023 à 22:52 : il y en avait 14137
+    //* AU 05/12/2023 à 18h42 : il y en avait 15371 aisni que 167 fichiers
 	    .setColor('5E6366')
 	    .setAuthor({name: "Infos de PouleRPG", iconURL:client.user.displayAvatarURL()})
 	    .setDescription(`**Version actuelle :** ${VERSION}
@@ -18,9 +19,9 @@ module.exports.run = (client, message, args) => {
         • Développement & Conception : <@421400262423347211>
         • Aide aux fonctions mathématiques et conseils : <@211911771433205760>
         
-        **Sources d'informations principales :** ISBN-9782035053749 | ISBN-2020050749 | Cours d'Histoire ; divers livres ; ainsi que les nombreuses connaissances du sujet du développeur qui le passionnent | wikipedia.org | paradoxinteractive.com
+        **Sources d'informations principales :** ISBN-9782035053749 | ISBN-2020050749 | ISBN-2-263-02477-8 | Cours d'Histoire ; divers livres ; ainsi que les nombreuses connaissances du sujet du développeur qui le passionne | wikipedia.org | paradoxinteractive.com
 
-        **Gestion des Données :** En utilisant nos services, vous acceptez que nous puissions récupérer votre pseudonyme à des fins de développement uniquement.
+        **Gestion des Données :** En utilisant nos services, vous acceptez que nous puissions récupérer votre pseudonyme ainsi que toutes les informations que vous fournissez publiquement à discord à des fins de développement uniquement.
 
         **Lien utiles :**
         [Discord Empire](https://discord.gg/Y4YZw2FK2Q) • [Github](https://github.com/Romar159/PouleRPG) • [Site](https://poulerpg.000webhostapp.com)`)

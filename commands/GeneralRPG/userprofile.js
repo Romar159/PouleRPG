@@ -4,6 +4,13 @@ const metiers = require("../../assets/rpg/metiers/metiers.json")
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
+    const id_sender = message.author.id;
+
+    if(message.mentions.users.first()) {
+        dbUser = await client.getUser(message.guild.members.cache.get(message.mentions.users.first().id));
+        message.author = message.mentions.users.first();
+    }
+
     const faction = await client.getFaction(dbUser.faction);
 
     const emote_faction = ":house:";
@@ -97,26 +104,26 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     
     const dateActuel = new Date();
 
-    const filter = i => (i.customId === 'usrprofilegauche' + message.author.id + dateActuel || i.customId === 'usrprofiledroite' + message.author.id + dateActuel) && i.user.id === message.author.id;
+    const filter = i => (i.customId === 'usrprg' + id_sender /*message.author.id*/ + dateActuel || i.customId === 'usrprd' + id_sender /*message.author.id*/ + dateActuel) && i.user.id === id_sender /*message.author.id*/;
     const collector = message.channel.createMessageComponentCollector({ filter, time: 120000 }); //2 minutes
         const row = new ActionRowBuilder()
         .addComponents(
             new ButtonBuilder()
-                .setCustomId(`usrprofilegauche` + message.author.id + dateActuel)
+                .setCustomId(`usrprg` + id_sender /*message.author.id*/ + dateActuel)
                 .setLabel('🡠')
                 .setStyle(ButtonStyle.Secondary),
             new ButtonBuilder()
-                .setCustomId(`usrprofiledroite` + message.author.id + dateActuel)
+                .setCustomId(`usrprd` + id_sender /*message.author.id*/ + dateActuel)
                 .setLabel('🡢')
                 .setStyle(ButtonStyle.Secondary)
         ); 
     await collector.on('collect', async i => {
         //console.log(`Debug: isButton : ${i.isButton()} | isSelectMenu: ${i.isSelectMenu()} | i.user.id: ${i.user.id} | message.author.id: ${message.author.id} | i.customId: ${i.customId} | endsWith: ${i.customId.endsWith(i.user.id)}`);
-        if(i.user.id != message.author.id) return;
+        if(i.user.id != id_sender /*message.author.id*/) return;
         
         if(i.isButton()) {
             //console.log("Button");
-            if (i.customId === `usrprofilegauche` + i.user.id + dateActuel || i.customId === `usrprofiledroite` + i.user.id + dateActuel) {
+            if (i.customId === `usrprg` + i.user.id + dateActuel || i.customId === `usrprd` + i.user.id + dateActuel) {
                     await i.deferUpdate();
                     await i.editReply({embeds:[pages[(index == 0) ? 1 : 0]], components: [row] });
 
@@ -134,8 +141,8 @@ module.exports.help = {
     name: "profil",
     aliases: ['utilisateur', 'pr', "profile"],
     category: "generalrpg",
-    desription: "Affiche votre profil complet.",
-    usage: "",
+    desription: "Affiche votre profil complet ou celui d'un autre utilisateur.",
+    usage: "p<profil [@user]",
     cooldown: 1,
     permissions: false,
     args: false

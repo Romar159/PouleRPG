@@ -22,6 +22,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
             
             const faction_points = await client.getAllFactionPoints(faction.name, message);
+            //const faction_points = [1, 2, 3, 4, 5, 6, 7, 8]
 
             const embedPoints = new EmbedBuilder()
                 .setAuthor({name:`Points de la faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}`, iconURL: ppmaitre.user.displayAvatarURL()})

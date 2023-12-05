@@ -563,7 +563,7 @@ module.exports = client => {
         //console.log(faction1);
         var roleid = "";
         var all_values = [0, 0, 0, 0, 0, 0, 0, 0];
-        var points = [0, 0, 0, 0, 0, 0, 0, 0];
+        var points = [];
       
         if (faction1 == "epsilon") {
           roleid = "415947454626660366";
@@ -577,11 +577,12 @@ module.exports = client => {
 
         const faction = await client.getFaction(faction1);
       
-        const membres = message.guild.roles.cache.get(roleid).members.map(m => m);
+        //const membres = message.guild.roles.cache.get(roleid).members.map(m => m);
       
         /*
         Pour chaque membre on récupère ses points et on aditionne aux autres membres.
         Mais pour le maître et son conseil, on multiplie par 3 les points en rapport avec son métier.
+        //* Ceci est l'ancienne méthode, la nouvelle consiste juste à prendre les points des conseillers et s'ils n'existent pas c'est ceux du maître, s'il n'existe pas la faction à 0 points.
 
         Maître :
             - Prestige
@@ -597,22 +598,149 @@ module.exports = client => {
             - Moral
 
         */
-          for (const m of membres) {
-            let dbmembre = await client.getUser(m);
-            points.push((m.user.id == faction.idmaitre) ? (parseInt(dbmembre.prestige) * 3) : parseInt(dbmembre.prestige));
-            points.push((m.user.id == faction.chapelain) ? (parseInt(dbmembre.piete) * 3) : parseInt(dbmembre.piete));
-            points.push((m.user.id == faction.intendant) ? (parseInt(dbmembre.richesse) * 3) : parseInt(dbmembre.richesse));
-            points.push((m.user.id == faction.idmaitre) ? (parseInt(dbmembre.redoutabilite) * 3) : parseInt(dbmembre.redoutabilite));
-            points.push((m.user.id == faction.marechal) ? (parseInt(dbmembre.forme) * 3) : parseInt(dbmembre.forme));
-            points.push((m.user.id == faction.chapelain) ? (parseInt(dbmembre.moral) * 3) : parseInt(dbmembre.moral));
-            points.push((m.user.id == faction.marechal) ? (parseInt(dbmembre.travail) * 3) : parseInt(dbmembre.travail));
-            points.push((m.user.id == faction.intendant) ? (parseInt(dbmembre.savoir) * 3) : parseInt(dbmembre.savoir));
-      
-            for (let i = 0; i < 8; i++) {
-              all_values[i] = parseInt(all_values[i]) + parseInt(points[i]);
+
+        const marechal = faction.marechal;
+        
+
+        const intendant = faction.intendant;
+        //const dbintendant = await client.getUser(message.guild.members.cache.get(faction.intendant));
+
+        const chapelain = faction.chapelain;
+        //const dbchapelain = await client.getUser(message.guild.members.cache.get(faction.chapelain));
+
+        const maitre = faction.idmaitre;
+        
+        //console.log("1 : " + faction.idmaitre);
+
+        //*prestige
+        if(maitre != "NULL" || maitre != "") {
+            let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
+            //console.log("2");
+            points.push(parseInt(dbmaitre.prestige));
+        } else {
+            //console.log("3");
+            points.push(0)
+        }
+        //console.log(points.join(` ] - [ `));
+
+        //*piete
+        if(chapelain != "NULL" || chapelain == "") {
+            let dbchapelain = await client.getUser(message.guild.members.cache.get(chapelain));
+            points.push(parseInt(dbchapelain.piete));
+            //console.log("4");
+        } else {
+            if(maitre != "NULL" || maitre != "") {
+                let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
+                points.push(parseInt(dbmaitre.piete));
+                //console.log("5");
+            } else {
+                //console.log("6");
+                points.push(0)
             }
-            points = [];
+        }
+        //console.log(points.join(` ] - [ `));
+
+        //*richesse
+        if(intendant != "NULL" || intendant == "") {
+            let dbintendant = await client.getUser(message.guild.members.cache.get(intendant));
+            points.push(parseInt(dbintendant.richesse));
+            //console.log("7");
+        } else {
+            if(maitre != "NULL" || maitre != "") {
+                let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
+                points.push(parseInt(dbmaitre.richesse));
+            } else {
+                points.push(0)
+            }
+        }
+        //console.log(points.join(` ] - [ `));
+
+        //*redoutabilité
+        if(maitre != "NULL" || maitre != "") {
+            let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
+            points.push(parseInt(dbmaitre.redoutabilite));
+        } else {
+            points.push(0)
+        }
+        //console.log(points.join(` ] - [ `));
+
+        //*forme
+        if(marechal != "NULL" || marechal == "") {
+            let dbmarechal = await client.getUser(message.guild.members.cache.get(marechal));
+            points.push(parseInt(dbmarechal.forme));
+        } else {
+            if(maitre != "NULL" || maitre != "") {
+                let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
+                points.push(parseInt(dbmaitre.forme));
+            } else {
+                points.push(0)
+            }
+        }
+        //console.log(points.join(` ] - [ `));
+
+        //*moral
+        if(chapelain != "NULL" || chapelain == "") {
+            let dbchapelain = await client.getUser(message.guild.members.cache.get(chapelain));
+            points.push(parseInt(dbchapelain.moral));
+        } else {
+            if(maitre != "NULL" || maitre != "") {
+                let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
+                points.push(parseInt(dbmaitre.moral));
+            } else {
+                points.push(0)
+            }
+        }
+       // console.log(points.join(` ] - [ `));
+
+        //*travail
+        if(marechal != "NULL" || marechal == "") {
+            let dbmarechal = await client.getUser(message.guild.members.cache.get(marechal));
+            points.push(parseInt(dbmarechal.travail));
+        } else {
+            if(maitre != "NULL" || maitre != "") {
+                let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
+                points.push(parseInt(dbmaitre.travail));
+            } else {
+                points.push(0)
+            }
+        }
+        //console.log(points.join(` ] - [ `));
+
+        //*savoir
+        if(intendant != "NULL" || intendant == "") {
+            let dbintendant = await client.getUser(message.guild.members.cache.get(intendant));
+            points.push(parseInt(dbintendant.savoir));
+        } else {
+            if(maitre != "NULL" || maitre != "") {
+                let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
+                points.push(parseInt(dbmaitre.savoir));
+            } else {
+                points.push(0)
+            }
+        }
+        //console.log(points.join(` ] - [ `));
+
+        for (let i = 0; i < 8; i++) {
+            all_values[i] = parseInt(all_values[i]) + parseInt(points[i]);
           }
+
+
+        //   for (const m of membres) {
+        //     let dbmembre = await client.getUser(m);
+        //     points.push((m.user.id == faction.idmaitre) ? (parseInt(dbmembre.prestige)) : parseInt(0));
+        //     points.push((m.user.id == faction.chapelain) ? (parseInt(dbmembre.piete)) : parseInt(dbmembre.piete));
+        //     points.push((m.user.id == faction.intendant) ? (parseInt(dbmembre.richesse) * 3) : parseInt(dbmembre.richesse));
+        //     points.push((m.user.id == faction.idmaitre) ? (parseInt(dbmembre.redoutabilite) * 3) : parseInt(dbmembre.redoutabilite));
+        //     points.push((m.user.id == faction.marechal) ? (parseInt(dbmembre.forme) * 3) : parseInt(dbmembre.forme));
+        //     points.push((m.user.id == faction.chapelain) ? (parseInt(dbmembre.moral) * 3) : parseInt(dbmembre.moral));
+        //     points.push((m.user.id == faction.marechal) ? (parseInt(dbmembre.travail) * 3) : parseInt(dbmembre.travail));
+        //     points.push((m.user.id == faction.intendant) ? (parseInt(dbmembre.savoir) * 3) : parseInt(dbmembre.savoir));
+      
+        //     for (let i = 0; i < 8; i++) {
+        //       all_values[i] = parseInt(all_values[i]) + parseInt(points[i]);
+        //     }
+        //     points = [];
+        //   }
       
         return all_values;
       }
