@@ -87,6 +87,19 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
                 await client.updateFaction(faction.name, {cachot: new_array});
                 message.channel.send(`${cMembre} de ${dbMembre.faction} a été enfermé dans les cachots de la faction ${dbUser.faction} par <@${dbUser.userID}>`);
+
+                if(faction.joueurs_sur_le_territoire.indexOf(dbMembre.userID) == -1) {
+                    //return message.channel.send("Cet utilisateur n'est pas sur votre territoire.");
+                } else {
+                    if(dbMembre.faction != "NULL") {
+                        message.channel.send(`La faction ${dbMembre.faction} a obtenu un casus belli envers ${dbUser.faction} !`);
+
+                        const faction_cible = await client.getFaction(dbUser.faction);
+                        const faction_benef = await client.getFaction(dbMembre.faction);
+
+                        client.addCasusBelli(faction_benef, faction_cible, "0")
+                    }
+                }
         }
         else if(args[0].toLowerCase() == "libérer" || args[0].toLowerCase() == "liberer") {
                 if(dbMembre.in_jail == "false") return message.channel.send("Cet utilisateur n'est pas dans vos cachots. Vous ne vouliez pas plutôt l'enfermer ? **:)**");
