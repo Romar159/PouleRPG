@@ -79,6 +79,31 @@ const userSchema = mongoose.Schema({
         "default": 0
     },
 
+    //Est le cooldown générique pour travail, entrainement, expedition, mission
+    cooldown_activity : {
+        "type": Date,
+        "default": 0
+    },
+
+    //états pour les activity :
+    state_travail : {
+        "type": Boolean,
+        "default": false
+    },
+    state_entrainement : {
+        "type": Boolean,
+        "default": false
+    },
+    state_expedition : {
+        "type": Boolean,
+        "default": false
+    },
+    state_mission : {
+        "type": Boolean,
+        "default": false
+    },
+
+
     //travail
 
     metier : {

@@ -434,12 +434,28 @@ async function SelectMission(selected_member, dbFaction, client, message, args, 
                 if(i.customId == "btnsel" + i.user.id) {
                     await i.deferUpdate();
 
-                    const dbSelectedUser = await client.getUser(selected_member);
-                    
+                    let dbSelectedUser = await client.getUser(selected_member);
+                    const dt = new Date();
 
-                    const dt = new Date(); 
-                    if(dbSelectedUser.expedition_duration != 0) {
-                        await i.editReply({content: "Vous ne pouvez pas envoyer ce joueur en mission il est en expédition.", embeds:[], components:[]});
+                    //Modifie ICI les states si on a terminé le timer.
+                    //*noter le caractère "<" dans l'autre sens qui montre qu'il faut que ce soit dans le passé la date activity et non le futur !
+                    if(dbSelectedUser.cooldown_activity.getTime() < dt.getTime()) {
+                        console.log("La date est passé ! " + dbSelectedUser.cooldown_activity.getTime() + " DT: " + dt.getTime())
+                        await client.updateUser(selected_member, {state_travail: false});
+                        await client.updateUser(selected_member, {state_entrainement: false});
+                        await client.updateUser(selected_member, {state_expedition: false});
+                        await client.updateUser(selected_member, {state_mission: false});
+                    }
+
+                    //reload la db
+                    dbSelectedUser = await client.getUser(selected_member);
+                    const remaining_time_ms = dbSelectedUser.cooldown_activity.getTime() - dt.getTime();
+                    const remaining_time_str = `**${Math.floor(remaining_time_ms / (1000 * 60 * 60 * 24))}** jours, **${Math.floor(remaining_time_ms / (1000*60*60) % 24)}** heures, **${Math.floor(remaining_time_ms / (1000*60) % 60)}** minutes et **${Math.floor(remaining_time_ms / (1000) % 60)}** secondes`
+
+                     
+                    //if(dbSelectedUser.expedition_duration != 0) {
+                    if(dbSelectedUser.state_expedition == true) {
+                        await i.editReply({content: "Vous ne pouvez pas envoyer ce joueur en mission il est en expédition. Il reviendra dans: " + remaining_time_str, embeds:[], components:[]});
                         first_coll.stop(); //stop le premier collector de membre.
                         second_collector.stop();
                         return;
@@ -453,19 +469,29 @@ async function SelectMission(selected_member, dbFaction, client, message, args, 
                     }
 
                     //TEMP DEV RETOURNER LE >
-                    if(dbSelectedUser.cooldown_mission.getTime() > dt.getTime()) {
-                        await i.editReply({content: "Vous ne pouvez pas envoyer ce joueur en mission il est déjà en mission", embeds:[], components:[]});
+                    //if(dbSelectedUser.cooldown_mission.getTime() > dt.getTime()) {
+                    if(dbSelectedUser.state_mission == true) {
+                        await i.editReply({content: "Vous ne pouvez pas envoyer ce joueur en mission il est déjà en mission. Il reviendra dans: " + remaining_time_str, embeds:[], components:[]});
                         first_coll.stop(); //stop le premier collector de membre.
                         second_collector.stop();
                         return;
                     }
 
-                    if(dbSelectedUser.training == true) {
-                        await i.editReply({content: "Vous ne pouvez pas envoyer ce joueur en mission car il s'entraine", embeds:[], components:[]});
+                    if(dbSelectedUser.state_entrainement == true) {
+                        await i.editReply({content: "Vous ne pouvez pas envoyer ce joueur en mission car il s'entraine. Il aura terminé dans: " + remaining_time_str, embeds:[], components:[]});
                         first_coll.stop(); //stop le premier collector de membre.
                         second_collector.stop();
                         return;
                     }
+
+                    if(dbSelectedUser.state_travail == true) {
+                        await i.editReply({content: "Vous ne pouvez pas envoyer ce joueur en mission car il travail Il aura terminé dans: " + remaining_time_str, embeds:[], components:[]});
+                        first_coll.stop(); //stop le premier collector de membre.
+                        second_collector.stop();
+                        return;
+                    }
+
+                    
 
 
                     
@@ -501,8 +527,11 @@ async function SelectMission(selected_member, dbFaction, client, message, args, 
                     // Calcul de la nouvelle date
                     const newDate = new Date(currentDate.getTime() + millisecondsToAdd);
 
-                    await client.updateUser(selected_member, {cooldown_mission : newDate});
-                    await client.updateUser(selected_member, {on_mission : true});
+                    //await client.updateUser(selected_member, {cooldown_mission : newDate}); //!obsolète
+                    await client.updateUser(selected_member, {cooldown_activity : newDate});
+                    //await client.updateUser(selected_member, {on_mission : true}); //!obsolète
+                    await client.updateUser(selected_member, {state_mission : true});       
+
 
 
 

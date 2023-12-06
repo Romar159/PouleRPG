@@ -1,23 +1,50 @@
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
+    //TODO: remplacer l'état, il faut plus afficher chaque truc avec leur timer, mais le timer le plus long pour les 4 - Travail - Entrainement - Expédition - Mission
+
+    //TODO: En bêta on va changer un peu le fonctionnement, pour la Alpha je vais garder les 4 timers indépendant et faire un calcul parmis les 4 qui est le plus long;
+    //TODO: Ce sera également la même chose dans les 4 commandes pour afficher le timer. 
+    //TODO: Seulement en bêta, ce sera QU'UN SEUL TIMER, un timer d'activité, comme ça on en gère qu'un seul. Et il y aura l'état qui affiche ce que l'on fait, et lorsqu'on
+    //TODO: Refait une des commandes à timer, ça remet à false tous les états et remet ensuite le nouvel état !
+    //*Tout compte fait. Je vais le développer pour la Alpha.
+
     const currentDate = new Date();
 
-    let infos_travail, infos_arene, infos_tacty, infos_pari, infos_ennemi, infos_entrainement, infos_expedition, infos_prison, infos_streak_arene;
+    let dailyCD = 0;
 
-    let dailyCD = dbUser.heure_travail * 3600000;
+    let infos_travail, infos_arene, infos_tacty, infos_pari, infos_ennemi, infos_entrainement, infos_expedition, infos_prison, infos_streak_arene, infos_mission;
+
+    //let dailyCD = dbUser.heure_travail * 3600000;
     
-    let lastDaily = await dbUser.cooldown_metier;
-    if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
-        let cdTime = dailyCD - (Date.now() - lastDaily);
-        infos_travail = `Vous **travaillez** actuellement. Il vous reste **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes de travail.`;
+    let lastDaily = await dbUser.cooldown_activity;
+    //if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
+    if(dbUser.cooldown_activity.getTime() > currentDate.getTime()) {
+        //let cdTime = dailyCD - (Date.now() - lastDaily);
+        const cdTime = dbUser.cooldown_activity.getTime() - currentDate.getTime();
+        infos_travail = `Vous ne pouvez **pas** travailler actuellement ${(dbUser.state_travail ? "car vous **travaillez** déjà" : dbUser.state_expedition ? "car vous êtes en **expédition**" : dbUser.state_mission ? "car vous êtes en **mission**" : dbUser.state_entrainement ? "car vous vous **entraînez**" : "")}. Il vous reste **${Math.floor(cdTime / (1000 * 60 * 60 * 24))}** jours, **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes avant d'avoir terminé.`;
     } else {
         
         infos_travail = `Vous **pouvez** travailler.`;
 
         
 
-        if(dbUser.in_jail == 'true' || dbUser.cooldown_mission.getTime() > currentDate.getTime() || dbUser.training == true || dbUser.expedition_duration != 0) {
+        if(dbUser.in_jail == 'true' || dbUser.state_mission == true || dbUser.state_entrainement == true || dbUser.state_expedition == true) {
             infos_travail = `Vous ne pouvez **pas** travailler.`;
+        }
+    }
+
+    if(dbUser.cooldown_activity.getTime() > currentDate.getTime()) {
+        //let cdTime = dailyCD - (Date.now() - lastDaily);
+        const cdTime = dbUser.cooldown_activity.getTime() - currentDate.getTime();
+        infos_mission = `Vous ne pouvez **pas** partir en mission ${(dbUser.state_travail ? "car vous **travaillez**" : dbUser.state_expedition ? "car vous êtes en **expédition**" : dbUser.state_mission ? "car vous êtes déjà en **mission**" : dbUser.state_entrainement ? "car vous vous **entraînez**" : "")}. Il vous reste **${Math.floor(cdTime / (1000 * 60 * 60 * 24))}** jours, **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes avant d'avoir terminé.`;
+    } else {
+        
+        infos_mission = `Vous **pouvez** partir en mission.`;
+
+        
+
+        if(dbUser.in_jail == 'true' || dbUser.state_travail == true || dbUser.state_entrainement == true || dbUser.state_expedition == true) {
+            infos_mission = `Vous ne pouvez **pas** partir en mission.`;
         }
     }
 
@@ -64,26 +91,29 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     dailyCD = dbUser.heure_entrainement * 3600000;
 
-    lastDaily = await dbUser.cooldown_entrainement;
-    if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
-        cdTime = dailyCD - (Date.now() - lastDaily);
-        infos_entrainement = `Vous ne pouvez **pas** vous entrainer avant encore **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes.`;
+    lastDaily = await dbUser.cooldown_activity;
+    if(dbUser.cooldown_activity.getTime() > currentDate.getTime()) { //cooldown pas encore passé.
+        //cdTime = dailyCD - (Date.now() - lastDaily);
+        const cdTime = dbUser.cooldown_activity.getTime() - currentDate.getTime();
+        infos_entrainement = `Vous ne pouvez **pas** vous entrainer ${(dbUser.state_travail ? "car vous **travaillez**" : dbUser.state_expedition ? "car vous êtes en **expédition**" : dbUser.state_mission ? "car vous êtes en **mission**" : dbUser.state_entrainement ? "car vous vous **entraînez** déjà" : "")}. Il vous reste **${Math.floor(cdTime / (1000 * 60 * 60 * 24))}** jours, **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes avant d'avoir terminé.`;
     } else { 
         infos_entrainement = `Vous **pouvez** vous entrainer.`;
 
-        if(dbUser.in_jail == 'true' || dbUser.cooldown_mission.getTime() > currentDate.getTime() || dbUser.working == 'true' || dbUser.expedition_duration != 0) {
+        if(dbUser.in_jail == 'true' || dbUser.state_mission == true || dbUser.state_travail == true || dbUser.state_expedition == true) {
             infos_entrainement = `Vous ne pouvez **pas** vous entrainer.`;
         }
     }
 
-    lastDaily = await dbUser.cooldown_expedition;
-    if(dbUser.expedition_duration - (Date.now() - dbUser.cooldown_expedition) > 0) { //cooldown pas encore passé.
-        cdTime = dbUser.expedition_duration - (Date.now() - dbUser.cooldown_expedition);
-        infos_expedition = `Vous ne pouvez **pas** partir en expédition avant encore **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes.`;
+    lastDaily = await dbUser.cooldown_activity;
+    if(dbUser.cooldown_activity.getTime() > currentDate.getTime()) { //cooldown pas encore passé.
+        //cdTime = dbUser.expedition_duration - (Date.now() - dbUser.cooldown_expedition);
+        const cdTime = dbUser.cooldown_activity.getTime() - currentDate.getTime();
+
+        infos_expedition = `Vous ne pouvez **pas** partir en expédition ${(dbUser.state_travail ? "car vous **travaillez**" : dbUser.state_expedition ? "car vous êtes déjà en **expédition**" : dbUser.state_mission ? "car vous êtes en **mission**" : dbUser.state_entrainement ? "car vous vous **entraînez**" : "")}. Il vous reste **${Math.floor(cdTime / (1000 * 60 * 60 * 24))}** jours, **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes avant d'avoir terminé.`;
     } else { 
         infos_expedition = `Vous **pouvez** partir en expédition.`;
 
-        if(dbUser.in_jail == 'true' || dbUser.cooldown_mission.getTime() > currentDate.getTime() || dbUser.working == 'true' || dbUser.training == true) {
+        if(dbUser.in_jail == 'true' || dbUser.state_mission == true || dbUser.state_travail == true || dbUser.state_entrainement == true) {
             infos_expedition = `Vous ne pouvez **pas** partir en expédition.`;
         }
     }
@@ -119,7 +149,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
 
     function finality() {
-        message.channel.send(`${infos_travail} \n${infos_arene} \n${infos_streak_arene} \n${infos_tacty} \n${infos_pari} \n${infos_ennemi} \n${infos_entrainement} \n${infos_expedition} \n${infos_prison}`); //? DraxyNote, tu peux évidemment changer les phrases d'affichage et les mots en gras, j'ai mit un truc générique pour l'instant.
+        message.channel.send(`${infos_travail} \n${infos_mission} \n${infos_entrainement} \n${infos_expedition} \n\n${infos_arene} \n${infos_streak_arene} \n\n${infos_tacty} \n${infos_pari} \n${infos_ennemi} \n${infos_prison}`); //? DraxyNote, tu peux évidemment changer les phrases d'affichage et les mots en gras, j'ai mit un truc générique pour l'instant.
     }
 }
 

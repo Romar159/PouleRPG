@@ -26,17 +26,17 @@ module.exports = async (client, message, args, settings) => {
         rarity_sorting = cachot_events_rarity; // on prend donc les raretés des events cachots.
     } 
     
-    else if(dbUser.cooldown_mission.getTime() > currentDate.getTime()) {
+    else if(dbUser.state_mission == true) {
         events = require("../../assets/rpg/events/events_mission.json");
         rarity_sorting = mission_events_rarity; // on prend donc les raretés des events mission.
     } 
     
-    else if(dbUser.working == 'true') {
+    else if(dbUser.state_travail == true) {
         events = require("../../assets/rpg/events/events_work.json");
         rarity_sorting = working_events_rarity; // on prend donc les raretés des events travail.
     }
 
-    else if(dbUser.expedition_duration != 0) {
+    else if(dbUser.state_expedition == true) {
         events = require("../../assets/rpg/events/events_expedition.json");
         rarity_sorting = expedition_events_rarity; // on prend donc les raretés des events expédition.
     }
