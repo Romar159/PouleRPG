@@ -71,7 +71,7 @@ const nommer_commandants = async (client, message, dbUser) => {
             .setStyle(ButtonStyle.Danger),
         new ButtonBuilder()
             .setCustomId(`btnretour` + message.author.id)
-            .setLabel('Retour')
+            .setLabel('Quitter')
             .setStyle(ButtonStyle.Secondary)
     ); 
 

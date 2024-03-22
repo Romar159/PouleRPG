@@ -13,6 +13,325 @@ const User = require('../../util/objects/User');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
+
+
+
+
+
+
+    return;
+
+    //TEST POUR AFFICHER LE COMBAT MAIS C'EST ECLATOX UN PEU
+
+    const tableau1 = `:bow_and_arrow::bow_and_arrow::bow_and_arrow::bow_and_arrow::bow_and_arrow::bow_and_arrow::bow_and_arrow::bow_and_arrow:
+:knife::dagger::dagger::dagger::dagger::knife::knife::dagger:
+:racehorse::racehorse::horse::racehorse::racehorse::horse::horse::racehorse:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:racehorse::racehorse::horse::racehorse::racehorse::horse::horse::racehorse:
+:knife::dagger::dagger::dagger::dagger::knife::knife::dagger:
+:bow_and_arrow::bow_and_arrow::bow_and_arrow::bow_and_arrow::bow_and_arrow::bow_and_arrow::bow_and_arrow::bow_and_arrow:`
+    
+                            const tableau2 = `:bow_and_arrow::bow_and_arrow::black_large_square::bow_and_arrow::bow_and_arrow::black_large_square::bow_and_arrow::bow_and_arrow:
+:knife::dagger::black_large_square::dagger::bow_and_arrow::black_large_square::black_large_square::bow_and_arrow:
+:racehorse::racehorse::black_large_square::horse::dagger::knife::knife::dagger:
+:dagger::black_large_square::horse::racehorse::dagger::horse::racehorse::black_large_square:
+:bow_and_arrow::black_large_square::horse::horse::black_large_square::racehorse::horse::horse:
+:racehorse::racehorse::black_large_square::black_large_square::racehorse::black_large_square::racehorse::black_large_square:
+:black_large_square::knife::dagger::dagger::knife::black_large_square::knife::dagger:
+:bow_and_arrow::black_large_square::bow_and_arrow::bow_and_arrow::black_large_square::bow_and_arrow::bow_and_arrow::bow_and_arrow:`
+    
+                            const tableau3 = `:black_large_square::black_large_square::black_large_square::black_large_square::bow_and_arrow::black_large_square::black_large_square::black_large_square:
+:knife::horse::black_large_square::dagger::bow_and_arrow::black_large_square::black_large_square::bow_and_arrow:
+:black_large_square::racehorse::black_large_square::horse::black_large_square::black_large_square::dagger::black_large_square:
+:dagger::black_large_square::dagger::black_large_square::black_large_square::racehorse::bow_and_arrow::black_large_square:
+:bow_and_arrow::black_large_square::bow_and_arrow::black_large_square::black_large_square::horse::knife::racehorse:
+:racehorse::racehorse::black_large_square::bow_and_arrow::black_large_square::bow_and_arrow::bow_and_arrow::racehorse:
+:black_large_square::knife::black_large_square::black_large_square::black_large_square::black_large_square::knife::dagger:
+:horse::horse::bow_and_arrow::bow_and_arrow::black_large_square::black_large_square::black_large_square::black_large_square:`
+    
+                            const tableau4_win_att = `:black_large_square::black_large_square::black_large_square::black_large_square::flag_white::black_large_square::black_large_square::black_large_square:
+:black_large_square::dagger::black_large_square::black_large_square::bow_and_arrow::black_large_square::black_large_square::black_large_square:
+:black_large_square::racehorse::black_large_square::horse::black_large_square::bow_and_arrow::black_large_square::black_large_square:
+:black_large_square::bow_and_arrow::black_large_square::black_large_square::black_large_square::knife::dagger::black_large_square:
+:dagger::black_large_square::black_large_square::black_large_square::black_large_square::bow_and_arrow::black_large_square::black_large_square:
+:black_large_square::horse::dagger::black_large_square::black_large_square::black_large_square::racehorse::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::triangular_flag_on_post::black_large_square::black_large_square::black_large_square::black_large_square:`
+    
+                            const tableau4_win_def = `:black_large_square::black_large_square::black_large_square::triangular_flag_on_post::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::dagger::black_large_square::black_large_square::bow_and_arrow::black_large_square::black_large_square::black_large_square:
+:black_large_square::racehorse::black_large_square::horse::black_large_square::bow_and_arrow::black_large_square::black_large_square:
+:black_large_square::bow_and_arrow::black_large_square::black_large_square::black_large_square::knife::dagger::black_large_square:
+:dagger::black_large_square::black_large_square::black_large_square::black_large_square::bow_and_arrow::black_large_square::black_large_square:
+:black_large_square::horse::dagger::black_large_square::black_large_square::black_large_square::racehorse::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::black_large_square::black_large_square::black_large_square::black_large_square:
+:black_large_square::black_large_square::black_large_square::black_large_square::flag_white::black_large_square::black_large_square::black_large_square:`
+
+
+                            const tableaux = [tableau1, tableau2, tableau3, tableau4_win_att, tableau4_win_def]
+                            var up = 0;
+                            var msg = message.channel.send("test");
+                            var attaquants_wins = true;
+
+
+                        const showBattle = () => {
+                            if(up < 3) {
+                                msg = message.channel.send({content:tableaux[up]});
+                                up++;
+                            } else {
+                                if(attaquants_wins == true) {
+                                    msg = message.channel.send({content:tableaux[3]});
+                                    clearInterval(interval);
+                                } else {
+                                    msg = message.channel.send({content:tableaux[4]});
+                                    clearInterval(interval);
+                                }
+
+                            }
+                        }
+
+                        var interval = setInterval(showBattle, 2000); //2000ms = 2s
+
+                        
+
+    return;
+
+    //!Version 2 :
+    function diviserTableau(tableauInitial) {
+        let tableau1 = [0, 0, 0, 0, 0, 0];
+        let tableau2 = [0, 0, 0, 0, 0, 0];
+        let tableau3 = [0, 0, 0, 0, 0, 0];
+    
+        for (let i = 0; i < tableauInitial.length; i++) {
+           // if (tableauInitial[i] < 6) {
+           //     tableau2[i] += tableauInitial[i];
+            //} else {
+                let quotient = Math.floor(tableauInitial[i] / 3);
+                let reste = tableauInitial[i] % 3;
+    
+                tableau1[i] += quotient + (reste >= 1 ? 1 : 0);
+                tableau2[i] += quotient + (reste >= 2 ? 1 : 0);
+                tableau3[i] += quotient;
+
+                //if(tableauInitial[i] == 1) tableau2[i] += 1;
+            //}
+        }
+    
+        return [tableau1, tableau2, tableau3];
+    }
+    
+    const tableauInitial = [9, 2, 17, 12, 0, 1];
+    const resultats = diviserTableau(tableauInitial);
+    
+    console.log(resultats[0]);
+    console.log(resultats[1]);
+    console.log(resultats[2]);
+
+    //!1ER VERSION
+    /*function diviserTableau(tableauInitial) {
+        let tableau1 = [0, 0, 0, 0, 0, 0]; //gauche
+        let tableau2 = [0, 0, 0, 0, 0, 0]; //centre
+        let tableau3 = [0, 0, 0, 0, 0, 0]; //droit
+
+        for(let i = 0; i < tableauInitial.length; i++) {
+            if(tableauInitial[i] < 6) { //Si c'est en dessous de 6 on s'emmerde pas on met tout dans le flanc central.
+                tableau2[i] += tableauInitial[i];
+            } else {
+                let calc = tableauInitial[i] / 3
+                if(Number.isInteger(calc)) {
+                    tableau1[i] += calc;
+                    tableau2[i] += calc;
+                    tableau3[i] += calc;
+                } else {
+                    tableau1[i] += Math.ceil(calc);
+                    tableau2[i] += Math.ceil(calc);
+                    tableau3[i] += Math.floor(calc)
+                }
+            }
+        }
+        
+        return [tableau1, tableau2, tableau3];
+    }
+    
+    const tableauInitial = [9, 0, 16, 12, 0];
+    const resultats = diviserTableau(tableauInitial);
+    
+    console.log(resultats[0]);
+    console.log(resultats[1]);
+    console.log(resultats[2]);*/
+
+    return;
+
+    function diviserSommeEquitablement(tab, somme) {
+        const valeursNonNulles = tab.filter(val => val > 0);
+        const sommeNonNulles = valeursNonNulles.reduce((acc, val) => acc + val, 0);
+    
+        const ratio = somme / sommeNonNulles;
+    
+        let reste = somme;
+    
+        const resultat = tab.map(val => {
+            if (val > 0) {
+                const nouvelleValeur = Math.max(val - val * ratio, 0);
+                reste -= val - nouvelleValeur;
+                return Math.round(nouvelleValeur);
+            }
+            return 0;
+        });
+    
+        // Répartir le reste sur les valeurs non nulles
+        resultat.forEach((val, index) => {
+            if (val > 0) {
+                const ajout = (reste / sommeNonNulles) * val;
+                resultat[index] = Math.min(val + ajout, val);
+            }
+        });
+    
+        return resultat;
+    }
+    
+    const tableau = [140, 9, 315, 0, 38, 0];
+    const sommeTotale = 300;
+     
+    message.channel.send("value: " + diviserSommeEquitablement(tableau, sommeTotale))
+
+  return;
+
+  message.channel.send('val: ' + Math.ceil(65 / 10000 * 1000) / 1000);
+  return;
+
+  //Récupérations des troupes dans chaque flanc des deux armées !
+  const att_jsonarmy = [500, 600, 700, 800, 900, 450]
+  const def_jsonarmy = [500, 600, 700, 800, 900, 450]
+  
+  //ce sont les troupes, elles sont modifiables donc (si on veut récup l'original/initial on lit le jsonarmy)
+  let att_flancgauche_troupes = att_jsonarmy[0];
+  let att_flanccentral_troupes = att_jsonarmy[1];
+  let att_flancdroit_troupes = att_jsonarmy[2];
+
+  let def_flancgauche_troupes = def_jsonarmy[0];
+  let def_flanccentral_troupes = def_jsonarmy[1];
+  let def_flancdroit_troupes = def_jsonarmy[2];
+
+  let pertes_flanc_gauche_att = 3000;
+  let pertes_flanc_gauche_def = 3000;
+
+  let pertes_flanc_central_att = 3200;
+  let pertes_flanc_central_def = 3200;
+
+  let pertes_flanc_droit_att = 2500;
+  let pertes_flanc_droit_def = 2500;
+  /*
+//réduction attaquant et défenseurs pour chaque flancs
+  //flanc gauche attaquant
+  att_flancgauche_troupes[0] = att_flancgauche_troupes[0] - (pertes_flanc_gauche_att * 0.05); //Archers contre archers
+  att_flancgauche_troupes[1] = att_flancgauche_troupes[1] - (pertes_flanc_gauche_att * 0.19); //Archers contre infanterie légère
+  att_flancgauche_troupes[2] = att_flancgauche_troupes[2] - (pertes_flanc_gauche_att * 0.19); //Archers contre infanterie lourde
+  att_flancgauche_troupes[3] = att_flancgauche_troupes[3] - (pertes_flanc_gauche_att * 0.19); //Archers contre cavalerie légère
+  att_flancgauche_troupes[4] = att_flancgauche_troupes[4] - (pertes_flanc_gauche_att * 0.19); //Archers contre cavalerie lourde
+  att_flancgauche_troupes[5] = att_flancgauche_troupes[5] - (pertes_flanc_gauche_att * 0.19); //Archers contre piquiers
+
+      //flanc gauche défenseurs
+  def_flancgauche_troupes[0] = def_flancgauche_troupes[0] - (pertes_flanc_gauche_def * 0.05); //Archers contre archers
+  def_flancgauche_troupes[1] = def_flancgauche_troupes[1] - (pertes_flanc_gauche_def * 0.19); //Archers contre infanterie légère
+  def_flancgauche_troupes[2] = def_flancgauche_troupes[2] - (pertes_flanc_gauche_def * 0.19); //Archers contre infanterie lourde
+  def_flancgauche_troupes[3] = def_flancgauche_troupes[3] - (pertes_flanc_gauche_def * 0.19); //Archers contre cavalerie légère
+  def_flancgauche_troupes[4] = def_flancgauche_troupes[4] - (pertes_flanc_gauche_def * 0.19); //Archers contre cavalerie lourde
+  def_flancgauche_troupes[5] = def_flancgauche_troupes[5] - (pertes_flanc_gauche_def * 0.19); //Archers contre piquiers
+
+  
+      //flanc central attaquant
+  att_flanccentral_troupes[0] = att_flanccentral_troupes[0] - (pertes_flanc_central_att * 0.05); //Archers contre archers
+  att_flanccentral_troupes[1] = att_flanccentral_troupes[1] - (pertes_flanc_central_att * 0.19); //Archers contre infanterie légère
+  att_flanccentral_troupes[2] = att_flanccentral_troupes[2] - (pertes_flanc_central_att * 0.19); //Archers contre infanterie lourde
+  att_flanccentral_troupes[3] = att_flanccentral_troupes[3] - (pertes_flanc_central_att * 0.19); //Archers contre cavalerie légère
+  att_flanccentral_troupes[4] = att_flanccentral_troupes[4] - (pertes_flanc_central_att * 0.19); //Archers contre cavalerie lourde
+  att_flanccentral_troupes[5] = att_flanccentral_troupes[5] - (pertes_flanc_central_att * 0.19); //Archers contre piquiers
+
+      //flanc central défenseurs
+  def_flanccentral_troupes[0] = def_flanccentral_troupes[0] - (pertes_flanc_central_def * 0.05); //Archers contre archers
+  def_flanccentral_troupes[1] = def_flanccentral_troupes[1] - (pertes_flanc_central_def * 0.19); //Archers contre infanterie légère
+  def_flanccentral_troupes[2] = def_flanccentral_troupes[2] - (pertes_flanc_central_def * 0.19); //Archers contre infanterie lourde
+  def_flanccentral_troupes[3] = def_flanccentral_troupes[3] - (pertes_flanc_central_def * 0.19); //Archers contre cavalerie légère
+  def_flanccentral_troupes[4] = def_flanccentral_troupes[4] - (pertes_flanc_central_def * 0.19); //Archers contre cavalerie lourde
+  def_flanccentral_troupes[5] = def_flanccentral_troupes[5] - (pertes_flanc_central_def * 0.19); //Archers contre piquiers
+
+
+      //flanc droit attaquant
+  att_flancdroit_troupes[0] = att_flancdroit_troupes[0] - (pertes_flanc_droit_att * 0.05); //Archers contre archers
+  att_flancdroit_troupes[1] = att_flancdroit_troupes[1] - (pertes_flanc_droit_att * 0.19); //Archers contre infanterie légère
+  att_flancdroit_troupes[2] = att_flancdroit_troupes[2] - (pertes_flanc_droit_att * 0.19); //Archers contre infanterie lourde
+  att_flancdroit_troupes[3] = att_flancdroit_troupes[3] - (pertes_flanc_droit_att * 0.19); //Archers contre cavalerie légère
+  att_flancdroit_troupes[4] = att_flancdroit_troupes[4] - (pertes_flanc_droit_att * 0.19); //Archers contre cavalerie lourde
+  att_flancdroit_troupes[5] = att_flancdroit_troupes[5] - (pertes_flanc_droit_att * 0.19); //Archers contre piquiers
+
+      //flanc droit défenseurs
+  def_flancdroit_troupes[0] = def_flancdroit_troupes[0] - (pertes_flanc_droit_def * 0.05); //Archers contre archers
+  def_flancdroit_troupes[1] = def_flancdroit_troupes[1] - (pertes_flanc_droit_def * 0.19); //Archers contre infanterie légère
+  def_flancdroit_troupes[2] = def_flancdroit_troupes[2] - (pertes_flanc_droit_def * 0.19); //Archers contre infanterie lourde
+  def_flancdroit_troupes[3] = def_flancdroit_troupes[3] - (pertes_flanc_droit_def * 0.19); //Archers contre cavalerie légère
+  def_flancdroit_troupes[4] = def_flancdroit_troupes[4] - (pertes_flanc_droit_def * 0.19); //Archers contre cavalerie lourde
+  def_flancdroit_troupes[5] = def_flancdroit_troupes[5] - (pertes_flanc_droit_def * 0.19); //Archers contre piquiers
+
+  
+
+  message.channel.send(`${att_flancgauche_troupes}
+  ${att_flanccentral_troupes}
+  ${att_flancdroit_troupes}
+  
+  ${def_flancgauche_troupes}
+  ${def_flanccentral_troupes}
+  ${def_flancdroit_troupes}`)*/
+
+  const flancs = ['gauche', 'central', 'droit'];
+
+  for (const flanc of flancs) {
+      for (let i = 0; i < 6; i++) {
+          const att_troupes = eval(`att_flanc${flanc}_troupes`);
+          const def_troupes = eval(`def_flanc${flanc}_troupes`);
+          const pertes_att = eval(`pertes_flanc_${flanc}_att`);
+          const pertes_def = eval(`pertes_flanc_${flanc}_def`);
+
+          att_troupes[i] -= pertes_att * 0.05;  // Archers contre archers
+          att_troupes[i] -= pertes_att * 0.19;  // Archers contre autres troupes
+
+          def_troupes[i] -= pertes_def * 0.05;  // Archers contre archers
+          def_troupes[i] -= pertes_def * 0.19;  // Archers contre autres troupes
+      }
+  }
+
+  message.channel.send(`${att_flancgauche_troupes}
+  ${att_flanccentral_troupes}
+  ${att_flancdroit_troupes}
+  
+  ${def_flancgauche_troupes}
+  ${def_flanccentral_troupes}
+  ${def_flancdroit_troupes}`)
+
+
+
+  return;
+  message.channel.send(`value: ${client.randomFloat(0.975, 1.025)}`)
+
+  return;
+
+  // Exemple de Points
+const Points = 50;
+
+// Diviser par 100000
+const resultat = Points / 100000;
+
+// Arrondir à 0.001 près
+const resultatArrondi = Math.round(resultat * 1000) / 1000;
+
+// Obtenir l'entier supérieur
+//const resultatFinal = Math.ceil(resultatArrondi);
+
+console.log(resultatArrondi);
+
+return;
+
     message.channel.send("valeur: " + Math.floor(Math.max(0, Math.min(2500, dbUser.piete)) / 2500 * 95));
 
     return;

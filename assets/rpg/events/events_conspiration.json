@@ -2,7 +2,7 @@
     {
         "id" : 0,
         "name" : "Ouaaaais hehe la strat",
-        "rarete" : 1000,
+        "rarete" : 10,
         "condition" : "/",
         "description" : "Trop la machiavélence",
         "reactions" : ["🔓", "😴"],

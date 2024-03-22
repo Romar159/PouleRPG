@@ -52,7 +52,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
 module.exports.help = {
     name: "banque",
-    aliases: ['poyn', 'or'],
+    aliases: ['poyn', 'or', "thune"],
     category: "economie",
     desription: "Affiche votre quantité de poyn ou celle d'un utilisateur.",
     usage: "[@user]",

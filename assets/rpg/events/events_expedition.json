@@ -2,7 +2,7 @@
     {
         "id" : 0,
         "name" : "Expedition duz racec",
-        "rarete" : 1000,
+        "rarete" : 10,
         "condition" : "/",
         "description" : "Trop bg l'expédition",
         "reactions" : ["🔓", "😴"],
@@ -11,7 +11,7 @@
     {
         "id" : 1,
         "name" : "Le Poulet sauvage",
-        "rarete" : 500,
+        "rarete" : 5,
         "condition" : "/",
         "description" : "Lors de votre expédition, vous rencontrez un poulet, que faites-vous ? \n\n⚔️ : Vous le tuez.\n🙏 : Vous vous agenouillez et priez le Dieu Poulet pour son bien.",
         "reactions" : ["⚔️", "🙏"],

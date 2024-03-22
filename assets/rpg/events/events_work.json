@@ -2,7 +2,7 @@
     {
         "id" : 0,
         "name" : "Travail",
-        "rarete" : 1000,
+        "rarete" : 10,
         "condition" : "/",
         "description" : "Il se passe quoi là",
         "reactions" : ["🔓", "😴"],

@@ -35,7 +35,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         return message.channel.send("Vous êtes endetté personnellement à hauteur de: " + dbUser.endettement + " :coin:"); //oui c'est une ref à Pécresse 2022
     }
 
-    
+    //TODO: Check pour voir pourquoi Gégé s'affiche quand Draxy fait le comptes. (je pense que ça affiche juste tous les membres qui sont endettés et non pas que ceux de notre faction)
     if(args[0] == "comptes") {
         
         

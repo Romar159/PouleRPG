@@ -158,7 +158,11 @@ const diplomatie = async (client, message, dbUser) => {
         new ButtonBuilder()
             .setCustomId(`btndeclarerguerre` + message.author.id)
             .setLabel('Déclarer une Guerre')
-            .setStyle(ButtonStyle.Secondary)
+            .setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder()
+            .setCustomId(`btnquit` + message.author.id)
+            .setLabel('Quitter')
+            .setStyle(ButtonStyle.Danger)
     ); 
 
 
@@ -260,6 +264,7 @@ const diplomatie = async (client, message, dbUser) => {
     const filter = i => (
         i.customId === 'selectTraite' + message.author.id ||
         i.customId === 'selectFaction' + message.author.id ||
+        i.customId === 'btnquit' + message.author.id ||
 
         i.customId === 'btnsigner' + message.author.id || 
         i.customId === 'btnbriser' + message.author.id || 
@@ -287,6 +292,13 @@ const diplomatie = async (client, message, dbUser) => {
 
 
         if(i.isButton()) {
+
+            if(i.customId == "btnquit" + i.user.id) {
+                await i.deferUpdate();
+                await i.editReply({components:[]});
+                collector.stop();
+            }
+
             if(i.customId == "btntraite" + i.user.id) {
                 await i.deferUpdate();
                 await i.editReply({embeds:[embed_traitesMenu], components:[selectMenu_choixFaction, selectMenu_choixTraite, rowChoixActionTraite]})
@@ -689,8 +701,8 @@ const diplomatie = async (client, message, dbUser) => {
                         //* TODO: Voir si on permet à une faction de faire la guerre à une faction qui ne possède pas de maître de faction.
                         //! IL FAUT ABSOLUMENT PAS QU'ON PUISSE (en tout cas en alpha !!)
                         // * CE TODO A ETE FAIT
-
-                        
+                        //*FAIT TODO: CE TODO LA N'A PAS ETE FAIT. Draxy avec Daïros à bien pu déclarer la guerre même si j'étais en guerre avec Lyomah.
+                        // * DERNIERE MAJ : C'est bon corrigé en ajoutant une condition qui vérifie si la faction cible est pas déjà en state 4
 
                         if(faccasbel.relations.indexOf(4) != -1) {
                             i.reply({content:`Vous êtes déjà en guerre contre une faction !`, ephemeral:true})
@@ -702,9 +714,11 @@ const diplomatie = async (client, message, dbUser) => {
                             if(faction_ennemy.idmaitre == "") {
                                 i.reply({content:`La faction adverse n'a aucun maître qui gouverne. Il est donc impossible de lui déclarer la guerre.`});
                             } else {
-                                if(faccasbel.relations[faction_ennemy.factionid] != 0) { //si la faction cible n'est PAS neutre
+                                if(faccasbel.relations[faction_ennemy.factionid] != 0) { //si la faction cible n'est PAS neutre AVEC NOUS
                                     i.reply({content:`Vous possédez un traité avec cette faction. Tant qu'il ne sera pas brisé vous ne pourrait pas déclarer la guerre à cette faction !`, ephemeral:true})
                                     //collector.stop();
+                                } else if(faction_ennemy.relations.indexOf(4) != -1) { //chercher si la faction cible à pas une relation 4 (donc en guerre). Si elle en a (donc PAS -1) on empêche
+                                    i.reply({content:`Vous ne pouvez pas déclarer la guerre à cette faction. Elle est actuellement en guerre avec une autre faction.`, ephemeral:true})
                                 } else {
                                     let temp_relations_facenn = faction_ennemy.relations;
                                     let temps_relations_fac = faccasbel.relations;

@@ -86,6 +86,16 @@ const etat = async (client, message, dbUser) => {
     );
 
 
+    const rowQuit = new ActionRowBuilder()
+    .addComponents(
+    
+    new ButtonBuilder()
+        .setCustomId(`btnquit` + message.author.id)
+        .setLabel('Quitter')
+        .setStyle(ButtonStyle.Danger)
+    );
+
+
 
 
 
@@ -109,6 +119,7 @@ const etat = async (client, message, dbUser) => {
         
         const filter = i => (
             i.customId === 'selectDecision' + message.author.id ||
+            i.customId === 'btnquit' + message.author.id ||
     
             i.customId === 'btnannuler' + message.author.id ||
             i.customId === 'btnconfirmer' + message.author.id) && 
@@ -117,9 +128,16 @@ const etat = async (client, message, dbUser) => {
     
         await collector.on('collect', async i => {
             if(i.isButton()) {
+
+                if(i.customId == "btnquit" + i.user.id) {
+                    await i.deferUpdate();
+                    await i.editReply({components:[]});
+                    collector.stop();
+                }
+
                 if(i.customId == "btnannuler" + i.user.id) {
                     await i.deferUpdate();
-                    await i.editReply({embeds:[embed_etatMenu], components:[selectMenu_decisionDeGuerre], content:``});
+                    await i.editReply({embeds:[embed_etatMenu], components:[selectMenu_decisionDeGuerre, rowQuit], content:``});
                     
                 }
                 if(i.customId == "btnconfirmer" + i.user.id) {
@@ -141,7 +159,7 @@ const etat = async (client, message, dbUser) => {
                             collector.stop();
                         } else {
                             message.channel.send(`Vous n'avez pas 100% de score de guerre.`);
-                            await i.editReply({embeds:[embed_etatMenu], components:[selectMenu_decisionDeGuerre], content:``});
+                            await i.editReply({embeds:[embed_etatMenu], components:[selectMenu_decisionDeGuerre, rowQuit], content:``});
                         }
                     }
 
@@ -231,7 +249,7 @@ const etat = async (client, message, dbUser) => {
         });
 
 
-    message.channel.send({embeds:[embed_etatMenu], components:[selectMenu_decisionDeGuerre]});
+    message.channel.send({embeds:[embed_etatMenu], components:[selectMenu_decisionDeGuerre, rowQuit]});
 
 
 
