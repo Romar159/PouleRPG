@@ -34,7 +34,7 @@ module.exports = async (client, message, args, settings) => {
     let general_events_rarity = [100];
     let cachot_events_rarity = [1000, 900];
     let mission_events_rarity = [10];
-    let working_events_rarity = [10];
+    let working_events_rarity = [10, 1];
     let expedition_events_rarity = [10, 5];
     let conspiring_events_rarity = [10];
 
@@ -54,19 +54,17 @@ module.exports = async (client, message, args, settings) => {
 
     //*Pour les états d'activity, il faut donc vérifier l'activité en cours pour choisir le JSON mais SURTOUT si on est toujours en train de la faire ou si c'est terminé avec le activity_cooldown
 
-    //TODO: Petit bug ici, j'ai terminé mon travail (donc mon cooldwon_activity est terminé) mais j'ai toujours les events travail. Je devrais pas
-
-    else if (dbUser.cooldown_activity.getTime() < currentDate.getTime() && dbUser.state_mission == true) {
+    else if (dbUser.cooldown_activity.getTime() > currentDate.getTime() && dbUser.state_mission == true) {
         events = require("../../assets/rpg/events/events_mission.json");
         rarity_sorting = mission_events_rarity; // on prend donc les raretés des events mission.
     }
 
-    else if (dbUser.cooldown_activity.getTime() < currentDate.getTime() && dbUser.state_travail == true) {
+    else if (dbUser.cooldown_activity.getTime() > currentDate.getTime() && dbUser.state_travail == true) {
         events = require("../../assets/rpg/events/events_work.json");
         rarity_sorting = working_events_rarity; // on prend donc les raretés des events travail.
     }
 
-    else if (dbUser.cooldown_activity.getTime() < currentDate.getTime() && dbUser.state_expedition == true) {
+    else if (dbUser.cooldown_activity.getTime() > currentDate.getTime() && dbUser.state_expedition == true) {
         events = require("../../assets/rpg/events/events_expedition.json");
         rarity_sorting = expedition_events_rarity; // on prend donc les raretés des events expédition.
     }
