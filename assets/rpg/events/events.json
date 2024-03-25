@@ -2,7 +2,7 @@
     {
         "id" : 0,
         "name" : "Thune par terre",
-        "rarete" : 100,
+        "rarete" : 75,
         "condition" : "/",
         "description" : "Oh, sur les pavés de la rue se trouve une bourse avec quelques poyn.\n\n💰 : Récupérer pour soit.\n💸 : Donner aux plus pauvres.",
         "reactions" : ["💰", "💸"],
@@ -14,7 +14,7 @@
     {
         "id" : 1,
         "name" : "L'accident de scène",
-        "rarete" : 100,
+        "rarete" : 75,
         "condition" : "/",
         "description" : "Jacqueline tombe de la scène ! Une de ses pièces tombe de sa poche, que faite-vous ?\n\n💰 : Vous récupérez la pièce pour vous.\n🤚 : Vous aidez Jacqueline à se relever.\n🗣️ : Vous rigolez de la situation.",
         "reactions" : ["💰", "🤚", "🗣️"],
@@ -28,7 +28,7 @@
     {
         "id" : 2,
         "name" : "L'avis sur les gros",
-        "rarete" : 100,
+        "rarete" : 75,
         "condition" : "if(dbUser.level >= 5) return true;",
         "description" : "Vous êtes en pleine discussion avec un noble et celui-ci vous pose la question suivante d'un ton autain ''Comment trouvez-vous les gros ?'' \n\n❤️ : Vous répondez : ''Les gros sont beaux.''\n💔 : Vous répondez ''Les gros sont laids.''\n💨 : Vous changez de sujet.",
         "reactions" : ["❤️", "💔", "💨"],
@@ -41,7 +41,7 @@
     {
         "id": 3,
         "name" : "Débat de sourds",
-        "rarete" : 100,
+        "rarete" : 75,
         "condition" : "/",
         "description" : "Pendant que vous marchez dans la rue, vous entendez deux personnes débattre de manière relativement douteuse sur un sujet quelconque, que faites-vous ?\n\n🤜 : Vous rejoignez la discussion et prenez part pour la personne de droite\n🤛 : Vous rejoignez la discussion et prenez part pour la personne de gauche\n🤫 : Vous leur dites de la fermer.",
         "reactions" : ["🤜", "🤛", "🤫"],
@@ -54,7 +54,7 @@
     {
         "id": 4,
         "name" : "Le coucher de soleil",
-        "rarete" : 100,
+        "rarete" : 80,
         "condition" : "/",
         "description" : "Vous êtes en ballade et vous pouvez apercevoir le soleil se coucher à l'horizon. Vous apercevez quelqu'un sur un banc en train de fumer, celui-ci vous invite, que faites-vous ?\n\n🚬 : Vous acceptez et tirez quelques fois.\n🙅 : Vous refusez aimablement.\n🌅 : Vous faites semblant de n'avoir rien entendu et continuez votre marche en regardant le coucher de soleil.",
         "reactions" : ["🚬", "🙅", "🌅"],
@@ -67,7 +67,7 @@
     {
         "id": 5,
         "name" : "Le monstre Amnésique",
-        "rarete" : 1000,
+        "rarete" : 100,
         "condition" : "/",
         "description" : "Vous vous êtes enfermer dans une petite salle après avoir été poursuivit par un monstre au visage déformé. Celui-ci essaie d'enfoncer la porte en gémissant \"Rreugh !\" sans y parvenir.\n🤫 Vous ne dites plus rien jusqu'à ce que le monstre s'en aille.\n🤣 Vous ÉCLATEZ de rire du ridicule de la scène !\n🏃‍♂️ Vous prenez vos jambes à votre cou le plus vite possible !",
         "reactions" : ["🤫", "🤣", "🏃‍♂️"],
@@ -75,6 +75,33 @@
           ["Msg(Après de longues minutes, le monstre s'en va, vous laissant la vie sauve. -4 moral, +5 travail, +5 savoir)", "SetPoint(moral § -4)", "SetPoint(travail § 5)", "SetPoint(savoir § 5)"],
           ["Msg(Plus vous regardez le monstre, moins vous pouvez vous contrôlez de rire, la scène est juste magistrale ! +15 moral)", "SetPoint(moral § 15)"],
           ["Msg(En fuyant, le monstre arrive à vous griffer, mais vous parvenez à lui échapper malgré tout. -4 forme, +5 prestige, +75 XP)", "SetPoint(forme § -4)", "SetPoint(prestige § 5)", "SetXP(75)"]
+        ]
+    },
+    {
+        "id": 6,
+        "name" : "La communauté... atypique.",
+        "rarete" : 115,
+        "condition" : "/",
+        "description" : "En vous balandant dans les rues de votre ville, vous apercevez un attroupement de personnes avec des déguisements assez inattendu. Ils sont simplement déguisés en toilettes !\n😂 Vous rigolez de leur ridicule éperdument.\n🤬 Vous n'appréciez pas leur attroupement et jurez sur leur hobby.\n☺ Voir des personnes partager une même passion vous met du baume au cœur, et souriez.\n😐 La situation ne vous attire guère et continuait votre chemin comme si de rien n'était.",
+        "reactions" : ["😂", "🤬", "☺", "😐"],
+        "commands" : [
+          ["Msg(En rigolant un peu trop fort, les gens vous ont surpris, mais rire est plus important que leur regard ! +2 moral, +2 forme, -3 piete)", "SetPoint(moral § 2)" , "SetPoint(forme § 2)", "SetPoint(piete § -3)"],
+          ["Msg(Vous les traitez de tous les noms, les personnes se sentent agressés, certaines vous renvoient vos insultes tandis que d'autres pleurent. +5 redoutabilité, -2 prestige, -7 piete)", "SetPoint(redoutabilite § 5)", "SetPoint(prestige § -2)", "SetPoint(piete § -7)"],
+          ["Msg(Les personnes vous voyant sourir gentillement, vous sourient en retour. +2 moral, +1 piete)", "SetPoint(moral § 2)", "SetPoint(piete § 1)"],
+          ["Msg(En passant, les gens ne voient en vous qu'un passant et chacuns reste de son côté sans rien dire. +3 travail)", "SetPoint(travail § 3)"]
+        ]
+    },
+    {
+        "id": 7,
+        "name" : "Chat errant",
+        "rarete" : 60,
+        "condition" : "/",
+        "description" : "Vous entendez miauler dehors, c'est un petit chat errant qui vient vous demander de l'aide.\n👋 Vous lui offrez quelques caresses.\n🧆 Vous lui offrez un peu de nourriture et/ou à boire.\n💨 Vous laissez le chat se débrouiller, vous avez autre chose à faire.",
+        "reactions" : ["👋", "🧆", "💨"],
+        "commands" : [
+          ["Msg(Le chat se met à ronronner, et vous passez quelques minutes ensemble, heureux. +5 moral)", "SetPoint(moral § 5)"],
+          ["Msg(En offrant à manger au chat, celui-ci se jette sur la nourriture, le voir se rassasier vous fait dire que vous avez bien agit. +2 moral, +2 savoir)", "SetPoint(moral § 2)", "Setpoint(savoir § 2)"],
+          ["Msg(Le chat a continué de miauler plusieurs minutes, de plus en plus triste, jusqu'à s'en aller, vous voilà enfin tranquille. +6 travail, -2 moral)", "SetPoint(travail § 6)", "SetPoint(moral § -2)"]
         ]
       }
 ]

@@ -31,11 +31,11 @@ module.exports = async (client, message, args, settings) => {
         // Ajoutez d'autres actions au besoin
     };
 
-    let general_events_rarity = [100];
-    let cachot_events_rarity = [1000, 900];
-    let mission_events_rarity = [10];
-    let working_events_rarity = [10];
-    let expedition_events_rarity = [10, 5];
+    let general_events_rarity = [60, 115, 100, 80, 75];
+    let cachot_events_rarity = [50];
+    let mission_events_rarity = [30000];
+    let working_events_rarity = [25];
+    let expedition_events_rarity = [15, 30];
     let conspiring_events_rarity = [10];
 
 

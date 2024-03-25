@@ -1,21 +1,28 @@
 [
     {
         "id" : 0,
-        "name" : "Expedition duz racec",
-        "rarete" : 10,
-        "condition" : "/",
-        "description" : "Trop bg l'expédition",
-        "reactions" : ["🔓", "😴"],
-        "commands" : ["message.channel.send('Le cadenas !!');", "message.channel.send('LE DODO !!!');"]
-    },
-    {
-        "id" : 1,
         "name" : "Le Poulet sauvage",
-        "rarete" : 5,
+        "rarete" : 15,
         "condition" : "/",
         "description" : "Lors de votre expédition, vous rencontrez un poulet, que faites-vous ? \n\n⚔️ : Vous le tuez.\n🙏 : Vous vous agenouillez et priez le Dieu Poulet pour son bien.",
         "reactions" : ["⚔️", "🙏"],
-        "commands" : ["message.channel.send(`Dieu Poulet est très déçu de vous ! (-10 piété, +1 redoutabilité)`); client.editPoint(client, message.member, -10, 'piete'); client.editPoint(client, message.member, +1, 'redoutabilite');",
-                      "message.channel.send(`Dieu Poulet est content ! (+10 piété)`); client.editPoint(client, message.member, 10, 'piete');"]
+        "commands": [
+            ["Msg(Dieu Poulet est très déçu de vous ! -10 piété, +1 redoutabilité)", "SetPoint(piete § -10)", "SetPoint(redoutabilite § 1)"],
+            ["Msg(Dieu Poulet est content ! +10 piété)", "SetPoint(piete § 10)"]
+          ]
+    },
+    {
+        "id" : 1,
+        "name" : "Louer un cheval",
+        "rarete" : 30,
+        "condition" : "Faire une expedition de + de 8h",
+        "description" : "Votre longue expédition vous exténue et une petite aide ne serait pas de refus. C'est alors que vous apercevez un marchand qui vous propose 5 or pour louer un cheval pour la journée.\n💸 Vous le payer pour vous alléger vos douleurs.\n🤝 Vous tentez de marchander le prix. \n🚶 Vous décidez de marcher par vous-même, vous allez y arriver !\n👊 Vous tentez de voler le cheval.",
+        "reactions" : ["💸", "🤝", "🚶", "👊"],
+        "commands" : [
+          ["Msg(Vous emballez toutes vos affaires sur le cheval, et vous voilà reparti tout frais ! +5 forme, +2 savoir, -5 or)", "SetPoint(forme § 5)" , "SetPoint(savoir § 2)", "SetPoyn(-5)"],
+          ["Msg(Le marchand a accepté de vous faire un prix, mais vous devez ramener le cheval avant la fin de la journée, il n'y a pas à trainer ! +3 forme, -2 or)", "SetPoint(forme § 3)", "SetPoyn(-2)"],
+          ["Msg(Vous vous remettez en marche, remonté à bloc, hors de question de perdre la face ! Mais le voyage en est des plus fatiguant... +3 redoutabilité, -5 forme)", "SetPoint(redoutabilite § 3)", "SetPoint(forme § -5)"],
+          ["Msg(Sans réfléchir, vous lui donnez un gros coup de poing, et le temps qu'il est étourdi, vous grimpez sur un cheval et foncez ! +3 forme, +2 redoutabilité, -- prestige, -2 piété)", "SetPoint(forme § 3)", "SetPoint(redoutabilite § 2)", "SetPoint(prestige § -2)", "SetPoint(piete § -2)"]
+        ]
     }
 ]

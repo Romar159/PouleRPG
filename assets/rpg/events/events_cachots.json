@@ -1,21 +1,16 @@
 [
     {
-        "id" : 0,
-        "name" : "Crochetage",
-        "rarete" : 1000,
-        "condition" : "if(dbUser.savoir >= 40 && dbUser.or >= 5) return true;",
-        "description" : "Une épingle à cheveux est restée dans le tissus de la vieille couverture du cachot. \n🔓 : Vous tentez de crocheter la porte \n😴 : Vous restez tranquille",
-        "reactions" : ["🔓", "😴"],
-        "commands" : ["let x = client.randomInt(1, 5); if(x == 1) { client.updateUser(message.member, {in_jail : false}); client.updateUser(message.member, {in_jail_date : 0}); message.channel.send('Vous réussissez à vous échapper'); } else { message.channel.send(`Vous échouez votre tentative d'évasion, et un garde vous surprend. Vous devez payer une amende de 5 :coin:`); client.setOr(client, message.member, -5, message); }", "message.channel.send('Vous restez tranquille, et vous vous reposez. +3 forme'); client.editPoint(client, message.member, 3, 'forme');"]
-    },
-    {
-        "id" : 1,
-        "name" : "Soudoyer le garde",
-        "rarete" : 900,
-        "condition" : "if(dbUser.or >= 10) return true;",
-        "description" : "Vous pouvez soudoyer le garde \n\n💰 : 10 :coin: \n💵 : 5 :coin:",
-        "reactions" : ["💰", "💵"],
-        "commands" : ["if(client.randomInt(1, 2) == 1) {message.channel.send('Vous réussissez à soudoyer le garde. Vous sortez de prison.');  client.updateUser(message.member, {in_jail : false}); client.updateUser(message.member, {in_jail_date : 0});} else {message.channel.send('Le garde vous insulte ! -3 moral'); client.editPoint(client, message.member, -3, 'moral')}", "if(client.randomInt(1, 8) == 1) {message.channel.send('Vous réussissez à soudoyer le garde. Vous sortez de prison.'); client.updateUser(message.member, {in_jail : false}); client.updateUser(message.member, {in_jail_date : 0});} else {message.channel.send('Le garde vous insulte violement ! -4 moral'); client.editPoint(client, message.member, -4, 'moral')}"]
+        "id": 0,
+        "name": "La visite du geôlier",
+        "rarete": 50,
+        "condition": "/",
+        "description": "Le geôlier fait une visite surprise dans votre cellule. Il semble d'humeur à discuter. Que faites-vous ?\n\n💬 : Vous engagez la conversation avec lui.\n🔑 : Vous essayez de le convaincre de vous libérer.\n😡 : Vous l'ignorez totalement.",
+        "reactions": ["💬", "🔑", "😡"],
+        "commands": [
+            ["Msg(Vous engagez la conversation avec le geôlier. Il vous raconte quelques ragots sur le château et vous offre un morceau de pain en plus pour le dîner. +2 Moral, +2 Savoir)", "SetPoint(moral § 2)", "SetPoint(savoir § 2)"],
+            ["Msg(Vous tentez de persuader le geôlier de vous libérer en lui promettant une récompense. Il vous rit au nez et part en secouant la tête. -1 Redoutabilité, -3 moral, +2 piété)", "SetPoint(redoutabilite § -1)", "SetPoint(moral § -3)", "SetPoint(piete § 2)"],
+            ["Msg(Vous décidez d'ignorer complètement le geôlier. Il hausse les épaules et s'en va en vous laissant seul dans votre cellule. -4 Moral, +1 Redoutabilité)", "SetPoint(moral § -4)", "SetPoint(redoutabilite § 1)"]
+        ]
     }
 ]
 
