@@ -459,10 +459,10 @@ module.exports = client => {
 
             //récupération des membres de chaque faction.
             message.guild.members.fetch().then(fetchAll => { 
-                if(dbFaction.name = "epsilon") members = fetchAll.filter(m => m.roles.cache.get('415947454626660366'));
-                else if(dbFaction.name = "daïros") members = fetchAll.filter(m => m.roles.cache.get('415947455582961686'));
-                else if(dbFaction.name = "lyomah") members = fetchAll.filter(m => m.roles.cache.get('415947456342130699'));
-                else if(dbFaction.name = "alpha") members = fetchAll.filter(m => m.roles.cache.get('665340021640921099'));
+                if(dbFaction.name == "epsilon") members = fetchAll.filter(m => m.roles.cache.get('415947454626660366'));
+                else if(dbFaction.name == "daïros") members = fetchAll.filter(m => m.roles.cache.get('415947455582961686'));
+                else if(dbFaction.name == "lyomah") members = fetchAll.filter(m => m.roles.cache.get('415947456342130699'));
+                else if(dbFaction.name == "alpha") members = fetchAll.filter(m => m.roles.cache.get('665340021640921099'));
 
                 members.forEach(async element => {
                     let usr = await client.getUser(element);
