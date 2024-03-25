@@ -34,7 +34,7 @@ module.exports = async (client, message, args, settings) => {
     let general_events_rarity = [100];
     let cachot_events_rarity = [1000, 900];
     let mission_events_rarity = [10];
-    let working_events_rarity = [10, 1];
+    let working_events_rarity = [10];
     let expedition_events_rarity = [10, 5];
     let conspiring_events_rarity = [10];
 
