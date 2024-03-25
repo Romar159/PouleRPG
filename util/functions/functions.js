@@ -248,6 +248,7 @@ module.exports = client => {
 
         // ---
         // item spéciaux -> On fait une action spécifique. :
+        return; // temporairement invalide
         if(itemid == 1) { // * Point de puissance.
             await client.setOr(client, member, -price, message);
             let items = parseInt(dbUser.puissance) + parseInt(quantity);
@@ -260,7 +261,7 @@ module.exports = client => {
 
     client.removeItemById = async(client, member, dbUser, itemid, quantity) => {
         let item = await client.filterById(shop, itemid);
-        
+        return; // temporairement invalide
         // ---
         // item spéciaux -> On fait une action spécifique. :
         if(itemid == 1) { // * Point de puissance.
@@ -297,18 +298,19 @@ module.exports = client => {
     // POINTS :
 
     // ex editpoint(50, "piete")
-    // puissance, piete, prestige, richesse, travail, forme, savoir, moral
+    // redoutabilité, piete, prestige, richesse, travail, forme, savoir, moral
 
     client.editPoint = async (client, member, quantity, point) => {
 
+        //console.log(member.user.username);
         const userToUpdate = await client.getUser(member);
         let point_base = 0;
 
         switch(point) {
-            case "puissance":
-                if(userToUpdate.puissance == undefined) point_base = 0;
-                else point_base = userToUpdate.puissance
-                await client.updateUser(member, { puissance: point_base + quantity});
+            case "redoutabilite":
+                if(userToUpdate.redoutabilite == undefined) point_base = 0;
+                else point_base = userToUpdate.redoutabilite
+                await client.updateUser(member, { redoutabilite: point_base + quantity});
             break;
 
             case "piete":
@@ -367,14 +369,64 @@ module.exports = client => {
     /**
      * @Param {Client} client
      * @Param {GuildMember} member
+     * @deprecated
      */
-    client.isMaster = (message) => {
+    client.isMaster = (message) => { 
         //verification du rôle de maître
         const roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
-
+        let est_maitre = false;
+        
         for(let y=0; y<roles_maitre.length; y++) {
-            if(message.member.roles.cache.has(roles_maitre[y])) return true;
-            else return false;
+            if(message.member.roles.cache.has(roles_maitre[y])) { est_maitre = true; break;}
+            else est_maitre = false;
+        }
+        return est_maitre;
+    };
+
+    // 901 = Maréchal ; 902 = Intendant ; 903 = Chapelain
+    client.isConseiller = async (member, id_metier_conseiller) => {
+        //verification du rôle de conseiller
+
+        const dbMembre = await client.getUser(member);
+        if(dbMembre.metier == id_metier_conseiller) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    //vérifie si le membre est n'importe quel conseiller au moins.
+    client.isAnyConseiller = async (member) => {
+        //verification du rôle de conseiller
+
+        const dbMembre = await client.getUser(member);
+        if(dbMembre.metier == 901 || dbMembre.metier == 902 || dbMembre.metier == 903) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    //verification si le membre est dans le gouvernement (conseiller ou maitre)
+    client.isInGouv = async (member) => {
+        
+
+        const dbMembre = await client.getUser(member);
+        if(dbMembre.metier == 901 || dbMembre.metier == 902 || dbMembre.metier == 903 || dbMembre.metier == 904) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    client.isMaitre = async (member) => {
+        //verification du rôle de maître
+
+        const dbMembre = await client.getUser(member);
+        if(dbMembre.metier == 904) {
+            return true;
+        } else {
+            return false;
         }
     };
 
@@ -492,5 +544,855 @@ module.exports = client => {
         return false;
     };
 
+    /**
+     * @Description Récupère l'identifiant du rôle Mee6 du member !
+     * @Param {GuildMember} member
+     * @returns {Role} rôle mee6
+     */
+    client.getMee6RoleId = (member) => {
+
+        if(member == undefined) return -1; //empêche de bugguer lors de la lecture du role, notamment dans le module guerre bataille s'il n'y a pas de commandant
+
+        roles_id = ["445253268176633891", "445253591465328660", "445253561648021514", "445253809640308746", "445257669918588948", "650832087993024522", "445257144011587594", "612469098466639893", "650828967716192269"];
+        
+        if(member.roles.cache.has(roles_id[0])) return 0; // Paysan
+        if(member.roles.cache.has(roles_id[1])) return 1; // Artisan
+        if(member.roles.cache.has(roles_id[2])) return 2; // Bourgeois
+        if(member.roles.cache.has(roles_id[3])) return 3; // Courtisan
+        if(member.roles.cache.has(roles_id[4])) return 4; // Baron
+        if(member.roles.cache.has(roles_id[5])) return 5; // Comte
+        if(member.roles.cache.has(roles_id[6])) return 6; // Marquis
+        if(member.roles.cache.has(roles_id[7])) return 7; // Duc      
+        if(member.roles.cache.has(roles_id[8])) return 8; // Vassal
+        
+        return -1;
+    };
+
+    client.getRelation = async (faction1, faction2) => {
+        var fac1 = await client.getFaction(faction1);
+        if(faction2 == "epsilon") fac2 = 0;
+        else if(faction2 == "daïros") fac2 = 1;
+        else if(faction2 == "lyomah") fac2 = 2;
+        else if(faction2 == "alpha") fac2 = 3;
+
+        var relid = fac1.relations[fac2];
+
+        //NB: Commercial n'existe pas en Alpha
+        const relations = require("../../assets/guerre/relations.json");
+
+        return relations[relid]
+    }
+
+    client.getAllFactionPoints = async (faction1, message) => {
+        //console.log(faction1);
+        var roleid = "";
+        var all_values = [0, 0, 0, 0, 0, 0, 0, 0];
+        var points = [];
+      
+        if (faction1 == "epsilon") {
+          roleid = "415947454626660366";
+        } else if (faction1 == "daïros") {
+          roleid = "415947455582961686";
+        } else if (faction1 == "lyomah") {
+          roleid = "415947456342130699";
+        } else if (faction1 == "alpha") {
+          roleid = "665340021640921099";
+        }
+
+        const faction = await client.getFaction(faction1);
+      
+        //const membres = message.guild.roles.cache.get(roleid).members.map(m => m);
+      
+        /*
+        Pour chaque membre on récupère ses points et on aditionne aux autres membres.
+        Mais pour le maître et son conseil, on multiplie par 3 les points en rapport avec son métier.
+        //* Ceci est l'ancienne méthode, la nouvelle consiste juste à prendre les points des conseillers et s'ils n'existent pas c'est ceux du maître, s'il n'existe pas la faction à 0 points.
+
+        Maître :
+            - Prestige
+            - Redoutabilité
+        Intendant :
+            - Richesse
+            - Savoir
+        Maréchal:
+            - Forme
+            - Travail
+        Chapelain :
+            - Piete
+            - Moral
+
+        */
+
+        const marechal = faction.marechal;
+        
+
+        const intendant = faction.intendant;
+        //const dbintendant = await client.getUser(message.guild.members.cache.get(faction.intendant));
+
+        const chapelain = faction.chapelain;
+        //const dbchapelain = await client.getUser(message.guild.members.cache.get(faction.chapelain));
+
+        const maitre = faction.idmaitre;
+        
+        //console.log("1 : " + faction.idmaitre);
+
+        //*prestige
+        if(maitre != "NULL" || maitre != "") {
+            let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
+            //console.log("2");
+            points.push(parseInt(dbmaitre.prestige));
+        } else {
+            //console.log("3");
+            points.push(0)
+        }
+        //console.log(points.join(` ] - [ `));
+
+        //*piete
+        if(chapelain != "NULL" || chapelain == "") {
+            let dbchapelain = await client.getUser(message.guild.members.cache.get(chapelain));
+            points.push(parseInt(dbchapelain.piete));
+            //console.log("4");
+        } else {
+            if(maitre != "NULL" || maitre != "") {
+                let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
+                points.push(parseInt(dbmaitre.piete));
+                //console.log("5");
+            } else {
+                //console.log("6");
+                points.push(0)
+            }
+        }
+        //console.log(points.join(` ] - [ `));
+
+        //*richesse
+        if(intendant != "NULL" || intendant == "") {
+            let dbintendant = await client.getUser(message.guild.members.cache.get(intendant));
+            points.push(parseInt(dbintendant.richesse));
+            //console.log("7");
+        } else {
+            if(maitre != "NULL" || maitre != "") {
+                let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
+                points.push(parseInt(dbmaitre.richesse));
+            } else {
+                points.push(0)
+            }
+        }
+        //console.log(points.join(` ] - [ `));
+
+        //*redoutabilité
+        if(maitre != "NULL" || maitre != "") {
+            let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
+            points.push(parseInt(dbmaitre.redoutabilite));
+        } else {
+            points.push(0)
+        }
+        //console.log(points.join(` ] - [ `));
+
+        //*forme
+        if(marechal != "NULL" || marechal == "") {
+            let dbmarechal = await client.getUser(message.guild.members.cache.get(marechal));
+            points.push(parseInt(dbmarechal.forme));
+        } else {
+            if(maitre != "NULL" || maitre != "") {
+                let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
+                points.push(parseInt(dbmaitre.forme));
+            } else {
+                points.push(0)
+            }
+        }
+        //console.log(points.join(` ] - [ `));
+
+        //*moral
+        if(chapelain != "NULL" || chapelain == "") {
+            let dbchapelain = await client.getUser(message.guild.members.cache.get(chapelain));
+            points.push(parseInt(dbchapelain.moral));
+        } else {
+            if(maitre != "NULL" || maitre != "") {
+                let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
+                points.push(parseInt(dbmaitre.moral));
+            } else {
+                points.push(0)
+            }
+        }
+       // console.log(points.join(` ] - [ `));
+
+        //*travail
+        if(marechal != "NULL" || marechal == "") {
+            let dbmarechal = await client.getUser(message.guild.members.cache.get(marechal));
+            points.push(parseInt(dbmarechal.travail));
+        } else {
+            if(maitre != "NULL" || maitre != "") {
+                let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
+                points.push(parseInt(dbmaitre.travail));
+            } else {
+                points.push(0)
+            }
+        }
+        //console.log(points.join(` ] - [ `));
+
+        //*savoir
+        if(intendant != "NULL" || intendant == "") {
+            let dbintendant = await client.getUser(message.guild.members.cache.get(intendant));
+            points.push(parseInt(dbintendant.savoir));
+        } else {
+            if(maitre != "NULL" || maitre != "") {
+                let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
+                points.push(parseInt(dbmaitre.savoir));
+            } else {
+                points.push(0)
+            }
+        }
+        //console.log(points.join(` ] - [ `));
+
+        for (let i = 0; i < 8; i++) {
+            all_values[i] = parseInt(all_values[i]) + parseInt(points[i]);
+          }
+
+
+        //   for (const m of membres) {
+        //     let dbmembre = await client.getUser(m);
+        //     points.push((m.user.id == faction.idmaitre) ? (parseInt(dbmembre.prestige)) : parseInt(0));
+        //     points.push((m.user.id == faction.chapelain) ? (parseInt(dbmembre.piete)) : parseInt(dbmembre.piete));
+        //     points.push((m.user.id == faction.intendant) ? (parseInt(dbmembre.richesse) * 3) : parseInt(dbmembre.richesse));
+        //     points.push((m.user.id == faction.idmaitre) ? (parseInt(dbmembre.redoutabilite) * 3) : parseInt(dbmembre.redoutabilite));
+        //     points.push((m.user.id == faction.marechal) ? (parseInt(dbmembre.forme) * 3) : parseInt(dbmembre.forme));
+        //     points.push((m.user.id == faction.chapelain) ? (parseInt(dbmembre.moral) * 3) : parseInt(dbmembre.moral));
+        //     points.push((m.user.id == faction.marechal) ? (parseInt(dbmembre.travail) * 3) : parseInt(dbmembre.travail));
+        //     points.push((m.user.id == faction.intendant) ? (parseInt(dbmembre.savoir) * 3) : parseInt(dbmembre.savoir));
+      
+        //     for (let i = 0; i < 8; i++) {
+        //       all_values[i] = parseInt(all_values[i]) + parseInt(points[i]);
+        //     }
+        //     points = [];
+        //   }
+      
+        return all_values;
+      }
+
+
+      client.getFactionNameById = (id) => {
+        switch(id) {
+            case 0:
+                return "epsilon";
+                break;
+            case 1:
+                return "daïros";
+                break;
+            case 2:
+                return "lyomah";
+                break;
+            case 3:
+                return "alpha";
+                break;
+            case -1:
+                return "NULL";
+                    
+        }
+      }
+
+      client.upperCaseFirstChar = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      }
+
+      client.getFactionNameByRelationId = (faction, relation_id) => {
+        let id_faction_adverse = faction.relations.indexOf(relation_id); //recherche dans les relations quelle faction est en guerre/Alliance/Non-agression avec nous.
+        return client.getFactionNameById(id_faction_adverse);
+      }
+
+      client.addCasusBelli = async (faction, faction_cible, casus_belli_id) => {
+        let casus_belli_list = faction.casusbelli;
+        casus_belli_list.push({id: casus_belli_id, cible: faction_cible.name});
+
+        await client.updateFaction(faction.name, {casusbelli: casus_belli_list});
+      }
+
+
+      /* Valeurs relations
+            0 = Neutre
+            1 = Non-Agression
+            2 = Commercial
+            3 = Alliance
+            4 = Ennemie
+        */
+      client.editRelation = async (dbfaction1, dbfaction2, relation_id) => {
+        let newArrayFac1 = dbfaction1.relations;
+        let newArrayFac2 = dbfaction2.relations;
+
+        newArrayFac1[dbfaction2.factionid] = relation_id;
+        newArrayFac2[dbfaction1.factionid] = relation_id;
+
+        await client.updateFaction(dbfaction1.name, {relations: newArrayFac1});
+        await client.updateFaction(dbfaction2.name, {relations: newArrayFac2});
+      }
+
+      client.getSimplifiedDate = (date) => {
+        const jour = date.getDate();
+        const mois = date.getMonth() + 1; // Les mois commencent à 0, donc on ajoute 1
+        const annee = date.getFullYear();
+        return dateFormatee = `${jour < 10 ? `0${jour}` : jour}/${mois < 10 ? `0${mois}` : mois}/${annee}`;
+      }
+
+      client.daysUntilDate = (date) => {
+        const date_actuelle = new Date();
+        const dif = date_actuelle - date;
+        return Math.floor(dif / (1000 * 60 * 60 * 24));
+      }
+
+
+      /**
+       * casusbelli_id : C'est l'identifiant du casus belli utilisé pour cette guerre noté dans le json
+       * decision_id : 0: appuyer les exigeances | 1: Paix Blanche | 2: Se rendre
+       * faction_decision_id : identifiant de statut la faction qui a executer la décision. : 0: Attaquant | 1: Défensseur
+       * faction_attaquant: db de la faction qui a déclaré la guerre
+       * faction_defensseurs: db de la faction qui s'est fait déclaré la guerre
+       * message: message contenant la commande qui a éxécuté la commande
+       */
+      client.resultat_guerre = async (casusbelli_id, decision_id, faction_decision_id, faction_attaquants, faction_defensseurs, message) => {
+
+        const casusbellijson = require("../../assets/guerre/casusbelli.json")
+        const used_casusbelli = casusbellijson[casusbelli_id];
+
+        //ceci contient l'objet du casusbelli DANS LA LISTE des casus belli possédés par la faction attaquante du coup.
+        const casusbelli_faction_attaquante = faction_attaquants.casusbelli.find((objet) => objet.id === casusbelli_id && objet.cible === faction_defensseurs.id);
+        //ceci contient donc l'id de cet objet
+        const id_casusbelli_faction_attaquante = faction_attaquants.casusbelli.indexOf(casusbelli_faction_attaquante);
+
+        const maitre_attaquant = message.guild.members.cache.get(faction_attaquants.idmaitre);
+        const maitre_defensseur = message.guild.members.cache.get(faction_defensseurs.idmaitre);
+
+        const maitre_attaquant_db = await client.getUser(maitre_attaquant);
+        const maitre_defenseur_db = await client.getUser(maitre_defensseur);
+
+        let change_relation = true;
+
+
+        if(casusbelli_id == 0) { //Emprisonnement :
+            if(decision_id == 0) { //appuyer les exigeances
+                if(faction_decision_id == 0) { //en tant qu'Attaquant
+
+                    
+                    //attaquants
+                    
+                    // CHECk
+                    client.editPoint(client, maitre_attaquant, 250, "prestige");   // "- Gagne 250 points de prestige", 
+                    client.editPoint(client, maitre_attaquant, 200, "redoutabilite");// "- Gagne 200 points de redoutabilité"
+
+                    // "- Perd le casus belli \"Emprisonnement\" envers la faction adverse"
+                    let array_cassusbelli_fac_att = faction_attaquants.casusbelli;
+                    array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
+                    await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
+
+                    //Tous les membres emprisonnés dans les cachots de la faction adverse sont délivrés
+                    let array_cachots_defensseurs = faction_defensseurs.cachot;
+                    let new_array_cachots_defensseurs = array_cachots_defensseurs;
+                
+
+                    const promises = array_cachots_defensseurs.map(async (e) => {
+                        let memb_temp = message.guild.members.cache.get(e);
+                        let dbUsrTemp = await client.getUser(memb_temp);
+                        //console.log("FOREEACH: " + dbUsrTemp.username);
+                        return dbUsrTemp.faction !== faction_attaquants.name;
+                      });
+                    
+                      const results = await Promise.all(promises);
+                      new_array_cachots_defensseurs = array_cachots_defensseurs.filter((_, index) => results[index]);
+                    
+                    
+
+
+                    await client.updateFaction(faction_defensseurs.name, {cachot:new_array_cachots_defensseurs}); // V "- Tous les membres de la faction adverse emprisonnés dans les geôles seront délivrés", 
+                    await client.addCasusBelli(faction_defensseurs, faction_attaquants, "2"); // V "- Obtient un casus belli de vengeance \"Vengenace - Emprisonnement\" envers la faction adverse", 
+                    await client.editPoint(client, maitre_defensseur, -300, "prestige"); // V "- Perte de 300 points de prestige"
+                    await client.editPoint(client, maitre_defensseur, -150, "redoutabilite"); // V "- Perte de 150 points de redoutabilité", 
+
+                    
+                    
+        
+                } else if(faction_decision_id == 1) { //en tant que Défenseur
+
+                    //Attaquant:
+
+                    // "- Perd le casus belli \"Emprisonnement\" envers la faction adverse.", 
+                    let array_cassusbelli_fac_att = faction_attaquants.casusbelli;
+                    array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
+                    await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
+
+                    client.editPoint(client, maitre_attaquant, -300, "prestige");    // "- Perte de 300 points de prestige"
+                    client.editPoint(client, maitre_attaquant, -150, "redoutabilite"); // "- Perte de 150 points de redoutabilité",
+                     
+                
+
+                    //Defenseur:
+
+                    client.editPoint(client, maitre_defensseur, 350, "prestige"); // "- Gagne 350 points de prestige"
+                    client.editPoint(client, maitre_defensseur, 400, "redoutabilite"); // "- Gagne 400 points de redoutabilité", 
+                }
+                //TODO envoyer ce message dans le #décision-RPG
+                message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${(faction_decision_id == 0) ? faction_attaquants.displayname + "** a gagné !" : faction_defensseurs.displayname + "** a gagné !"}\n\nCette guerre avait pour but, la libération des membres ${faction_attaquants.displayname} des cachots, ${(faction_decision_id == 0) ? "ce fut une réussite, tous les membres ont été délivrés !" : "ce fut un échec. Les membres n'ont pas été délivrés..."}\n${(faction_decision_id == 0) ? faction_attaquants.displayname + " a gagné beaucoup de prestige et de redoutabilité, tandis que " + faction_defensseurs.displayname + " en a perdu, cependant, la faction possède à présent un casus belli de vengeance !" : faction_defensseurs.displayname + " a gagné beaucoup de prestige et de redoutabilité, tandis que " + faction_attaquants.displayname + " en a perdu !"}`)
+            } 
+            
+            else if(decision_id == 1) { //paix blanche
+               //TODO envoyer ce message dans le #décision-RPG
+                message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**La paix blanche a été déclarée !**\n\nCette guerre avait pour but, la libération des membres ${faction_attaquants.displayname} des cachots de ${faction_defensseurs.displayname}, ils n'ont pas été délivrés.\nAucune des deux factions n'a perdu quoi que ce soit, ${faction_attaquants.displayname} conserve son casus belli. Les deux factions se retrouvent comme juste avant la guerre.`)
+                
+            } 
+            
+            else if(decision_id == 2) { // Se rendre
+                if(faction_decision_id == 0) { //en tant qu'Attaquant
+                    
+                    
+                    //attaquant
+                    //"- Perd le casus belli \"Emprisonnement\" envers la faction adverse.", 
+                    let array_cassusbelli_fac_att = faction_attaquants.casusbelli;
+                    array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
+                    await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
+
+                    client.editPoint(client, maitre_attaquant, -150, "redoutabilite"); //"- Perte de 150 points de redoutabilité", 
+                    client.editPoint(client, maitre_attaquant, -300, "prestige"); //"- Perte de 300 points de prestige"
+
+                    //defenseur
+                    client.editPoint(client, maitre_defensseur, 200, "redoutabilite"); //"- Gagne 200 points de redoutabilité", 
+                    client.addCasusBelli(faction_defensseurs, faction_attaquants, "2") //"- Obtient un casus belli de vengeance \"Vengenace - Emprisonnement\" envers la faction adverse"
+
+                }
+                if(faction_decision_id == 1) { //en tant que defenseur
+
+                    client.editPoint(client, maitre_attaquant, 250, "prestige");   // "- Gagne 250 points de prestige", 
+                    client.editPoint(client, maitre_attaquant, 200, "redoutabilite");// "- Gagne 200 points de redoutabilité"
+
+                    // "- Perd le casus belli \"Emprisonnement\" envers la faction adverse"
+                    let array_cassusbelli_fac_att = faction_attaquants.casusbelli;
+                    array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
+                    await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
+
+                    //Tous les membres emprisonnés dans les cachots de la faction adverse sont délivrés
+                    let array_cachots_defensseurs = faction_defensseurs.cachot;
+                    let new_array_cachots_defensseurs = array_cachots_defensseurs;
+                
+
+                    const promises = array_cachots_defensseurs.map(async (e) => {
+                        let memb_temp = message.guild.members.cache.get(e);
+                        let dbUsrTemp = await client.getUser(memb_temp);
+                        //console.log("FOREEACH: " + dbUsrTemp.username);
+                        return dbUsrTemp.faction !== faction_attaquants.name;
+                      });
+                    
+                      const results = await Promise.all(promises);
+                      new_array_cachots_defensseurs = array_cachots_defensseurs.filter((_, index) => results[index]);
+                    
+                    
+
+
+                    await client.updateFaction(faction_defensseurs.name, {cachot:new_array_cachots_defensseurs}); // V "- Tous les membres de la faction adverse emprisonnés dans les geôles seront délivrés", 
+                    // ? Il me semble que c'est mieux, car c'est pas logique que si l'on se rend dès le début de la guerre on puisse retourner si facilement la situation par exemple. Non se rendre ne donne pas de casus belli en tant que défenseur ! (bien sur si c'est l'attaquant qui se rend, ça ça reste !)
+                    //await client.addCasusBelli(faction_defensseurs, faction_attaquants, "2"); // V "- Obtient un casus belli de vengeance \"Vengenace - Emprisonnement\" envers la faction adverse", 
+                    await client.editPoint(client, maitre_defensseur, -300, "prestige"); // V "- Perte de 300 points de prestige"
+                    await client.editPoint(client, maitre_defensseur, -150, "redoutabilite"); // V "- Perte de 150 points de redoutabilité", 
+                }
+                //TODO envoyer ce message dans le #décision-RPG
+                message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${(faction_decision_id == 0) ? faction_defensseurs.displayname + "** a gagné ! " + faction_attaquants.displayname + " s'est rendu." : faction_attaquants.displayname + "** a gagné ! " + faction_defensseurs.displayname + " s'est rendu."}\n\nCette guerre avait pour but, la libération des membres ${faction_attaquants.displayname} des cachots, ${(faction_decision_id == 1) ? "ce fut une réussite, tous les membres ont été délivrés !" : "ce fut un échec. Les membres n'ont pas été délivrés..."}\n${(faction_decision_id == 0) ? faction_defensseurs.displayname + " a gagné beaucoup de redoutabilité et obtient un casus belli de vengeance, tandis que " + faction_attaquants.displayname + " a perdu en plus de prestige de la redoutabilité !" : faction_attaquants.displayname + " a gagné beaucoup de prestige et de redoutabilité, tandis que " + faction_defensseurs.displayname + " en a perdu !"}`)
+            
+            }
+        } 
+        
+        else if (casusbelli_id == 1) { //ALliance Rompue
+            if(decision_id == 0) { //appuyer les exigeances
+                if(faction_decision_id == 0) { //en tant qu'Attaquant
+
+                    //attaquant
+                    
+                    //!BUG //TODO: ICI si on a des points de redoutabilité négatifs le pourcentage est biaisé ! Voir comment le réparer... (reflexion en cours au 05/10/2023 21:12 sur le discord)
+                    //!On a le pourcentage toujours SAUF si on est en dessous de 25 (trop proche de 0) là c'est une somme fixe genre 50
+                    let tenpercent_facdef = Math.floor(faction_defensseurs.bank * 0.1);
+                    await client.updateFaction(faction_attaquants.name, {bank: faction_attaquants.bank + tenpercent_facdef}) //"- Récupère 10% de l'or de la faction adverse."
+                    await client.editPoint(client, maitre_attaquant, Math.floor(maitre_defensseur.redoutabilite * 0.2), "redoutabilite"); //"- Récupère 20% de la redoutabilité de la faction adverse"
+                    await client.editPoint(client, maitre_attaquant, 350, "prestige"); //"- Récupère 20% de la redoutabilité de la faction adverse"
+                    await client.editRelation(faction_attaquants, faction_defensseurs, 1); //"- Force la signature d'un pacte de non-agression",
+                    change_relation = false;
+                    
+                    //"- Perd le casus belli \"Alliance Romptue\" envers la faction adverse"
+                    array_cassusbelli_fac_att = faction_attaquants.casusbelli;
+                    array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
+                    await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
+                    
+                    //defenseur
+                    await client.updateFaction(faction_defensseurs.name, {bank: faction_defensseurs.bank - tenpercent_facdef}) //"- Perd 10% d'or pour le bénéfice de la faction adverse"
+                    await client.editPoint(client, maitre_defensseur, 0 - Math.floor(maitre_defensseur.redoutabilite * 0.2), "redoutabilite"); //"- Perd 20% de redoutabilité pour le bénéfice de la faction adverse"
+                    await client.editPoint(client, maitre_defensseur, -350, "prestige"); //"- Perd de 350 points de prestige pour le bénéfice de la faction adverse", 
+                
+                    //TODO envoyer ce message dans le #décision-RPG
+                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné !\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}. Ce fut une réussite, un pacte de non-agression a également été signé entre les deux factions !\n${faction_attaquants.displayname} a gagné beaucoup de redoutabilité et de prestige ainsi que des poyns, volés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu, en plus de ces poyns, du prestige et évidemment de la redoutabilité...`)
+            
+                    
+                }
+                else if(faction_decision_id == 1) { //en tant que defenseur 
+                    //attaquant
+
+                    //"- Perd le casus belli \"Alliance Romptue\" envers la faction adverse"
+                    array_cassusbelli_fac_att = faction_attaquants.casusbelli;
+                    array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
+                    await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
+                    
+                    let tenpercent_redoutabilite_facatt = Math.floor(maitre_attaquant.redoutabilite * 0.1);
+                    await client.editPoint(client, maitre_attaquant, 0 - tenpercent_redoutabilite_facatt, "redoutabilite"); //"- Perd 10% de redoutabilité pour le bénéfice de la faction adverse", 
+                    await client.editPoint(client, maitre_attaquant, -350, "prestige"); //"- Perd 350 points de prestige pour le bénéfice de la faction adverse"
+                    //defenseur
+                    await client.editPoint(client, maitre_defensseur, tenpercent_redoutabilite_facatt, "redoutabilite"); //"- Récupère 10% de la redoutabilité de la faction adverse", 
+                    await client.editPoint(client, maitre_defensseur, 350, "prestige"); //"- Récupère 350 points de prestige de la faction adverse"],
+                    
+                    //TODO envoyer ce message dans le #décision-RPG
+                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné !\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}. Ce fut un échec complet !\n${faction_defensseurs.displayname} a gagné beaucoup de redoutabilité et de prestige ! Tandis que ${faction_attaquants.displayname} en a perdu, en plus d'avoir échoué la signature d'un pacte de non-agression...`)
+            
+                    
+                }
+            }   
+            else if(decision_id == 1) { //Paix blanche
+                //attaquant
+                //"- Conserve le casus belli"
+
+                //defenseur
+                // "- Rien ne se passe..."
+
+                //TODO envoyer ce message dans le #décision-RPG
+                message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**La paix blanche a été déclarée !**\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}.\nAucune des deux factions n'a perdu quoi que ce soit, ${faction_attaquants.displayname} conserve son casus belli. Les deux factions se retrouvent comme juste avant la guerre.`)
+            
+        
+            } 
+            else if(decision_id == 2) { //se rendre
+                if(faction_decision_id == 0) { //en tant qu'Attaquant
+                    //attaquant
+
+                    //"- Perd le casus belli \"Alliance Romptue\" envers la faction adverse"
+                    array_cassusbelli_fac_att = faction_attaquants.casusbelli;
+                    array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
+                    await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
+
+                    let tenpercent_redoutabilite_facatt_sr = Math.floor(maitre_attaquant.redoutabilite * 0.1);
+                    await client.editPoint(client, maitre_attaquant, 0 - tenpercent_redoutabilite_facatt_sr, "redoutabilite") //"- Perd 10% de redoutabilité pour le bénéfice de la faction adverse", 
+                    await client.editPoint(client, maitre_attaquant, -350, "prestige"); //"- Perd 350 points de prestige pour le bénéfice de la faction adverse"
+                    
+                    //defenseur
+                    await client.editPoint(client, maitre_defensseur, tenpercent_redoutabilite_facatt_sr, "redoutabilite") //"- Récupère 10% de la redoutabilité de la faction adverse", 
+                    await client.editPoint(client, maitre_defensseur, 350, "prestige"); //"- Récupère 350 points de prestige de la faction adverse"
+                    
+                    //TODO envoyer ce message dans le #décision-RPG
+                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné ! ${faction_attaquants.displayname} s'est rendu.\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}. Ce fut un échec complet !\n${faction_defensseurs.displayname} a gagné beaucoup de redoutabilité et de prestige ! Tandis que ${faction_attaquants.displayname} en a perdu, en plus d'avoir échoué la signature d'un pacte de non-agression...`)
+            
+                    
+                    
+                    
+                }
+                else if(faction_decision_id == 1) { //en tant que defenseur 
+                    //attaquant
+
+                    //"- Perd le casus belli \"Alliance Romptue\" envers la faction adverse"
+                    array_cassusbelli_fac_att = faction_attaquants.casusbelli;
+                    array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
+                    await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
+
+                    await client.editRelation(faction_attaquants, faction_defensseurs, 1); //"- Force la signature d'un pacte de non-agression",
+                    change_relation = false;
+                    await client.editPoint(client, maitre_attaquant, 300, "prestige"); //"Récupère 300 points de prestige de la faction adverse", 
+
+                    let _8percent_or_facdef =  Math.floor(faction_defensseurs.bank * 0.08);
+                    let _18percent_redoutabilite_facdef =  Math.floor(faction_defensseurs.redoutabilite * 0.18);
+
+                    await client.updateFaction(faction_attaquants.name, {bank: faction_attaquants.bank + _8percent_or_facdef}) //"- Récupère 8% de l'or de la faction adverse.", 
+                    await client.editPoint(client, maitre_attaquant, _18percent_redoutabilite_facdef, "redoutabilite"); //"- Récupère 18% de la redoutabilité de la faction adverse", 
+
+                    
+                    //defenseur
+                    await client.updateFaction(faction_defensseurs.name, {bank: faction_defensseurs.bank - _8percent_or_facdef}) //"- Perd 8% d'or pour le bénéfice de la faction adverse", 
+                    await client.editPoint(client, maitre_defensseur, 0 - _18percent_redoutabilite_facdef, "redoutabilite"); //"- Perd 18% de redoutabilité pour le bénéfice de la faction adverse", 
+                    await client.editPoint(client, maitre_defensseur, -300, "prestige");
+                                
+                    //TODO envoyer ce message dans le #décision-RPG
+                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné ! ${faction_defensseurs.displayname} s'est rendu.\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}. Ce fut une réussite, un pacte de non-agression a également été signé entre les deux factions !\n${faction_attaquants.displayname} a gagné beaucoup de redoutabilité et de prestige ainsi que des poyns, volés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu, en plus de ces poyns, du prestige et évidemment de la redoutabilité...`)
+            
+                }
+            }  
+        }
+
+        else if (casusbelli_id == 1) { //Vengeance - Emprisonnement
+            if(decision_id == 0) { //appuyer les exigeances
+                if(faction_decision_id == 0) { //en tant qu'Attaquant
+                    //attaquant
+
+                    let or_faction_def_huitperc = faction_defensseurs.bank * 0.08;
+                    await client.updateFaction(faction_attaquants.name, {bank: faction_attaquants.bank + (or_faction_def_huitperc)}) // "- Vole 8% de l'or de la faction adverse.",
+                    await client.editPoint(client, maitre_attaquant, 500, "redoutabilite"); // "- Gagne 500 points de redoutabilité", 
+                    
+                    
+                    
+                    //"- Perd le casus belli \"Vengeance - Emprisonnement\" envers la faction adverse"
+                    array_cassusbelli_fac_att = faction_attaquants.casusbelli;
+                    array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
+                    await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
+
+                    //defenseur
+                    await client.updateFaction(faction_defensseurs.name, {bank: faction_defensseurs.bank - (or_faction_def_huitperc)}) //"- Perd 8% d'or pour le bénéfice de la faction adverse", 
+                    await client.editPoint(client, maitre_defensseur, Math.floor(-maitre_defenseur_db.redoutabilite + (maitre_defenseur_db.redoutabilite * 0.90)), "redoutabilite"); // perd 10% de redoutabilité
+                    await client.editPoint(client, maitre_defensseur, -200, "prestige"); //"- Perd 200 points de prestige"
+                    
+                    //TODO envoyer ce message dans le #décision-RPG
+                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné !\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}. Ce fut une réussite !\n${faction_attaquants.displayname} a gagné beaucoup de redoutabilité ainsi que des poyns, volés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu, en plus de ces poyns, du prestige et évidemment de la redoutabilité...`)
+            
+                }
+                else if(faction_decision_id == 0) { //en tant que Defenseur
+                    //attaquant
+
+                    //"- Perd le casus belli \"Vengeance - Emprisonnement\" envers la faction adverse"
+                    array_cassusbelli_fac_att = faction_attaquants.casusbelli;
+                    array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
+                    await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
+                    
+                    await client.editPoint(client, maitre_attaquant, Math.floor(-maitre_attaquant_db.redoutabilite + (maitre_attaquant_db.redoutabilite * 0.75)), "redoutabilite"); //"- Perd 25 % de redoutabilité", 
+                    await client.editPoint(client, maitre_attaquant, -400, "prestige"); // "- Perd 400 points de prestige"
+
+                    let or_faction_att_huitperc = faction_attaquants.bank * 0.08;
+                    await client.updateFaction(faction_attaquants.name, {bank: faction_attaquants.bank - (or_faction_att_huitperc)}) //"- perd 8% de la l'or pour le bénéfice de la faction adverse", 
+
+                    //defenseur
+                    await client.updateFaction(faction_defensseurs.name, {bank: faction_defensseurs.bank + (or_faction_att_huitperc)}) //"- Récupère 8% de la l'or de la faction adverse", 
+                    await client.editPoint(client, maitre_defensseur, Math.floor(maitre_defensseur_db.redoutabilite * 0.08), "redoutabilite"); //"- gagne 8% de redoutabilité", 
+                    
+                    //TODO envoyer ce message dans le #décision-RPG
+                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné !\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}. Ce fut un échec complet !\n${faction_defensseurs.displayname} a gagné beaucoup de redoutabilité et de poyn ! Tandis que ${faction_attaquants.displayname} en a perdu, en plus de prestige.`)
+            
+
+                }
+            } else if (decision_id == 1) { //paix blanche
+                    //attaquant
+                    //"- Perd le casus belli \"Vengeance - Emprisonnement\" envers la faction adverse"
+                    array_cassusbelli_fac_att = faction_attaquants.casusbelli;
+                    array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
+                    await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
+                    
+
+
+                    //defenseur
+                    //"- Rien ne se passe..."
+
+                    //TODO envoyer ce message dans le #décision-RPG
+                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**La paix blanche a été déclarée !**\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}.\nAucune des deux factions n'a perdu quoi que ce soit, sauf ${faction_attaquants.displayname} qui perd son casus belli. Les deux factions se retrouvent comme si la guerre n'avait pas eu lieu.`)
+            
+
+                    
+            } else if (decision_id == 2) { //se rendre
+                if(faction_decision_id == 0) { //en tant qu'Attaquant
+                    //attaquant
+                    //"- Perd le casus belli \"Vengeance - Emprisonnement\" envers la faction adverse"
+                    array_cassusbelli_fac_att = faction_attaquants.casusbelli;
+                    array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
+                    await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
+                    await client.editPoint(client, maitre_attaquant, Math.floor(-maitre_attaquant_db.redoutabilite + (maitre_attaquant_db.redoutabilite * 0.80)), "redoutabilite"); // perd 20% de redoutabilité
+                    await client.editPoint(client, maitre_attaquant, -300, "prestige"); //"- Perd 300 points de prestige"
+
+                     
+
+
+                    //defenseur
+                    await client.editPoint(client, maitre_defensseur, 450, "redoutabilite"); // "- Gagne 450 points de redoutabilité", 
+                    await client.editPoint(client, maitre_defensseur, 100, "prestige"); // "- Récupère 100 points de prestige"
+
+
+                    //TODO envoyer ce message dans le #décision-RPG
+                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné ! ${faction_attaquants.displayname} s'est rendu.\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}. Ce fut un échec complet !\n${faction_defensseurs.displayname} a gagné beaucoup de redoutabilité et de poyn ! Tandis que ${faction_attaquants.displayname} en a perdu, en plus de prestige.`)
+            
+                    
+                }
+                else if(faction_decision_id == 0) { //en tant que Defenseur
+
+                    //attaquant
+
+                    let or_faction_def_huitperc = faction_defensseurs.bank * 0.08;
+                    await client.updateFaction(faction_attaquants.name, {bank: faction_attaquants.bank + (or_faction_def_huitperc)}) // "- Vole 8% de l'or de la faction adverse.",
+                    await client.editPoint(client, maitre_attaquant, 500, "redoutabilite"); // "- Gagne 500 points de redoutabilité", 
+                    
+                    //"- Perd le casus belli \"Vengeance - Emprisonnement\" envers la faction adverse"
+                    array_cassusbelli_fac_att = faction_attaquants.casusbelli;
+                    array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
+                    await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
+
+
+                    //defenseur
+                    await client.updateFaction(faction_defensseurs.name, {bank: faction_defensseurs.bank - (or_faction_def_huitperc)}) //"- Perd 8% d'or pour le bénéfice de la faction adverse", 
+                    await client.editPoint(client, maitre_defensseur, Math.floor(-maitre_defenseur_db.redoutabilite + (maitre_defenseur_db.redoutabilite * 0.92)), "redoutabilite"); // perd 8% de redoutabilité
+                    await client.editPoint(client, maitre_defensseur, -250, "prestige"); //"- Perd 250 points de prestige"
+                    
+                    //TODO envoyer ce message dans le #décision-RPG
+                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné ! ${faction_defensseurs.displayname} s'est rendu.\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}. Ce fut une réussite !\n${faction_attaquants.displayname} a gagné beaucoup de redoutabilité ainsi que des poyns, volés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu, en plus de ces poyns, du prestige et évidemment de la redoutabilité...`)
+            
+                }
+            }
+        }
+
+        else if (casusbelli_id == 1) { //Hérésie
+            if(decision_id == 0) { //appuyer les exigeances
+                if(faction_decision_id == 0) { //en tant qu'Attaquant
+                    //attaquant
+                    //"- Perd le casus belli \"Hérésie\" envers la faction adverse."
+                    array_cassusbelli_fac_att = faction_attaquants.casusbelli;
+                    array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
+                    await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
+
+                    await client.editPoint(client, maitre_attaquant, Math.floor(maitre_attaquant_db.piete * 0.5), "piete"); //"- Gagne 50% de piété", 
+
+                    let or_faction_def_vingtperc = faction_defensseurs.bank * 0.2;
+                    await client.updateFaction(faction_attaquants.name, {bank: faction_attaquants.bank + (or_faction_def_vingtperc)})//"- Vole 20% d'or à la faction adverse", 
+                    
+                    
+
+                    //defenseur
+                    //"- Atteint 100 piété si elle se situe en dessous.", 
+                    if(faction_defensseurs.chapelain != "NULL") {
+                        const chapelain_defenseur_db = await client.getUser(message.guild.members.cache.get(faction_defensseurs.chapelain));
+                        if(chapelain_defenseur_db.piete < 100) {
+                            await client.editPoint(client, message.guild.members.cache.get(faction_defensseurs.chapelain), (-chapelain_defenseur_db.piete) + 100, "piete"); //"- Atteint 100 piété si elle se situe en dessous.", 
+                        }
+                    } else {
+                        if(maitre_defensseur.piete < 100) {
+                            await client.editPoint(client, maitre_defensseur, (-maitre_defensseur_db.piete) + 100, "piete"); //"- Atteint 100 piété si elle se situe en dessous.", 
+                        }
+                    }
+
+                    await client.updateFaction(faction_defensseurs.name, {bank: faction_defensseurs.bank - (or_faction_def_vingtperc)})//"- Perd 20% d'or pour le bénéfice de la faction adverse." 
+                    
+                    //TODO envoyer ce message dans le #décision-RPG
+                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné !\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}. Ce fut une réussite grandiose !\n${faction_attaquants.displayname} a gagné énormément de piété ainsi que des poyns, récupérés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu ces poyns, et se retrouve à nouveau avec de la piété positive !`)
+
+
+                }
+                else if(faction_decision_id == 0) { //en tant que Defenseur
+                    //attaquant
+
+                    //"- Perd le casus belli \"Hérésie\" envers la faction adverse."
+                    array_cassusbelli_fac_att = faction_attaquants.casusbelli;
+                    array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
+                    await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
+
+                    await client.editPoint(client, maitre_attaquant, -500, "prestige"); //"- Perd 500 points de prestige", 
+
+                    let or_faction_att_vingtcinqperc = faction_attaquants.bank * 0.25;
+                    await client.updateFaction(faction_attaquants.name, {bank: faction_attaquants.bank - (or_faction_att_vingtcinqperc)}) //"Perd 25% d'or pour le benéfice de la faction adverse.", 
+                    
+                    
+                    //defenseur
+                    await client.updateFaction(faction_defensseurs.name, {bank: faction_defensseurs.bank + (or_faction_att_vingtcinqperc)}) //"- Gagne 25% d'or de la faction adverse."
+
+                    //TODO envoyer ce message dans le #décision-RPG
+                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné !\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}. Ce fut un échec lamentable !\n${faction_attaquants.displayname} a perdu beaucoup de prestige et s'est fait volé le quart de ses poyns par ${faction_defensseurs.displayname}.`)
+
+                    
+                }
+            } else if (decision_id == 1) { //paix blanche
+                    //attaquant
+                    //"- Conserve le casus belli"
+
+                    //defenseur
+                    //"- Rien ne se passe..."
+
+                    //TODO envoyer ce message dans le #décision-RPG
+                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**La paix blanche a été déclarée !** :dove:\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}.\nAucune des deux factions n'a perdu quoi que ce soit, ${faction_attaquants.displayname} conserve son casus belli. Les deux factions se retrouvent comme juste avant la guerre.`)
+
+
+                    
+            } else if (decision_id == 2) { //se rendre
+                if(faction_decision_id == 0) { //en tant qu'Attaquant
+                    
+                    //attaquant
+
+                    //"- Perd le casus belli \"Hérésie\" envers la faction adverse."
+                    array_cassusbelli_fac_att = faction_attaquants.casusbelli;
+                    array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
+                    await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
+
+                    await client.editPoint(client, maitre_attaquant, -600, "prestige"); //"- Perd 600 points de prestige", 
+
+                    let or_faction_att_dixhuitperc = faction_attaquants.bank * 0.18;
+                    await client.updateFaction(faction_attaquants.name, {bank: faction_attaquants.bank - (or_faction_att_dixhuitperc)}) //"Perd 18% d'or pour le benéfice de la faction adverse.", 
+                    
+
+                    //defenseur
+                    await client.updateFaction(faction_defensseurs.name, {bank: faction_defensseurs.bank + (or_faction_att_dixhuitperc)}) //"- Gagne 18% d'or de la faction adverse."
+
+                    //TODO envoyer ce message dans le #décision-RPG
+                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné ! ${faction_attaquants.displayname} s'est rendu.\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}. Ce fut un échec !\n${faction_attaquants.displayname} a perdu beaucoup de prestige et s'est fait volé énormément de poyns par ${faction_defensseurs.displayname}.`)
+
+                    
+
+                }
+                else if(faction_decision_id == 0) { //en tant que Defenseur
+                   
+                    //attaquant
+                    //"- Perd le casus belli \"Hérésie\" envers la faction adverse."
+                    array_cassusbelli_fac_att = faction_attaquants.casusbelli;
+                    array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
+                    await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
+
+                    await client.editPoint(client, maitre_attaquant, Math.floor(maitre_attaquant_db.piete * 0.5), "piete"); //"- Gagne 50% de piété", 
+
+                    let or_faction_def_dixhuitperc = faction_defensseurs.bank * 0.18;
+                    await client.updateFaction(faction_attaquants.name, {bank: faction_attaquants.bank + (or_faction_def_dixhuitperc)})//"- Vole 18% d'or à la faction adverse", 
+                    
+                    
+
+                    //defenseur
+                    //"- Atteint 100 piété si elle se situe en dessous.", 
+                    if(faction_defensseurs.chapelain != "NULL") {
+                        const chapelain_defenseur_db = await client.getUser(message.guild.members.cache.get(faction_defensseurs.chapelain));
+                        if(chapelain_defenseur_db.piete < 100) {
+                            await client.editPoint(client, message.guild.members.cache.get(faction_defensseurs.chapelain), (-chapelain_defenseur_db.piete) + 100, "piete"); //"- Atteint 100 piété si elle se situe en dessous.", 
+                        }
+                    } else {
+                        if(maitre_defensseur.piete < 100) {
+                            await client.editPoint(client, maitre_defensseur, (-maitre_defensseur_db.piete) + 100, "piete"); //"- Atteint 100 piété si elle se situe en dessous.", 
+                        }
+                    }
+
+                    await client.updateFaction(faction_defensseurs.name, {bank: faction_defensseurs.bank - (or_faction_def_dixhuitperc)})//"- Perd 18% d'or pour le bénéfice de la faction adverse." 
+                    
+                    //TODO envoyer ce message dans le #décision-RPG
+                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné ! ${faction_defensseurs.displayname} s'est rendu.\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}. Ce fut une réussite grandiose !\n${faction_attaquants.displayname} a gagné énormément de piété ainsi que des poyns, récupérés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu ces poyns, et se retrouve à nouveau avec de la piété positive !`)
+
+
+                }
+            }
+        }
+
+        // Reset toutes les variables lors de la fin de la guerre pour les deux factions.
+        /*
+        relations -> array
+        en_guerre -> bool
+        attaquant -> string
+        defensseur -> string
+        casusbelli_utilise -> int
+        date_debut_guerre -> Date
+        cooldown_battle -> Date
+        score_guerre -> int
+        */
+
+        //ne met la relation à neutre uniquement si la relation n'a pas été changé dans les résultats de guerre (exemple: lorsque l'attaquant gagne le Bris d'alliance)
+        if(change_relation == true) {
+            await client.editRelation(faction_attaquants, faction_defensseurs, 0);
+        }
+
+        await client.updateFaction(faction_attaquants, {en_guerre: false});
+        await client.updateFaction(faction_attaquants, {attaquant: "NULL"});
+        await client.updateFaction(faction_attaquants, {defensseur: "NULL"});
+        await client.updateFaction(faction_attaquants, {casusbelli_utilise: -1});
+        await client.updateFaction(faction_attaquants, {date_debut_guerre: 0});
+        await client.updateFaction(faction_attaquants, {cooldown_battle: 0});
+        await client.updateFaction(faction_attaquants, {score_guerre: 0});
+        
+        await client.updateFaction(faction_defensseurs, {en_guerre: false});
+        await client.updateFaction(faction_defensseurs, {attaquant: "NULL"});
+        await client.updateFaction(faction_defensseurs, {defensseur: "NULL"});
+        await client.updateFaction(faction_defensseurs, {casusbelli_utilise: -1});
+        await client.updateFaction(faction_defensseurs, {date_debut_guerre: 0});
+        await client.updateFaction(faction_defensseurs, {cooldown_battle: 0});
+        await client.updateFaction(faction_defensseurs, {score_guerre: 0});
+        
+    }
 
 };

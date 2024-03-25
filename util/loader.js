@@ -29,7 +29,17 @@ const loadEvents = (client, dir = "./events/") => {
     }); 
 };
 
+const loadGlobalVariables = (client) => {
+
+    global.CommandsCollectors = new Map();
+
+    global.users_use_guerre_cmd = [];
+    global.users_use_infofaction_cmd = [];
+}
+
+
 module.exports = {
     loadCommands,
     loadEvents,
+    loadGlobalVariables
 } 

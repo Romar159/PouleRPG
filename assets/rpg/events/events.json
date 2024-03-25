@@ -2,51 +2,79 @@
     {
         "id" : 0,
         "name" : "Thune par terre",
-        "rarete" : 4000,
+        "rarete" : 100,
         "condition" : "/",
         "description" : "Oh, sur les pavés de la rue se trouve une bourse avec quelques poyn.\n\n💰 : Récupérer pour soit.\n💸 : Donner aux plus pauvres.",
         "reactions" : ["💰", "💸"],
-        "commands" : ["client.setOr(client, message.member, 3, message); message.channel.send(`Vous récupérez tout l'argent pour vous. \n\n+3 :coin: \n-10 points de piété`); client.editPoint(client, message.member, -10, 'piete');", 
-            "message.channel.send(`Vous allez donner l'argent à des mandiants assis sur les marches de la cathédrale Saint Poulet.\n\n+ 10 points de piété. ||Et Dieu Poulet est content **:)**||`); client.editPoint(client, message.member, 10, 'piete');"]
+        "commands": [
+            ["Msg(Vous récupérez tout l'argent pour vous.)", "SetPoint(piete § 3)"],
+            ["Msg(Vous allez donner l'argent à des mandiants assis sur les marches de la cathédrale Saint Poulet.)", "SetPoint(piete § 10)"]
+        ]
     },
     {
         "id" : 1,
         "name" : "L'accident de scène",
-        "rarete" : 800,
+        "rarete" : 100,
         "condition" : "/",
         "description" : "Jacqueline tombe de la scène ! Une de ses pièces tombe de sa poche, que faite-vous ?\n\n💰 : Vous récupérez la pièce pour vous.\n🤚 : Vous aidez Jacqueline à se relever.\n🗣️ : Vous rigolez de la situation.",
         "reactions" : ["💰", "🤚", "🗣️"],
-        "commands" : ["message.channel.send('Vous vous empressez de récupérer la pièce avant les autres ! +1 Poyn -3 piété'); client.setOr(client, message.member, 1, message); client.editPoint(client, message.member, -3, 'piete')", 
-            "message.channel.send(`Vous vous approchez de Jacqueline et lui tendez la main pour l'aider. Elle vous remercie avant de récupérer sa pièce. +5 piété`); client.editPoint(client, message.member, 5, 'piete');", 
-            "message.channel.send('On entend que vous dans la pièce, qui rit aux éclats de cette chute... +3 moral -2 piété'); client.editPoint(client, message.member, -2, 'piete'); client.editPoint(client, message.member, 3, 'moral');"]
+        "commands": [
+            ["Msg(Vous vous empressez de récupérer la pièce avant les autres ! +1 Poyn -3 piété)", "SetPoint(piete § -3)", "SetPoyn(1)"],
+            ["Msg(Vous vous approchez de Jacqueline et lui tendez la main pour l'aider. Elle vous remercie avant de récupérer sa pièce. +5 piété)", "SetPoint(piete § 5)"],
+            ["Msg(On entend que vous dans la pièce, qui rit aux éclats de cette chute... +3 moral -2 piété)", "SetPoint(piete § -2)", "SetPoint(moral § 3)"]
+        ]
+        
     },
     {
         "id" : 2,
         "name" : "L'avis sur les gros",
-        "rarete" : 800,
+        "rarete" : 100,
         "condition" : "if(dbUser.level >= 5) return true;",
         "description" : "Vous êtes en pleine discussion avec un noble et celui-ci vous pose la question suivante d'un ton autain ''Comment trouvez-vous les gros ?'' \n\n❤️ : Vous répondez : ''Les gros sont beaux.''\n💔 : Vous répondez ''Les gros sont laids.''\n💨 : Vous changez de sujet.",
         "reactions" : ["❤️", "💔", "💨"],
-        "commands" : ["message.channel.send(`Le noble ne semble pas de votre avis et se contente d'hocher la tête et de boire un coup en guise de réponse. +1 piété, -1 prestige`); client.editPoint(client, message.member, 1, 'piete'); client.editPoint(client, message.member, -1, 'prestige')",
-            "message.channel.send(`Le noble sourit, et répond ''Je suis en parfait accord avec vous, mon jeune ami !''. -1 piété, +1 moral`); client.editPoint(client, message.member, -1, 'piete'); client.editPoint(client, message.member, -1, 'moral')",
-            "message.channel.send(`Le noble n'a pas aimer que vous l'ignoriez, il se retourne vers quelqu'un d'autre pour lui reposer la question. +1 prestige -1 moral`); client.editPoint(client, message.member, -1, 'moral'); client.editPoint(client, message.member, 1, 'prestige');"]
+        "commands": [
+            ["Msg(Le noble ne semble pas de votre avis et se contente d'hocher la tête et de boire un coup en guise de réponse. +1 piété, -1 prestige)", "SetPoint(piete § 1)", "SetPoint(prestige § -1)"],
+            ["Msg(Le noble sourit, et répond ''Je suis en parfait accord avec vous, mon jeune ami !''. -1 piété, +1 moral)", "SetPoint(piete § -1)", "SetPoint(moral § 1)"],
+            ["Msg(Le noble n'a pas aimé que vous l'ignoriez, il se retourne vers quelqu'un d'autre pour lui reposer la question. +1 prestige -1 moral)", "SetPoint(moral § -1)", "SetPoint(prestige § 1)"]
+        ]
     },
     {
         "id": 3,
         "name" : "Débat de sourds",
-        "rarete" : 600,
+        "rarete" : 100,
         "condition" : "/",
         "description" : "Pendant que vous marchez dans la rue, vous entendez deux personnes débattre de manière relativement douteuse sur un sujet quelconque, que faites-vous ?\n\n🤜 : Vous rejoignez la discussion et prenez part pour la personne de droite\n🤛 : Vous rejoignez la discussion et prenez part pour la personne de gauche\n🤫 : Vous leur dites de la fermer.",
         "reactions" : ["🤜", "🤛", "🤫"],
-        "commands" : ["message.channel.send(`Vous faites taire la personne de gauche avec vos arguments et la personne de droite vous remercie. +1 prestige, -1 piété`); client.editPoint(client, message.member, 1, 'prestige'); client.editPoint(client, message.member, -1, 'piete');", "message.channel.send(`Vous faites taire la personne de droite avec vos arguments et la personne de gauche vous remercie. +1 pretige, -1 piété`); client.editPoint(client, message.member, 1, 'prestige'); client.editPoint(client, message.member, -1, 'piete');" , "message.channel.send(`Les deux personnes se ruent vers vous et vous crient dessus puis s'en vont en se taisant. +2 travail, -2 moral`); client.editPoint(client, message.member, 2, 'travail'); client.editPoint(client, message.member, -2, 'moral');"]
+        "commands": [
+            ["Msg(Vous faites taire la personne de gauche avec vos arguments et la personne de droite vous remercie. +1 prestige, -1 piété)", "SetPoint(prestige § 1)", "SetPoint(piete § -1)"],
+            ["Msg(Vous faites taire la personne de droite avec vos arguments et la personne de gauche vous remercie. +1 prestige, -1 piété)", "SetPoint(prestige § 1)", "SetPoint(piete § -1)"],
+            ["Msg(Les deux personnes se ruent vers vous et vous crient dessus puis s'en vont en se taisant. +2 travail, -2 moral)", "SetPoint(travail § 2)", "SetPoint(moral § -2)"]
+        ]
     },
     {
         "id": 4,
         "name" : "Le coucher de soleil",
-        "rarete" : 800,
+        "rarete" : 100,
         "condition" : "/",
         "description" : "Vous êtes en ballade et vous pouvez apercevoir le soleil se coucher à l'horizon. Vous apercevez quelqu'un sur un banc en train de fumer, celui-ci vous invite, que faites-vous ?\n\n🚬 : Vous acceptez et tirez quelques fois.\n🙅 : Vous refusez aimablement.\n🌅 : Vous faites semblant de n'avoir rien entendu et continuez votre marche en regardant le coucher de soleil.",
         "reactions" : ["🚬", "🙅", "🌅"],
-        "commands" : ["message.channel.send(`La personne vous tend son cigare, et vous profitez à deux de ce moment. +4 moral, -1 travail`); client.editPoint(client, message.member, 4, 'moral'); client.editPoint(client, message.member, -1, 'travail');", "message.channel.send(`La personne comprend et sourit. +2 travail`); client.editPoint(client, message.member, 2, 'travail');" , "message.channel.send(`La personne continue de fumer comme si de rien n'était. +4 travail, -1 moral`); client.editPoint(client, message.member, 4, 'travail'); client.editPoint(client, message.member, -1, 'moral');"]
-    }
+        "commands": [
+            ["Msg(La personne vous tend son cigare, et vous profitez à deux de ce moment. +4 moral, -1 travail)", "SetPoint(moral § 4)", "SetPoint(travail § -1)"],
+            ["Msg(La personne comprend et sourit. +2 travail)", "SetPoint(travail § 2)"],
+            ["Msg(La personne continue de fumer comme si de rien n'était. +4 travail, -1 moral)", "SetPoint(travail § 4)", "SetPoint(moral § -1)"]
+        ]
+    },
+    {
+        "id": 5,
+        "name" : "Le monstre Amnésique",
+        "rarete" : 1000,
+        "condition" : "/",
+        "description" : "Vous vous êtes enfermer dans une petite salle après avoir été poursuivit par un monstre au visage déformé. Celui-ci essaie d'enfoncer la porte en gémissant \"Rreugh !\" sans y parvenir.\n🤫 Vous ne dites plus rien jusqu'à ce que le monstre s'en aille.\n🤣 Vous ÉCLATEZ de rire du ridicule de la scène !\n🏃‍♂️ Vous prenez vos jambes à votre cou le plus vite possible !",
+        "reactions" : ["🤫", "🤣", "🏃‍♂️"],
+        "commands" : [
+          ["Msg(Après de longues minutes, le monstre s'en va, vous laissant la vie sauve. -4 moral, +5 travail, +5 savoir)", "SetPoint(moral § -4)", "SetPoint(travail § 5)", "SetPoint(savoir § 5)"],
+          ["Msg(Plus vous regardez le monstre, moins vous pouvez vous contrôlez de rire, la scène est juste magistrale ! +15 moral)", "SetPoint(moral § 15)"],
+          ["Msg(En fuyant, le monstre arrive à vous griffer, mais vous parvenez à lui échapper malgré tout. -4 forme, +5 prestige, +75 XP)", "SetPoint(forme § -4)", "SetPoint(prestige § 5)", "SetXP(75)"]
+        ]
+      }
 ]

@@ -1,0 +1,95 @@
+[
+    {
+        "id":0,
+        "name":"Emprisonnement",
+        "description":"Délivrez des prisons ennemies tous les membres de votre faction !",
+
+
+        "ae_a_att":["- Tous les membres emprisonnés dans les geôles de la faction adverse seront délivrés", "- Gagne 200 points de redoutabilité", "- Gagne 250 points de prestige", "- Perd le casus belli \"Emprisonnement\" envers la faction adverse"],
+        "ae_a_def":["- Tous les membres de la faction adverse emprisonnés dans les geôles seront délivrés", "- Obtient un casus belli de vengeance \"Vengeance - Emprisonnement\" envers la faction adverse", "- Perte de 150 points de redoutabilité", "- Perte de 300 points de prestige"],
+        
+        "ae_d_att":["- Perd le casus belli \"Emprisonnement\" envers la faction adverse.", "- Perte de 150 points de redoutabilité", "- Perte de 300 points de prestige"],
+        "ae_d_def":["- Gagne 400 points de redoutabilité", "- Gagne 350 points de prestige"],
+        
+
+        "pb_att":["- Conserve le casus belli"],
+        "pb_def":["- Rien ne se passe..."],
+        
+
+        "sr_a_att":["- Perd le casus belli \"Emprisonnement\" envers la faction adverse.", "- Perte de 150 points de redoutabilité", "- Perte de 300 points de prestige"],
+        "sr_a_def":["- Gagne 200 points de redoutabilité", "- Obtient un casus belli de vengeance \"Vengeance - Emprisonnement\" envers la faction adverse"],
+        
+        "sr_d_att":["- Tous les membres emprisonnés dans les geôles de la faction adverse seront délivrés", "- Gagne 200 points de redoutabilité", "- Gagne 250 points de prestige", "- Perd le casus belli \"Emprisonnement\" envers la faction adverse"],
+        "sr_d_def":["- Tous les membres de la faction adverse emprisonnés dans les geôles seront délivrés", "- Perte de 150 points de redoutabilité", "- Perte de 300 points de prestige"]
+        
+    },
+    {
+        "id":1,
+        "name":"Alliance rompue",
+        "description":"Exigez réparation pour cette trahison ! Récupérez de l'or, du prestige et de la redoutabilité à la faction adverse et forcez la signature d'un pacte de non-agression !",
+        
+        "ae_a_att":["- Récupère 10% de l'or de la faction adverse.", "- Récupère 20% de la redoutabilité de la faction adverse", "Récupère 350 points de prestige de la faction adverse", "- Force la signature d'un pacte de non-agression", "- Perd le casus belli \"Alliance Romptue\" envers la faction adverse"],
+        "ae_a_def":["- Perd 10% d'or pour le bénéfice de la faction adverse", "- Perd 20% de redoutabilité pour le bénéfice de la faction adverse", "- Perd de 350 points de prestige pour le bénéfice de la faction adverse", "- Signe de force un pacte de non-agression"],
+        
+        "ae_d_att":["- Perd le casus belli \"Alliance Rompue\" envers la faction adverse.", "- Perd 10% de redoutabilité pour le bénéfice de la faction adverse", "- Perd 350 points de prestige pour le bénéfice de la faction adverse"],
+        "ae_d_def":["- Récupère 10% de la redoutabilité de la faction adverse", "- Récupère 350 points de prestige de la faction adverse"],
+        
+
+        "pb_att":["- Conserve le casus belli"],
+        "pb_def":["- Rien ne se passe..."],
+        
+
+        "sr_a_att":["- Perd le casus belli \"Alliance Rompue\" envers la faction adverse.", "- Perd 10% de redoutabilité pour le bénéfice de la faction adverse", "- Perd 350 points de prestige pour le bénéfice de la faction adverse"],
+        "sr_a_def":["- Récupère 10% de la redoutabilité de la faction adverse", "- Récupère 350 points de prestige de la faction adverse"],
+        
+        "sr_d_att":["- Récupère 8% de l'or de la faction adverse.", "- Récupère 18% de la redoutabilité de la faction adverse", "Récupère 300 points de prestige de la faction adverse", "- Force la signature d'un pacte de non-agression", "- Perd le casus belli \"Alliance Romptue\" envers la faction adverse"],
+        "sr_d_def":["- Perd 8% d'or pour le bénéfice de la faction adverse", "- Perd 18% de redoutabilité pour le bénéfice de la faction adverse", "- Perd 300 points de prestige pour le bénéfice de la faction adverse", "- Signe de force un pacte de non-agression"]
+        
+    },
+    {
+        "id":2,
+        "name":"Vengeance - Emprisonnement",
+        "description":"Vengez-vous, volez de l'or à la faction adverse et gagnez en redoutabilité ! Mais attention... si vous échouez, c'est votre ennemi qui vous volera de l'or...",
+    
+        "ae_a_att":["- Vole 8% de l'or de la faction adverse.", "- Gagne 500 points de redoutabilité", "- Perd le casus belli \"Vengeance - Emprisonnement\" envers la faction adverse"],
+        "ae_a_def":["- Perd 8% d'or pour le bénéfice de la faction adverse", "- Perd 10% de redoutabilité", "- Perd 200 points de prestige"],
+        
+        "ae_d_att":["- Perd 8% d'or pour le bénéfice de la faction adverse.", "- Perd le casus belli \"Vengeance - Emprisonnement\" envers la faction adverse.", "- Perd 25 % de redoutabilité", "- Perd 400 points de prestige"],
+        "ae_d_def":["- Récupère 8% de la l'or de la faction adverse", "- Gagne 8% de redoutabilité"],
+        
+
+        "pb_att":["- Perd le casus belli \"Vengeance - Emprisonnement\" envers la faction adverse."],
+        "pb_def":["- Rien ne se passe..."],
+        
+
+        "sr_a_att":["- Perd le casus belli \"Vengeance - Emprisonnement\" envers la faction adverse.", "- Perd 20% de redoutabilité ", "- Perd 300 points de prestige"],
+        "sr_a_def":["- Gagne 450 points de redoutabilité", "- Gagne 100 points de prestige"],
+        
+        "sr_d_att":["- Vole 8% de l'or de la faction adverse.", "- Gagne 500 points de redoutabilité", "- Perd le casus belli \"Vengeance - Emprisonnement\" envers la faction adverse"],
+        "sr_d_def":["- Perd 8% d'or pour le bénéfice de la faction adverse", "- Perd 8% de redoutabilité", "- Perd 250 points de prestige"]
+        
+    },
+    {
+        "id":3,
+        "name":"Hérésie",
+        "description":"Battez-vous pour rétablir la véritable religion du Poulétianisme dans la faction adverse et gagnez énormément de piété !",
+    
+        "ae_a_att":["- Gagne 50% de piété", "- Vole 20% d'or à la faction adverse", "- Perd le casus belli \"Hérésie\" envers la faction adverse."],
+        "ae_a_def":["- Atteint 100 piété si elle se situe en dessous.", "- Perd 20% d'or pour le bénéfice de la faction adverse."],
+        
+        "ae_d_att":["- Perd 500 points de prestige", "- Perd 25% d'or pour le benéfice de la faction adverse.", "- Perd le casus belli \"Hérésie\" envers la faction adverse."],
+        "ae_d_def":["- Gagne 25% d'or de la faction adverse."],
+        
+
+        "pb_att":["- Conserve le casus belli"],
+        "pb_def":["- Rien ne se passe..."],
+        
+
+        "sr_a_att":["- Perd 600 points de prestige", "- Perd 18% d'or pour le benéfice de la faction adverse.", "- Perd le casus belli \"Hérésie\" envers la faction adverse."],
+        "sr_a_def":["- Gagne 18% d'or de la faction adverse."],
+        
+        "sr_d_att":["- Gagne 50% de piété", "- Vole 18% d'or à la faction adverse", "- Perd le casus belli \"Hérésie\" envers la faction adverse."],
+        "sr_d_def":["- Atteint 100 piété si elle se situe en dessous.", "- Perd 18% d'or pour le bénéfice de la faction adverse."]
+        
+    }
+]

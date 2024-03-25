@@ -35,7 +35,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         return message.channel.send("Vous êtes endetté personnellement à hauteur de: " + dbUser.endettement + " :coin:"); //oui c'est une ref à Pécresse 2022
     }
 
-    //TODO: DEBUG
+    //TODO: Check pour voir pourquoi Gégé s'affiche quand Draxy fait le comptes. (je pense que ça affiche juste tous les membres qui sont endettés et non pas que ceux de notre faction)
     if(args[0] == "comptes") {
         
         
@@ -63,7 +63,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                     }
                 }
                 if(itemsProcessed === members.size) {
-                    return message.channel.send(arrayComptes.join("\n") + "\n\nAu total vos membres vous doivent **" + total + "** poyn :coin:");
+                    return message.channel.send(arrayComptes.join("\n") + "\n\nAu total les membres doivent **" + total + "** poyn :coin: à la faction");
                 }
             });
         });
@@ -74,7 +74,7 @@ module.exports.help = {
     name: "taxe",
     aliases: ['tx'],
     category: "faction",
-    desription: "Gérez tout ce qui s'apporte aux taxes.",
+    desription: "Gérez tout ce qui s'apporte aux taxes. Chaque semaine chaque membre doit le pourcentage de la taxe de son salaire maximum. Ils peuvent payer avec la commande envoiecoffre et leur endettement baissera. S'ils ne payent pas, l'endettement augmente.",
     usage: '[endettement/comptes/[{définir} {montant}]]',
     cooldown: 3, 
     permissions: false,

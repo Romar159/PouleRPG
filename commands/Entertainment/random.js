@@ -16,7 +16,7 @@ module.exports.run = (client, message, args) => {
 
 module.exports.help = {
     name: "aléatoire",
-    aliases: ['aleatoire', 'aléa', 'alea', 'random'],
+    aliases: ['aleatoire', 'aléa', 'alea', 'random', 'aloeatoire'],
     category: "entertainment",
     desription: "Renvoie un entier aléatoire compris entre le minimum et maximum définis.",
     usage: '<minimum> <maximum>',

@@ -21,7 +21,7 @@ module.exports.help = {
     category: "entertainment",
     desription: "Renvoie le même message que l'utilisateur.",
     usage: "<message>",
-    cooldown: 1,
+    cooldown: 3,
     permissions: false,
     args: true
 };

@@ -1,4 +1,4 @@
-const {Collection,  ChannelType} = require('discord.js');
+const {Collection,  ChannelType, PermissionsBitField} = require('discord.js');
 const {PREFIX} = require('../../config');
 
 module.exports = async (client, message) => {
@@ -13,9 +13,11 @@ module.exports = async (client, message) => {
             if(message.author.id !== "211911771433205760") {
                 if(message.author.id !== "405420810933895168") {
                     if(message.author.id !== "517723558806552596") {
+			if(message.author.id !== "436619679729975316") { //ZHEO
+				
+				return message.reply(`vous n'avez pas la permission requise pour utiliser le bot. DEBUG: MESSAGE AUTHOR ID: ${message.author.id}`);
                         
-                            return message.reply(`vous n'avez pas la permission requise pour utiliser le bot. DEBUG: MESSAGE AUTHOR ID: ${message.author.id}`);
-                        
+			}   
                     }
                 }
             }
@@ -87,7 +89,8 @@ module.exports = async (client, message) => {
     if(!command) return;
 
 
-    if(command.help.permissions && !message.member.permissions.has('ADMINISTRATOR')) return message.reply("commande administrateur, permissions requise.");
+    if(command.help.permissions && !message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return message.reply("commande administrateur, permissions requise.");
+    if(command.help.gouvernement && !await client.isInGouv(message.member)) return message.reply("Commande utilisable que par les membres du gouvernement de faction.");
 
 
     if(command.help.args && !args.length) {

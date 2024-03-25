@@ -4,6 +4,10 @@ const metiers = require("../../assets/rpg/metiers/metiers.json")
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
+    if(message.mentions.users.first()) {
+        dbUser = await client.getUser(message.guild.members.cache.get(message.mentions.users.first().id));
+        message.author = message.mentions.users.first();
+    }
     
 
     const embed = new EmbedBuilder()
@@ -24,7 +28,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     .addFields({name:'** **', value:'** **'})
 
     .addFields({name:`:gem: **Richesse**`, value:`${dbUser.richesse}`, inline:true})
-    .addFields({name:`:dart: **Puissance**`, value:`${dbUser.puissance}`, inline:true})
+    .addFields({name:`:dart: **Redoutabilité**`, value:`${dbUser.redoutabilite}`, inline:true})
     .addFields({name:'** **', value:'** **'})
 
     .addFields({name:`:muscle: **Forme**`, value:`${dbUser.forme}`, inline:true})
@@ -41,8 +45,8 @@ module.exports.help = {
     name: "points",
     aliases: ['pts'],
     category: "generalrpg",
-    desription: "Affiche vos points.",
-    usage: "",
+    desription: "Affiche vos points ou ceux d'un autre utilisateur.",
+    usage: "p<points [@user]",
     cooldown: 3,
     permissions: false,
     args: false

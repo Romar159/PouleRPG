@@ -31,7 +31,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ${message.author.tag} (${message.author.id}) a ajouté ${args[0]} poyn à la faction ${dbUser.faction}`);
 
-    if(args[0] >= 150) {
+    if(args[0] >= 1000) {
         if(await client.addBadge(client, message.member, dbUser, "5")) {
             message.channel.send(`WOW !! ${message.member} vient de gagner le badge **${client.filterById(list_badges, 5).name}** !`);
             client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - badge ID=5 obtenu pour ${message.member}`)

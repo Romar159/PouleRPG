@@ -3,10 +3,11 @@ const {PREFIX} = require('../../config');
 
 
 module.exports.run = async (client, message, args, settings, dbUser, command) => {
+    const currentDate = new Date();
 
     //if(dbUser.expedition_duration != 0) return message.reply("Vous ne pouvez pas combattre dans l'arène si vous êtes en expédition.");
     if(dbUser.in_jail == 'true') return message.reply("Aux cachots vous ne pouvez pas combattre dans l'arène.");
-    if(dbUser.on_mission == 'true') return message.reply("Vous êtes en mission, il vous est donc impossible de combattre dans l'arène.");
+    if(dbUser.cooldown_mission.getTime() > currentDate.getTime()) return message.reply("Vous êtes en mission, il vous est donc impossible de combattre dans l'arène.");
     //if(dbUser.working == 'true') return message.reply("Vous êtes en train de travailler, vous ne pouvez donc pas vous battre dans l'arène.");
 
 

@@ -77,7 +77,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                     
                 }
                 if(dbUser.metier > 900) {
-                    return await i.editReply({ content:`Vous ne pouvez pas exercez un autre métier que celui définit par votre titre politique ou si vous êtes maître de faction !`, components: [] }) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - possède un métier obligatoire. METIER_ID=${dbUser.metier}`, "err");;
+                    return await i.editReply({ content:`Vous ne pouvez pas exercer un autre métier que celui définit par votre poste au conseil ou si vous êtes maître de faction !`, components: [] }) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - possède un métier obligatoire. METIER_ID=${dbUser.metier}`, "err");;
                 }
 
                 await i.editReply({ content:`Vous exercez à présent le métier de **${mt.name}**. Pour commencer, consultez la commande p<travail !`, components: [] });

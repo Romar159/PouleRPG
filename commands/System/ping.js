@@ -20,23 +20,23 @@ module.exports.run = (client, message, args, settings, dbUser) => {
     });
 }
 
-module.exports.runSlash = async (client, interaction) => {
+// module.exports.runSlash = async (client, interaction) => {
 
-    try {
-        const msg = await interaction.reply({content: ":ping_pong: **|** Pong !\nTemps de réponse : **...ms**", fetchReply: true});
+//     try {
+//         const msg = await interaction.reply({content: ":ping_pong: **|** Pong !\nTemps de réponse : **...ms**", fetchReply: true});
 
-        await interaction.editReply({content: `:ping_pong: **|** Pong !\nTemps de réponse : **${msg.createdTimestamp - interaction.createdTimestamp}ms**`})
+//         await interaction.editReply({content: `:ping_pong: **|** Pong !\nTemps de réponse : **${msg.createdTimestamp - interaction.createdTimestamp}ms**`})
 
-    } catch (error) {
-        console.log("ERROR: ", error);
-    }
+//     } catch (error) {
+//         console.log("ERROR: ", error);
+//     }
 
-    //interaction.reply(`:ping_pong: **|** Pong !\nTemps de réponse : **${Date.now() + interaction.createdTimestamp}ms**`);
-    // const i = interaction.reply("Calcul...").then(async msg => {
-    //     interaction.editReply({content: `:ping_pong: **|** Pong !\nTemps de réponse : **${msg.createdTimestamp - interaction.createdTimestamp}ms**`});
-    // })
-    //interaction.reply(`:ping_pong: **|** Pong !\nTemps de réponse : **${msg.createdTimestamp - message.createdTimestamp}ms**`);
-}
+//     //interaction.reply(`:ping_pong: **|** Pong !\nTemps de réponse : **${Date.now() + interaction.createdTimestamp}ms**`);
+//     // const i = interaction.reply("Calcul...").then(async msg => {
+//     //     interaction.editReply({content: `:ping_pong: **|** Pong !\nTemps de réponse : **${msg.createdTimestamp - interaction.createdTimestamp}ms**`});
+//     // })
+//     //interaction.reply(`:ping_pong: **|** Pong !\nTemps de réponse : **${msg.createdTimestamp - message.createdTimestamp}ms**`);
+// }
 
 module.exports.help = {
     name: "ping",

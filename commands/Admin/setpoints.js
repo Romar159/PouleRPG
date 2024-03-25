@@ -3,7 +3,7 @@ const { ActionRowBuilder, ButtonBuilder } = require("discord.js");
 module.exports.run = async (client, message, args, settings, dbUser) => {
     client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
 
-    let points = ["puissance", "piete", "prestige", "richesse", "travail", "forme", "savoir", "moral"]
+    let points = ["redoutabilite", "piete", "prestige", "richesse", "travail", "forme", "savoir", "moral"]
     if(!message.mentions.users.first()) {
         client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Mention Invalide. Message=${message.content}`, "err");
 

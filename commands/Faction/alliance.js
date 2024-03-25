@@ -1,6 +1,9 @@
 const {EmbedBuilder} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
+
+    return message.channel.send("Cette commande n'existe plus.")
+    //return message.channel.send("Les alliances arrivent très vite !");
     
     client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
 
@@ -90,7 +93,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 module.exports.help = {
     name: "alliance",
     aliases: ['alliance'],
-    category: "faction",
+    category: "",
     desription: "Forge une alliance entre deux factions.",
     usage: "<faction> [briser]",
     cooldown: 3,

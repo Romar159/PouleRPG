@@ -93,7 +93,7 @@
         "id" : 15,
         "categorie": "Littérature",
         "question" : "Qui a écrit 'Alice au Pays des Merveilles' ?",
-        "reponses" : ["lewis carroll", "carroll"]
+        "reponses" : ["lewis carroll", "carroll", "charles lutwidge dodgson", "dodgson", "lutwidge dodgson"]
     },
     {
         "id" : 16,
@@ -166,5 +166,119 @@
         "categorie" : "Art",
         "question" : "Quelle est la couleur contraire du violet ?",
         "reponses" : ["le jaune", "jaune"]
-      }
+    },
+    {
+        "id" : 28,
+        "categorie" : "Littérature",
+        "question" : "Qui est l'auteur du recueil de poèmes intitulé 'Les Fleurs du mal' ?",
+        "reponses" : ["charles baudelaire", "baudelaire"]
+    },
+    {
+        "id" : 29,
+        "categorie" : "Littérature",
+        "question" : "Dans quel pays se déroule 'Les Misérables' de Victor Hugo ?",
+        "reponses" : ["france"]
+    },
+    {
+        "id" : 30,
+        "categorie" : "Littérature",
+        "question" : "Quand arrive 'Godot' dans la pièce de théatre 'En attendant Godot' ?",
+        "reponses" : ["jamais", "à aucun moment", "** **"]
+    },
+    {
+        "id" : 31,
+        "categorie" : "Littérature",
+        "question" : "Quel est le nom de plume de la romancière Amantine Aurore Lucile Dupin de Francueil ?",
+        "reponses" : ["george sand"]
+    },
+    {
+        "id" : 32,
+        "categorie" : "Sculpture",
+        "question" : "Comment s'appelait l'apprentie de Auguste Rodin qui a notamment réalisé l'œuvre dénommée \"La Petite Châtelaine\"",
+        "reponses" : ["camille claudel", "claudel"]
+    },
+    {
+        "id": 33,
+        "categorie": "Littérature",
+        "question": "Dans quel mouvement artistique trouve-t-on la majorité des œuvres de Boris Vian ?",
+        "reponses": ["surréalisme", "surrealisme", "surrealiste"]
+    },
+    {
+        "id": 34,
+        "categorie": "Cinéma",
+        "question": "Qui a réalisé le film \"Pulp Fiction\" ?",
+        "reponses": ["quentin tarantino", "tarantino"]
+    },
+    {
+        "id": 35,
+        "categorie": "Littérature",
+        "question": "Qui a écrit le livre \"Le Petit Prince\" ?",
+        "reponses": ["antoine de saint-exupéry", "saint-exupéry", "antoine de saint exupéry", "antoine de saint-exupery", "saint-exupery", "antoine de saint exupery", "saint exupery", "saint exupéry"]
+    },
+    {
+        "id": 36,
+        "categorie": "Peinture",
+        "question": "Dans quel musée français peut-on admirer \"Le Radeau de La Méduse\" ?",
+        "reponses": ["le louvre", "le musée du louvre", "louvre", "le musee du louvre"]
+    },
+    {
+        "id": 37,
+        "categorie": "Peinture",
+        "question": "Dans quel musée français peut-on admirer \"Le Radeau de La Méduse\" ?",
+        "reponses": ["le louvre", "le musée du louvre", "louvre", "le musee du louvre"]
+    },
+    {
+        "id" : 38,
+        "categorie": "Musique",
+        "question" : "Quel compositeur à composé la symphonie connu sous le nom : \"Du Nouveau Monde\" ?",
+        "reponses" : ["antonín dvořák", "antonin dvorak", "dvorak"]
+    },
+    {
+        "id": 39,
+        "categorie": "Cinéma",
+        "question": "Quel cinéaste français est connu pour ses films muets comme 'Le Voyage dans la Lune' ?",
+        "reponses": ["georges méliès", "méliès", "georges melies", "melies"]
+    },
+    {
+        "id": 40,
+        "categorie": "Philosophie",
+        "question": "Quel philosophe grec a proposé la parabole de la caverne pour expliquer la réalité perçue et la réalité intelligible ?",
+        "reponses": ["platon"]
+    },
+    {
+        "id": 41,
+        "categorie": "Biologie",
+        "question": "Quel est le nom de l'appareil reproducteur masculin ?",
+        "reponses": ["bite", "pénis", "penis", "teub", "zob", "popol", "zizi", "chibre", "chibrax", "la maxi teub de romar", "verge", "teube", "membre"]
+    },
+    {
+        "id": 42,
+        "categorie": "Gastronomie",
+        "question": "Quel est la marque connu principalement pour ses chips conditionné dans un tube en carton et à la forme de tuile.",
+        "reponses": ["pringles"]
+    },
+    {
+        "id": 43,
+        "categorie" : "Gastronomie",
+        "question" : "Quel est le nom des chips connu pour leur forme triangulaire",
+        "reponses" : ["doritos"]
+    },
+    {
+        "id": 44,
+        "categorie" : "Histoire",
+        "question" : "Quel était le nom de Paris avant qu'il ne s'appel paris.",
+        "reponses" : ["lutèce", "lutece", "lutetia"]
+    },
+    {
+        "id": 45,
+        "categorie" : "Musique",
+        "question" : "Qui est le compositeur de la bande originale du film Interstellar réalisé par Christopher Nolan",
+        "reponses" : ["zimmer", "hans zimmer"]
+    },
+    {
+        "id": 46,
+        "categorie" : "Géographie",
+        "question" : "Avec quel pays la France a la plus grande frontière terrestre ?",
+        "reponses" : ["bresil", "brésil", "brezil", "le brésil", "le bresil"]
+    }
 ]

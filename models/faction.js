@@ -57,6 +57,17 @@ const factionSchema = mongoose.Schema({
         "default": ['']
     },
 
+    relations: {
+        "type": Array,
+        "default": [0, 0, 0, 0]
+    },
+
+    commandants: {
+        "type": Array,
+        "default": ["NULL", "NULL", "NULL"]
+    },
+
+    casusbelli: Array,
     cachot: Array,
     
 
@@ -66,8 +77,27 @@ const factionSchema = mongoose.Schema({
     ptsami_alpha: Number,
 
     en_guerre: Boolean,
-    ennemy: String,
-    ally: String,
+    date_debut_guerre: {
+        "type": Date,
+        "default": 0
+    },
+    attaquant: {
+        "type": String,
+        "default": "NULL"
+    },
+    defensseur: {
+        "type": String,
+        "default": "NULL"
+    },
+    casusbelli_utilise: {
+        "type": Number,
+        "default": -1
+    },
+    score_guerre: {
+        "type": Number,
+        "default": 0
+    }
+    
 
 });
 

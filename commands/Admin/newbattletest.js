@@ -1,4 +1,4 @@
-const units_values = require("../../assets/guerre/units.json");
+//const units_values = require("../../assets/guerre/units.json");
 
 module.exports.run = async (client, message, args) => {
     
