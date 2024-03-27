@@ -364,5 +364,11 @@
         "categorie" : "Jeux Vidéo",
         "question" : "Dans The Legend of Zelda Twilight Princess comment s'appelle la princesse du crépuscule ?",
         "reponses" : ["midona", "midna"]
+    },
+    {
+        "id": 61,
+        "categorie" : "Délire",
+        "question" : "Quelle faction pète les couilles à sa pute à être trop chiant ?",
+        "reponses" : ["alpha"]
     }
 ]
