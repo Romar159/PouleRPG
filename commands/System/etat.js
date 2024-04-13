@@ -1,13 +1,5 @@
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
-    //TODO: remplacer l'état, il faut plus afficher chaque truc avec leur timer, mais le timer le plus long pour les 4 - Travail - Entrainement - Expédition - Mission
-
-    //TODO: En bêta on va changer un peu le fonctionnement, pour la Alpha je vais garder les 4 timers indépendant et faire un calcul parmis les 4 qui est le plus long;
-    //TODO: Ce sera également la même chose dans les 4 commandes pour afficher le timer. 
-    //TODO: Seulement en bêta, ce sera QU'UN SEUL TIMER, un timer d'activité, comme ça on en gère qu'un seul. Et il y aura l'état qui affiche ce que l'on fait, et lorsqu'on
-    //TODO: Refait une des commandes à timer, ça remet à false tous les états et remet ensuite le nouvel état !
-    //*Tout compte fait. Je vais le développer pour la Alpha.
-
     const currentDate = new Date();
 
     let dailyCD = 0;

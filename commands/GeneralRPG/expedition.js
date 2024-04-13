@@ -112,13 +112,13 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             
             var finEmbed = new EmbedBuilder()
             .setColor('3F992D')
-            .setAuthor({name:`Expédition terminée !`, iconURL:message.author.displayAvatarURL()})
+            .setAuthor({name:`Expédition`, iconURL:message.author.displayAvatarURL()})
             .addFields([{name: `** **`, value:`**:test_tube: +${final_xp} XP**`},{name: `** **`, value: `:coin: **+${final_or} Poyn**`},{name: `** **`, value: `:brain: **+${final_savoir} points de savoir**`}])
             
             if(faction_exped.name != dbUser.faction) { //si on est ailleurs que notre territoire on a de meilleurs bonus
                 finEmbed = new EmbedBuilder()
                 .setColor('3F992D')
-                .setAuthor({name:`Expédition en territoire ennemi terminée !`, iconURL:message.author.displayAvatarURL()})
+                .setAuthor({name:`Expédition en territoire ennemi !`, iconURL:message.author.displayAvatarURL()})
                 .addFields([{name: `** **`, value:`**:test_tube: +${Math.round(final_xp * 1.15)} XP**`},{name: `** **`, value: `:coin: **+${Math.round(final_or * 1.15)} Poyn**`},{name: `** **`, value: `:brain: **+${Math.round(final_savoir * 1.15)} points de savoir**`}, {name: `** **`, value: `👑 **+1 point de prestige**`}])    
             
                 await client.setOr(client, message.member, initial_or_apporter, message);
@@ -142,16 +142,6 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             message.channel.send({embeds:[finEmbed]});
 
             
-
-            // retire le membre des joueurs sur le territoire de la faction.
-            
-            if(faction_exped.name != dbUser.faction) {
-
-                let arr = faction_exped.joueurs_sur_le_territoire;
-                arr = arr.filter(e => e !== dbUser.userID);
-
-                await client.updateFaction(faction_exped.name, {joueurs_sur_le_territoire: arr});
-            }
 
             const NewcurrentDate = new Date();
             // Nombre de millisecondes à ajouter (par exemple, 1 heure = 3600 secondes * 1000 millisecondes)

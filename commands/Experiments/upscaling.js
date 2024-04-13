@@ -22,7 +22,7 @@ module.exports.run = async (client, message, args) => {
 module.exports.help = {
     name: "upscaling",
     aliases: ['us'],
-    category: "experiments",
+    category: "",
     desription: "Augmente la qualité d'une image",
     usage: "",
     cooldown: 1,

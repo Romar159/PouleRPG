@@ -16,7 +16,7 @@ module.exports.run = async (client, message, args) => {
     await client.setOr(client, message.mentions.members.first(), args[1], message);
     message.channel.send(`${args[1]} poyn ajoutées à ${args[0]}`);
 
-    client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ${args[1]} poyn ajoutées à ${args[0].tag} (${args[0].id})`);
+    client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ${args[1]} poyn ajoutées à ${args[0].user.tag} (${args[0].user.id})`);
 
 }
 

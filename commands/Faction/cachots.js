@@ -48,7 +48,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     } else { // enfermer ou libération cachot
 
-        var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
+        /*var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
         var est_maitre = false;
 
         for(let y=0; y<roles_maitre.length; y++) {
@@ -59,7 +59,14 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 est_maitre = false;
             }
         } 
-        if(!est_maitre) return message.reply("commande utilisable que par les maîtres de faction.");
+        if(!est_maitre) return message.reply("commande utilisable que par les maîtres de faction.");*/
+
+        if(await client.isInGouv(message.member) == false) {
+            return message.reply(`Vous n'êtes pas maître de faction ou conseiller. Vous ne pouvez pas utiliser cette commande.`)
+        }
+        if(dbUser.in_jail == 'true') {
+            return message.reply(`Vous êtes actuellement au cachot, vous ne pouvez donc ni enfermer ni libérer un membre.`)
+        }
         // lois : post lois, implémenter la possibilité par le conseil etc...
         
 
@@ -67,17 +74,21 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
  
         if(!message.mentions.users.first()) return message.reply("Erreur, mention invalide.");
         if(message.author.id == message.mentions.users.first().id) return message.reply("Vous ne pouvez pas vous enfermer ou vous libérer vous même des cachots.");
+        
         let cMembre = message.guild.members.cache.get(message.mentions.users.first().id);
         let dbMembre = await client.getUser(cMembre);
         // console.log(dbMembre.in_jail); // debug
-        if(dbMembre.faction != dbUser.faction) {
-            if(faction.joueurs_sur_le_territoire.indexOf(dbMembre.userID) == -1) {
-                return message.channel.send("Cet utilisateur n'est pas sur votre territoire.");
+        if(args[0].toLowerCase() == "enfermer") { 
+            if(dbMembre.faction != dbUser.faction) {
+                if(faction.joueurs_sur_le_territoire.indexOf(dbMembre.userID) == -1) {
+                    return message.channel.send("Cet utilisateur n'est pas sur votre territoire."); 
+                }
             }
         }
         //if(dbMembre.faction != dbUser.faction ) return message.channel.send("Cet utilisateur n'est pas membre de votre faction ou n'est pas sur votre territoire.");
         
         if(args[0].toLowerCase() == "enfermer") {
+            if(faction.idmaitre == message.mentions.users.first().id) return message.reply("Vous ne pouvez pas enfermer le maître de votre propre faction.");
             if(dbMembre.in_jail == "true") return message.channel.send("Cet utilisateur est déjà dans des cachots.");
 
                 await client.updateUser(cMembre, {in_jail: true});
@@ -99,10 +110,13 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
                         client.addCasusBelli(faction_benef, faction_cible, "0")
                     }
+                    let arr = faction.joueurs_sur_le_territoire.filter(e => e !== dbMembre.userID);
+                    await client.updateFaction(faction.name, {joueurs_sur_le_territoire: arr});
                 }
         }
         else if(args[0].toLowerCase() == "libérer" || args[0].toLowerCase() == "liberer") {
-                if(dbMembre.in_jail == "false") return message.channel.send("Cet utilisateur n'est pas dans vos cachots. Vous ne vouliez pas plutôt l'enfermer ? **:)**");
+                //if(dbMembre.in_jail == "false") return message.channel.send("Cet utilisateur n'est pas dans vos cachots. Vous ne vouliez pas plutôt l'enfermer ? **:)**");
+                if(!faction.cachot.includes(dbMembre.userID)) return message.channel.send("Cet utilisateur n'est pas dans vos cachots. Vous ne vouliez pas plutôt l'enfermer ? **:)**");
 
                 await client.updateUser(cMembre, {in_jail: false});
 
@@ -114,7 +128,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 message.channel.send(`${cMembre} de ${dbMembre.faction} a été libéré des cachots de la faction ${dbUser.faction} par <@${dbUser.userID}>`)
                        
         } else {
-            return message.reply("action invalide.");
+            return message.reply("action invalide (libérer/enfermer).");
         } 
     }
 }

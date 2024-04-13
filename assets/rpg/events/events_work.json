@@ -2,7 +2,7 @@
     {
         "id": 0,
         "name": "Rencontre avec un noble",
-        "rarete": 25,
+        "rarete": 60,
         "condition": "/",
         "description": "Pendant votre travail, vous croisez un noble en voyage. Il vous adresse la parole.\n🎩 Vous le saluez simplement dans le plus grand respect.\n💬 Vous arrêtez votre travail pour discuter\n🚶‍♂️ Vous l'ignorez en restant concentré sur votre travail",
         "reactions": ["🎩", "💬", "🚶‍♂️"],

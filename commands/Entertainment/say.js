@@ -5,7 +5,7 @@ module.exports.run = (client, message, args) => {
     
     message.delete();
 
-    if(message.content.indexOf('@everyone') >= 0) {
+    if(message.content.indexOf('@everyone') >= 0 || message.content.indexOf('@here') >= 0) {
         client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - @everyone trouvé !`, "warn");
 
         return message.channel.send('Le contenu du message est innaproprié.');
@@ -17,7 +17,7 @@ module.exports.run = (client, message, args) => {
 
 module.exports.help = {
     name: "dire",
-    aliases: ['dis'],
+    aliases: ['dis', "say"],
     category: "entertainment",
     desription: "Renvoie le même message que l'utilisateur.",
     usage: "<message>",

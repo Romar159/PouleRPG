@@ -6,6 +6,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     const list_badges = require('../../assets/rpg/badges.json');
 
+    if(!args[0]) args[0] = "classement";
+
     
     if(args[0] == 'voir' || args[0] == 'classement') {}
     else if(message.author.id != '421400262423347211')
@@ -22,7 +24,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         .setColor('BF2F00');
         if(!args[1] || !message.mentions.users.first()) {
             if(message.author.id == '421400262423347211')
-                embed.setDescription(`:woman_red_haired: Oh, La vénitiene ! Tu as bien évidemment **∞ +1.5** point(s) vénitienne.`);
+                embed.setDescription(`:woman_red_haired: Oh, La vénitiene ! Tu as bien évidemment **∞ +0.5** point(s) vénitienne.`);
             else
                 embed.setDescription(`:woman_red_haired: Vous avez **${dbUser.pointsvenitienne}** point(s) vénitienne.`);
 
@@ -30,7 +32,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         }
         else {
             if(message.mentions.users.first().id == '421400262423347211') {
-                embed.setDescription(`:woman_red_haired: ${message.mentions.users.first()} a **∞ +1.5** point(s) vénitienne.`);
+                embed.setDescription(`:woman_red_haired: ${message.mentions.users.first()} a **∞ +0.5** point(s) vénitienne.`);
             } else {
                 const usr = await client.getUser(user);
                 embed.setDescription(`:woman_red_haired: ${user} a **${usr.pointsvenitienne}** point(s) vénitienne.`);
@@ -74,9 +76,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         .setAuthor({name: `Classement des points vénitienne`, iconURL: client.user.displayAvatarURL()});
 
         await client.getUsers(message.guild).then(p => {
-                leadEmbed.addFields({name: `** **`, value: `**:woman_red_haired: ${message.guild.members.cache.get('421400262423347211').user.username}** - **∞ + 1.5** point(s) vénitienne.`});
+                leadEmbed.addFields({name: `** **`, value: `**:woman_red_haired: ${client.upperCaseFirstChar(message.guild.members.cache.get('421400262423347211').user.username)}** - **∞ + 0.5** point(s) vénitienne.`});
             p.sort((a, b) => (a.pointsvenitienne < b.pointsvenitienne) ? 1 : -1).splice(0, 5).forEach(e => {
-                leadEmbed.addFields({name: `** **`, value: `**${client.users.cache.get(e.userID).username}** - **${e.pointsvenitienne}** point(s) vénitienne.`});
+                leadEmbed.addFields({name: `** **`, value: `**${client.upperCaseFirstChar(client.users.cache.get(e.userID).username.replace(/[`_*\-]/g, ''))}** - **${e.pointsvenitienne}** point(s) vénitienne.`});
             });
         });
         message.channel.send({embeds:[leadEmbed]});
@@ -88,8 +90,8 @@ module.exports.help = {
     aliases: ['point venitienne', 'ptveni', 'ptsveni'],
     category: "entertainment",
     desription: "Permet de voir ses points venitienne.",
-    usage: "<action:voir/classement/ajout/retrait> <@user>",
+    usage: "[classement/ajout/retrait/[<voir> <@user>]]",
     cooldown: 1,
     permissions: false,
-    args: true
+    args: false
 };

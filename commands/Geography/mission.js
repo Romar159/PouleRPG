@@ -1,7 +1,7 @@
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, EmbedBuilder } = require("discord.js");
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
-    //TODO :
+    
     /*
      rendre cette fonction plus intéressante. En gros, au lieu d'envoyer en mission en pigant le joueur, on pourra sélectionner le membre de notre choix
      et en fonction de qui c'est, ses rôles, son métier et tout, différentes missions seront disponibles
@@ -15,7 +15,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
      //* Note de dev: réutilisser le système qui permet de nommer des commandants. Sauf qu'au lieu de nommer on sélectionne pour choisir une mission ensuite.
     //message.reply("Cette commande ne sera disponnible que dans une future mise à jour.");
 
-    //TODO: Il faudra également une sous-commande pour lister les membres partis en mission, pour combien de temps ils en ont encore, et évidemment s'ils ont finit cela donne les "récompenses" et "résultats".
+    //TODO Bêta: Il faudra également une sous-commande pour lister les membres partis en mission, pour combien de temps ils en ont encore, et évidemment s'ils ont finit cela donne les "récompenses" et "résultats".
     
     
 
@@ -342,7 +342,7 @@ async function SelectMission(selected_member, dbFaction, client, message, args, 
     var selec_id_mission = 0;
 
 
-    //TODO: Mais du coup en Alpha on devrait aussi pouvoir en tant que membre faire des missions "users" ?? En vu des missions des métiers (remarque ces derniers auront leur fichier à part évidemment.)
+    //TODO-Réflexion: Mais du coup en Alpha on devrait aussi pouvoir en tant que membre faire des missions "users" ?? En vu des missions des métiers (remarque ces derniers auront leur fichier à part évidemment.)
 
     var embed_liste_missions = new EmbedBuilder()
         .setColor('3C4C66')
@@ -444,6 +444,25 @@ async function SelectMission(selected_member, dbFaction, client, message, args, 
                         await client.updateUser(selected_member, {state_travail: false});
                         await client.updateUser(selected_member, {state_entrainement: false});
                         await client.updateUser(selected_member, {state_expedition: false});
+
+                        let localisation_fac = dbUser.localisation_expedition;
+
+                        if(dbUser.localisation_expedition != "NULL") {
+                            // retire le membre des joueurs sur le territoire de la faction.
+                            let faction_exped = await client.getFaction(localisation_fac);
+                            if(faction_exped.name != dbUser.faction) {
+
+                                let arr = faction_exped.joueurs_sur_le_territoire;
+                                arr = arr.filter(e => e !== dbUser.userID);
+
+                                await client.updateFaction(faction_exped.name, {joueurs_sur_le_territoire: arr});
+                            }
+                        }
+        
+        await client.updateUser(message.member, {localisation_expedition: "NULL"});
+
+
+
                         await client.updateUser(selected_member, {state_mission: false});
                     }
 
@@ -589,7 +608,7 @@ async function SelectMission(selected_member, dbFaction, client, message, args, 
                             }
 
                             //TODO: En bêta back-end update : Ajouter à l'objet Faction, une fonction qui récupère juste les points de la faction, empêchant de spam ce truc dégueu
-
+                            //TODO: En bêta back-end update : de toute façon il faudra énormément améliorer les commandes à choix de ce genre. C'est trop "hardcodé compliqué". Tout ce qui est missions, décision_de_guerre etc...
                             //toutes les factions hérétiques (-200 de piété)
                             if(faction_heretiques.length <= 0) {
                                 await i.editReply({content: 'La mission a échouée, aucune faction n\'est hérétique actuellement. Le chapelain perd -25 points de piété pour cette erreur.', embeds:[], components:[]});

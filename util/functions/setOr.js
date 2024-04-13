@@ -1,7 +1,7 @@
 module.exports = (client, member, message) => {
 
     /**
-     * Ajoute ou retire de l'or à un utilisateur
+     * Ajoute ou retire des poyn à un utilisateur
      *
      * @author: Romar1
      * @param {Client} client le client.

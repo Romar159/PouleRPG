@@ -43,7 +43,7 @@ module.exports.help = {
     name: "envoiecoffre",
     aliases: ['envcoffre'],
     category: "economie",
-    desription: "Envoie des poyn dans votre coffre de faction.",
+    desription: "Envoyez des poyn dans votre coffre de faction pour aider votre faction ou payer vos taxes s'il y en a.",
     usage: "<poyn>",
     cooldown: 3,
     permissions: false,

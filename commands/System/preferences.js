@@ -19,9 +19,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
 module.exports.help = {
     name: "préférences",
-    aliases: ['preferences', 'p'],
+    aliases: ['preferences', 'pref'],
     category: "system",
-    desription: "Modifie vos préférences.",
+    desription: "Modifie vos préférences RPG.",
     usage: '<[option] [choix]>',
     cooldown: 3, 
     permissions: false,

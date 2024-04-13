@@ -79,5 +79,5 @@ module.exports.help = {
     cooldown: 2, 
     permissions: false,
     args: false,
-    wiki: 'https://romar159.github.io/PouleRPGweb/wiki/system/aide.html'
+    wiki: 'https://poulerpg.000webhostapp.com/wiki/system/aide.html'
 };

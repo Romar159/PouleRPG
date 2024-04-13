@@ -17,7 +17,13 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     // Si l'on choisit de définir la taxe
     if(args[0] == "définir" || args[0] == "definir" || args[0] == "d") {
        
-        if(!client.isMaster(message)) return message.reply("Commande utilisable que par les maîtres de faction.");  //verification maître.
+        //if(!client.isMaster(message)) return message.reply("Commande utilisable que par les maîtres de faction.");  //verification maître.
+        
+        if(!client.isMaster(message)) {
+            if(await client.isConseiller(message.member, 902) == false) {
+                return message.reply(`Vous n'êtes pas maître de faction ou intendant. Vous ne pouvez pas utiliser cette commande.`)
+            }
+        }
 
         
         if(isNaN(args[1])) return message.reply("Veuillez renseigner une valeur numérique.");

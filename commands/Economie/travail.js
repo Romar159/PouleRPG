@@ -57,7 +57,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     //if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
 
     //si le timer métier est plus loin que la date actuelle (donc pas passé)
-    //TODO:Remettre le >
+    
     //if(dbUser.cooldown_metier.getTime() > currentDate.getTime()) {
         if(dbUser.cooldown_activity.getTime() > currentDate.getTime()) {
         
@@ -136,8 +136,8 @@ module.exports.help = {
     aliases: ['t'],
     category: "economie",
     desription: "Exercez votre métier pour gagner des poyn et des points de travail.",
-    usage: '[heures]',
+    usage: '<heures>',
     cooldown: 2, 
     permissions: false,
-    args: false,
+    args: true,
 };

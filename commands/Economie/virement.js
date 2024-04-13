@@ -1,6 +1,7 @@
 const {EmbedBuilder} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
+    //* NOTE: Noter qu'il existe un bug connu ici. On peut se donner soit même des poyn. Mais parce que je trouve ça drôle et que ça casse rien, je laisse.
     client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
 
     if(isNaN(args[1]) || args[1] < 1) return message.reply("vous devez définir un nombre valide.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Nombre Invalide. MESSAGE=${message.content}`, "err");
@@ -26,7 +27,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
 module.exports.help = {
     name: "virement",
-    aliases: [],
+    aliases: ["givepoyn", "giveor", "vir"],
     category: "economie",
     desription: "Envoie des poyn à un utilisateur.",
     usage: "<@user> <poyn>",

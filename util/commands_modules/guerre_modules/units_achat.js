@@ -269,7 +269,7 @@ const units_achat = async (client, message, dbUser) => {
 
                 if((userFaction.bank - total) < 0) {
                     // note: cette situation ne doit pas exister mais je la met par sécurité (comme on vérifie déjà l'or avant avec le bouton d'achat qui se grise.)
-                    message.reply(`Il n'y a pas assez d'or dans le coffre de faction.`)
+                    message.reply(`Il n'y a pas assez de poyn dans le coffre de faction.`)
                     collector.stop();
                 } else {
     
@@ -299,7 +299,7 @@ const units_achat = async (client, message, dbUser) => {
                 collector.stop();
             }
             else if(i.customId == "btnachetertropcher" + i.user.id) {
-                await i.reply({content:`Il n'y a pas assez d'or dans votre coffre de faction`, ephemeral:true})
+                await i.reply({content:`Il n'y a pas assez de poyn dans votre coffre de faction`, ephemeral:true})
             }
 
 
