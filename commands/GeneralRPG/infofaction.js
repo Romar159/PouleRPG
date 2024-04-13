@@ -10,7 +10,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             const members = fetchAll.filter(m => m.roles.cache.get(faction.roleid));
             let maitre;
             let ppmaitre;
-            if(faction.idmaitre) {
+            if(faction.idmaitre != "") {
                 maitre = `<@${faction.idmaitre}>`;
                 ppmaitre = message.guild.members.cache.get(faction.idmaitre);
             } else {
@@ -171,6 +171,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         catch(e) { //Mettre le ICI! <-
             if(args.length)
                 message.reply("Faction Inexistante.");
+            console.log(e);
             client.writeLog(`Commande ${this.help.name} par ${message.author.tag} (${message.author.id}) | erreur catch: ${e} | (cette erreur provient souvent de l'argument qui n'est pas reconnu par le bot pour cette commande)`, "err");
         }
     });

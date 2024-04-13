@@ -1,9 +1,18 @@
 const { EmbedBuilder } = require("discord.js");
 let events = require("../../assets/rpg/events/events.json");
 
-//TODO: Changer en EV++ toutes les commands de tous les fichiers
-//TODO: Et bien sur, ajouter PLUS d'events
+//TODO: Bien sur, ajouter PLUS d'events
 //TODO: Equilibrer la rareté !
+//TODO: Ajouter plus de commande EV++ notamment : la possiblité d'executer par random. avoir une chance sur X que quelque chose s'execute.
+//TODO: Ajouter des trucs pour modifier des états comme sortir de prison par exemple.
+
+//TODO: Ajouter également le listage automatique des raretés. Au lieu de stocker dans une variable on scan tous les fichiers avant. (niveau perf ça fait quoi ?)
+
+function isDiscordEmoji(text) {
+    // Expression régulière pour les emojis Discord
+    const discordEmojiRegex = /:[a-zA-Z0-9_]+:/g;
+    return discordEmojiRegex.test(text);
+}
 
 module.exports = async (client, message, args, settings) => {
 
@@ -12,6 +21,8 @@ module.exports = async (client, message, args, settings) => {
         "Msg": (message, content) => message.channel.send(content),
         "SetPoyn": (message, amount) => {
 
+            //TODO: Ici, il faut CHECK si le joueur a ASSEZ de Poyn ! Si non il faut tout cancel et dire qu'on a pas assez d'argent
+            //*NOTE: Probablement pas pour la Alpha c'est pass logique pour les autres events, c'est spécifiques aux achats.
             client.writeLog(`Event: gameEvent : ${message.author.tag} (${message.author.id}) - Execution d'action Event : SetOr. Message=${message.content} - ContentData= quantité : ${amount}, member: ${message.member}`);
 
             client.setOr(client, message.member, parseInt(amount), message);
@@ -31,11 +42,11 @@ module.exports = async (client, message, args, settings) => {
         // Ajoutez d'autres actions au besoin
     };
 
-    let general_events_rarity = [100];
-    let cachot_events_rarity = [1000, 900];
-    let mission_events_rarity = [10];
-    let working_events_rarity = [10];
-    let expedition_events_rarity = [10, 5];
+    let general_events_rarity = [60, 115, 100, 80, 75, 41, 6969];
+    let cachot_events_rarity = [50];
+    let mission_events_rarity = [30000];
+    let working_events_rarity = [60];
+    let expedition_events_rarity = [15];
     let conspiring_events_rarity = [10];
 
 
@@ -54,19 +65,17 @@ module.exports = async (client, message, args, settings) => {
 
     //*Pour les états d'activity, il faut donc vérifier l'activité en cours pour choisir le JSON mais SURTOUT si on est toujours en train de la faire ou si c'est terminé avec le activity_cooldown
 
-    //TODO: Petit bug ici, j'ai terminé mon travail (donc mon cooldwon_activity est terminé) mais j'ai toujours les events travail. Je devrais pas
-
-    else if (dbUser.cooldown_activity.getTime() < currentDate.getTime() && dbUser.state_mission == true) {
+    else if (dbUser.cooldown_activity.getTime() > currentDate.getTime() && dbUser.state_mission == true) {
         events = require("../../assets/rpg/events/events_mission.json");
         rarity_sorting = mission_events_rarity; // on prend donc les raretés des events mission.
     }
 
-    else if (dbUser.cooldown_activity.getTime() < currentDate.getTime() && dbUser.state_travail == true) {
+    else if (dbUser.cooldown_activity.getTime() > currentDate.getTime() && dbUser.state_travail == true) {
         events = require("../../assets/rpg/events/events_work.json");
         rarity_sorting = working_events_rarity; // on prend donc les raretés des events travail.
     }
 
-    else if (dbUser.cooldown_activity.getTime() < currentDate.getTime() && dbUser.state_expedition == true) {
+    else if (dbUser.cooldown_activity.getTime() > currentDate.getTime() && dbUser.state_expedition == true) {
         events = require("../../assets/rpg/events/events_expedition.json");
         rarity_sorting = expedition_events_rarity; // on prend donc les raretés des events expédition.
     }
@@ -107,9 +116,15 @@ module.exports = async (client, message, args, settings) => {
         if (final_event.condition == "/") { // il n'y a pas de condition
         } else {
             // la condition doit ressembler à ça dans le json : "if(dbUser.faction == 'epsilon') return true;" (pas de else, pas d'accolades)
-            var result = eval('(function() {' + final_event.condition + '}())');
-            if (result == true) { } // continuer
-            else return;
+            try {
+                var result = eval('(function() {' + final_event.condition + '}())');
+                if (result == true) { } // continuer
+                else return;
+            } catch(e) {
+                console.log(e);
+                return;
+            }
+            
         }
     } else {
         return;
@@ -136,17 +151,34 @@ module.exports = async (client, message, args, settings) => {
         });
     } else { // On affiche l'event et on gère les réactions.
 
-        let msg_ev = await message.channel.send(`${final_event.name}\n\n${final_event.description}`);
+        var embed_event = new EmbedBuilder()
+        .setColor('3C4C66')
+        .setAuthor({name: `Event - ${message.author.username}`, iconURL: message.author.displayAvatarURL()})
+        .setTitle(`${final_event.name}`)
+        .setDescription(`${final_event.description}`);
+    
+
+        //let msg_ev = await message.channel.send(`${final_event.name}\n\n${final_event.description}`);
+        let msg_ev = await message.channel.send({embeds:[embed_event]});
 
         for (let i = 0; i < final_event.reactions.length; i++) {
+            /*if(isDiscordEmoji(final_event.reactions[i]) == true) {
+                console.log(final_event.reactions[i].slice(1, -1));
+                const reactionEmoji = message.guild.emojis.cache.find(emoji => emoji.name === final_event.reactions[i].slice(1, -1));
+                msg_ev.react(`${reactionEmoji}`);
+            } else {
+                msg_ev.react(`${final_event.reactions[i]}`);
+            }*/
             msg_ev.react(`${final_event.reactions[i]}`);
+            //TODO: Supporter (même si c'est pas possible visiblement) les émojis au format discord.
+            //*NOTE: Si on le fait c'est vraiment en méga pas important, draxy à trouvé un moyen d'utiliser tous les emotes.
         }
 
         const filter = (reaction, user) => {
             return (final_event.reactions.includes(reaction.emoji.name) && user.id === message.author.id);
         }
 
-            msg_ev.awaitReactions({ filter, max: 1, time: 60000, errors: ['time'] })
+            msg_ev.awaitReactions({ filter, max: 1, time: 75000, errors: ['time'] })
                 .then((collected) => {
                     const reaction = collected.first();
                     let id_react = final_event.reactions.indexOf(reaction.emoji.name);
@@ -170,3 +202,8 @@ module.exports = async (client, message, args, settings) => {
            
     }
 }
+
+
+
+
+

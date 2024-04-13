@@ -6,7 +6,7 @@
         "horaires": 0,
         "prerequis": "/",
         "description": "Vous n'avez tout simplement pas de travail !",
-        "infos": ""
+        "infos": "Aucun prérequis comme vous n'avez pas de travail."
     }, 
     {
         "id" : 1,
@@ -23,7 +23,7 @@
         "salaire": 10,
         "horaires": 14,
         "prerequis": "/",
-        "description": "Le fermier travail la terre pour produire alimentation et textile.",
+        "description": "Le fermier travaille la terre pour produire alimentation et textile.",
         "infos": "Pour exercer ce métier vous n'avez besoin d'aucun prérequis."
     },
     {

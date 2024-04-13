@@ -2,10 +2,13 @@
     {
         "id" : 0,
         "name" : "Ouaaaais hehe la mission",
-        "rarete" : 10,
+        "rarete" : 30000,
         "condition" : "/",
         "description" : "En mission tu fais quoi woula",
         "reactions" : ["🔓", "😴"],
-        "commands" : ["message.channel.send('Je régule');", "message.channel.send('Je ne fous rien');"]
+        "commands" : [
+            ["Msg(RIP y'a pas d'event pour les missions)"],
+            ["Msg(RIP y'a pas d'event pour les missions)"]
+        ]
     }
 ]

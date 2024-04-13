@@ -72,7 +72,7 @@ module.exports.run = async (client, message, args) => {
 module.exports.help = {
     name: "procgen",
     aliases: ['pg'],
-    category: "experiments",
+    category: "",
     desription: "Genère une carte procéduralement",
     usage: "",
     cooldown: 1,

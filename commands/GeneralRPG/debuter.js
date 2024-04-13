@@ -10,6 +10,10 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     var db_l = await client.getFaction('lyomah');
     var db_a = await client.getFaction('alpha');
 
+    //var links_factions_blasons = ["https://i.imgur.com/K9CXVaO.png", "https://i.imgur.com/sh3wjrv.png", "https://i.imgur.com/uj8TLad.png", "https://i.imgur.com/tIwuxXD.png"];
+    var links_factions_blasons = ["https://i.imgur.com/HE9p0rt.png", "https://i.imgur.com/wfRzqo7.png", "https://i.imgur.com/1zFaPpx.png", "https://i.imgur.com/GPWpCZq.png"];
+
+
     const page1 = new EmbedBuilder()
         .setColor('1ABC9C')
         .setAuthor({name: message.member.user.username + " (1/10)", iconURL: message.member.user.displayAvatarURL()})
@@ -28,7 +32,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     const page4 = new EmbedBuilder()
         .setColor('1ABC9C')
         .setAuthor({name: message.member.user.username + " (4/10)", iconURL: message.member.user.displayAvatarURL()})
-        .setDescription("**Informations complémentaires**\n\nAvant de passer au choix de la faction voici quelques informations utiles :\n\n**Commandes principales:**\n\n• `p<aide` affiche la liste des commandes disponibles par catégorie, ou si vous précisez une commande ainsi `p<aide nom_commande` vous aurez accès à une brève explication et sa synthaxe.\n• `p<préférences` pour choisir vos préférences RPG comme votre arme de prédiléction par exemple.\n• `p<entrainement` pour vous entraîner\n• `p<métier` et `p<travail` pour choisir votre métier et gagner de l'or\n• `p<expedition` pour gagner des poyn et de l'xp\n• `p<banque` et `p<xp` pour voir vos poyn et votre niveau d'expérience. \n\n**Liens:**\n\n• **Lien du Wiki** comprennant des explications de tous les aspects du jeu et l'utilisation détaillée de toutes les commandes : [Wiki](https://poulerpg.000webhostapp.com/) \n• **Lien du Github** pour les curieux souhaitant voir le code (écrit intégralement en Javascript) : [Github](https://github.com/Romar159/PouleRPG) \n\nVous pourriez trouver que le bot n'est pas très complet en commandes, mais l'une des utilités première de PouleRPG est d'être utilisé comme une boîte à outil, c'est à dire qu'il n'y a presque aucune limitation. Vous avez des outils, et c'est vous qui créez le jeu et décidez comment jouer. La notion de \"RP\" est importante, PouleRPG soutient ce RP avec ses commandes globales ! *(On parle de RolePlay ici, mais c'est plus dans votre attitude ou comment vous jouez plutôt qu'un vrai RP d'un JdR par exemple. Même si, évidemment, rien ne vous empêche de vous amuser comme vous le souhaitez <:EP_Pjoie:867163422662852648>)* \n\n*Notez aussi que le bot est en alpha ses fonctionnalités sont faibles (certaines écrites précédemment sont en développement). Mais de très grosses mises à jour se préparent et viendront le compléter au fil du temps ! N'hésitez donc pas à faire part à <@421400262423347211> de **tous bugs** ou **problèmes** que vous pourriez rencontrer ou encore de **vos envies** et **idées** pour de futures **mise à jour** avec la commande `p<commentaire` !* <:EP_Pclin_oeil:867162153345744956>");
+        .setDescription("**Informations complémentaires**\n\nAvant de passer au choix de la faction voici quelques informations utiles :\n\n**Commandes principales:**\n\n• `p<aide` affiche la liste des commandes disponibles par catégorie, ou si vous précisez une commande ainsi `p<aide nom_commande` vous aurez accès à une brève explication et sa synthaxe.\n• `p<préférences` pour choisir vos préférences RPG comme votre arme de prédiléction par exemple.\n• `p<entrainement` pour vous entraîner\n• `p<métier` et `p<travail` pour choisir votre métier et gagner des poyn\n• `p<expedition` pour gagner des poyn et de l'xp\n• `p<banque` et `p<xp` pour voir vos poyn et votre niveau d'expérience. \n\n**Liens:**\n\n• **Lien du Wiki** comprennant des explications de tous les aspects du jeu et l'utilisation détaillée de toutes les commandes : [Wiki](https://poulerpg.000webhostapp.com/) \n• **Lien du Github** pour les curieux souhaitant voir le code (écrit intégralement en Javascript) : [Github](https://github.com/Romar159/PouleRPG) \n\nVous pourriez trouver que le bot n'est pas très complet en commandes, mais l'une des utilités première de PouleRPG est d'être utilisé comme une boîte à outil, c'est à dire qu'il n'y a presque aucune limitation. Vous avez des outils, et c'est vous qui créez le jeu et décidez comment jouer. La notion de \"RP\" est importante, PouleRPG soutient ce RP avec ses commandes globales ! *(On parle de RolePlay ici, mais c'est plus dans votre attitude ou comment vous jouez plutôt qu'un vrai RP d'un JdR par exemple. Même si, évidemment, rien ne vous empêche de vous amuser comme vous le souhaitez <:EP_Pjoie:867163422662852648>)* \n\n*Notez aussi que le bot est en alpha ses fonctionnalités sont faibles (certaines écrites précédemment sont en développement). Mais de très grosses mises à jour se préparent et viendront le compléter au fil du temps ! N'hésitez donc pas à faire part à <@421400262423347211> de **tous bugs** ou **problèmes** que vous pourriez rencontrer ou encore de **vos envies** et **idées** pour de futures **mise à jour** avec la commande `p<commentaire` !* <:EP_Pclin_oeil:867162153345744956>");
 
         //noter qu'en bêta les fonctionnalités sont faibles, et que de très grosses mises à jour se prépares !
 
@@ -43,28 +47,28 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         .setColor('AA3C00')
         .setAuthor({name: message.member.user.username + " (6/10)", iconURL: message.member.user.displayAvatarURL()})
         .setTitle(`**Epsilon**`)
-        .setThumbnail('https://i.imgur.com/K9CXVaO.png')
+        .setThumbnail(links_factions_blasons[0])
         .setDescription(`${(!db_e.idmaitre) ? "**Maître vacant**" : "Gouverné par **<@" + db_e.idmaitre + ">**"} \n\n\n**La Stratégie et la Diplomatie**\n\nMalgré leur attitude **calme** voir parfois froide, les Epsilon sont de **puissants diplomates** et de **fins stratèges** ! \n\nIls sont connus pour leur **érudition** et utilisent leur **savoir** et leur **éloquence** pour résoudre la plupart des problèmes. \n\nLors des conflits ils vont prioriser la **diplomatie** plutôt que la violence, ou vont manigancer des **complots** discrets pour arriver à leurs fins. \nMais, lorsque cela ne suffit guère, leur grande **connaissance** en **stratégie** leur permet de mener leurs armées au combat en **réfléchissant** plutôt sur une **carte** et un **plan** que de partir tête baissée et miser uniquement sur le grand nombre et la puissance de leurs troupes !`);
 
     const page7 = new EmbedBuilder() 
         .setColor('0078F0')
         .setAuthor({name: message.member.user.username + " (7/10)", iconURL: message.member.user.displayAvatarURL()})
         .setTitle(`**Daïros**`)
-        .setThumbnail('https://i.imgur.com/sh3wjrv.png')
+        .setThumbnail(links_factions_blasons[1])
         .setDescription(`${(!db_d.idmaitre) ? "**Maître vacant**" : "Gouverné par **<@" + db_d.idmaitre + ">**"} \n\n\n**L'Exploration et l'Amélioration**\n\nLes Daïros sont de grands **explorateurs**. Leur **curiosité**, parfois intrusive, leur est fort utile pour apprendre de leur environnement. \n\nIls sont connus pour leur **indépendance**, ainsi que pour **chercher les limites** de chaque domaine pour les maîtriser au mieux. \n\nDe par leur façon d’être, ils **éviteront** au maximum les conflits. Mais si cela arrive, leurs nombreuses **expériences** leurs permettent d’agir en **toutes circonstances** ! \nLeur curiosité leur permet d'**évaluer** les tactiques de l’adversaire pour mieux y répondre, et chaque erreur est pour eux, source d'**amélioration**.`);
         
     const page8 = new EmbedBuilder() 
         .setColor('00A00A')
         .setAuthor({name: message.member.user.username + " (8/10)", iconURL: message.member.user.displayAvatarURL()})
         .setTitle(`**Lyomah**`)
-        .setThumbnail('https://i.imgur.com/uj8TLad.png')
+        .setThumbnail(links_factions_blasons[2])
         .setDescription(`${(!db_l.idmaitre) ? "**Maître vacant**" : "Gouverné par **<@" + db_l.idmaitre + ">**"} \n\n\n**La Loyauté et l'Altruisme**\n\nLes Lyomah sont **loyaux** et **altruistes**, ils **s’entraident** et ne se laissent **jamais tomber**. \n\nIls sont connus pour leur **esprit d’équipe** et leur **dévouement** sans faille. Ils veillent **les uns sur les autres** ; et grâce à leur grand **sens de l'honneur**, ils savent qu’ils peuvent se faire **confiance**. \n\nLors des conflits ils **combinent** leurs forces et **coopèrent** tous **ensemble** pour gagner. Et ce, même s’ils devaient se sacrifier pour les autres.`);
         
     const page9 = new EmbedBuilder() 
         .setColor('F0C800')
         .setAuthor({name: message.member.user.username + " (9/10)", iconURL: message.member.user.displayAvatarURL()})
         .setTitle(`**Alpha**`)
-        .setThumbnail('https://i.imgur.com/tIwuxXD.png')
+        .setThumbnail(links_factions_blasons[3])
         .setDescription(`${(!db_a.idmaitre) ? "**Maître vacant**" : "Gouverné par **<@" + db_a.idmaitre + ">**"} \n\n\n**La Vigueur et la Persévérance**\n\nGrâce à leur **vigueur** et leur **persévérance**, les Alpha obtiennent souvent ce qu’ils **veulent**. \nIls **n’abandonnent jamais** leurs objectifs et font tout pour **arriver à leur fin** même s’ils doivent employer la **force** quitte à perdre leur sang-froid. \n\nIls sont connus pour leur **efficacité** et leur **performance** ce qui leur permet d’atteindre tous leurs buts. \n\nLors des conflits ils ne se laissent pas **intimider**, ce sont eux qui **imposent** leur force aux autres !`);
         
 

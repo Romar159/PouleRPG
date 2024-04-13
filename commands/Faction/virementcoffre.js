@@ -1,7 +1,7 @@
 const {EmbedBuilder} = require('discord.js');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
-    var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
+    /*var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
     var est_maitre = false;
 
     for(let y=0; y<roles_maitre.length; y++) {
@@ -13,6 +13,12 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         }
     }
     if(!est_maitre) return message.reply("commande utilisable que par les maîtres de faction.");
+    */
+    if(!client.isMaster(message)) {
+        if(await client.isConseiller(message.member, 902) == false) {
+            return message.reply(`Vous n'êtes pas maître de faction ou intendant. Vous ne pouvez pas utiliser cette commande.`)
+        }
+    }
 
     if(!message.mentions.users.first()) return message.reply(`vous devez renseigner un utilisateur valide.\n**ICI -> ${args[0]}**`);
     if(isNaN(args[1])) return message.reply(`vous devez renseigner une valeur numérique.\n**ICI -> ${args[1]}**`);
@@ -56,8 +62,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 };
 
 module.exports.help = {
-    name: "virementcoffre",
-    aliases: ['vc'],
+    name: "exportcoffre",
+    aliases: ['ec', 'vc', 'virementcoffre'],
     category: "faction",
     desription: "Transfère de poyn du coffre de faction vers la banque personnel d'un membre.",
     usage: "<@USER> <poyn>",

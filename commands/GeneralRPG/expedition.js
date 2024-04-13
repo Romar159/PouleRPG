@@ -108,31 +108,40 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             const final_or = Math.round(10 - initial_or_apporter * 0.10);
             const final_savoir = parseInt(time * client.randomFloat(0.6, 1.4));
             
+            let faction_exped = await client.getFaction(localisation);
             
-            const finEmbed = new EmbedBuilder()
+            var finEmbed = new EmbedBuilder()
             .setColor('3F992D')
-            .setAuthor({name:`Expédition terminée !`, iconURL:message.author.displayAvatarURL()})
+            .setAuthor({name:`Expédition`, iconURL:message.author.displayAvatarURL()})
             .addFields([{name: `** **`, value:`**:test_tube: +${final_xp} XP**`},{name: `** **`, value: `:coin: **+${final_or} Poyn**`},{name: `** **`, value: `:brain: **+${final_savoir} points de savoir**`}])
+            
+            if(faction_exped.name != dbUser.faction) { //si on est ailleurs que notre territoire on a de meilleurs bonus
+                finEmbed = new EmbedBuilder()
+                .setColor('3F992D')
+                .setAuthor({name:`Expédition en territoire ennemi !`, iconURL:message.author.displayAvatarURL()})
+                .addFields([{name: `** **`, value:`**:test_tube: +${Math.round(final_xp * 1.15)} XP**`},{name: `** **`, value: `:coin: **+${Math.round(final_or * 1.15)} Poyn**`},{name: `** **`, value: `:brain: **+${Math.round(final_savoir * 1.15)} points de savoir**`}, {name: `** **`, value: `👑 **+1 point de prestige**`}])    
+            
+                await client.setOr(client, message.member, initial_or_apporter, message);
+                await client.editPoint(client, message.member, Math.round(final_savoir * 1.15), "savoir");
+                await client.editPoint(client, message.member, 1, "prestige");
+                await client.updateUser(message.member, {expedition_duration: 0, or_expedition: 0}); //! obsolète je crois
+                await client.setXp(client, message.member, Math.round(final_xp * 1.15));
+                await client.setOr(client, message.member, Math.round(final_or * 1.15), message);
+
+            } else {
+                await client.setOr(client, message.member, initial_or_apporter, message);
+                await client.editPoint(client, message.member, final_savoir, "savoir");
+                await client.updateUser(message.member, {expedition_duration: 0, or_expedition: 0}); //! obsolète je crois
+                await client.setXp(client, message.member, final_xp);
+                await client.setOr(client, message.member, final_or, message);
+            }
+
+            
             
 
             message.channel.send({embeds:[finEmbed]});
-            await client.setOr(client, message.member, initial_or_apporter, message);
-            await client.editPoint(client, message.member, final_savoir, "savoir");
-            await client.updateUser(message.member, {expedition_duration: 0, or_expedition: 0}); //! obsolète je crois
-            await client.setXp(client, message.member, final_xp);
-            await client.setOr(client, message.member, final_or, message);
 
             
-
-            // retire le membre des joueurs sur le territoire de la faction.
-            let faction_exped = await client.getFaction(localisation);
-            if(faction_exped.name != dbUser.faction) {
-
-                let arr = faction_exped.joueurs_sur_le_territoire;
-                arr = arr.filter(e => e !== dbUser.userID);
-
-                await client.updateFaction(faction_exped.name, {joueurs_sur_le_territoire: arr});
-            }
 
             const NewcurrentDate = new Date();
             // Nombre de millisecondes à ajouter (par exemple, 1 heure = 3600 secondes * 1000 millisecondes)
@@ -257,7 +266,7 @@ module.exports.help = {
     name: "expédition",
     aliases: ['e', 'expedition'],
     category: "generalrpg",
-    desription: "Partez en expédition pour gagner richesses, expériences et items.",
+    desription: "Partez en expédition pour gagner richesses, expériences et items. Séléctionnez le nombre de poyn à emmener avec vous, et choisissez si vous le souhaitez un autre territoire que le vôtre pour gagner plus... mais attention aux représailles.",
     usage: '<poyn> [localisation:epsilon/daïros/lyomah/alpha]',
     cooldown: 3, 
     permissions: false,

@@ -286,10 +286,10 @@ const bataille = async (client, message, dbUser) => {
     
 
                             //Récupérations des troupes dans chaque flanc des deux armées !
-                            const att_jsonarmy = require(`../../../assets/guerre/armies/` + faction_attaquant.name + `_army.json`);
-                            const def_jsonarmy = require(`../../../assets/guerre/armies/` + faction_defenseur.name + `_army.json`);
+                            const att_jsonarmy = require(`../../../assets/guerre/armies/` + faction_attaquant.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + `_army.json`);
+                            const def_jsonarmy = require(`../../../assets/guerre/armies/` + faction_defenseur.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + `_army.json`);
 
-                            const att_jsonarmy_file = require(`../../../assets/guerre/armies/` + faction_attaquant.name + `_army.json`);
+                            const att_jsonarmy_file = require(`../../../assets/guerre/armies/` + faction_attaquant.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + `_army.json`);
                             //const att_initial_army = [ ...att_jsonarmy_file[0].units, ...att_jsonarmy_file[1].units, ...att_jsonarmy_file[2].units ];
                             const att_initial_army = [
                                 att_jsonarmy_file[0].units.slice(),
@@ -297,7 +297,7 @@ const bataille = async (client, message, dbUser) => {
                                 att_jsonarmy_file[2].units.slice()
                               ];
                             
-                            const def_jsonarmy_file = require(`../../../assets/guerre/armies/` + faction_defenseur.name + `_army.json`);
+                            const def_jsonarmy_file = require(`../../../assets/guerre/armies/` + faction_defenseur.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + `_army.json`);
                             const def_initial_army = [
                                 def_jsonarmy_file[0].units.slice(),
                                 def_jsonarmy_file[1].units.slice(),
@@ -1030,7 +1030,7 @@ const bataille = async (client, message, dbUser) => {
                             const def_contentToWrite = JSON.stringify(def_newjson, null, 2);
 
                             // Écrire dans le fichier
-                            fs.writeFile("./assets/guerre/armies/" + faction_attaquant.name + "_army.json", att_contentToWrite, 'utf-8', (err) => {
+                            fs.writeFile("./assets/guerre/armies/" + faction_attaquant.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + "_army.json", att_contentToWrite, 'utf-8', (err) => {
                                 if (err) {
                                     console.error('Erreur lors de l\'écriture du fichier :', err);
                                 } else {
@@ -1038,7 +1038,7 @@ const bataille = async (client, message, dbUser) => {
                                 }
                             });
 
-                            fs.writeFile("./assets/guerre/armies/" + faction_defenseur.name + "_army.json", def_contentToWrite, 'utf-8', (err) => {
+                            fs.writeFile("./assets/guerre/armies/" + faction_defenseur.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + "_army.json", def_contentToWrite, 'utf-8', (err) => {
                                 if (err) {
                                     console.error('Erreur lors de l\'écriture du fichier :', err);
                                 } else {

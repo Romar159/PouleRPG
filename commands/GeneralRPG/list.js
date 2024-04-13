@@ -156,6 +156,7 @@ module.exports.run = async (client, message, args) => {
                     
                     faction_embed.addFields([{name: `** **`, value:` • ${e.join('\n • ')}`}]);
                     faction_embed.setFooter({text:`${identifier}/${array_de_array.length}`})
+                    //if(faction_members.length <= 0) faction_embed.setDescription("Il n'y a personne dans cette faction");
                     embeds_array.push(faction_embed);
                     faction_embed = new EmbedBuilder();
                     faction_embed.setColor(faction_color);
@@ -205,6 +206,11 @@ module.exports.run = async (client, message, args) => {
             let faction_embed = new EmbedBuilder()
             faction_embed.setColor(faction_color);
             embeds_array = [];
+
+            if(faction_members.length <= 0) {
+                faction_embed.setDescription("Il n'y a personne dans cette faction.");
+                embeds_array.push(faction_embed);
+            } 
 
             let identifier = 0;
             array_de_array.forEach(e => {
@@ -277,12 +283,12 @@ module.exports.run = async (client, message, args) => {
 }
 
 module.exports.help = {
-    name: "liste",
-    aliases: ["membres"],
+    name: "listemembres",
+    aliases: ["membres", "liste"],
     category: "generalrpg",
     desription: "Renvoie la liste des membres d'une ou des factions.",
     usage: '[faction]',
-    cooldown: 9, 
+    cooldown: 7, 
     permissions: false,
     args: false
 };

@@ -53,7 +53,7 @@ module.exports.help = {
     name: "coffre",
     aliases: ['coffre_de_faction'],
     category: "economie",
-    desription: "Affiche la quantité de poyn du coffre de faction.",
+    desription: "Affiche la quantité de poyn du coffre de faction. Étant une information privé elle ne peut s'executer que dans le salon de votre faction.",
     usage: "",
     cooldown: 3,
     permissions: false,

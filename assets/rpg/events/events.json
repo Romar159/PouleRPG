@@ -2,19 +2,19 @@
     {
         "id" : 0,
         "name" : "Thune par terre",
-        "rarete" : 100,
+        "rarete" : 75,
         "condition" : "/",
         "description" : "Oh, sur les pavés de la rue se trouve une bourse avec quelques poyn.\n\n💰 : Récupérer pour soit.\n💸 : Donner aux plus pauvres.",
         "reactions" : ["💰", "💸"],
         "commands": [
-            ["Msg(Vous récupérez tout l'argent pour vous.)", "SetPoint(piete § 3)"],
+            ["Msg(Vous récupérez tout l'argent pour vous. +3 poyn -1 piete)", "SetPoint(piete § -1)", "SetPoyn(3)"],
             ["Msg(Vous allez donner l'argent à des mandiants assis sur les marches de la cathédrale Saint Poulet.)", "SetPoint(piete § 10)"]
         ]
     },
     {
         "id" : 1,
         "name" : "L'accident de scène",
-        "rarete" : 100,
+        "rarete" : 75,
         "condition" : "/",
         "description" : "Jacqueline tombe de la scène ! Une de ses pièces tombe de sa poche, que faite-vous ?\n\n💰 : Vous récupérez la pièce pour vous.\n🤚 : Vous aidez Jacqueline à se relever.\n🗣️ : Vous rigolez de la situation.",
         "reactions" : ["💰", "🤚", "🗣️"],
@@ -28,7 +28,7 @@
     {
         "id" : 2,
         "name" : "L'avis sur les gros",
-        "rarete" : 100,
+        "rarete" : 75,
         "condition" : "if(dbUser.level >= 5) return true;",
         "description" : "Vous êtes en pleine discussion avec un noble et celui-ci vous pose la question suivante d'un ton autain ''Comment trouvez-vous les gros ?'' \n\n❤️ : Vous répondez : ''Les gros sont beaux.''\n💔 : Vous répondez ''Les gros sont laids.''\n💨 : Vous changez de sujet.",
         "reactions" : ["❤️", "💔", "💨"],
@@ -41,7 +41,7 @@
     {
         "id": 3,
         "name" : "Débat de sourds",
-        "rarete" : 100,
+        "rarete" : 75,
         "condition" : "/",
         "description" : "Pendant que vous marchez dans la rue, vous entendez deux personnes débattre de manière relativement douteuse sur un sujet quelconque, que faites-vous ?\n\n🤜 : Vous rejoignez la discussion et prenez part pour la personne de droite\n🤛 : Vous rejoignez la discussion et prenez part pour la personne de gauche\n🤫 : Vous leur dites de la fermer.",
         "reactions" : ["🤜", "🤛", "🤫"],
@@ -54,7 +54,7 @@
     {
         "id": 4,
         "name" : "Le coucher de soleil",
-        "rarete" : 100,
+        "rarete" : 80,
         "condition" : "/",
         "description" : "Vous êtes en ballade et vous pouvez apercevoir le soleil se coucher à l'horizon. Vous apercevez quelqu'un sur un banc en train de fumer, celui-ci vous invite, que faites-vous ?\n\n🚬 : Vous acceptez et tirez quelques fois.\n🙅 : Vous refusez aimablement.\n🌅 : Vous faites semblant de n'avoir rien entendu et continuez votre marche en regardant le coucher de soleil.",
         "reactions" : ["🚬", "🙅", "🌅"],
@@ -67,7 +67,7 @@
     {
         "id": 5,
         "name" : "Le monstre Amnésique",
-        "rarete" : 1000,
+        "rarete" : 100,
         "condition" : "/",
         "description" : "Vous vous êtes enfermer dans une petite salle après avoir été poursuivit par un monstre au visage déformé. Celui-ci essaie d'enfoncer la porte en gémissant \"Rreugh !\" sans y parvenir.\n🤫 Vous ne dites plus rien jusqu'à ce que le monstre s'en aille.\n🤣 Vous ÉCLATEZ de rire du ridicule de la scène !\n🏃‍♂️ Vous prenez vos jambes à votre cou le plus vite possible !",
         "reactions" : ["🤫", "🤣", "🏃‍♂️"],
@@ -75,6 +75,103 @@
           ["Msg(Après de longues minutes, le monstre s'en va, vous laissant la vie sauve. -4 moral, +5 travail, +5 savoir)", "SetPoint(moral § -4)", "SetPoint(travail § 5)", "SetPoint(savoir § 5)"],
           ["Msg(Plus vous regardez le monstre, moins vous pouvez vous contrôlez de rire, la scène est juste magistrale ! +15 moral)", "SetPoint(moral § 15)"],
           ["Msg(En fuyant, le monstre arrive à vous griffer, mais vous parvenez à lui échapper malgré tout. -4 forme, +5 prestige, +75 XP)", "SetPoint(forme § -4)", "SetPoint(prestige § 5)", "SetXP(75)"]
+        ]
+    },
+    {
+        "id": 6,
+        "name" : "La communauté... atypique.",
+        "rarete" : 115,
+        "condition" : "/",
+        "description" : "En vous balandant dans les rues de votre ville, vous apercevez un attroupement de personnes avec des déguisements assez inattendu. Ils sont simplement déguisés en toilettes !\n😂 Vous rigolez de leur ridicule éperdument.\n🤬 Vous n'appréciez pas leur attroupement et jurez sur leur hobby.\n☺ Voir des personnes partager une même passion vous met du baume au cœur, et souriez.\n😐 La situation ne vous attire guère et continuait votre chemin comme si de rien n'était.",
+        "reactions" : ["😂", "🤬", "☺", "😐"],
+        "commands" : [
+          ["Msg(En rigolant un peu trop fort, les gens vous ont surpris, mais rire est plus important que leur regard ! +2 moral, +2 forme, -3 piete)", "SetPoint(moral § 2)" , "SetPoint(forme § 2)", "SetPoint(piete § -3)"],
+          ["Msg(Vous les traitez de tous les noms, les personnes se sentent agressés, certaines vous renvoient vos insultes tandis que d'autres pleurent. +5 redoutabilité, -2 prestige, -7 piete)", "SetPoint(redoutabilite § 5)", "SetPoint(prestige § -2)", "SetPoint(piete § -7)"],
+          ["Msg(Les personnes vous voyant sourir gentillement, vous sourient en retour. +2 moral, +1 piete)", "SetPoint(moral § 2)", "SetPoint(piete § 1)"],
+          ["Msg(En passant, les gens ne voient en vous qu'un passant et chacuns reste de son côté sans rien dire. +3 travail)", "SetPoint(travail § 3)"]
+        ]
+    },
+    {
+        "id": 7,
+        "name" : "Chat errant",
+        "rarete" : 60,
+        "condition" : "/",
+        "description" : "Vous entendez miauler dehors, c'est un petit chat errant qui vient vous demander de l'aide.\n👋 Vous lui offrez quelques caresses.\n🧆 Vous lui offrez un peu de nourriture et/ou à boire.\n💨 Vous laissez le chat se débrouiller, vous avez autre chose à faire.",
+        "reactions" : ["👋", "🧆", "💨"],
+        "commands" : [
+          ["Msg(Le chat se met à ronronner, et vous passez quelques minutes ensemble, heureux. +5 moral)", "SetPoint(moral § 5)"],
+          ["Msg(En offrant à manger au chat, celui-ci se jette sur la nourriture, le voir se rassasier vous fait dire que vous avez bien agit. +2 moral, +2 savoir)", "SetPoint(moral § 2)", "Setpoint(savoir § 2)"],
+          ["Msg(Le chat a continué de miauler plusieurs minutes, de plus en plus triste, jusqu'à s'en aller, vous voilà enfin tranquille. +6 travail, -2 moral)", "SetPoint(travail § 6)", "SetPoint(moral § -2)"]
+        ]
+      },
+      {
+        "id": 8,
+        "name" : "Le Restaurant : Ô Bon Poulet",
+        "rarete" : 41,
+        "condition" : "if (new Date().getDate() === 1 || new Date().getDate() === new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate()) return true;",
+        "description" : "Bienvenue au restaurant Ô Bon Poulet, que souhaitez-vous prendre ? Sachez que plus un menu est cher, plus vous en sentirez les bénéfices !\n1️⃣ **Menu Besto** - 100 Poyns\n2️⃣ **Menu Cool** - 69 Poyns\n3️⃣ **Menu Fpéfial** - 44 Poyns\n4️⃣ **Menu Pouletto** - 38 Poyns\n5️⃣ **Menu Sélémaim** - 36 Poyns\n6️⃣ **Menu Basse-Cour** - 30 Poyns\n7️⃣ **Menu Bogoss** - 20 Poyns\n8️⃣ **Menu K QU'A CAS** - 18 Poyns\n9️⃣ **Menu Poussin** - 15 Poyns\n🔟 **Menu Satanas Chicken** - 6 Poyns\n🚻 Vous souhaitez simplement utiliser les WC.",
+        "reactions" : ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟", "🚻"],
+        "commands" : [
+          ["Msg(Le menu Besto est un gage de qualité, composé de poulet basquaise raffiné, de poulet gaston gérard délectable, mais aussi de poulet mahmer fin sans oublier la touche épicée du poulet tikka masala, votre corps vous en remercie pleinement, et les gens autour, vous observe avec respect. +3 richesse, +10 prestige, +5 redoutabilité, +30 forme, +30 moral, +10 travail, +10 savoir, -100 poyns)", "SetPoint(richesse § 3)", "SetPoint(prestige § 10)", "SetPoint(redoutabilite § 5)", "SetPoint(forme § 30)", "SetPoint(moral § 30)", "SetPoint(travail § 10)", "SetPoint(savoir § 10)", "SetPoyn(-100)"],
+          ["Msg(Avec un nom pareil, vous êtes sûr de faire bonne allure ! Avec du merveilleux poulet coco, un succulent poulet tendoori, un poulet cocotte particulièrement savoureux, le voyage gustatif du poulet au curry et enfin du mafé poulet, vos papilles sont aux anges ! +2 richesse, +8 prestige, +3 redoutabilité, +28 forme, +28 moral, -69 poyns)", "SetPoint(richesse § 2)", "SetPoint(prestige § 8)", "SetPoint(redoutabilite § 3)", "SetPoint(forme § 28)", "SetPoint(moral § 28)", "SetPoyn(-69)"],
+          ["Msg(Ce menu tient bien son nom ! Le poulet à la broche vous transporte vers un univers gustatif puissant, suivi de karaagé d'un délice unique, pour enfin terminer sur un risotto de poulet d'une douceur sans pareil. Une telle combinaison ne se fait que merveilleusement ressentir. +1 richesse, +5 prestige, +1 redoutabilité, +22 forme, +22 moral, -44 poyns)", "SetPoint(richesse § 1)", "SetPoint(prestige § 5)", "SetPoint(redoutabilite § 1)", "SetPoint(forme § 22)", "SetPoint(moral § 22)", "SetPoyn(-44)"],
+          ["Msg(Malgré le fait que l'on atteigne une gamme inférieur avec ce menu, la qualité reste bien présente. Avec des enchiladas, des fajitas, mais également une tortilla wrap, le tout de poulet, votre palet voyagera dans tout autre pays ! +4 prestige, +20 forme, +20 moral, +4 savoir, -38 poyns)", "SetPoint(prestige § 4)", "SetPoint(forme § 20)", "SetPoint(moral § 20)", "SetPoint(savoir § 4)", "SetPoyn(-38)"],
+          ["Msg(Avec des plats si semblables, tels que le poulet farci, le poulet romertopf, mais également le rôti de poulet, vos papilles ont vraiment le temps de sentir tous les efforts qui sont mis dans de tels plats, que dis-je, ɶuvres ! +3 prestige, +18 forme, +18 moral, +8 savoir, -36 poyns)", "SetPoint(prestige § 3)", "SetPoint(forme § 18)", "SetPoint(moral § 18)", "SetPoint(savoir § 8)", "SetPoyn(-36)"],
+          ["Msg(En vous laissant tenter par ce menu rarement prit, vous découvrez des goûts, des textures, et des assemblages gustatifs atypiques. Cela commence avec un jambalaya au poulet, suivi de brochettes classiques, mais subtilement bien réalisées, pour finir sur un violent poulet mariné qui vous laissera sans-mot ! +2 prestige, +18 forme, +15 moral, +5 travail, -30 poyns)", "SetPoint(prestige § 2)", "SetPoint(forme § 18)", "SetPoint(moral § 15)", "SetPoint(travail § 5)", "SetPoyn(-30)"],
+          ["Msg(Malgré la pauvreté en diversité de ce menu, vous sentez que celui-ci a quelque chose de spécial. Son poulet teriyaki, mis en couple avec son poulet à l'anglaise vous fait découvrir tout un nouveau pan de la gastronomie ! +1 prestige, +12 forme, +12 moral, +5 savoir, -20 poyns)", "SetPoint(prestige § 1)", "SetPoint(forme § 12)", "SetPoint(moral § 12)", "SetPoint(savoir § 5)", "SetPoyn(-20)"],
+          ["Msg(Votre intérêt pour ce menu, est probablement lié à son nom que vous ne comprenez guère. Malgré tout, il est composé d'un très bon poulet biryani, d'un pastilla au poulet merveilleux, et d'une tajine de poulet succulente. Cependant, vous ressentez par moment de légers excès de colère incontrollés. +17 forme, +10 moral, +5 travail, -5 piété, -18 poyns)", "SetPoint(forme § 17)", "SetPoint(moral § 10)", "SetPoint(travail § 5)", "SetPoint(piete § -5)", "SetPoyn(-18)"],
+          ["Msg(Vous laissant tenter par le menu destiné aux plus jeunes, vous redécouvrez une jeunesse fleurir en vous. Avec de simples nuggets de poulet, et de légers ailerons de poulet marinés, de beaux souvenirs du passé vous reviennent et vous emplissent de joie. +10 forme, +12 moral, +3 piété, -15 poyns)", "SetPoint(forme § 10)", "SetPoint(moral § 12)", "SetPoint(piete § 3)", "SetPoyn(-15)"],
+          ["Msg(Un menu pareil, un prix pareil, vous saviez déjà pourquoi vous le preniez, et êtes servis. Du poulet nature, des rillettes de poulet, un poulet boucané et un chawarma au poulet vous sont servis sans dire un mot. En les dévorant, vous vous sentez merveilleusement bien, prêt à en découdre, mais pas pour les bonnes raisons. +15 forme, +5 moral, -15 piété)", "SetPoint(forme § 15)", "SetPoint(moral § 5)", "SetPoint(piete § -15)", "SetPoyn(-6)"],
+          ["Msg(En vous rendant aux toilettes, vous voyez que ceux-ci sont payants. 4 Poyns qui plus est ||hormis si vous avez la carte de fidelité|| ! En entrant, vous voyez que ceux-ci sont merveilleusement entretenus. Et vous y passez étrangement un agréable moment. +4 moral, +4 travail, -4 poyns)", "SetPoint(moral § 4)", "SetPoint(travail § 4)", "SetPoyn(-4)"]
+         ]
+       },
+       {
+        "id": 9,
+        "name" : "Sondage déjà-vu",
+        "rarete" : 100,
+        "condition" : "/",
+        "description" : "Une personne dans la rue vous interpelle. \"Bonjour, nous sommes la revue Poulet, auriez-vous une minute pour répondre à notre sondage ? Quel est votre animal préféré : le chat, le chien, le poulet, ou autre ?\"\n🐱 Le chat.\n🐶 Le chien.\n🐔 Le poulet.\n❔ Autre.",
+        "reactions" : ["🐱", "🐶", "🐔", "❔"],
+        "commands" : [
+          ["Msg(\"Merci pour votre réponse, passez une très belle journée !\" +3 moral, +50 XP.)", "SetPoint(moral § 3)", "SetXP(50)"],
+          ["Msg(\"Merci pour votre réponse, passez une très belle journée !\"  +3 forme, +50 XP.)", "SetPoint(forme § 3)", "SetXP(50)"],
+          ["Msg(\"Merci pour votre réponse, que Dieu Poulet guide vos pas !\" +3 piété, +50 XP.)", "SetPoint(piete § 3)", "SetXP(50)"],
+          ["Msg(\"Merci pour votre réponse, nous essaierons d'élargir nos choix suite à de potentiels propositions, passez une très bonne journée !\" +3 savoir, +50 XP.)", "SetPoint(savoir § 3)", "SetXP(50)"]
+        ]
+      },
+      {
+        "id": 10,
+        "name" : "Un cadeau inattendu",
+        "rarete" : 80,
+        "condition" : "/",
+        "description" : "En ouvrant la porte de chez vous, vous observez quelque chose qui brille par terre, prenez-le !\n🎁 Le prendre.",
+        "reactions" : ["🎁"],
+        "commands" : [
+          ["Msg(C'est 3 poyns ! Vous vous demandez comment ils ont pu atterir ici, mais vous êtes bien content de les avoir ! +3 poyn.)", "SetPoyn(3)"]
+        ]
+      },
+      {
+        "id": 12,
+        "name" : "Sommeil tumultueux",
+        "rarete" : 80,
+        "condition" : "/",
+        "description" : "Alors que vous essayez de vous endormir, votre voisin a décidé de faire une petite fête sans vous prévenir du bruit, malheureusement il vous empêche de vous reposer depuis maintenant 30 minutes...\n🗣 Vous lui criez dessus pour qu'il fasse moins de bruit.\n🙇‍♂️ Vous allez lui parler pour lui demander de faire moins de bruit.\n👂 Vous ne bougez pas, et attendez patiemment que le sommeil arrive.",
+        "reactions" : ["🗣", "🙇‍♂️", "👂"],
+        "commands" : [
+          ["Msg(Vous ouvrez la fenêtre et videz vos poumons sur cet énergumène. Depuis, le son a baissé, et vous pouvez enfin vous endormir paisiblement. Mais, vous ne savez pas quelles seront les représailles... +1 redoutabilité, +3 travail, -3 piété, -1 prestige.)", "SetPoint(redoutabilite § 1)", "SetPoint(travail § 3)", "SetPoint(piete § -3)", "SetPoint(prestige § -1)"],
+          ["Msg(En allant voir votre voisin, celui-ci vous remarque facilement. En lui expliquant la situation, celui-ci comprend tout à fait et s'excuse de la gêne. Vous pouvez enfin dormir sur vos deux oreilles ! +2 travail, +2 moral.)", "SetPoint(travail § 2)", "SetPoint(moral § 2)"],
+          ["Msg(Malgré votre bonté, étant donné que le voisin ne sait pas que vous essayez de dormir, celui-ci a fait la fête jusqu'à pas d'heure. Vous savez que la journée qui suit sera rude, mais vous vous réconciliez en vous disant que le voisin s'est bien amusé. +6 piété, -2 forme, -1 moral.)", "SetPoint(piete § 6)", "SetPoint(forme § -2)", "SetPoint(moral § -1)"]
+        ]
+      },
+      {
+        "id": 13,
+        "name" : "Titre",
+        "rarete" : 6969,
+        "condition" : "/",
+        "description" : "Je suis con\n🪣 d",
+        "reactions" : ["🪣"],
+        "commands" : [
+          [ "Msg(t)" ]
         ]
       }
 ]

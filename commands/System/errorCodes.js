@@ -32,7 +32,7 @@ module.exports.help = {
     name: "codes-erreur",
     aliases: ['errorcodes', 'errcodes'],
     category: "system",
-    desription: "Liste tous les codes d'erreurs fatales ainsi que leurs possibles résolutions.",
+    desription: "Liste tous les codes d'erreurs fatales ainsi que leurs possibles résolutions. Ces codes sont rares et n'apparaissent qu'en cas de réel bug important.",
     usage: '',
     cooldown: 3, 
     permissions: false,

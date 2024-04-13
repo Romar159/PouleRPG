@@ -17,7 +17,13 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     // Si l'on choisit de définir la taxe
     if(args[0] == "définir" || args[0] == "definir" || args[0] == "d") {
        
-        if(!client.isMaster(message)) return message.reply("Commande utilisable que par les maîtres de faction.");  //verification maître.
+        //if(!client.isMaster(message)) return message.reply("Commande utilisable que par les maîtres de faction.");  //verification maître.
+        
+        if(!client.isMaster(message)) {
+            if(await client.isConseiller(message.member, 902) == false) {
+                return message.reply(`Vous n'êtes pas maître de faction ou intendant. Vous ne pouvez pas utiliser cette commande.`)
+            }
+        }
 
         
         if(isNaN(args[1])) return message.reply("Veuillez renseigner une valeur numérique.");
@@ -35,21 +41,22 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         return message.channel.send("Vous êtes endetté personnellement à hauteur de: " + dbUser.endettement + " :coin:"); //oui c'est une ref à Pécresse 2022
     }
 
-    //TODO: Check pour voir pourquoi Gégé s'affiche quand Draxy fait le comptes. (je pense que ça affiche juste tous les membres qui sont endettés et non pas que ceux de notre faction)
     if(args[0] == "comptes") {
         
         
         message.guild.members.fetch().then(async fetchAll => { 
+
+            let faction = await client.getFaction(dbUser.faction);
             
             let members;
             var itemsProcessed = 0;
             var total = 0;
             var arrayComptes = [];
 
-            if(faction.name = "epsilon") members = fetchAll.filter(m => m.roles.cache.get('415947454626660366'));
-            else if(faction.name = "daïros") members = fetchAll.filter(m => m.roles.cache.get('415947455582961686'));
-            else if(faction.name = "lyomah") members = fetchAll.filter(m => m.roles.cache.get('415947456342130699'));
-            else if(faction.name = "alpha") members = fetchAll.filter(m => m.roles.cache.get('665340021640921099'));
+            if(faction.name == "epsilon") members = fetchAll.filter(m => m.roles.cache.get('415947454626660366'));
+            else if(faction.name == "daïros") members = fetchAll.filter(m => m.roles.cache.get('415947455582961686'));
+            else if(faction.name == "lyomah") members = fetchAll.filter(m => m.roles.cache.get('415947456342130699'));
+            else if(faction.name == "alpha") members = fetchAll.filter(m => m.roles.cache.get('665340021640921099'));
 
             
             await members.forEach(async element => {
@@ -74,7 +81,7 @@ module.exports.help = {
     name: "taxe",
     aliases: ['tx'],
     category: "faction",
-    desription: "Gérez tout ce qui s'apporte aux taxes. Chaque semaine chaque membre doit le pourcentage de la taxe de son salaire maximum. Ils peuvent payer avec la commande envoiecoffre et leur endettement baissera. S'ils ne payent pas, l'endettement augmente.",
+    desription: "Gérez tout ce qui se rapporte aux taxes. Chaque semaine chaque membre doit le pourcentage de la taxe de son salaire maximum. Ils peuvent payer avec la commande envoiecoffre et leur endettement baissera. S'ils ne payent pas, l'endettement augmente.",
     usage: '[endettement/comptes/[{définir} {montant}]]',
     cooldown: 3, 
     permissions: false,

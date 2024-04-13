@@ -13,7 +13,7 @@ module.exports.help = {
     category: "",
     desription: "Easter Egg.",
     usage: "",
-    cooldown: 60,
+    cooldown: 120,
     permissions: false,
     args: false
 };

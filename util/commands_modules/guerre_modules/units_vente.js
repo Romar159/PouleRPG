@@ -3,7 +3,7 @@ const { ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, Button
 const units = require("../../../assets/guerre/units.json");
 const fs = require("fs");
 
-//TODO: LE REFAIRE ENTIEREMENT EN FAIT ?
+//* TODO:FAIT: LE REFAIRE ENTIEREMENT EN FAIT ?
 //? Ah bon ? En le testant il me semble correct ?
 //* note: je pense que ce todo date un peu. C'est vrai qu'un copié collé légèrement modifié est un peu étonnant mais ça fonctionne et c'est assez intuitif. 
 //* (peut être juste la formulation d'ajout et de retrait qui est un peu étonnante mais quand on a compris c'est bon).

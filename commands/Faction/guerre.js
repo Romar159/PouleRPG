@@ -10,16 +10,31 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
-    if(!client.isMaster(message)) return message.reply(`Vous n'êtes pas maître de faction ou maréchal. Vous ne pouvez pas utiliser cette commande.`)
-
-
-    //TODO dans chaque module, le bouton retour le plus haut (premier embed quand on ouvre la catégorie) devra réouvrir l'interface de guerre cité ci-dessus. Tout en quittant évidemment les collector et tout mais ça je crois que c'est déjà géré
+    if(!client.isMaster(message)) {
+        console.log(client.isConseiller(message.member, 901))
+        if(await client.isConseiller(message.member, 901) == false) {
+            return message.reply(`Vous n'êtes pas maître de faction ou maréchal. Vous ne pouvez pas utiliser cette commande.`)
+        }
+    }
     
+    if(dbUser.in_jail == 'true') {
+        return message.reply(`Vous êtes actuellement enfermé dans les cachots. Il vous est donc impossible de gérer la guerre.`)
+    }
+
+
+
+    //TODO:Bêta: dans chaque module, le bouton retour le plus haut (premier embed quand on ouvre la catégorie) devra réouvrir l'interface de guerre cité ci-dessus. Tout en quittant évidemment les collector et tout mais ça je crois que c'est déjà géré
+    //* Note, on le fera donc en bêta, ça se fait en ajoutant un module guerre pour l'interface principale. Que cette commande ne fait que le lancer comme les autres. Et que les autres modules lancent donc ce module également en quittant.
+
     //TODO ne pas oublier qu'il faudra empêcher certains modules si une guerre n'est pas en cours. Ou du moins vérifier qu'on peut pas tout faire planter
     //todo par exemple avec le fait qu'un if vérifie les factions attaquantes et défenseurs mais vérifie pas s'il sont nulles etc...
     //todo le mieux serait donc d'empêceher l'execution de certains module, mais dans le meilleur cas ce serait d'afficher un embed similaire à l'interface
     //todo avec autre chose d'écrit. Comme l'état par exemple juste afficher un bel embed "Vous n'êtes en guerre contre personne."
 
+
+    
+    
+    
     
     
     
@@ -63,28 +78,27 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         new ButtonBuilder()
             .setCustomId(`btnedit` + message.author.id)
             .setLabel('Gérer l\'armée')
-            .setStyle(ButtonStyle.Primary),
+            .setStyle(ButtonStyle.Secondary),
         new ButtonBuilder()
             .setCustomId(`btnachat` + message.author.id)
             .setLabel('Acheter des unités')
-            .setStyle(ButtonStyle.Primary),
+            .setStyle(ButtonStyle.Secondary),
         new ButtonBuilder()
             .setCustomId(`btnvente` + message.author.id)
             .setLabel('Vendre des unités')
-            .setStyle(ButtonStyle.Primary),
+            .setStyle(ButtonStyle.Secondary),
         new ButtonBuilder()
-            .setCustomId(`btndiplomatie` + message.author.id)
-            .setLabel('Gérer la diplomatie')
-            .setStyle(ButtonStyle.Primary)
+            .setCustomId(`btncommandants` + message.author.id)
+            .setLabel('Gérer les commandants')
+            .setStyle(ButtonStyle.Secondary)
     ); 
 
     const rowMenuGuerre_part2 = new ActionRowBuilder()
         .addComponents(
-
         new ButtonBuilder()
-            .setCustomId(`btncommandants` + message.author.id)
-            .setLabel('Gérer les commandants')
-            .setStyle(ButtonStyle.Primary),
+            .setCustomId(`btndiplomatie` + message.author.id)
+            .setLabel('Gérer la diplomatie')
+            .setStyle(ButtonStyle.Success),
         new ButtonBuilder()
             .setCustomId(`btnetat` + message.author.id)
             .setLabel('Gérer la guerre')
@@ -92,7 +106,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         new ButtonBuilder()
             .setCustomId(`btnbataille` + message.author.id)
             .setLabel('Lancer une bataille')
-            .setStyle(ButtonStyle.Primary)
+            .setStyle(ButtonStyle.Danger)
     ); 
 
 

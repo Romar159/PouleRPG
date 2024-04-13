@@ -1,11 +1,15 @@
 [
     {
-        "id" : 0,
-        "name" : "Travail",
-        "rarete" : 10,
-        "condition" : "/",
-        "description" : "Il se passe quoi là",
-        "reactions" : ["🔓", "😴"],
-        "commands" : ["message.channel.send('Je fais des cadenas ?');", "message.channel.send('Je dors ?');"]
-    }
+        "id": 0,
+        "name": "Rencontre avec un noble",
+        "rarete": 60,
+        "condition": "/",
+        "description": "Pendant votre travail, vous croisez un noble en voyage. Il vous adresse la parole.\n🎩 Vous le saluez simplement dans le plus grand respect.\n💬 Vous arrêtez votre travail pour discuter\n🚶‍♂️ Vous l'ignorez en restant concentré sur votre travail",
+        "reactions": ["🎩", "💬", "🚶‍♂️"],
+        "commands": [
+          ["Msg(Le noble vous salue avec un signe de tête et continue son chemin tout sourire. +2 moral +1 piété)", "SetPoint(moral § 2)", "SetPoint(piete § 1)"],
+          ["Msg(Le noble engage la conversation avec vous, vous demandant des nouvelles de la région et de vos activités. +3 savoir, +2 moral, -2 travail)", "SetPoint(savoir § 3)", "SetPoint(moral § 2)", "SetPoint(travail § -2)"],
+          ["Msg(Vous choisissez de ne pas interrompre votre travail pour saluer le noble et continuer votre journée. -1 piété, -2 moral, +4 travail)", "SetPoint(piete § -1)", "SetPoint(moral § -2)", "SetPoint(travail § 4)"]
+        ]
+      }
 ]

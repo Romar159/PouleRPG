@@ -76,13 +76,13 @@ module.exports.run = async (client, message, args) => {
                 if(choix_p1 == 1 && choix_p2 == 2) {
                     await client.setOr(client, message.member, or_parie, message);
                     await client.setOr(client, memberp2, -or_parie, message);
-                    await i.editReply({ content:`PILE, ${player1.username} GAGNE et récupère ${or_parie} poyn :coin: à ${player2.username}`, components: [] });
+                    await i.editReply({ content:`PILE, ${message.member.user.username} GAGNE et récupère ${or_parie} poyn :coin: à ${memberp2.user.username}`, components: [] });
                 } 
                 if(choix_p2 == 1 && choix_p1 == 2) {
                     
                     await client.setOr(client, message.member, -or_parie, message);
                     await client.setOr(client, memberp2, or_parie, message);
-                    await i.editReply({ content:`PILE, ${player2.username} GAGNE et récupère ${or_parie} poyn :coin: à ${player1.username}`, components: [] });
+                    await i.editReply({ content:`PILE, ${memberp2.user.username} GAGNE et récupère ${or_parie} poyn :coin: à ${message.member.user.username}`, components: [] });
                     
                 } 
     
@@ -92,20 +92,20 @@ module.exports.run = async (client, message, args) => {
     
                     await client.setOr(client, message.member, -or_parie, message);
                     await client.setOr(client, memberp2, or_parie, message);
-                    await i.editReply({ content:`FACE, ${player2.username} GAGNE et récupère ${or_parie} poyn :coin: à ${player1.username}`, components: [] });
+                    await i.editReply({ content:`FACE, ${memberp2.user.username} GAGNE et récupère ${or_parie} poyn :coin: à ${message.member.user.username}`, components: [] });
                 } 
                 if(choix_p2 == 1 && choix_p1 == 2) {
                     
                     await client.setOr(client, message.member, or_parie, message);
                     await client.setOr(client, memberp2, -or_parie, message);
-                    await i.editReply({ content:`FACE, ${player1.username} GAGNE et récupère ${or_parie} poyn :coin: à ${player2.username}`, components: [] });
+                    await i.editReply({ content:`FACE, ${message.member.user.username} GAGNE et récupère ${or_parie} poyn :coin: à ${memberp2.user.username}`, components: [] });
                 } 
                 
             }
         }
         else if(i.customId === 'refus') {
             await i.deferUpdate();
-            await i.editReply({ content:`${player2.username} ne veut pas parier ! Il a sûrement trop peur de perdre :)`, components: [] });
+            await i.editReply({ content:`${memberp2.user.username} ne veut pas parier ! Il a sûrement trop peur de perdre :)`, components: [] });
 
         }
     });

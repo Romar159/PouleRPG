@@ -386,6 +386,7 @@ module.exports = client => {
     // 901 = Maréchal ; 902 = Intendant ; 903 = Chapelain
     client.isConseiller = async (member, id_metier_conseiller) => {
         //verification du rôle de conseiller
+        
 
         const dbMembre = await client.getUser(member);
         if(dbMembre.metier == id_metier_conseiller) {
@@ -459,10 +460,10 @@ module.exports = client => {
 
             //récupération des membres de chaque faction.
             message.guild.members.fetch().then(fetchAll => { 
-                if(dbFaction.name = "epsilon") members = fetchAll.filter(m => m.roles.cache.get('415947454626660366'));
-                else if(dbFaction.name = "daïros") members = fetchAll.filter(m => m.roles.cache.get('415947455582961686'));
-                else if(dbFaction.name = "lyomah") members = fetchAll.filter(m => m.roles.cache.get('415947456342130699'));
-                else if(dbFaction.name = "alpha") members = fetchAll.filter(m => m.roles.cache.get('665340021640921099'));
+                if(dbFaction.name == "epsilon") members = fetchAll.filter(m => m.roles.cache.get('415947454626660366'));
+                else if(dbFaction.name == "daïros") members = fetchAll.filter(m => m.roles.cache.get('415947455582961686'));
+                else if(dbFaction.name == "lyomah") members = fetchAll.filter(m => m.roles.cache.get('415947456342130699'));
+                else if(dbFaction.name == "alpha") members = fetchAll.filter(m => m.roles.cache.get('665340021640921099'));
 
                 members.forEach(async element => {
                     let usr = await client.getUser(element);
@@ -637,7 +638,8 @@ module.exports = client => {
         //console.log("1 : " + faction.idmaitre);
 
         //*prestige
-        if(maitre != "NULL" || maitre != "") {
+        if(maitre != "NULL" && maitre != "") {
+            //console.log("JE SUIS IICI !!!!")
             let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
             //console.log("2");
             points.push(parseInt(dbmaitre.prestige));
@@ -648,12 +650,12 @@ module.exports = client => {
         //console.log(points.join(` ] - [ `));
 
         //*piete
-        if(chapelain != "NULL" || chapelain == "") {
+        if(chapelain != "NULL" && chapelain != "") {
             let dbchapelain = await client.getUser(message.guild.members.cache.get(chapelain));
             points.push(parseInt(dbchapelain.piete));
             //console.log("4");
         } else {
-            if(maitre != "NULL" || maitre != "") {
+            if(maitre != "NULL" && maitre != "") {
                 let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
                 points.push(parseInt(dbmaitre.piete));
                 //console.log("5");
@@ -665,12 +667,12 @@ module.exports = client => {
         //console.log(points.join(` ] - [ `));
 
         //*richesse
-        if(intendant != "NULL" || intendant == "") {
+        if(intendant != "NULL" && intendant != "") {
             let dbintendant = await client.getUser(message.guild.members.cache.get(intendant));
             points.push(parseInt(dbintendant.richesse));
             //console.log("7");
         } else {
-            if(maitre != "NULL" || maitre != "") {
+            if(maitre != "NULL" && maitre != "") {
                 let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
                 points.push(parseInt(dbmaitre.richesse));
             } else {
@@ -680,7 +682,7 @@ module.exports = client => {
         //console.log(points.join(` ] - [ `));
 
         //*redoutabilité
-        if(maitre != "NULL" || maitre != "") {
+        if(maitre != "NULL" && maitre != "") {
             let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
             points.push(parseInt(dbmaitre.redoutabilite));
         } else {
@@ -689,11 +691,11 @@ module.exports = client => {
         //console.log(points.join(` ] - [ `));
 
         //*forme
-        if(marechal != "NULL" || marechal == "") {
+        if(marechal != "NULL" && marechal != "") {
             let dbmarechal = await client.getUser(message.guild.members.cache.get(marechal));
             points.push(parseInt(dbmarechal.forme));
         } else {
-            if(maitre != "NULL" || maitre != "") {
+            if(maitre != "NULL" && maitre != "") {
                 let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
                 points.push(parseInt(dbmaitre.forme));
             } else {
@@ -703,11 +705,11 @@ module.exports = client => {
         //console.log(points.join(` ] - [ `));
 
         //*moral
-        if(chapelain != "NULL" || chapelain == "") {
+        if(chapelain != "NULL" && chapelain != "") {
             let dbchapelain = await client.getUser(message.guild.members.cache.get(chapelain));
             points.push(parseInt(dbchapelain.moral));
         } else {
-            if(maitre != "NULL" || maitre != "") {
+            if(maitre != "NULL" && maitre != "") {
                 let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
                 points.push(parseInt(dbmaitre.moral));
             } else {
@@ -717,11 +719,11 @@ module.exports = client => {
        // console.log(points.join(` ] - [ `));
 
         //*travail
-        if(marechal != "NULL" || marechal == "") {
+        if(marechal != "NULL" && marechal != "") {
             let dbmarechal = await client.getUser(message.guild.members.cache.get(marechal));
             points.push(parseInt(dbmarechal.travail));
         } else {
-            if(maitre != "NULL" || maitre != "") {
+            if(maitre != "NULL" && maitre != "") {
                 let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
                 points.push(parseInt(dbmaitre.travail));
             } else {
@@ -731,11 +733,11 @@ module.exports = client => {
         //console.log(points.join(` ] - [ `));
 
         //*savoir
-        if(intendant != "NULL" || intendant == "") {
+        if(intendant != "NULL" && intendant != "") {
             let dbintendant = await client.getUser(message.guild.members.cache.get(intendant));
             points.push(parseInt(dbintendant.savoir));
         } else {
-            if(maitre != "NULL" || maitre != "") {
+            if(maitre != "NULL" && maitre != "") {
                 let dbmaitre = await client.getUser(message.guild.members.cache.get(maitre));
                 points.push(parseInt(dbmaitre.savoir));
             } else {
@@ -891,6 +893,7 @@ module.exports = client => {
                         let memb_temp = message.guild.members.cache.get(e);
                         let dbUsrTemp = await client.getUser(memb_temp);
                         //console.log("FOREEACH: " + dbUsrTemp.username);
+                        await client.updateUser(memb_temp, {in_jail: false});
                         return dbUsrTemp.faction !== faction_attaquants.name;
                       });
                     
@@ -974,6 +977,7 @@ module.exports = client => {
                         let memb_temp = message.guild.members.cache.get(e);
                         let dbUsrTemp = await client.getUser(memb_temp);
                         //console.log("FOREEACH: " + dbUsrTemp.username);
+                        await client.updateUser(memb_temp, {in_jail: false});
                         return dbUsrTemp.faction !== faction_attaquants.name;
                       });
                     
@@ -1001,11 +1005,15 @@ module.exports = client => {
 
                     //attaquant
                     
-                    //!BUG //TODO: ICI si on a des points de redoutabilité négatifs le pourcentage est biaisé ! Voir comment le réparer... (reflexion en cours au 05/10/2023 21:12 sur le discord)
+                    //!BUG //TODO:FAIT: ICI si on a des points de redoutabilité négatifs le pourcentage est biaisé ! Voir comment le réparer... (reflexion en cours au 05/10/2023 21:12 sur le discord)
                     //!On a le pourcentage toujours SAUF si on est en dessous de 25 (trop proche de 0) là c'est une somme fixe genre 50
                     let tenpercent_facdef = Math.floor(faction_defensseurs.bank * 0.1);
                     await client.updateFaction(faction_attaquants.name, {bank: faction_attaquants.bank + tenpercent_facdef}) //"- Récupère 10% de l'or de la faction adverse."
-                    await client.editPoint(client, maitre_attaquant, Math.floor(maitre_defensseur.redoutabilite * 0.2), "redoutabilite"); //"- Récupère 20% de la redoutabilité de la faction adverse"
+                    if(maitre_defensseur_db.redoutabilite >= 25) {
+                        await client.editPoint(client, maitre_attaquant, Math.floor(maitre_defensseur_db.redoutabilite * 0.2), "redoutabilite"); //"- Récupère 20% de la redoutabilité de la faction adverse"
+                    } else {
+                        await client.editPoint(client, maitre_attaquant, Math.floor(5), "redoutabilite"); //"- Récupère de la redoutabilité un peu même si l'aautre n'en a pas ou très peu
+                    }
                     await client.editPoint(client, maitre_attaquant, 350, "prestige"); //"- Récupère 20% de la redoutabilité de la faction adverse"
                     await client.editRelation(faction_attaquants, faction_defensseurs, 1); //"- Force la signature d'un pacte de non-agression",
                     change_relation = false;
@@ -1017,7 +1025,11 @@ module.exports = client => {
                     
                     //defenseur
                     await client.updateFaction(faction_defensseurs.name, {bank: faction_defensseurs.bank - tenpercent_facdef}) //"- Perd 10% d'or pour le bénéfice de la faction adverse"
-                    await client.editPoint(client, maitre_defensseur, 0 - Math.floor(maitre_defensseur.redoutabilite * 0.2), "redoutabilite"); //"- Perd 20% de redoutabilité pour le bénéfice de la faction adverse"
+                    if(maitre_defensseur_db.redoutabilite >= 25) {
+                        await client.editPoint(client, maitre_defensseur, 0 - Math.floor(maitre_defensseur_db.redoutabilite * 0.2), "redoutabilite"); //"- Perd 20% de redoutabilité pour le bénéfice de la faction adverse"
+                    } else {
+                        await client.editPoint(client, maitre_defensseur, 0 - Math.floor(5), "redoutabilite"); //"- Perd 20% de redoutabilité pour le bénéfice de la faction adverse"
+                    }
                     await client.editPoint(client, maitre_defensseur, -350, "prestige"); //"- Perd de 350 points de prestige pour le bénéfice de la faction adverse", 
                 
                     //TODO envoyer ce message dans le #décision-RPG
@@ -1033,7 +1045,11 @@ module.exports = client => {
                     array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
                     await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
                     
-                    let tenpercent_redoutabilite_facatt = Math.floor(maitre_attaquant.redoutabilite * 0.1);
+                    let tenpercent_redoutabilite_facatt = 5;
+                    if(maitre_attaquant_db.redoutabilite >= 25) {
+                        tenpercent_redoutabilite_facatt = Math.floor(maitre_attaquant_db.redoutabilite * 0.1); //"- Perd 10% de redoutabilité pour le bénéfice de la faction adverse"
+                    }
+                    
                     await client.editPoint(client, maitre_attaquant, 0 - tenpercent_redoutabilite_facatt, "redoutabilite"); //"- Perd 10% de redoutabilité pour le bénéfice de la faction adverse", 
                     await client.editPoint(client, maitre_attaquant, -350, "prestige"); //"- Perd 350 points de prestige pour le bénéfice de la faction adverse"
                     //defenseur
@@ -1067,7 +1083,10 @@ module.exports = client => {
                     array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
                     await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
 
-                    let tenpercent_redoutabilite_facatt_sr = Math.floor(maitre_attaquant.redoutabilite * 0.1);
+                    let tenpercent_redoutabilite_facatt_sr = 5;
+                    if(maitre_attaquant_db.redoutabilite >= 25) {
+                        tenpercent_redoutabilite_facatt_sr = Math.floor(maitre_attaquant_db.redoutabilite * 0.1);
+                    }
                     await client.editPoint(client, maitre_attaquant, 0 - tenpercent_redoutabilite_facatt_sr, "redoutabilite") //"- Perd 10% de redoutabilité pour le bénéfice de la faction adverse", 
                     await client.editPoint(client, maitre_attaquant, -350, "prestige"); //"- Perd 350 points de prestige pour le bénéfice de la faction adverse"
                     
@@ -1095,7 +1114,11 @@ module.exports = client => {
                     await client.editPoint(client, maitre_attaquant, 300, "prestige"); //"Récupère 300 points de prestige de la faction adverse", 
 
                     let _8percent_or_facdef =  Math.floor(faction_defensseurs.bank * 0.08);
-                    let _18percent_redoutabilite_facdef =  Math.floor(faction_defensseurs.redoutabilite * 0.18);
+                    
+                    let _18percent_redoutabilite_facdef = 5;
+                    if(maitre_defenseur_db.redoutabilite >= 25) {
+                        _18percent_redoutabilite_facdef =  Math.floor(maitre_defenseur_db.redoutabilite * 0.18);
+                    }
 
                     await client.updateFaction(faction_attaquants.name, {bank: faction_attaquants.bank + _8percent_or_facdef}) //"- Récupère 8% de l'or de la faction adverse.", 
                     await client.editPoint(client, maitre_attaquant, _18percent_redoutabilite_facdef, "redoutabilite"); //"- Récupère 18% de la redoutabilité de la faction adverse", 
@@ -1236,7 +1259,11 @@ module.exports = client => {
                     array_cassusbelli_fac_att.splice(id_casusbelli_faction_attaquante, 1);
                     await client.updateFaction(faction_attaquants.name, {casusbelli:array_cassusbelli_fac_att})
 
-                    await client.editPoint(client, maitre_attaquant, Math.floor(maitre_attaquant_db.piete * 0.5), "piete"); //"- Gagne 50% de piété", 
+                    if(maitre_attaquant_db.piete > 0) {
+                        await client.editPoint(client, maitre_attaquant, Math.floor(maitre_attaquant_db.piete * 0.5), "piete"); //"- Gagne 50% de piété", 
+                    } else {
+                        await client.editPoint(client, maitre_attaquant, 25, "piete"); //"- Gagne 25 de piété si en dessous de 0; 
+                    }
 
                     let or_faction_def_vingtperc = faction_defensseurs.bank * 0.2;
                     await client.updateFaction(faction_attaquants.name, {bank: faction_attaquants.bank + (or_faction_def_vingtperc)})//"- Vole 20% d'or à la faction adverse", 
@@ -1377,21 +1404,21 @@ module.exports = client => {
             await client.editRelation(faction_attaquants, faction_defensseurs, 0);
         }
 
-        await client.updateFaction(faction_attaquants, {en_guerre: false});
-        await client.updateFaction(faction_attaquants, {attaquant: "NULL"});
-        await client.updateFaction(faction_attaquants, {defensseur: "NULL"});
-        await client.updateFaction(faction_attaquants, {casusbelli_utilise: -1});
-        await client.updateFaction(faction_attaquants, {date_debut_guerre: 0});
-        await client.updateFaction(faction_attaquants, {cooldown_battle: 0});
-        await client.updateFaction(faction_attaquants, {score_guerre: 0});
+        await client.updateFaction(faction_attaquants.name, {en_guerre: false});
+        await client.updateFaction(faction_attaquants.name, {attaquant: "NULL"});
+        await client.updateFaction(faction_attaquants.name, {defensseur: "NULL"});
+        await client.updateFaction(faction_attaquants.name, {casusbelli_utilise: -1});
+        await client.updateFaction(faction_attaquants.name, {date_debut_guerre: 0});
+        await client.updateFaction(faction_attaquants.name, {cooldown_battle: 0});
+        await client.updateFaction(faction_attaquants.name, {score_guerre: 0});
         
-        await client.updateFaction(faction_defensseurs, {en_guerre: false});
-        await client.updateFaction(faction_defensseurs, {attaquant: "NULL"});
-        await client.updateFaction(faction_defensseurs, {defensseur: "NULL"});
-        await client.updateFaction(faction_defensseurs, {casusbelli_utilise: -1});
-        await client.updateFaction(faction_defensseurs, {date_debut_guerre: 0});
-        await client.updateFaction(faction_defensseurs, {cooldown_battle: 0});
-        await client.updateFaction(faction_defensseurs, {score_guerre: 0});
+        await client.updateFaction(faction_defensseurs.name, {en_guerre: false});
+        await client.updateFaction(faction_defensseurs.name, {attaquant: "NULL"});
+        await client.updateFaction(faction_defensseurs.name, {defensseur: "NULL"});
+        await client.updateFaction(faction_defensseurs.name, {casusbelli_utilise: -1});
+        await client.updateFaction(faction_defensseurs.name, {date_debut_guerre: 0});
+        await client.updateFaction(faction_defensseurs.name, {cooldown_battle: 0});
+        await client.updateFaction(faction_defensseurs.name, {score_guerre: 0});
         
     }
 

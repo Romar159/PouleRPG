@@ -699,7 +699,7 @@ const diplomatie = async (client, message, dbUser) => {
                         //* Plus d'une faction à la fois. se battre sur plusieurs front pourrait être intéressant, dangereux mais un gameplay cool !
 
                         //* TODO: Voir si on permet à une faction de faire la guerre à une faction qui ne possède pas de maître de faction.
-                        //! IL FAUT ABSOLUMENT PAS QU'ON PUISSE (en tout cas en alpha !!)
+                        //! IL FAUT ABSOLUMENT PAS QU'ON PUISSE (en tout cas en alpha !!) (c'est réglé !)
                         // * CE TODO A ETE FAIT
                         //*FAIT TODO: CE TODO LA N'A PAS ETE FAIT. Draxy avec Daïros à bien pu déclarer la guerre même si j'étais en guerre avec Lyomah.
                         // * DERNIERE MAJ : C'est bon corrigé en ajoutant une condition qui vérifie si la faction cible est pas déjà en state 4
@@ -746,7 +746,7 @@ const diplomatie = async (client, message, dbUser) => {
         
                                     i.deferUpdate();
                                     message.reply({content:`:crossed_swords: La guerre est déclarée entre ${faccasbel.displayname} et ${faction_ennemy.displayname}`});
-                                    //TODO envoyer ça dans le décision_rpg
+                                    //TODO envoyer ça dans le décision_rpg #décision-RPG
                                     collector.stop();
                                 }
                             }

@@ -1,3 +1,5 @@
+const { EmbedBuilder } = require("discord.js");
+
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
     let faction = await client.getFaction(dbUser.faction);
@@ -6,7 +8,17 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     if(!args[0]) {
         if(faction == undefined) return message.reply(`Vous n'êtes pas membre d'une faction, veuillez préciser la faction dont vous souhaitez connaître le conseil. (p<conseil <faction>)`);
         
-        return message.channel.send(`**${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}**\n\nMaréchal: ${faction.marechal == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.marechal).user.username} \nIntendant: ${faction.intendant == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.intendant).user.username} \nChapelain: ${faction.chapelain == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.chapelain).user.username}`)
+        var embed_ConseilList = new EmbedBuilder()
+        .setColor('3C4C66')
+        .setAuthor({name: `${message.author.username}`, iconURL: message.author.displayAvatarURL()})
+        .setTitle(`Conseil de la faction ${faction.displayname}`)
+        .addFields([{name:`**Maréchal**`, value:`${faction.marechal == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.marechal)}`, inline:true}, 
+                   {name:`**Intendant**`, value:`${faction.intendant == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.intendant)}`, inline:true}, 
+                   {name:`**Chapelain**`, value:`${faction.chapelain == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.chapelain)}`, inline:true}])
+        
+        return message.channel.send({embeds:[embed_ConseilList]});
+        
+        //return message.channel.send(`**${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}**\n\nMaréchal: ${faction.marechal == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.marechal).user.username} \nIntendant: ${faction.intendant == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.intendant).user.username} \nChapelain: ${faction.chapelain == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.chapelain).user.username}`)
     }
     let arg1 = args[0].toLowerCase();
 
@@ -26,6 +38,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         // --
 
         if(!message.mentions.users.first()) return message.reply('Mention invalide.');
+        if(message.mentions.users.first().id == message.member.user.id) return message.reply("Vous ne pouvez pas vous nommer vous-même à un poste du conseil.");
 
         let nouveau_conseiller = message.guild.members.cache.get(message.mentions.users.first().id);
         let dbNouveauConseiller = await client.getUser(nouveau_conseiller);
@@ -35,7 +48,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         let info = "";
         let ancien_conseiller;
 
-        if(!args[2]) return message.reply("Vous devez définir un titre (Maréchal/Intendant/Chapelain");
+        if(!args[2]) return message.reply("Vous devez définir un titre (Maréchal/Intendant/Chapelain)");
 
         if(args[2].toLowerCase() == "maréchal" || args[2].toLowerCase() == "marechal") {
             if(dbNouveauConseiller.userID == faction.marechal) return message.reply('Cet utilisateur fait déjà parti du conseil sous ce rôle.');
@@ -210,7 +223,17 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         else {
             if(faction == undefined) return message.reply("Cette faction n'existe pas.");
         }
-        return message.channel.send(`**${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}**\n\nMaréchal: ${faction.marechal == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.marechal).user.username} \nIntendant: ${faction.intendant == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.intendant).user.username} \nChapelain: ${faction.chapelain == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.chapelain).user.username}`)    
+
+        var embed_ConseilList = new EmbedBuilder()
+        .setColor('3C4C66')
+        .setAuthor({name: `${message.author.username}`, iconURL: message.author.displayAvatarURL()})
+        .setTitle(`Conseil de la faction ${faction.displayname}`)
+        .addFields([{name:`**Maréchal**`, value:`${faction.marechal == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.marechal).user.username}`, inline:true}, 
+                   {name:`**Intendant**`, value:`${faction.intendant == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.intendant).user.username}`, inline:true}, 
+                   {name:`**Chapelain**`, value:`${faction.chapelain == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.chapelain).user.username}`, inline:true}])
+        
+        return message.channel.send({embeds:[embed_ConseilList]});
+        //return message.channel.send(`**${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}**\n\nMaréchal: ${faction.marechal == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.marechal).user.username} \nIntendant: ${faction.intendant == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.intendant).user.username} \nChapelain: ${faction.chapelain == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.chapelain).user.username}`)    
     }
 }
 
@@ -219,8 +242,9 @@ module.exports.help = {
     aliases: ['c', 'conseiller'],
     category: "faction",
     desription: "Gérez ou consultez les conseils. 'p<conseil <faction>' pour lister les conseillers d'une faction.",
-    usage: '[<nommer/retirer> <@USER> <titre>]',
+    usage: '[<nommer/retirer> <@USER> <titre:Maréchal/Intendant/Chapelain>]',
     cooldown: 3, 
     permissions: false,
     args: false,
+    wiki: 'https://poulerpg.000webhostapp.com/wiki/Faction/conseil.html'
 };

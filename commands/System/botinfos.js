@@ -17,14 +17,14 @@ module.exports.run = (client, message, args) => {
 
         **Crédits**
         • Développement & Conception : <@421400262423347211>
-        • Aide aux fonctions mathématiques et conseils : <@211911771433205760>
+        • Fonctions mathématiques, conseils et arts numériques : <@211911771433205760>
         
-        **Sources d'informations principales :** ISBN-9782035053749 | ISBN-2020050749 | ISBN-2-263-02477-8 | Cours d'Histoire ; divers livres ; ainsi que les nombreuses connaissances du sujet du développeur qui le passionne | wikipedia.org | paradoxinteractive.com
+        **Sources d'informations principales :** ISBN-9782035053749 | ISBN-2020050749 | ISBN-2-263-02477-8 | Cours d'Histoire ; Divers Livres ; Ainsi que les connaissances approfondies du développeur sur le sujet, qui le passionne | wikipedia.org | paradoxinteractive.com
 
-        **Gestion des Données :** En utilisant nos services, vous acceptez que nous puissions récupérer votre pseudonyme ainsi que toutes les informations que vous fournissez publiquement à discord à des fins de développement uniquement.
+        **Gestion des Données :** En utilisant nos services, vous acceptez que nous puissions récupérer votre pseudonyme ainsi que toutes les informations que vous fournissez **publiquement** à discord à des fins de développement uniquement.
 
         **Lien utiles :**
-        [Discord Empire](https://discord.gg/Y4YZw2FK2Q) • [Github](https://github.com/Romar159/PouleRPG) • [Site](https://poulerpg.000webhostapp.com)`)
+        [Discord Empire](https://discord.gg/Y4YZw2FK2Q) • [Github](https://github.com/Romar159/PouleRPG) • [Site Web](https://poulerpg.000webhostapp.com)`)
 
     message.channel.send({ embeds: [embed] });
 }

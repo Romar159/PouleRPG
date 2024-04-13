@@ -28,7 +28,7 @@
         "name":"Alliance rompue",
         "description":"Exigez réparation pour cette trahison ! Récupérez de l'or, du prestige et de la redoutabilité à la faction adverse et forcez la signature d'un pacte de non-agression !",
         
-        "ae_a_att":["- Récupère 10% de l'or de la faction adverse.", "- Récupère 20% de la redoutabilité de la faction adverse", "Récupère 350 points de prestige de la faction adverse", "- Force la signature d'un pacte de non-agression", "- Perd le casus belli \"Alliance Romptue\" envers la faction adverse"],
+        "ae_a_att":["- Récupère 10% de l'or de la faction adverse.", "- Récupère 20% de la redoutabilité de la faction adverse", "Récupère 350 points de prestige de la faction adverse", "- Force la signature d'un pacte de non-agression", "- Perd le casus belli \"Alliance Rompue\" envers la faction adverse"],
         "ae_a_def":["- Perd 10% d'or pour le bénéfice de la faction adverse", "- Perd 20% de redoutabilité pour le bénéfice de la faction adverse", "- Perd de 350 points de prestige pour le bénéfice de la faction adverse", "- Signe de force un pacte de non-agression"],
         
         "ae_d_att":["- Perd le casus belli \"Alliance Rompue\" envers la faction adverse.", "- Perd 10% de redoutabilité pour le bénéfice de la faction adverse", "- Perd 350 points de prestige pour le bénéfice de la faction adverse"],
@@ -42,7 +42,7 @@
         "sr_a_att":["- Perd le casus belli \"Alliance Rompue\" envers la faction adverse.", "- Perd 10% de redoutabilité pour le bénéfice de la faction adverse", "- Perd 350 points de prestige pour le bénéfice de la faction adverse"],
         "sr_a_def":["- Récupère 10% de la redoutabilité de la faction adverse", "- Récupère 350 points de prestige de la faction adverse"],
         
-        "sr_d_att":["- Récupère 8% de l'or de la faction adverse.", "- Récupère 18% de la redoutabilité de la faction adverse", "Récupère 300 points de prestige de la faction adverse", "- Force la signature d'un pacte de non-agression", "- Perd le casus belli \"Alliance Romptue\" envers la faction adverse"],
+        "sr_d_att":["- Récupère 8% de l'or de la faction adverse.", "- Récupère 18% de la redoutabilité de la faction adverse", "Récupère 300 points de prestige de la faction adverse", "- Force la signature d'un pacte de non-agression", "- Perd le casus belli \"Alliance Rompue\" envers la faction adverse"],
         "sr_d_def":["- Perd 8% d'or pour le bénéfice de la faction adverse", "- Perd 18% de redoutabilité pour le bénéfice de la faction adverse", "- Perd 300 points de prestige pour le bénéfice de la faction adverse", "- Signe de force un pacte de non-agression"]
         
     },

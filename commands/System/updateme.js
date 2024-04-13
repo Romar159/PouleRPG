@@ -7,14 +7,14 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     else await client.updateUser(message.member, {faction: "NULL"});
 
     
-    message.channel.send("Possible mise à jour effectuée avec succès.");
+    message.channel.send("Possible mise à jour effectuée avec succès. Si votre problème perssiste contactez le développeur");
 }
 
 module.exports.help = {
     name: "auto-actualisation",
     aliases: ['updateme', 'aa'],
     category: "system",
-    desription: "Permet de mettre à jour votre fichier utilisateur s'il ne l'est pas. C'est une commande de debug sans risque que tout le monde peut executer.",
+    desription: "Permet de mettre à jour votre fichier utilisateur, notamment votre faction, s'il ne l'est pas. C'est une commande de debug sans risque que tout le monde peut executer.",
     usage: '',
     cooldown: 30, 
     permissions: false,
