@@ -17,13 +17,12 @@ module.exports.run = (client, message, args) => {
         message.channel.send(`${insulte[insulte_ran]} ${personne[personne_ran]} ${ordre_ou_exclamation[ordre_ou_exclamation_ran]}`);
         client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Procédural: ${insulte[insulte_ran]} ${personne[personne_ran]} ${ordre_ou_exclamation[ordre_ou_exclamation_ran]}`);
     } else if(type == 2 || type == 3) {
-        const phrase = ["Bon je peux écouter la fin du film là merde !?", "Tu veux boire le reste de CHAMpomy", "VOTRE POULET IL ACCOUCHE !!!!", "Si tu gueule jte saute", "Non on va faire ça bien, je vais me coiffer...", "Elle est où la vénitienne? :) Oh putain, cette gueule !", "Ouais les deux pd on dirrait ils sont en trans", "Le Proverbe aussi, fermer sa gueule", "Attend la vénitienne elle a pas la gueule de pelo", "Eh bat elle fait chier la vénitienne", "C'est pas une séance de cul là ?", "T'es en train de jouir avec la vénitienne, fais plus doucement !"];
+        const phrase = ["Bon je peux écouter la fin du film là merde !?", "Tu veux boire le reste de CHAMpomy", "VOTRE POULET IL ACCOUCHE !!!!", "Si tu gueule jte saute", "Non on va faire ça bien, je vais me coiffer...", "Elle est où la vénitienne? :) Oh putain, cette gueule !", "Ouais les deux pd on dirrait ils sont en trans", "Le Proverbe aussi, fermer sa gueule", "Attend la vénitienne elle a pas la gueule de pelo", "Eh bat elle fait chier la vénitienne", "C'est pas une séance de cul là ?", "T'es en train de jouir avec la vénitienne, fais plus doucement !", "Salut ma chérie !", "Oh vous avez le pète ce soir !"];
         const phrase_ran = client.randomInt(0, phrase.length - 1);
 
         message.channel.send(phrase[phrase_ran]);
         client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Prefab: ${phrase[phrase_ran]}`);
     }
-
 
 }
 
