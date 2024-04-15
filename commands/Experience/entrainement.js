@@ -85,7 +85,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             let ran = client.randomFloat(0.6, 1.4);
             let points_forme = parseInt(t * ran);
 
-            message.channel.send(`Après un entraînement de ${t} heures, vous venez d'obtenir ${final_xp} experience et ${points_forme} points de forme.`);
+            message.channel.send(`Après un entraînement de ${t} heures, vous venez d'obtenir ${final_xp} expérience et ${points_forme} points de forme.`);
             await client.setXp(client, message.member, final_xp);
             await client.editPoint(client, message.member, points_forme, "forme");
 

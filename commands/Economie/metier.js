@@ -139,7 +139,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             } else {
                 var result = eval('(function() {' + mt.prerequis + '}())');
                 if(result == true) {} // continuer
-                else return await i.editReply({ embeds:[], content:`Vous n'avez pas les qualifications nécessaires !\n${mt.infos}`, components: [] }) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - qualités nécéssaires manquantes pour le métier ${mt.name}`, "err");
+                else return await i.editReply({ embeds:[], content:`Vous n'avez pas les qualifications nécessaires !\n${mt.infos}`, components: [] }) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - qualités nécessaires manquantes pour le métier ${mt.name}`, "err");
                 
             }
             if(dbUser.metier > 900) {

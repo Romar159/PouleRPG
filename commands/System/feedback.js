@@ -61,7 +61,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 .addOptions(
                 {
                     label: 'Idée',
-                    description: 'Soummetez une idée d\'amélioration ou d\'ajout.',
+                    description: 'Soumettez une idée d\'amélioration ou d\'ajout.',
                     value: 'slc_sujet1' + message.author.id,
                 },
                 {
@@ -226,7 +226,7 @@ module.exports.help = {
     name: "commentaire",
     aliases: ['feedback', 'commentaires', 'retour'],
     category: "system",
-    desription: "Permet d'envoyer un retour au développeur. Que ce soit une idée, un bug ou autre. (Attention, les critiques gratuites et/ou sans fondemment seront sévèrement punies). N'oubliez pas que le bot est entièrement conçu bénévolement et il n'y a qu'un seul développeur !",
+    desription: "Permet d'envoyer un retour au développeur. Que ce soit une idée, un bug ou autre. (Attention, les critiques gratuites et/ou sans fondement seront sévèrement punies). N'oubliez pas que le bot est entièrement conçu bénévolement et il n'y a qu'un seul développeur !",
     usage: '[consulter]',
     cooldown: 5, 
     permissions: false,

@@ -16,11 +16,13 @@ const userSchema = mongoose.Schema({
         "default": "NULL"
     },
 
+    //reste mais estinutile car jamais vraiment utilisé
     titre_politique : {
         "type": String,
         "default": "NULL"
     },
 
+    //Reste mais est inutile car jamais utilisé ni mit à jour
     level_mee6 : {
         "type": Number,
         "default": 1

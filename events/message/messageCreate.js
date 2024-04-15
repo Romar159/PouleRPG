@@ -8,7 +8,8 @@ module.exports = async (client, message) => {
         return message.reply(phrases[client.randomInt(0, phrases.length - 1)]);
     }
 
-    if(!message.author.bot && message.content.startsWith(PREFIX)) {
+    //DEV VERSION - Limitations des Utilisateurs
+    /*if(!message.author.bot && message.content.startsWith(PREFIX)) {
         if(message.author.id !== "421400262423347211") {
             if(message.author.id !== "211911771433205760") {
                 if(message.author.id !== "405420810933895168") {
@@ -22,7 +23,8 @@ module.exports = async (client, message) => {
                 }
             }
         }
-    }
+    }*/
+
     if(message.channel.type === ChannelType.DM) return;
     if(!message.member) return;
     

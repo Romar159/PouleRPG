@@ -77,7 +77,7 @@
         "ae_a_att":["- Gagne 50% de piété", "- Vole 20% d'or à la faction adverse", "- Perd le casus belli \"Hérésie\" envers la faction adverse."],
         "ae_a_def":["- Atteint 100 piété si elle se situe en dessous.", "- Perd 20% d'or pour le bénéfice de la faction adverse."],
         
-        "ae_d_att":["- Perd 500 points de prestige", "- Perd 25% d'or pour le benéfice de la faction adverse.", "- Perd le casus belli \"Hérésie\" envers la faction adverse."],
+        "ae_d_att":["- Perd 500 points de prestige", "- Perd 25% d'or pour le bénéfice de la faction adverse.", "- Perd le casus belli \"Hérésie\" envers la faction adverse."],
         "ae_d_def":["- Gagne 25% d'or de la faction adverse."],
         
 
@@ -85,7 +85,7 @@
         "pb_def":["- Rien ne se passe..."],
         
 
-        "sr_a_att":["- Perd 600 points de prestige", "- Perd 18% d'or pour le benéfice de la faction adverse.", "- Perd le casus belli \"Hérésie\" envers la faction adverse."],
+        "sr_a_att":["- Perd 600 points de prestige", "- Perd 18% d'or pour le bénéfice de la faction adverse.", "- Perd le casus belli \"Hérésie\" envers la faction adverse."],
         "sr_a_def":["- Gagne 18% d'or de la faction adverse."],
         
         "sr_d_att":["- Gagne 50% de piété", "- Vole 18% d'or à la faction adverse", "- Perd le casus belli \"Hérésie\" envers la faction adverse."],

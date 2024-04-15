@@ -8,7 +8,7 @@ module.exports = (client) => {
     //client.user.setPresence({ activities: [{ name: 'comment fonctionne p<aide', type: 'WATCHING'}] });
    
     client.user.setPresence({
-        activities: [{ name: `bientôt la Alpha !!... Hiver/Printemps 2024`, type: ActivityType.Watching }],
+        activities: [{ name: `... Avril 2024`, type: ActivityType.Watching }],
         status: 'online',
     });
     //const devGuild = client.guilds.cache.get('415943423636537344');

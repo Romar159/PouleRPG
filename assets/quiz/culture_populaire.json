@@ -182,7 +182,7 @@
     {
         "id": 30,
         "categorie" : "Jeux vidéo",
-        "question" : "Comment s'appelle le jeu de rythme où vous controllez un carré bleu qui doit esquiver des attaques roses ?",
+        "question" : "Comment s'appelle le jeu de rythme où vous contrôlez un carré bleu qui doit esquiver des attaques roses ?",
         "reponses" : ["just shapes and beats", "just shapes & beats", "jsab", "jsb", "bites et formes"]
     },
     {
@@ -254,7 +254,7 @@
     {
         "id": 42,
         "categorie" : "Animé",
-        "question" : "Dans Attack on Titan (Shingeki no Kyojin) quel est la couleur de l'écharpe de Miakasa ?",
+        "question" : "Dans Attack on Titan (Shingeki no Kyojin) quel est la couleur de l'écharpe de Mikasa ?",
         "reponses" : ["rouge"]
     },
     {
@@ -331,42 +331,36 @@
     },
     {
         "id": 55,
-        "categorie" : "Géographie",
-        "question" : "Comment s'appelait le salon #médias avant ?",
-        "reponses" : ["merde", "merdes"]
-    },
-    {
-        "id": 56,
         "categorie" : "Film",
         "question" : "Quel est le titre du film Avatar 2 réalisé par James Cameron ?",
         "reponses" : ["la voie de l'eau", "voie de l'eau", "avatar 2 la voie de l'eau", "avatar 2 : la voie de l'eau", "way of water", "the way of water"]
     },
     {
-        "id": 57,
+        "id": 56,
         "categorie" : "Film",
         "question" : "Dans Hunger Games combien de district entourent le Capitole ?",
         "reponses" : ["13", "treize"]
     },
     {
-        "id": 58,
+        "id": 57,
         "categorie" : "Film",
         "question" : "Dans Hunger Games quel est le nom du personnage principal ?",
         "reponses" : ["katniss everdeen", "everdeen", "katniss"]
     },
     {
-        "id": 59,
+        "id": 58,
         "categorie" : "Film",
         "question" : "Dans Hunger Games à quel édition des Hunger Games participe Katniss pour la première fois ?",
         "reponses" : ["74", "soixante-quatorze", "74e", "74 ème", "soixante quatorze"]
     },
     {
-        "id": 60,
+        "id": 59,
         "categorie" : "Jeux Vidéo",
         "question" : "Dans The Legend of Zelda Twilight Princess comment s'appelle la princesse du crépuscule ?",
         "reponses" : ["midona", "midna"]
     },
     {
-        "id": 61,
+        "id": 60,
         "categorie" : "Délire",
         "question" : "Quelle faction pète les couilles à sa pute à être trop chiant ?",
         "reponses" : ["alpha"]
