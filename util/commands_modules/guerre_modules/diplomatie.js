@@ -744,9 +744,12 @@ const diplomatie = async (client, message, dbUser) => {
                                     await client.updateFaction(faction_ennemy.name, {date_debut_guerre: new Date()})
                                     await client.updateFaction(faccasbel.name, {date_debut_guerre: new Date()})
         
-                                    i.deferUpdate();
-                                    message.reply({content:`:crossed_swords: La guerre est déclarée entre ${faccasbel.displayname} et ${faction_ennemy.displayname}`});
-                                    //TODO envoyer ça dans le décision_rpg #décision-RPG
+                                    //i.deferUpdate();
+                                    //message.reply({content:`:crossed_swords: La guerre est déclarée entre ${faccasbel.displayname} et ${faction_ennemy.displayname}`});
+                                    i.reply({content:"La Guerre a été déclaré !", ephemeral: true})
+                                    const channel = await client.channels.cache.get('616652710942343222')
+                                    channel.send({content:`:crossed_swords: La guerre est déclarée entre <@&${faccasbel.roleid}> et <@&${faction_ennemy.roleid}>`})
+                                    //TODO:Fait envoyer ça dans le décision_rpg #décision-RPG
                                     collector.stop();
                                 }
                             }

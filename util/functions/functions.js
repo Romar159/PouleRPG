@@ -866,6 +866,7 @@ module.exports = client => {
         const maitre_defenseur_db = await client.getUser(maitre_defensseur);
 
         let change_relation = true;
+        var msg_result_guerre = "undefined";
 
 
         if(casusbelli_id == 0) { //Emprisonnement :
@@ -931,13 +932,15 @@ module.exports = client => {
                     client.editPoint(client, maitre_defensseur, 400, "redoutabilite"); // "- Gagne 400 points de redoutabilité", 
                 }
                 //TODO envoyer ce message dans le #décision-RPG
-                message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${(faction_decision_id == 0) ? faction_attaquants.displayname + "** a gagné !" : faction_defensseurs.displayname + "** a gagné !"}\n\nCette guerre avait pour but, la libération des membres ${faction_attaquants.displayname} des cachots, ${(faction_decision_id == 0) ? "ce fut une réussite, tous les membres ont été délivrés !" : "ce fut un échec. Les membres n'ont pas été délivrés..."}\n${(faction_decision_id == 0) ? faction_attaquants.displayname + " a gagné beaucoup de prestige et de redoutabilité, tandis que " + faction_defensseurs.displayname + " en a perdu, cependant, la faction possède à présent un casus belli de vengeance !" : faction_defensseurs.displayname + " a gagné beaucoup de prestige et de redoutabilité, tandis que " + faction_attaquants.displayname + " en a perdu !"}`)
+                ///message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${(faction_decision_id == 0) ? faction_attaquants.displayname + "** a gagné !" : faction_defensseurs.displayname + "** a gagné !"}\n\nCette guerre avait pour but, la libération des membres ${faction_attaquants.displayname} des cachots, ${(faction_decision_id == 0) ? "ce fut une réussite, tous les membres ont été délivrés !" : "ce fut un échec. Les membres n'ont pas été délivrés..."}\n${(faction_decision_id == 0) ? faction_attaquants.displayname + " a gagné beaucoup de prestige et de redoutabilité, tandis que " + faction_defensseurs.displayname + " en a perdu, cependant, la faction possède à présent un casus belli de vengeance !" : faction_defensseurs.displayname + " a gagné beaucoup de prestige et de redoutabilité, tandis que " + faction_attaquants.displayname + " en a perdu !"}`)
+                msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${(faction_decision_id == 0) ? faction_attaquants.displayname + "** a gagné !" : faction_defensseurs.displayname + "** a gagné !"}\n\nCette guerre avait pour but, la libération des membres ${faction_attaquants.displayname} des cachots, ${(faction_decision_id == 0) ? "ce fut une réussite, tous les membres ont été délivrés !" : "ce fut un échec. Les membres n'ont pas été délivrés..."}\n${(faction_decision_id == 0) ? faction_attaquants.displayname + " a gagné beaucoup de prestige et de redoutabilité, tandis que " + faction_defensseurs.displayname + " en a perdu, cependant, la faction possède à présent un casus belli de vengeance !" : faction_defensseurs.displayname + " a gagné beaucoup de prestige et de redoutabilité, tandis que " + faction_attaquants.displayname + " en a perdu !"}`
             } 
             
             else if(decision_id == 1) { //paix blanche
                //TODO envoyer ce message dans le #décision-RPG
-                message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**La paix blanche a été déclarée !**\n\nCette guerre avait pour but, la libération des membres ${faction_attaquants.displayname} des cachots de ${faction_defensseurs.displayname}, ils n'ont pas été délivrés.\nAucune des deux factions n'a perdu quoi que ce soit, ${faction_attaquants.displayname} conserve son casus belli. Les deux factions se retrouvent comme juste avant la guerre.`)
-                
+                //message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**La paix blanche a été déclarée !**\n\nCette guerre avait pour but, la libération des membres ${faction_attaquants.displayname} des cachots de ${faction_defensseurs.displayname}, ils n'ont pas été délivrés.\nAucune des deux factions n'a perdu quoi que ce soit, ${faction_attaquants.displayname} conserve son casus belli. Les deux factions se retrouvent comme juste avant la guerre.`)
+                msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**La paix blanche a été déclarée !**\n\nCette guerre avait pour but, la libération des membres ${faction_attaquants.displayname} des cachots de ${faction_defensseurs.displayname}, ils n'ont pas été délivrés.\nAucune des deux factions n'a perdu quoi que ce soit, ${faction_attaquants.displayname} conserve son casus belli. Les deux factions se retrouvent comme juste avant la guerre.`;
+
             } 
             
             else if(decision_id == 2) { // Se rendre
@@ -994,8 +997,8 @@ module.exports = client => {
                     await client.editPoint(client, maitre_defensseur, -150, "redoutabilite"); // V "- Perte de 150 points de redoutabilité", 
                 }
                 //TODO envoyer ce message dans le #décision-RPG
-                message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${(faction_decision_id == 0) ? faction_defensseurs.displayname + "** a gagné ! " + faction_attaquants.displayname + " s'est rendu." : faction_attaquants.displayname + "** a gagné ! " + faction_defensseurs.displayname + " s'est rendu."}\n\nCette guerre avait pour but, la libération des membres ${faction_attaquants.displayname} des cachots, ${(faction_decision_id == 1) ? "ce fut une réussite, tous les membres ont été délivrés !" : "ce fut un échec. Les membres n'ont pas été délivrés..."}\n${(faction_decision_id == 0) ? faction_defensseurs.displayname + " a gagné beaucoup de redoutabilité et obtient un casus belli de vengeance, tandis que " + faction_attaquants.displayname + " a perdu en plus de prestige de la redoutabilité !" : faction_attaquants.displayname + " a gagné beaucoup de prestige et de redoutabilité, tandis que " + faction_defensseurs.displayname + " en a perdu !"}`)
-            
+                //message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${(faction_decision_id == 0) ? faction_defensseurs.displayname + "** a gagné ! " + faction_attaquants.displayname + " s'est rendu." : faction_attaquants.displayname + "** a gagné ! " + faction_defensseurs.displayname + " s'est rendu."}\n\nCette guerre avait pour but, la libération des membres ${faction_attaquants.displayname} des cachots, ${(faction_decision_id == 1) ? "ce fut une réussite, tous les membres ont été délivrés !" : "ce fut un échec. Les membres n'ont pas été délivrés..."}\n${(faction_decision_id == 0) ? faction_defensseurs.displayname + " a gagné beaucoup de redoutabilité et obtient un casus belli de vengeance, tandis que " + faction_attaquants.displayname + " a perdu en plus de prestige de la redoutabilité !" : faction_attaquants.displayname + " a gagné beaucoup de prestige et de redoutabilité, tandis que " + faction_defensseurs.displayname + " en a perdu !"}`)
+                msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${(faction_decision_id == 0) ? faction_defensseurs.displayname + "** a gagné ! " + faction_attaquants.displayname + " s'est rendu." : faction_attaquants.displayname + "** a gagné ! " + faction_defensseurs.displayname + " s'est rendu."}\n\nCette guerre avait pour but, la libération des membres ${faction_attaquants.displayname} des cachots, ${(faction_decision_id == 1) ? "ce fut une réussite, tous les membres ont été délivrés !" : "ce fut un échec. Les membres n'ont pas été délivrés..."}\n${(faction_decision_id == 0) ? faction_defensseurs.displayname + " a gagné beaucoup de redoutabilité et obtient un casus belli de vengeance, tandis que " + faction_attaquants.displayname + " a perdu en plus de prestige de la redoutabilité !" : faction_attaquants.displayname + " a gagné beaucoup de prestige et de redoutabilité, tandis que " + faction_defensseurs.displayname + " en a perdu !"}`
             }
         } 
         
@@ -1009,8 +1012,8 @@ module.exports = client => {
                     //!On a le pourcentage toujours SAUF si on est en dessous de 25 (trop proche de 0) là c'est une somme fixe genre 50
                     let tenpercent_facdef = Math.floor(faction_defensseurs.bank * 0.1);
                     await client.updateFaction(faction_attaquants.name, {bank: faction_attaquants.bank + tenpercent_facdef}) //"- Récupère 10% de l'or de la faction adverse."
-                    if(maitre_defensseur_db.redoutabilite >= 25) {
-                        await client.editPoint(client, maitre_attaquant, Math.floor(maitre_defensseur_db.redoutabilite * 0.2), "redoutabilite"); //"- Récupère 20% de la redoutabilité de la faction adverse"
+                    if(maitre_defenseur_db.redoutabilite >= 25) {
+                        await client.editPoint(client, maitre_attaquant, Math.floor(maitre_defenseur_db.redoutabilite * 0.2), "redoutabilite"); //"- Récupère 20% de la redoutabilité de la faction adverse"
                     } else {
                         await client.editPoint(client, maitre_attaquant, Math.floor(5), "redoutabilite"); //"- Récupère de la redoutabilité un peu même si l'aautre n'en a pas ou très peu
                     }
@@ -1025,16 +1028,16 @@ module.exports = client => {
                     
                     //defenseur
                     await client.updateFaction(faction_defensseurs.name, {bank: faction_defensseurs.bank - tenpercent_facdef}) //"- Perd 10% d'or pour le bénéfice de la faction adverse"
-                    if(maitre_defensseur_db.redoutabilite >= 25) {
-                        await client.editPoint(client, maitre_defensseur, 0 - Math.floor(maitre_defensseur_db.redoutabilite * 0.2), "redoutabilite"); //"- Perd 20% de redoutabilité pour le bénéfice de la faction adverse"
+                    if(maitre_defenseur_db.redoutabilite >= 25) {
+                        await client.editPoint(client, maitre_defensseur, 0 - Math.floor(maitre_defenseur_db.redoutabilite * 0.2), "redoutabilite"); //"- Perd 20% de redoutabilité pour le bénéfice de la faction adverse"
                     } else {
                         await client.editPoint(client, maitre_defensseur, 0 - Math.floor(5), "redoutabilite"); //"- Perd 20% de redoutabilité pour le bénéfice de la faction adverse"
                     }
                     await client.editPoint(client, maitre_defensseur, -350, "prestige"); //"- Perd de 350 points de prestige pour le bénéfice de la faction adverse", 
                 
                     //TODO envoyer ce message dans le #décision-RPG
-                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné !\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}. Ce fut une réussite, un pacte de non-agression a également été signé entre les deux factions !\n${faction_attaquants.displayname} a gagné beaucoup de redoutabilité et de prestige ainsi que des poyns, volés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu, en plus de ces poyns, du prestige et évidemment de la redoutabilité...`)
-            
+                    //message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné !\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}. Ce fut une réussite, un pacte de non-agression a également été signé entre les deux factions !\n${faction_attaquants.displayname} a gagné beaucoup de redoutabilité et de prestige ainsi que des poyns, volés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu, en plus de ces poyns, du prestige et évidemment de la redoutabilité...`)
+                    msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné !\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}. Ce fut une réussite, un pacte de non-agression a également été signé entre les deux factions !\n${faction_attaquants.displayname} a gagné beaucoup de redoutabilité et de prestige ainsi que des poyns, volés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu, en plus de ces poyns, du prestige et évidemment de la redoutabilité...`
                     
                 }
                 else if(faction_decision_id == 1) { //en tant que defenseur 
@@ -1057,8 +1060,8 @@ module.exports = client => {
                     await client.editPoint(client, maitre_defensseur, 350, "prestige"); //"- Récupère 350 points de prestige de la faction adverse"],
                     
                     //TODO envoyer ce message dans le #décision-RPG
-                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné !\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}. Ce fut un échec complet !\n${faction_defensseurs.displayname} a gagné beaucoup de redoutabilité et de prestige ! Tandis que ${faction_attaquants.displayname} en a perdu, en plus d'avoir échoué la signature d'un pacte de non-agression...`)
-            
+                    //message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné !\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}. Ce fut un échec complet !\n${faction_defensseurs.displayname} a gagné beaucoup de redoutabilité et de prestige ! Tandis que ${faction_attaquants.displayname} en a perdu, en plus d'avoir échoué la signature d'un pacte de non-agression...`)
+                    msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné !\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}. Ce fut un échec complet !\n${faction_defensseurs.displayname} a gagné beaucoup de redoutabilité et de prestige ! Tandis que ${faction_attaquants.displayname} en a perdu, en plus d'avoir échoué la signature d'un pacte de non-agression...`
                     
                 }
             }   
@@ -1070,8 +1073,8 @@ module.exports = client => {
                 // "- Rien ne se passe..."
 
                 //TODO envoyer ce message dans le #décision-RPG
-                message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**La paix blanche a été déclarée !**\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}.\nAucune des deux factions n'a perdu quoi que ce soit, ${faction_attaquants.displayname} conserve son casus belli. Les deux factions se retrouvent comme juste avant la guerre.`)
-            
+                //message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**La paix blanche a été déclarée !**\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}.\nAucune des deux factions n'a perdu quoi que ce soit, ${faction_attaquants.displayname} conserve son casus belli. Les deux factions se retrouvent comme juste avant la guerre.`)
+                msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**La paix blanche a été déclarée !**\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}.\nAucune des deux factions n'a perdu quoi que ce soit, ${faction_attaquants.displayname} conserve son casus belli. Les deux factions se retrouvent comme juste avant la guerre.`
         
             } 
             else if(decision_id == 2) { //se rendre
@@ -1095,8 +1098,8 @@ module.exports = client => {
                     await client.editPoint(client, maitre_defensseur, 350, "prestige"); //"- Récupère 350 points de prestige de la faction adverse"
                     
                     //TODO envoyer ce message dans le #décision-RPG
-                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné ! ${faction_attaquants.displayname} s'est rendu.\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}. Ce fut un échec complet !\n${faction_defensseurs.displayname} a gagné beaucoup de redoutabilité et de prestige ! Tandis que ${faction_attaquants.displayname} en a perdu, en plus d'avoir échoué la signature d'un pacte de non-agression...`)
-            
+                    //message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné ! ${faction_attaquants.displayname} s'est rendu.\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}. Ce fut un échec complet !\n${faction_defensseurs.displayname} a gagné beaucoup de redoutabilité et de prestige ! Tandis que ${faction_attaquants.displayname} en a perdu, en plus d'avoir échoué la signature d'un pacte de non-agression...`)
+                    msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné ! ${faction_attaquants.displayname} s'est rendu.\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}. Ce fut un échec complet !\n${faction_defensseurs.displayname} a gagné beaucoup de redoutabilité et de prestige ! Tandis que ${faction_attaquants.displayname} en a perdu, en plus d'avoir échoué la signature d'un pacte de non-agression...`
                     
                     
                     
@@ -1130,8 +1133,8 @@ module.exports = client => {
                     await client.editPoint(client, maitre_defensseur, -300, "prestige");
                                 
                     //TODO envoyer ce message dans le #décision-RPG
-                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné ! ${faction_defensseurs.displayname} s'est rendu.\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}. Ce fut une réussite, un pacte de non-agression a également été signé entre les deux factions !\n${faction_attaquants.displayname} a gagné beaucoup de redoutabilité et de prestige ainsi que des poyns, volés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu, en plus de ces poyns, du prestige et évidemment de la redoutabilité...`)
-            
+                   // message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné ! ${faction_defensseurs.displayname} s'est rendu.\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}. Ce fut une réussite, un pacte de non-agression a également été signé entre les deux factions !\n${faction_attaquants.displayname} a gagné beaucoup de redoutabilité et de prestige ainsi que des poyns, volés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu, en plus de ces poyns, du prestige et évidemment de la redoutabilité...`)
+                    msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné ! ${faction_defensseurs.displayname} s'est rendu.\n\nCette guerre avait pour but, la réparation de trahison pour le bris de l'alliance entraînée par ${faction_defensseurs.displayname}. Ce fut une réussite, un pacte de non-agression a également été signé entre les deux factions !\n${faction_attaquants.displayname} a gagné beaucoup de redoutabilité et de prestige ainsi que des poyns, volés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu, en plus de ces poyns, du prestige et évidemment de la redoutabilité...`
                 }
             }  
         }
@@ -1158,8 +1161,8 @@ module.exports = client => {
                     await client.editPoint(client, maitre_defensseur, -200, "prestige"); //"- Perd 200 points de prestige"
                     
                     //TODO envoyer ce message dans le #décision-RPG
-                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné !\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}. Ce fut une réussite !\n${faction_attaquants.displayname} a gagné beaucoup de redoutabilité ainsi que des poyns, volés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu, en plus de ces poyns, du prestige et évidemment de la redoutabilité...`)
-            
+                    //message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné !\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}. Ce fut une réussite !\n${faction_attaquants.displayname} a gagné beaucoup de redoutabilité ainsi que des poyns, volés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu, en plus de ces poyns, du prestige et évidemment de la redoutabilité...`)
+                    msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné !\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}. Ce fut une réussite !\n${faction_attaquants.displayname} a gagné beaucoup de redoutabilité ainsi que des poyns, volés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu, en plus de ces poyns, du prestige et évidemment de la redoutabilité...`
                 }
                 else if(faction_decision_id == 0) { //en tant que Defenseur
                     //attaquant
@@ -1177,11 +1180,11 @@ module.exports = client => {
 
                     //defenseur
                     await client.updateFaction(faction_defensseurs.name, {bank: faction_defensseurs.bank + (or_faction_att_huitperc)}) //"- Récupère 8% de la l'or de la faction adverse", 
-                    await client.editPoint(client, maitre_defensseur, Math.floor(maitre_defensseur_db.redoutabilite * 0.08), "redoutabilite"); //"- gagne 8% de redoutabilité", 
+                    await client.editPoint(client, maitre_defensseur, Math.floor(maitre_defenseur_db.redoutabilite * 0.08), "redoutabilite"); //"- gagne 8% de redoutabilité", 
                     
                     //TODO envoyer ce message dans le #décision-RPG
-                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné !\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}. Ce fut un échec complet !\n${faction_defensseurs.displayname} a gagné beaucoup de redoutabilité et de poyn ! Tandis que ${faction_attaquants.displayname} en a perdu, en plus de prestige.`)
-            
+                    //message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné !\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}. Ce fut un échec complet !\n${faction_defensseurs.displayname} a gagné beaucoup de redoutabilité et de poyn ! Tandis que ${faction_attaquants.displayname} en a perdu, en plus de prestige.`)
+                    msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné !\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}. Ce fut un échec complet !\n${faction_defensseurs.displayname} a gagné beaucoup de redoutabilité et de poyn ! Tandis que ${faction_attaquants.displayname} en a perdu, en plus de prestige.`
 
                 }
             } else if (decision_id == 1) { //paix blanche
@@ -1197,8 +1200,8 @@ module.exports = client => {
                     //"- Rien ne se passe..."
 
                     //TODO envoyer ce message dans le #décision-RPG
-                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**La paix blanche a été déclarée !**\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}.\nAucune des deux factions n'a perdu quoi que ce soit, sauf ${faction_attaquants.displayname} qui perd son casus belli. Les deux factions se retrouvent comme si la guerre n'avait pas eu lieu.`)
-            
+                    ///message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**La paix blanche a été déclarée !**\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}.\nAucune des deux factions n'a perdu quoi que ce soit, sauf ${faction_attaquants.displayname} qui perd son casus belli. Les deux factions se retrouvent comme si la guerre n'avait pas eu lieu.`)
+                    msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**La paix blanche a été déclarée !**\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}.\nAucune des deux factions n'a perdu quoi que ce soit, sauf ${faction_attaquants.displayname} qui perd son casus belli. Les deux factions se retrouvent comme si la guerre n'avait pas eu lieu.`
 
                     
             } else if (decision_id == 2) { //se rendre
@@ -1220,8 +1223,8 @@ module.exports = client => {
 
 
                     //TODO envoyer ce message dans le #décision-RPG
-                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné ! ${faction_attaquants.displayname} s'est rendu.\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}. Ce fut un échec complet !\n${faction_defensseurs.displayname} a gagné beaucoup de redoutabilité et de poyn ! Tandis que ${faction_attaquants.displayname} en a perdu, en plus de prestige.`)
-            
+                    //message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné ! ${faction_attaquants.displayname} s'est rendu.\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}. Ce fut un échec complet !\n${faction_defensseurs.displayname} a gagné beaucoup de redoutabilité et de poyn ! Tandis que ${faction_attaquants.displayname} en a perdu, en plus de prestige.`)
+                    msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné ! ${faction_attaquants.displayname} s'est rendu.\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}. Ce fut un échec complet !\n${faction_defensseurs.displayname} a gagné beaucoup de redoutabilité et de poyn ! Tandis que ${faction_attaquants.displayname} en a perdu, en plus de prestige.`
                     
                 }
                 else if(faction_decision_id == 0) { //en tant que Defenseur
@@ -1244,8 +1247,8 @@ module.exports = client => {
                     await client.editPoint(client, maitre_defensseur, -250, "prestige"); //"- Perd 250 points de prestige"
                     
                     //TODO envoyer ce message dans le #décision-RPG
-                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné ! ${faction_defensseurs.displayname} s'est rendu.\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}. Ce fut une réussite !\n${faction_attaquants.displayname} a gagné beaucoup de redoutabilité ainsi que des poyns, volés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu, en plus de ces poyns, du prestige et évidemment de la redoutabilité...`)
-            
+                    //message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné ! ${faction_defensseurs.displayname} s'est rendu.\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}. Ce fut une réussite !\n${faction_attaquants.displayname} a gagné beaucoup de redoutabilité ainsi que des poyns, volés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu, en plus de ces poyns, du prestige et évidemment de la redoutabilité...`)
+                    msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné ! ${faction_defensseurs.displayname} s'est rendu.\n\nCette guerre avait pour but, la vengeance relative à la délivrance des membres ${faction_defensseurs.displayname} des cachots ${faction_attaquants.displayname}. Ce fut une réussite !\n${faction_attaquants.displayname} a gagné beaucoup de redoutabilité ainsi que des poyns, volés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu, en plus de ces poyns, du prestige et évidemment de la redoutabilité...`;
                 }
             }
         }
@@ -1279,15 +1282,15 @@ module.exports = client => {
                         }
                     } else {
                         if(maitre_defensseur.piete < 100) {
-                            await client.editPoint(client, maitre_defensseur, (-maitre_defensseur_db.piete) + 100, "piete"); //"- Atteint 100 piété si elle se situe en dessous.", 
+                            await client.editPoint(client, maitre_defensseur, (-maitre_defenseur_db.piete) + 100, "piete"); //"- Atteint 100 piété si elle se situe en dessous.", 
                         }
                     }
 
                     await client.updateFaction(faction_defensseurs.name, {bank: faction_defensseurs.bank - (or_faction_def_vingtperc)})//"- Perd 20% d'or pour le bénéfice de la faction adverse." 
                     
                     //TODO envoyer ce message dans le #décision-RPG
-                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné !\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}. Ce fut une réussite grandiose !\n${faction_attaquants.displayname} a gagné énormément de piété ainsi que des poyns, récupérés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu ces poyns, et se retrouve à nouveau avec de la piété positive !`)
-
+                    //message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné !\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}. Ce fut une réussite grandiose !\n${faction_attaquants.displayname} a gagné énormément de piété ainsi que des poyns, récupérés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu ces poyns, et se retrouve à nouveau avec de la piété positive !`)
+                    msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné !\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}. Ce fut une réussite grandiose !\n${faction_attaquants.displayname} a gagné énormément de piété ainsi que des poyns, récupérés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu ces poyns, et se retrouve à nouveau avec de la piété positive !`;
 
                 }
                 else if(faction_decision_id == 0) { //en tant que Defenseur
@@ -1308,8 +1311,8 @@ module.exports = client => {
                     await client.updateFaction(faction_defensseurs.name, {bank: faction_defensseurs.bank + (or_faction_att_vingtcinqperc)}) //"- Gagne 25% d'or de la faction adverse."
 
                     //TODO envoyer ce message dans le #décision-RPG
-                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné !\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}. Ce fut un échec lamentable !\n${faction_attaquants.displayname} a perdu beaucoup de prestige et s'est fait volé le quart de ses poyns par ${faction_defensseurs.displayname}.`)
-
+                    //message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné !\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}. Ce fut un échec lamentable !\n${faction_attaquants.displayname} a perdu beaucoup de prestige et s'est fait volé le quart de ses poyns par ${faction_defensseurs.displayname}.`)
+                    msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné !\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}. Ce fut un échec lamentable !\n${faction_attaquants.displayname} a perdu beaucoup de prestige et s'est fait volé le quart de ses poyns par ${faction_defensseurs.displayname}.`
                     
                 }
             } else if (decision_id == 1) { //paix blanche
@@ -1320,8 +1323,8 @@ module.exports = client => {
                     //"- Rien ne se passe..."
 
                     //TODO envoyer ce message dans le #décision-RPG
-                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**La paix blanche a été déclarée !** :dove:\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}.\nAucune des deux factions n'a perdu quoi que ce soit, ${faction_attaquants.displayname} conserve son casus belli. Les deux factions se retrouvent comme juste avant la guerre.`)
-
+                    //message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**La paix blanche a été déclarée !** :dove:\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}.\nAucune des deux factions n'a perdu quoi que ce soit, ${faction_attaquants.displayname} conserve son casus belli. Les deux factions se retrouvent comme juste avant la guerre.`)
+                    msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**La paix blanche a été déclarée !** :dove:\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}.\nAucune des deux factions n'a perdu quoi que ce soit, ${faction_attaquants.displayname} conserve son casus belli. Les deux factions se retrouvent comme juste avant la guerre.`
 
                     
             } else if (decision_id == 2) { //se rendre
@@ -1344,8 +1347,8 @@ module.exports = client => {
                     await client.updateFaction(faction_defensseurs.name, {bank: faction_defensseurs.bank + (or_faction_att_dixhuitperc)}) //"- Gagne 18% d'or de la faction adverse."
 
                     //TODO envoyer ce message dans le #décision-RPG
-                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné ! ${faction_attaquants.displayname} s'est rendu.\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}. Ce fut un échec !\n${faction_attaquants.displayname} a perdu beaucoup de prestige et s'est fait volé énormément de poyns par ${faction_defensseurs.displayname}.`)
-
+                    //message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné ! ${faction_attaquants.displayname} s'est rendu.\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}. Ce fut un échec !\n${faction_attaquants.displayname} a perdu beaucoup de prestige et s'est fait volé énormément de poyns par ${faction_defensseurs.displayname}.`)
+                    msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_defensseurs.displayname}** a gagné ! ${faction_attaquants.displayname} s'est rendu.\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}. Ce fut un échec !\n${faction_attaquants.displayname} a perdu beaucoup de prestige et s'est fait volé énormément de poyns par ${faction_defensseurs.displayname}.`
                     
 
                 }
@@ -1373,15 +1376,15 @@ module.exports = client => {
                         }
                     } else {
                         if(maitre_defensseur.piete < 100) {
-                            await client.editPoint(client, maitre_defensseur, (-maitre_defensseur_db.piete) + 100, "piete"); //"- Atteint 100 piété si elle se situe en dessous.", 
+                            await client.editPoint(client, maitre_defensseur, (-maitre_defenseur_db.piete) + 100, "piete"); //"- Atteint 100 piété si elle se situe en dessous.", 
                         }
                     }
 
                     await client.updateFaction(faction_defensseurs.name, {bank: faction_defensseurs.bank - (or_faction_def_dixhuitperc)})//"- Perd 18% d'or pour le bénéfice de la faction adverse." 
                     
                     //TODO envoyer ce message dans le #décision-RPG
-                    message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné ! ${faction_defensseurs.displayname} s'est rendu.\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}. Ce fut une réussite grandiose !\n${faction_attaquants.displayname} a gagné énormément de piété ainsi que des poyns, récupérés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu ces poyns, et se retrouve à nouveau avec de la piété positive !`)
-
+                    //message.channel.send(`:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné ! ${faction_defensseurs.displayname} s'est rendu.\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}. Ce fut une réussite grandiose !\n${faction_attaquants.displayname} a gagné énormément de piété ainsi que des poyns, récupérés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu ces poyns, et se retrouve à nouveau avec de la piété positive !`)
+                    msg_result_guerre = `:crossed_swords: La guerre entre **${faction_attaquants.displayname}** et **${faction_defensseurs.displayname}** est terminée ! :crossed_swords:\n\n**${faction_attaquants.displayname}** a gagné ! ${faction_defensseurs.displayname} s'est rendu.\n\nCette guerre avait pour but, le combat contre l'hérésie de ${faction_defensseurs.displayname}. Ce fut une réussite grandiose !\n${faction_attaquants.displayname} a gagné énormément de piété ainsi que des poyns, récupérés à la faction adverse ! Tandis que ${faction_defensseurs.displayname} a perdu ces poyns, et se retrouve à nouveau avec de la piété positive !`
 
                 }
             }
@@ -1419,6 +1422,10 @@ module.exports = client => {
         await client.updateFaction(faction_defensseurs.name, {date_debut_guerre: 0});
         await client.updateFaction(faction_defensseurs.name, {cooldown_battle: 0});
         await client.updateFaction(faction_defensseurs.name, {score_guerre: 0});
+
+        //Evnois du message :
+        const channel = await client.channels.cache.get('616652710942343222');
+        channel.send({content: msg_result_guerre});
         
     }
 
