@@ -11,8 +11,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     var db_a = await client.getFaction('alpha');
 
     //var links_factions_blasons = ["https://i.imgur.com/K9CXVaO.png", "https://i.imgur.com/sh3wjrv.png", "https://i.imgur.com/uj8TLad.png", "https://i.imgur.com/tIwuxXD.png"];
-    var links_factions_blasons = ["https://i.imgur.com/HE9p0rt.png", "https://i.imgur.com/wfRzqo7.png", "https://i.imgur.com/1zFaPpx.png", "https://i.imgur.com/GPWpCZq.png"];
-
+    //var links_factions_blasons = ["https://i.imgur.com/HE9p0rt.png", "https://i.imgur.com/wfRzqo7.png", "https://i.imgur.com/1zFaPpx.png", "https://i.imgur.com/GPWpCZq.png"];
+    var links_factions_blasons = ["https://i.imgur.com/j2ScoU4.png", "https://i.imgur.com/EFuYkGd.png", "https://i.imgur.com/2eEN8tD.png", "https://i.imgur.com/k7SnaeG.png"]
 
     const page1 = new EmbedBuilder()
         .setColor('1ABC9C')

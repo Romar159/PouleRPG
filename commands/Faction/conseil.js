@@ -3,6 +3,7 @@ const { EmbedBuilder } = require("discord.js");
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
     let faction = await client.getFaction(dbUser.faction);
+    let channel;
     
 
     if(!args[0]) {
@@ -21,6 +22,10 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         //return message.channel.send(`**${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}**\n\nMaréchal: ${faction.marechal == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.marechal).user.username} \nIntendant: ${faction.intendant == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.intendant).user.username} \nChapelain: ${faction.chapelain == "NULL" ? "Vaccant" : message.guild.members.cache.get(faction.chapelain).user.username}`)
     }
     let arg1 = args[0].toLowerCase();
+    
+    if(faction != undefined) {
+        channel = await client.channels.cache.get(faction.channelid);
+    }
 
     if(arg1 == "nommer") {
         var roles_maitre = ["445617906072682514", "445617911747313665", "445617908903706624", "665340068046831646"];
@@ -71,7 +76,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             await client.editPoint(client, nouveau_conseiller, 200, "prestige");
             await client.updateFaction(dbUser.faction, {marechal: nouveau_conseiller.user.id});
             await client.updateUser(nouveau_conseiller, {metier: 901});
-            return message.channel.send(`${nouveau_conseiller.user.username} vient d'être nommé(e) Maréchal de la faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}. Il ou elle gagne 200 prestige.\n` + info);
+            //return message.channel.send(`${nouveau_conseiller.user.username} vient d'être nommé(e) Maréchal de la faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}. Il ou elle gagne 200 prestige.\n` + info);
+            return channel.send(`${nouveau_conseiller.user.username} vient d'être nommé(e) Maréchal de la faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}. Il ou elle gagne 200 prestige.\n` + info);
+
         }
 
         else if(args[2].toLowerCase() == "intendant") {
@@ -95,8 +102,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             await client.editPoint(client, nouveau_conseiller, 200, "prestige");
             await client.updateFaction(dbUser.faction, {intendant: nouveau_conseiller.user.id});
             await client.updateUser(nouveau_conseiller, {metier: 902});
-            return message.channel.send(`${nouveau_conseiller.user.username} vient d'être nommé(e) Intendant(e) de la faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}. Il ou elle gagne 200 prestige.\n` + info);
-        
+            //return message.channel.send(`${nouveau_conseiller.user.username} vient d'être nommé(e) Intendant(e) de la faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}. Il ou elle gagne 200 prestige.\n` + info);
+            return channel.send(`${nouveau_conseiller.user.username} vient d'être nommé(e) Intendant(e) de la faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}. Il ou elle gagne 200 prestige.\n` + info);
+
         }
         else if(args[2].toLowerCase() == "chapelain") {
             if(dbNouveauConseiller.userID == faction.chapelain) return message.reply('Cet utilisateur fait déjà parti du conseil sous ce rôle.');
@@ -119,8 +127,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             await client.editPoint(client, nouveau_conseiller, 200, "prestige");
             await client.updateFaction(dbUser.faction, {chapelain: nouveau_conseiller.user.id});
             await client.updateUser(nouveau_conseiller, {metier: 903});
-            return message.channel.send(`${nouveau_conseiller.user.username} vient d'être nommé(e) Chapelain de la faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}. Il ou elle gagne 200 prestige.\n` + info);
-        
+            //return message.channel.send(`${nouveau_conseiller.user.username} vient d'être nommé(e) Chapelain de la faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}. Il ou elle gagne 200 prestige.\n` + info);
+            return channel.send(`${nouveau_conseiller.user.username} vient d'être nommé(e) Chapelain de la faction ${faction.name.charAt(0).toUpperCase() + faction.name.slice(1)}. Il ou elle gagne 200 prestige.\n` + info);
+
         }
         else return message.reply(`Ce titre n'existe pas. (Maréchal/Intendant/Chapelain)`);
         
@@ -156,7 +165,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 await client.editPoint(client, member, -200, "prestige");
                 await client.updateUser(member, {metier: 0});
 
-                return message.reply(`${member} vient d'être retiré(e) de ses fonction de Maréchal et perd donc 200 prestige.`); 
+                //return message.reply(`${member} vient d'être retiré(e) de ses fonction de Maréchal et perd donc 200 prestige.`); 
+                return channel.send(`${member} vient d'être retiré(e) de ses fonction de Maréchal et perd donc 200 prestige.`); 
             }
             else if(args[1].toLowerCase() == "intendant") {
                 member = message.guild.members.cache.get(faction.intendant);
@@ -167,7 +177,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 await client.editPoint(client, member, -200, "prestige");
                 await client.updateUser(member, {metier: 0});
 
-                return message.reply(`${member} vient d'être retiré(e) de ses fonction d'Intendant et perd donc 200 prestige.`);
+                //return message.reply(`${member} vient d'être retiré(e) de ses fonction d'Intendant et perd donc 200 prestige.`);
+                return channel.send(`${member} vient d'être retiré(e) de ses fonction d'Intendant et perd donc 200 prestige.`);
+
             }
             else if(args[1].toLowerCase() == "chapelain") {
                 member = message.guild.members.cache.get(faction.chapelain);
@@ -178,7 +190,8 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 await client.editPoint(client, member, -200, "prestige");
                 await client.updateUser(member, {metier: 0});
 
-                return message.reply(`${member} vient d'être retiré(e) de ses fonction de Chapelain et perd donc 200 prestige.`);
+                //return message.reply(`${member} vient d'être retiré(e) de ses fonction de Chapelain et perd donc 200 prestige.`);
+                return channel.send(`${member} vient d'être retiré(e) de ses fonction de Chapelain et perd donc 200 prestige.`);
             } else {
                 return message.reply('Mention invalide.');
             }
@@ -195,21 +208,24 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             await client.editPoint(client, conseiller, -200, "prestige");
             await client.updateUser(conseiller, {metier: 0});
 
-            return message.reply(`${conseiller} vient d'être retiré(e) de ses fonction de Maréchal et perd donc 200 prestige.`); 
+            //return message.reply(`${conseiller} vient d'être retiré(e) de ses fonction de Maréchal et perd donc 200 prestige.`); 
+            return channel.send(`${conseiller} vient d'être retiré(e) de ses fonction de Maréchal et perd donc 200 prestige.`); 
         }
         else if(conseiller.user.id == faction.intendant) {
             await client.updateFaction(dbUser.faction, {intendant: "NULL"});
             await client.editPoint(client, conseiller, -200, "prestige");
             await client.updateUser(conseiller, {metier: 0});
 
-            return message.reply(`${conseiller} vient d'être retiré(e) de ses fonction d'Intendant et perd donc 200 prestige.`); 
+            //return message.reply(`${conseiller} vient d'être retiré(e) de ses fonction d'Intendant et perd donc 200 prestige.`); 
+            return channel.send(`${conseiller} vient d'être retiré(e) de ses fonction d'Intendant et perd donc 200 prestige.`); 
         }
         else if(conseiller.user.id == faction.chapelain) {
             await client.updateFaction(dbUser.faction, {chapelain: "NULL"});
             await client.editPoint(client, conseiller, -200, "prestige");
             await client.updateUser(conseiller, {metier: 0});
 
-            return message.reply(`${conseiller} vient d'être retiré(e) de ses fonction de Chapelain et perd donc 200 prestige.`); 
+            //return message.reply(`${conseiller} vient d'être retiré(e) de ses fonction de Chapelain et perd donc 200 prestige.`); 
+            return channel.send(`${conseiller} vient d'être retiré(e) de ses fonction de Chapelain et perd donc 200 prestige.`); 
         }
         else return message.reply(`Ce membre ne fait pas parti de votre conseil.`);
     } // fin retrait
