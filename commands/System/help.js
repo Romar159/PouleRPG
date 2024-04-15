@@ -26,7 +26,8 @@ module.exports.run = (client, message, args) => {
                     categoryName = `:test_tube: Expérience`;
                     break;
                 case "Experiments":
-                    categoryName = `:microscope: Expérimentations`;
+                    //categoryName = `:microscope: Expérimentations`;
+                    categoryName = `NULL`;
                     break;
                 case "GeneralRPG":
                     categoryName = `:archery: RPG`;
@@ -44,10 +45,13 @@ module.exports.run = (client, message, args) => {
                     categoryName = `:robot: Système`;
                     break;
             } 
+            
+            if(categoryName != "NULL") {
                 embed.addFields([{
                  name: `${categoryName}`,
                  value: `\`${client.commands.filter(cat => cat.help.category === category.toLowerCase()).map(cmd => cmd.help.name).join('` • `')}\``
                 }]);
+            }
         };
         return message.channel.send({ embeds: [embed] });
 

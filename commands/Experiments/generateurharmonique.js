@@ -1,7 +1,8 @@
 module.exports.run = (client, message, args) => {
     
     client.writeLog(`Commande ${this.help.name} executée par ${message.author.tag} (${message.author.id})`);
-    return message.channel.send("En refonte.")
+    //return message.channel.send("En refonte.")
+    message.channel.send(":warning: Ce générateur n'est qu'un prototype ! :warning: \n*Les informations fournies sont très souvent inexactes, notamment en ce qui concerne la théorie musicale et le solfège dans son sens le plus large. \n- Utilisez ces données uniquement à des fins de divertissement et ne les considérez pas comme fiables.\n- Toute musique créée à l'aide de ce générateur ne peut légalement pas être commercialisée.*\n** **")
 
     const tonnalités = ["do", "do#", "ré", "ré#", "mi", "fa", "fa#", "sol", "sol#", "la", "la#", "si", "do", "do#", "ré", "ré#", "mi", "fa", "fa#", "sol", "sol#", "la", "la#", "si"];
     const mode = ["majeur", "mineur"];
@@ -106,10 +107,10 @@ module.exports.run = (client, message, args) => {
 module.exports.help = {
 name: "generateurharmonique",
 aliases: ['gh'],
-category: "experiments",
-desription: "Génère une progression harmonique dans une gamme.",
+category: "entertainment",
+desription: "Génère une progression harmonique dans une gamme ainsi qu'une mélodie aléatoire. Veillez à bien lire les informations importantes en haut de la génération.",
 usage: "",
-cooldown: 1,
+cooldown: 10,
 permissions: false,
 args: false
 };
