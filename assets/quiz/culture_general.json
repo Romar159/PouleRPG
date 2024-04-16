@@ -44,7 +44,7 @@
     {
         "id" : 7,
         "categorie": "Chimie",
-        "question" : "Quel est l'abréviation du composé chimique Trinitrotoluene ?",
+        "question" : "Quel est l'abréviation du composé chimique Trinitrotoluène ?",
         "reponses" : ["tnt"]
     },
     {
@@ -68,7 +68,7 @@
     {
         "id" : 11,
         "categorie": "Histoire",
-        "question" : "De quelle période dans la préhistoire fait partie le célèbre Tyrannosaurus ?",
+        "question" : "De quelle période de la préhistoire fait partie le célèbre Tyrannosaurus-rex ?",
         "reponses" : ["crétacé"]
     },
     {
@@ -182,7 +182,7 @@
     {
         "id" : 30,
         "categorie" : "Littérature",
-        "question" : "Quand arrive 'Godot' dans la pièce de théatre 'En attendant Godot' ?",
+        "question" : "Quand arrive 'Godot' dans la pièce de théâtre 'En attendant Godot' ?",
         "reponses" : ["jamais", "à aucun moment", "** **"]
     },
     {
@@ -280,5 +280,17 @@
         "categorie" : "Géographie",
         "question" : "Avec quel pays la France a la plus grande frontière terrestre ?",
         "reponses" : ["bresil", "brésil", "brezil", "le brésil", "le bresil"]
+    },
+    {
+        "id": 47,
+        "categorie" : "Géographie",
+        "question" : "Quel est le plus grand océan du monde ?",
+        "reponses" : ["pacifique", "océan pacifique", "l'océan pacifique", "le pacifique", "ocean pacifique"]
+    },
+    {
+        "id": 48,
+        "categorie" : "Géographie",
+        "question" : "Quel pays est célèbre pour abriter le toit du monde, le mont Everest ?",
+        "reponses" : ["népal", "nepal", "le népal"]
     }
 ]

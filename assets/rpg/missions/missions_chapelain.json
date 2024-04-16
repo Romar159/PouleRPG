@@ -3,7 +3,7 @@
         "id" : 0,
         "name" : "Fabriquer un casus belli hérésie",
         "duration_ms": 345600000,
-        "description" : "Fabriquer un casus belli envers une faction hérétique. Et ce, aléatoirement parmis les factions possibles. Les chances de réussite dépende du taux de piété. Risque de perdre un peu de piété s'il échoue.",
+        "description" : "Fabriquer un casus belli envers une faction hérétique. Et ce, aléatoirement parmi les factions possibles. Les chances de réussite dépende du taux de piété. Risque de perdre un peu de piété s'il échoue.",
         "conditions" : "- La faction ciblée à au moins -200 piété.",
         "global_mission_id": 1
     },

@@ -17,12 +17,12 @@ module.exports.run = (client, message, args) => {
             -> S'il n'est pas un bot, l'utilisateur peut essayer d'envoyer un message pour se mettre à jour ou bien utiliser la commande \`auto-actualisation\`.
     
     **0x200001**  
-        **description** : Erreur fatale sur l'array des reaction d'un event (jsonObject.reactions).
+        **description** : Erreur fatale sur l'array des réaction d'un event (jsonObject.reactions).
         **diagnostique** : Le bot ou l'utilisateur à tenté d'accéder à une donnée plus haute que l'array.
         **résolution** : Réessayez. Si le problème persiste contactez le développeur.
         
     **0x200002**  
-        **description** : Erreur fatale sur l'array des commands d'un event (jsonObject.commands).
+        **description** : Erreur fatale sur l'array des commandes d'un event (jsonObject.commands).
         **diagnostique** : Le bot ou l'utilisateur à tenté d'accéder à une donnée inexistante -> Réaction non assignée à une commande.
         **résolution** : Réessayez. Si le problème persiste contactez le développeur.   
     `);

@@ -266,7 +266,7 @@ module.exports.help = {
     name: "expédition",
     aliases: ['e', 'expedition'],
     category: "generalrpg",
-    desription: "Partez en expédition pour gagner richesses, expériences et items. Séléctionnez le nombre de poyn à emmener avec vous, et choisissez si vous le souhaitez un autre territoire que le vôtre pour gagner plus... mais attention aux représailles.",
+    desription: "Partez en expédition pour gagner richesses, expériences et items. Sélectionnez le nombre de poyn à emmener avec vous, et choisissez si vous le souhaitez un autre territoire que le vôtre pour gagner plus... mais attention aux représailles.",
     usage: '<poyn> [localisation:epsilon/daïros/lyomah/alpha]',
     cooldown: 3, 
     permissions: false,

@@ -41,7 +41,7 @@
         "salaire": 10,
         "horaires": 9,
         "prerequis": "/",
-        "description": "Que ce soit dans son échope au cœur du bourg, ou en sillonant le pays avec sa charette, le marchand vend tous types de produits.",
+        "description": "Que ce soit dans son échoppe au cœur du bourg, ou en sillonnant le pays avec sa charrette, le marchand vend tous types de produits.",
         "infos": "Pour exercer ce métier vous n'avez besoin d'aucun prérequis."
     },
     {
@@ -50,7 +50,7 @@
         "salaire": 10,
         "horaires": 18,
         "prerequis": "/",
-        "description": "Le pêcheur part au large des côtes du pays avec son bâteau, apportant par la suite aux citoyens divers produits de la mer, principalement des poissons comme la morue, la sardine ou encore la dorade. Les poissons d'eau douce sont quant à eux réservés aux nobles",
+        "description": "Le pêcheur part au large des côtes du pays avec son bateau, apportant par la suite aux citoyens divers produits de la mer, principalement des poissons comme la morue, la sardine ou encore la dorade. Les poissons d'eau douce sont quant à eux réservés aux nobles",
         "infos": "Pour exercer ce métier vous n'avez besoin d'aucun prérequis."
     },
     {
@@ -59,7 +59,7 @@
         "salaire": 15,
         "horaires": 10,
         "prerequis": "if(dbUser.forme >= 100) return true;",
-        "description": "Le charpentier est celui qui conçois la charpente des maisons mais aussi celle des bâteaux et parfois d'autres structures.",
+        "description": "Le charpentier est celui qui conçois la charpente des maisons mais aussi celle des bateaux et parfois d'autres structures.",
         "infos": "Pour exercer ce métier vous devez avoir **100** points de **forme** ou plus."
     },
     {
@@ -104,7 +104,7 @@
         "salaire": 15,
         "horaires": 12,
         "prerequis": "if(dbUser.level >= 3 && dbUser.travail >= 40) return true;",
-        "description": "Les prisons et cachots sont des endroits très sécurisés c'est pourquoi il est nécéssaire d'avoir un garde uniquement attitré à ce lieu, le geôlier.",
+        "description": "Les prisons et cachots sont des endroits très sécurisés c'est pourquoi il est nécessaire d'avoir un garde uniquement attitré à ce lieu, le geôlier.",
         "infos": "Pour exercer ce métier vous devez avoir un **niveau** de **3** ou plus et **40** points de travail ou plus."
     },
     {
@@ -122,7 +122,7 @@
         "salaire": 20,
         "horaires": 6,
         "prerequis": "if(dbUser.savoir >= 250) return true;",
-        "description": "L'aphoticaire est celui qui est en charge de préparer les remèdes que prescrivent les médecins. Il les fabrique à base de plantes et de produits naturels.",
+        "description": "L'apothicaire est celui qui est en charge de préparer les remèdes que prescrivent les médecins. Il les fabrique à base de plantes et de produits naturels.",
         "infos": "Pour exercer ce métier vous devez avoir **250** points de **savoir** ou plus."
     },
     {
@@ -185,7 +185,7 @@
         "salaire": 20,
         "horaires": 9,
         "prerequis": "if(dbUser.travail >= 150 && dbUser.savoir >= 100) return true;",
-        "description": "L'artisant du verre, il fabrique divers objets à base de verre. Ces objets étant principalement reservés aux riches en vu de leurs matériaux coûteux.\nLes vitrailliste sont des verriers spécialisés dans la création de vitraux, principalement utilisés dans les églises et cathédrales.",
+        "description": "L'artisan du verre, il fabrique divers objets à base de verre. Ces objets sont principalement réservés aux riches en vu de leurs matériaux coûteux.\nLes vitrailliste sont des verriers spécialisés dans la création de vitraux, principalement utilisés dans les églises et cathédrales.",
         "infos": "Pour exercer ce métier vous devez avoir **150** points de **travail** ou plus et **100** points de **savoir** ou plus."
     },
     {
@@ -230,7 +230,7 @@
         "salaire": 30,
         "horaires": 9,
         "prerequis": "if(dbUser.travail >= 625 && dbUser.richesse >= 75) return true;",
-        "description": "La soie est un des tissus les plus onéreux à cette époque. Il était aisé de reconnaître un bourgeois voir même un souverrain ou sa famille uniquement à la matière de ses vêtements.",
+        "description": "La soie est un des tissus les plus onéreux à cette époque. Il était aisé de reconnaître un bourgeois voir même un souverain ou sa famille uniquement à la matière de ses vêtements.",
         "infos": "Pour exercer ce métier vous devez avoir **625** points de **travail** ou plus ainsi que **75** points de **richesse** ou plus."
     },
     {
