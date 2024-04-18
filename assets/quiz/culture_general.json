@@ -1,0 +1,296 @@
+[
+    {
+        "id" : 0,
+        "categorie": "Géographie",
+        "question" : "Quel fleuve traverse paris ?",
+        "reponses" : ["seine", "la seine"]
+    },
+    {
+        "id" : 1,
+        "categorie": "Littérature",
+        "question" : "Qui a écrit 'Le Horla' ?",
+        "reponses" : ["maupassant", "guy maupassant", "guy de maupassant"]
+    },
+    {
+        "id" : 2,
+        "categorie": "Musique",
+        "question" : "À quel compositeur baroque fait référence le catalogue HWV ?",
+        "reponses" : ["georg friedrich Haendel", "haendel", "handel"]
+    },
+    {
+        "id" : 3,
+        "categorie": "Biologie",
+        "question" : "Que signifie le N de l'acronyme ARN ?",
+        "reponses" : ["nucléique", "nucleique"]
+    },
+    {
+        "id" : 4,
+        "categorie": "Chimie",
+        "question" : "A quel numéro atomique est associé l'élément chimique Oxygène dans le tableau de Mendeleïev ?",
+        "reponses" : ["8", "huit"]
+    },
+    {
+        "id" : 5,
+        "categorie": "Chimie",
+        "question" : "A quel numéro atomique est associé l'élément chimique Cobalt dans le tableau de Mendeleïev ?",
+        "reponses" : ["27", "vingt sept", "vingt-sept"]
+    },
+    {
+        "id" : 6,
+        "categorie": "Chimie",
+        "question" : "A quel numéro atomique est associé l'élément chimique Neptunium dans le tableau de Mendeleïev ?",
+        "reponses" : ["93", "nonante-trois", "quatre-vingt-treize", "nonante trois", "quatre vingt treize"]
+    },
+    {
+        "id" : 7,
+        "categorie": "Chimie",
+        "question" : "Quel est l'abréviation du composé chimique Trinitrotoluène ?",
+        "reponses" : ["tnt"]
+    },
+    {
+        "id" : 8,
+        "categorie": "Chimie",
+        "question" : "Quel est le nom complet de l'élément chimique de numéro atomique 46 et de symbole PD ?",
+        "reponses" : ["palladium"]
+    },
+    {
+        "id" : 9,
+        "categorie": "Littérature",
+        "question" : "Dans quelle région de France se déroule le livre Germinal écrit par Émile Zola ?",
+        "reponses" : ["nord pas de calais", "pas de calais", "nord", "nord pas-de-calais", "pas-de-calais"]
+    },
+    {
+        "id" : 10,
+        "categorie": "Histoire",
+        "question" : "Dans quelle ville Jeanne d'Arc est mort sur le bûcher ?",
+        "reponses" : ["rouen"]
+    },
+    {
+        "id" : 11,
+        "categorie": "Histoire",
+        "question" : "De quelle période de la préhistoire fait partie le célèbre Tyrannosaurus-rex ?",
+        "reponses" : ["crétacé"]
+    },
+    {
+        "id" : 12,
+        "categorie": "Biologie",
+        "question" : "De quelle famille fait partie le Clogmia Albipunctata ?",
+        "reponses" : ["psychodidae"]
+    },
+    {
+        "id" : 13,
+        "categorie": "Peinture",
+        "question" : "Qui a peint Guernica ?",
+        "reponses" : ["pablo picasso", "picasso"]
+    },
+    {
+        "id" : 14,
+        "categorie": "Random",
+        "question" : "Quelle lettre est représentée sur les autocollants apposés à l'arrière des voitures des jeunes conducteurs ?",
+        "reponses" : ["a"]
+    },
+    {
+        "id" : 15,
+        "categorie": "Littérature",
+        "question" : "Qui a écrit 'Alice au Pays des Merveilles' ?",
+        "reponses" : ["lewis carroll", "carroll", "charles lutwidge dodgson", "dodgson", "lutwidge dodgson"]
+    },
+    {
+        "id" : 16,
+        "categorie": "Science",
+        "question" : "Quelle est la vitesse de la lumière en mettre par seconde ?",
+        "reponses" : ["299 792 458", "299792458"]
+    },
+    {
+        "id" : 17,
+        "categorie": "Architecture",
+        "question": "De quel bâtiment fait partie la tour Élisabeth contenant la cloche Big-Ben ?",
+        "reponses": ["palais de westminster", "westminster", "westminster palace", "palace of westminster", "chambres du parlement", "chambre du parlement"]
+    },
+    {
+        "id" : 18,
+        "categorie": "Architecture",
+        "question": "Pour quel évènement la Tour Eiffel a t-elle était construite ?",
+        "reponses": ["exposition universelle", "éxposition universelle", "exposition universelle de paris", "exposition universelle de paris de 1889", "exposition universelle de 1889", "centenaire de la révolution française", "100 ans de la révolution française"]
+    },
+    {
+        "id" : 19,
+        "categorie" : "Géographie",
+        "question" : "Quelle est la capitale de la Norvège ?",
+        "reponses" : ["oslo"]
+    },
+    {
+        "id" : 20,
+        "categorie" : "Zoologie",
+        "question" : "Combien de griffes possède une patte de poulet ?",
+        "reponses" : ["4", "quatre"]
+    },
+    {
+        "id" : 21,
+        "categorie" : "Géographie",
+        "question" : "Dans quel océan se situe l'archipel des Bermudes ?",
+        "reponses" : ["atlantique", "l'antlantique"]
+    },
+    {
+        "id" : 22,
+        "categorie" : "Langue",
+        "question" : "Comment dit-on \"patate\" en Allemand ?",
+        "reponses" : ["kartoffel"]
+    },
+    {
+        "id" : 23,
+        "categorie" : "Langue",
+        "question" : "Comment dit-on \"poulet\" en Polonais ?",
+        "reponses" : ["kurczak"]
+    },
+    {
+        "id" : 24,
+        "categorie" : "Géographie",
+        "question" : "Parmi les drapeaux suivants, lequel est celui de l'Italie ? (Répondre avec 1, 2 ou 3, ou avec le drapeau)\n🇭🇺 🇧🇬 🇮🇹",
+        "reponses" : ["3", "trois", "🇮🇹"]
+    },
+    {
+        "id" : 25,
+        "categorie" : "Géographie",
+        "question" : "Parmi les drapeaux suivants, lequel est celui de la Côte d'Ivoire ? (Répondre avec 1, 2 ou 3, ou avec le drapeau)\n🇮🇪 🇨🇮 🇳🇪",
+        "reponses" : ["2", "deux", "🇨🇮"]
+    },
+    {
+        "id" : 26,
+        "categorie" : "Art",
+        "question" : "Quelle est la couleur contraire du orange ?",
+        "reponses" : ["le bleu", "bleu", "blue", "le blue"]
+    },
+    {
+        "id" : 27,
+        "categorie" : "Art",
+        "question" : "Quelle est la couleur contraire du violet ?",
+        "reponses" : ["le jaune", "jaune"]
+    },
+    {
+        "id" : 28,
+        "categorie" : "Littérature",
+        "question" : "Qui est l'auteur du recueil de poèmes intitulé 'Les Fleurs du mal' ?",
+        "reponses" : ["charles baudelaire", "baudelaire"]
+    },
+    {
+        "id" : 29,
+        "categorie" : "Littérature",
+        "question" : "Dans quel pays se déroule 'Les Misérables' de Victor Hugo ?",
+        "reponses" : ["france"]
+    },
+    {
+        "id" : 30,
+        "categorie" : "Littérature",
+        "question" : "Quand arrive 'Godot' dans la pièce de théâtre 'En attendant Godot' ?",
+        "reponses" : ["jamais", "à aucun moment", "** **"]
+    },
+    {
+        "id" : 31,
+        "categorie" : "Littérature",
+        "question" : "Quel est le nom de plume de la romancière Amantine Aurore Lucile Dupin de Francueil ?",
+        "reponses" : ["george sand"]
+    },
+    {
+        "id" : 32,
+        "categorie" : "Sculpture",
+        "question" : "Comment s'appelait l'apprentie de Auguste Rodin qui a notamment réalisé l'œuvre dénommée \"La Petite Châtelaine\"",
+        "reponses" : ["camille claudel", "claudel"]
+    },
+    {
+        "id": 33,
+        "categorie": "Littérature",
+        "question": "Dans quel mouvement artistique trouve-t-on la majorité des œuvres de Boris Vian ?",
+        "reponses": ["surréalisme", "surrealisme", "surrealiste"]
+    },
+    {
+        "id": 34,
+        "categorie": "Cinéma",
+        "question": "Qui a réalisé le film \"Pulp Fiction\" ?",
+        "reponses": ["quentin tarantino", "tarantino"]
+    },
+    {
+        "id": 35,
+        "categorie": "Littérature",
+        "question": "Qui a écrit le livre \"Le Petit Prince\" ?",
+        "reponses": ["antoine de saint-exupéry", "saint-exupéry", "antoine de saint exupéry", "antoine de saint-exupery", "saint-exupery", "antoine de saint exupery", "saint exupery", "saint exupéry"]
+    },
+    {
+        "id": 36,
+        "categorie": "Peinture",
+        "question": "Dans quel musée français peut-on admirer \"Le Radeau de La Méduse\" ?",
+        "reponses": ["le louvre", "le musée du louvre", "louvre", "le musee du louvre"]
+    },
+    {
+        "id": 37,
+        "categorie": "Peinture",
+        "question": "Dans quel musée français peut-on admirer \"Le Radeau de La Méduse\" ?",
+        "reponses": ["le louvre", "le musée du louvre", "louvre", "le musee du louvre"]
+    },
+    {
+        "id" : 38,
+        "categorie": "Musique",
+        "question" : "Quel compositeur à composé la symphonie connu sous le nom : \"Du Nouveau Monde\" ?",
+        "reponses" : ["antonín dvořák", "antonin dvorak", "dvorak"]
+    },
+    {
+        "id": 39,
+        "categorie": "Cinéma",
+        "question": "Quel cinéaste français est connu pour ses films muets comme 'Le Voyage dans la Lune' ?",
+        "reponses": ["georges méliès", "méliès", "georges melies", "melies"]
+    },
+    {
+        "id": 40,
+        "categorie": "Philosophie",
+        "question": "Quel philosophe grec a proposé la parabole de la caverne pour expliquer la réalité perçue et la réalité intelligible ?",
+        "reponses": ["platon"]
+    },
+    {
+        "id": 41,
+        "categorie": "Biologie",
+        "question": "Quel est le nom de l'appareil reproducteur masculin ?",
+        "reponses": ["bite", "pénis", "penis", "teub", "zob", "popol", "zizi", "chibre", "chibrax", "la maxi teub de romar", "verge", "teube", "membre"]
+    },
+    {
+        "id": 42,
+        "categorie": "Gastronomie",
+        "question": "Quel est la marque connu principalement pour ses chips conditionné dans un tube en carton et à la forme de tuile.",
+        "reponses": ["pringles"]
+    },
+    {
+        "id": 43,
+        "categorie" : "Gastronomie",
+        "question" : "Quel est le nom des chips connu pour leur forme triangulaire",
+        "reponses" : ["doritos"]
+    },
+    {
+        "id": 44,
+        "categorie" : "Histoire",
+        "question" : "Quel était le nom de Paris avant qu'il ne s'appel paris.",
+        "reponses" : ["lutèce", "lutece", "lutetia"]
+    },
+    {
+        "id": 45,
+        "categorie" : "Musique",
+        "question" : "Qui est le compositeur de la bande originale du film Interstellar réalisé par Christopher Nolan",
+        "reponses" : ["zimmer", "hans zimmer"]
+    },
+    {
+        "id": 46,
+        "categorie" : "Géographie",
+        "question" : "Avec quel pays la France a la plus grande frontière terrestre ?",
+        "reponses" : ["bresil", "brésil", "brezil", "le brésil", "le bresil"]
+    },
+    {
+        "id": 47,
+        "categorie" : "Géographie",
+        "question" : "Quel est le plus grand océan du monde ?",
+        "reponses" : ["pacifique", "océan pacifique", "l'océan pacifique", "le pacifique", "ocean pacifique"]
+    },
+    {
+        "id": 48,
+        "categorie" : "Géographie",
+        "question" : "Quel pays est célèbre pour abriter le toit du monde, le mont Everest ?",
+        "reponses" : ["népal", "nepal", "le népal"]
+    }
+]

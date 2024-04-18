@@ -1,0 +1,38 @@
+[
+    {
+        "id": 0,
+        "name": "Archers",
+        "prix_achat": 3,
+        "prix_vente": 1
+    },
+    {
+        "id": 1,
+        "name": "Infanterie légère",
+        "prix_achat": 1,
+        "prix_vente": 0.5
+    },
+    {
+        "id": 2,
+        "name": "Infanterie lourde",
+        "prix_achat": 2,
+        "prix_vente": 1
+    },
+    {
+        "id": 3,
+        "name": "Cavalerie légère",
+        "prix_achat": 2,
+        "prix_vente": 1
+    },
+    {
+        "id": 4,
+        "name": "Cavalerie lourde",
+        "prix_achat": 4,
+        "prix_vente": 2
+    },
+    {
+        "id": 5,
+        "name": "Piquiers",
+        "prix_achat": 3,
+        "prix_vente": 1
+    }
+]

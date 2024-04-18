@@ -1,0 +1,10 @@
+[
+    {
+        "id" : -1,
+        "name" : "Suivre comme un mouton",
+        "duration_ms":43200000,
+        "description" : "Ce citoyen devra suivre comme un mouton son gouvernement.",
+        "conditions" : "NULL",
+        "global_mission_id": 8
+    }
+]

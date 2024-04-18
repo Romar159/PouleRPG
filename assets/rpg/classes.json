@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Cavalier",
+        "strenghtposition": "UP"
+    },
+    {
+        "name": "Guerrier",
+        "strenghtposition": "MIDDLE"
+    },
+    {
+        "name": "Archer",
+        "strenghtposition": "DOWN"
+    }
+]

@@ -1,0 +1,26 @@
+[
+    {
+        "id" : -1,
+        "name" : "Truc de maître",
+        "duration_ms":43200000,
+        "description" : "Le maître fera chépa quoi",
+        "conditions" : "NULL",
+        "global_mission_id": 5
+    },
+    {
+        "id" : -1,
+        "name" : "Truc de maître pour pute",
+        "duration_ms":43200000,
+        "description" : "Le maître fera chépa quoi ta grand-mère le frigidaire",
+        "conditions" : "NULL",
+        "global_mission_id": 6
+    },
+    {
+        "id" : -1,
+        "name" : "Truc de maître pour salope",
+        "duration_ms":43200000,
+        "description" : "Le maître fera chépa quoi ton cul en plastique",
+        "conditions" : "NULL",
+        "global_mission_id": 7
+    }
+]

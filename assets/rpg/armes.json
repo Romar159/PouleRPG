@@ -1,0 +1,47 @@
+[
+    {
+        "id": 0,
+        "name": "épée",
+        "arene_name": "l'épée",
+        "emote": ":crossed_swords:",
+        "attaques": ["Vous donnez un violent coup d'épée sur", "Vous tranchez violemment"],
+        "fort": [1, 4],
+        "faible": [2, 3]
+    },
+    {
+        "id": 1,
+        "name": "arc",
+        "arene_name": "l'arc",
+        "emote": ":bow_and_arrow:",
+        "attaques": ["Vous tirez une flèche très puissante sur", "Vous tirez une pluie de flèches sur", "Vous décochez une sublime flèche sur"],
+        "fort": [2, 4],
+        "faible": [0, 3]
+    },
+    {
+        "id": 2,
+        "name": "pique",
+        "arene_name": "la pique",
+        "emote": ":dagger:",
+        "attaques": ["pic pic", "SPLOUK"],
+        "fort": [0, 3],
+        "faible": [1, 4]
+    },
+    {
+        "id": 3,
+        "name": "bouclier",
+        "arene_name": "le bouclier",
+        "emote": ":shield:",
+        "attaques": ["bum bum", "SHBOUNG"],
+        "fort": [0, 1],
+        "faible": [2, 4]
+    },
+    {
+        "id": 4,
+        "name": "marteau",
+        "emote": ":hammer:",
+        "arene_name": "le marteau",
+        "attaques": ["boum boum", "BAAAAAAAM"],
+        "fort": [3, 2],
+        "faible": [0, 1]
+    }
+]

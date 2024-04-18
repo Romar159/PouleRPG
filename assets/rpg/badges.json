@@ -1,0 +1,37 @@
+[
+    {
+        "id" : 0,
+        "name" : "Imbattable",
+        "description" : "Gagner 5x l'arène d'affilé"
+    },
+    {
+        "id" : 1,
+        "name" : "Parmi les plus forts",
+        "description" : "Atteindre le niveau 50"
+    },
+    {
+        "id" : 2,
+        "name" : "Trop s'aimer pour se donner",
+        "description" : "Se donner une pièce de SDF"
+    },
+    {
+        "id" : 3,
+        "name" : "Le chouchou de la vénitienne",
+        "description" : "Avoir 10 points vénitienne"
+    },
+    {
+        "id" : 4,
+        "name" : "Gloire aux Poulets !",
+        "description" : "Ajouter 500 poulets à la collection de poulets"
+    },
+    {
+        "id" : 5,
+        "name" : "Meilleur donateur",
+        "description" : "Donner 1000 poyn au coffre de faction"
+    },
+    {
+        "id" : 6,
+        "name" : "Chasseur de trésor",
+        "description" : "Trouver 3 Easter eggs"
+    }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "id": 0,
+    "name": "Adepte de Satanas Chicken",
+    "levelMin": 17,
+    "levelMax": 24,
+    "ranMin": 0.666,
+    "ranMax": 1.234,
+    "attaques": [ "prie satanas chicken" ],
+    "gains": "let a = [1, 2, 3]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } let final_array = a.slice(0, client.randomInt(1, 3)).sort(); gagner = ` `; for(i=0; i<final_array.length; i++) { if(final_array[i] == 1) { gagner = gagner + `+250xp`; client.setXp(client, message.member, 250)} if(final_array[i] == 2) { gagner = gagner + `+2 :coin:`; client.setOr(client, message.member, 2, message)} if(final_array[i] == 3) { gagner = gagner + `+3 piété `; client.editPoint(client, message.member, 3, `piete`)} if(i<final_array.length - 1) gagner = gagner + ` | `;}"
+  },
+  {
+    "id": 1,
+    "name": "🐺",
+    "levelMin": 6,
+    "levelMax": 13,
+    "ranMin": 0.45,
+    "ranMax": 1.6,
+    "attaques": [ "dit : woof !", "vous fait un câlin de furry dégueulasse", "émoticône de loup", "dit : je suis une merde" ],
+    "gains": "client.setXp(client, message.member, 123); client.editPoint(client, message.member, 2, 'prestige'); gagner = `+123xp | +2 prestige`;"
+  },
+  {
+    "id": 2,
+    "name": "Espagnol",
+    "levelMin": 1,
+    "levelMax": 2,
+    "ranMin": 1,
+    "ranMax": 1.01,
+    "attaques": [ "dit : holà, soy un bueno español", "salue TheLezerd", "dit : puedo acer la communication", "vous crie dessus : ¡ soy pobre !" ],
+    "gains": "client.setXp(client, message.member, 3); gagner = `+3xp`; // ? RomarNote "
+  },
+  {
+    "id": 3,
+    "name": "Démon aléatoire diabolique rouge",
+    "levelMin": 32,
+    "levelMax": 40,
+    "ranMin": 0.8,
+    "ranMax": 1.48,
+    "attaques": [ "vous pique avec sa lance diabolique", "ricane de manière diabolique", "crache du feu diabolique", "est très diabolique" ],
+    "gains": "client.setXp(client, message.member, 500); gagner = `+500xp`; // ? RomarNote "
+  },
+  {
+    "id": 4,
+    "name": "Abysse volante",
+    "levelMin": 1,
+    "levelMax": 7,
+    "ranMin": 0.5,
+    "ranMax": 1.24,
+    "attaques": [ "bat des ailes" ],
+    "gains": "client.setXp(client, message.member, 30); gagner = `+30xp`; // ? RomarNote "
+  }
+]

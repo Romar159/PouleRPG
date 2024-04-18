@@ -1,0 +1,10 @@
+[
+    {
+        "id" : -1,
+        "name" : "Gérer les finances",
+        "duration_ms":43200000,
+        "description" : "L'intendant gérera les finances pour faire je sais pas quoi",
+        "conditions" : "NULL",
+        "global_mission_id": 4
+    }
+]

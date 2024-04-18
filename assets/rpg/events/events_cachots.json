@@ -1,0 +1,16 @@
+[
+    {
+        "id": 0,
+        "name": "La visite du geôlier",
+        "rarete": 50,
+        "condition": "/",
+        "description": "Le geôlier fait une visite surprise dans votre cellule. Il semble d'humeur à discuter. Que faites-vous ?\n\n💬 : Vous engagez la conversation avec lui.\n🔑 : Vous essayez de le convaincre de vous libérer.\n😡 : Vous l'ignorez totalement.",
+        "reactions": ["💬", "🔑", "😡"],
+        "commands": [
+            ["Msg(Vous engagez la conversation avec le geôlier. Il vous raconte quelques ragots sur le château et vous offre un morceau de pain en plus pour le dîner. +2 Moral, +2 Savoir)", "SetPoint(moral § 2)", "SetPoint(savoir § 2)"],
+            ["Msg(Vous tentez de persuader le geôlier de vous libérer en lui promettant une récompense. Il vous rit au nez et part en secouant la tête. -1 Redoutabilité, -3 moral, +2 piété)", "SetPoint(redoutabilite § -1)", "SetPoint(moral § -3)", "SetPoint(piete § 2)"],
+            ["Msg(Vous décidez d'ignorer complètement le geôlier. Il hausse les épaules et s'en va en vous laissant seul dans votre cellule. -4 Moral, +1 Redoutabilité)", "SetPoint(moral § -4)", "SetPoint(redoutabilite § 1)"]
+        ]
+    }
+]
+

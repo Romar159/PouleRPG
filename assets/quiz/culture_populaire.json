@@ -1,0 +1,368 @@
+[
+    {
+        "id" : 0,
+        "categorie": "Jeux Vidéo",
+        "question" : "Quel est la couleur de la casquette de Mario dans Super Mario ?",
+        "reponses" : ["rouge"]
+    },
+    {
+        "id" : 1,
+        "categorie": "Jeux Vidéo",
+        "question" : "Quel est le nom de l'éditeur du jeu vidéo Castlevania",
+        "reponses" : ["konami"]
+    },
+    { 
+        "id" : 2,
+        "categorie": "Délire",
+        "question" : "Qui est Bordel ?",
+        "reponses" : ["draxy", "draxydow"]
+    },
+    { 
+        "id" : 3,
+        "categorie": "Délire",
+        "question" : "Qui est La Joie ?",
+        "reponses" : ["romar", "romar1"]
+    },
+    {
+        "id" : 4,
+        "categorie": "Jeux Vidéo",
+        "question" : "Trouvez le jeu à partir des émoticônes suivants : \n🌳 💎 ⛏️",
+        "reponses" : ["minecraft"]
+    },
+    {
+        "id": 5,
+        "categorie": "Jeux Vidéo",
+        "question" : "Durant quelle période de l'Histoire se déroule le jeu vidéo intitulé 'A Plague Tale: Innocence' ?",
+        "reponses" : ["moyen âge", "bas moyen âge", "moyen âge tardif"]
+    },
+    {
+        "id": 6,
+        "categorie": "Film",
+        "question" : "Quel est le nom de l'antagoniste principal de la saga Star Wars",
+        "reponses" : ["sheev palpatine", "palpatine", "darth sidious", "dark sidious"]
+    },
+    {
+        "id": 7,
+        "categorie": "Jeux Vidéo",
+        "question" : "Comment s'appelle le protagoniste du jeu Donkey Kong sorti en 1981 ?",
+        "reponses" : ["jumpman"]
+    },
+    {
+        "id": 8,
+        "categorie": "Film",
+        "question" : "Trouvez le film à partir des émoticônes suivants : \n :fly: 🔥 🦖 ",
+        "reponses" : ["godzilla"]
+    },
+    {
+        "id": 9,
+        "categorie": "Animé",
+        "question" : "Trouvez l'animé à partir des émoticônes suivants : \n 🚶‍♀️ 🚜 🚶‍♂️ -> 💧 💥 ⚔️ ✋",
+        "reponses" : ["konosuba", "kono subarashii", "kono subarashii sekai ni shukufuku o!", "kono subarashii sekai ni shukufuku o", "kono subarashii sekai ni shukufuku wo!", "kono subarashii sekai ni shukufuku wo"]
+    },
+    {
+        "id" : 10,
+        "categorie": "Jeux Vidéo",
+        "question" : "Trouvez le jeu à partir des émoticônes suivants : \n🚀 🕵️ 🔪",
+        "reponses" : ["among us", "amongus", "sus", "amongrusse", "amogus", "among-us"]
+    },
+    {
+        "id" : 11,
+        "categorie" : "Animé",
+        "question" : "Comment s'appelle l'arme impérial de Sheele dans Akame ga Kill! ?",
+        "reponses" : ["extase", "ecstasy", "ekusutasu", "ciseau de la création extase", "ciseau de la creation extase", "cutter of creation: extase"]
+    },
+    {
+        "id" : 12,
+        "categorie" : "Délire",
+        "question" : "Trouvez le mot à partir des émoticônes suivants.\n🥰💊",
+        "reponses" : ["ecstasy"]
+    },
+    {
+        "id" : 13,
+        "categorie" : "Série",
+        "question" : "Comment s'appelle le personnage qui a des pouvoirs télékinésiques dans Stranger Things ?",
+        "reponses" : ["onze", "eleven", "el", "elfe", "jane ives", "011", "11"]
+    },
+    {
+        "id" : 14,
+        "categorie" : "Délire",
+        "question" : "Hey, salut à tous les amis, c'est David Lafarge Pokémon, j'espère que vous allez très bien, moi en tout cas ça va super, ça va extrêmement bien, je suis avec Miss Jirachi !",
+        "reponses" : ["coucou", "coucou !"]
+    },
+    {
+        "id" : 15,
+        "categorie" : "Jeux vidéo",
+        "question" : "Quel est le grand méchant de la série Mario ?",
+        "reponses" : ["bowser"]
+    },
+    {
+        "id" : 16,
+        "categorie" : "Jeux vidéo",
+        "question" : "Comment s'appelle la protagoniste de Control ?",
+        "reponses" : ["jesse faden", "jesse"]
+    },
+    {
+        "id" : 17,
+        "categorie" : "Jeux vidéo",
+        "question" : "Dans quel Mega Man, le chien Rush fait-il son apparition pour la première fois ?",
+        "reponses" : ["3", "iii", "mega man 3", "mega man iii"]
+    },
+    {
+        "id" : 18,
+        "categorie" : "Internet",
+        "question" : "Quel moteur de recherche possède un canard comme logo ?",
+        "reponses" : ["duckduckgo", "duck duck go"]
+    },
+    {
+        "id" : 19,
+        "categorie" : "Délire",
+        "question" : "Qui n'était pas un délire, puis en est devenu un ?",
+        "reponses" : ["zheonixx", "zheo", "zézé", "zeze"]
+    },
+    {
+        "id" : 20,
+        "categorie" : "Jeux vidéo",
+        "question" : "Dans Death Stranding, Sam Porter Bridges possède un DOOMS de niveau combien ?",
+        "reponses" : ["2", "deux"]
+    }, 
+    {
+        "id" : 21,
+        "categorie" : "Délire",
+        "question" : "Quelle est objectivement la commande PouleRPG qui fonctionne le mieux ?",
+        "reponses" : ["action ou verite", "action ou vérité", "aov", "p<aov", "action", "verite", "vérité"]
+    },
+    {
+        "id": 22,
+        "categorie" : "Informatique",
+        "question" : "Que recommande Microsoft à chaque fois qu'un problème se présente sur un ordinateur Windows ?",
+        "reponses" : ["installer windows", "installé windows", "installe windows", "réinstaller windows", "réinstallé windows", "réinstalle windows", "reinstaller windows", "reinstallé windows", "reinstalle windows"] 
+    },
+    {
+        "id": 23,
+        "categorie" : "Empire du Poulet",
+        "question" : "Qui a dessiné toutes les emotes poulet du serveur ?",
+        "reponses" : ["draxy", "draxydow", "shadowblue4", "gaex dow", "gaexdow"]
+    },
+    {
+        "id": 24,
+        "categorie" : "Empire du Poulet",
+        "question" : "En quelle année PouleRPG a t-il commencé à être développé ?",
+        "reponses" : ["2019", "deux mille dix neuf", "deux mille dix-neuf"]
+    },
+    {
+        "id": 25,
+        "categorie" : "Empire du Poulet",
+        "question" : "Quel est l'émoji le plus vieux de l'Empire ?",
+        "reponses" : ["linkssou", "ep_linkssou", ":ep_linkssou:"]
+    },
+    {
+        "id": 26,
+        "categorie" : "Empire du Poulet",
+        "question" : "Quand se déroule le Goc International ?",
+        "reponses" : ["25 10", "25/10", "25 octobre", "vingt cinq octobre", "vingt-cinq octobre", "vingt cinq 10", "vingt-cinq 10"]
+    },
+    {
+        "id": 27,
+        "categorie" : "Empire du Poulet",
+        "question" : "Quand se déroule la fête de la Rëpa ?",
+        "reponses" : ["01 06", "01/06", "01 juin", "premier juin", "un juin", "premier 06", "un 06", "1 juin"]
+    },
+    {
+        "id": 28,
+        "categorie" : "Empire du Poulet",
+        "question" : "Quel est le jour de la Datette ?",
+        "reponses" : ["15 09", "15/09", "15 septembre", "quinze septembre", "quinze 09"]
+    },
+    {
+        "id": 29,
+        "categorie" : "Jeux vidéo",
+        "question" : "Combien de couleurs de personnage sont disponible dans Among Us ?",
+        "reponses" : ["18", "dix huit", "dix-huit"]
+    },
+    {
+        "id": 30,
+        "categorie" : "Jeux vidéo",
+        "question" : "Comment s'appelle le jeu de rythme où vous contrôlez un carré bleu qui doit esquiver des attaques roses ?",
+        "reponses" : ["just shapes and beats", "just shapes & beats", "jsab", "jsb", "bites et formes"]
+    },
+    {
+        "id": 31,
+        "categorie" : "Jeu vidéo",
+        "question" : "Comment se nomme le groupe des 3 idoles de Splatoon 3 ?",
+        "reponses" : ["les tridenfers", "tridenfers", "tridenfer"]
+    },
+    {
+        "id": 32,
+        "categorie" : "Jeux vidéo",
+        "question" : "Comment se nomme le vieux du mode aventure de Splatoon ?",
+        "reponses" : ["macalamar", "amiral macalamar", "anastase macalamar", "amiral anastase macalamar"]
+    },
+    {
+        "id": 33,
+        "categorie" : "Jeux vidéo",
+        "question" : "Quel est le sniper qui vise le plus loin dans Splatoon ?",
+        "reponses" : ["l'extraceur", "extraceur", "l'extraceur zoom", "extraceur zoom", "extraceur +"]
+    },
+    {
+        "id": 34,
+        "categorie" : "Jeux vidéo",
+        "question" : "Quel est le rang le plus élevé dans le Salmon Run de Splatoon 2 ?",
+        "reponses" : ["prodige"]
+    },
+    {
+        "id": 35,
+        "categorie" : "Animé",
+        "question" : "Dans Attack on Titan (Shingeki no Kyojin) quel membre perd en premier Eren Jäger ?",
+        "reponses" : ["bras", "avant bras", "avant-bras"]
+    },
+    {
+        "id": 36,
+        "categorie" : "Animé",
+        "question" : "Dans Promised Neverland où se cache le traceur GPS des enfants de Gracefield House",
+        "reponses" : ["oreille", "dans l'oreille", "l'oreille"]
+    },
+    {
+        "id": 37,
+        "categorie" : "Animé",
+        "question" : "Combien y a t-il de tomes de Promised Neverland ?",
+        "reponses" : ["20", "vingt", "vin", "vint"]
+    },
+    {
+        "id": 38,
+        "categorie" : "Animé",
+        "question" : "Dans le manga Fairy Tale comment se prénomme le chat bleu ?",
+        "reponses" : ["happy"]
+    },
+    {
+        "id": 39,
+        "categorie": "Délire",
+        "question": "Quel est le meilleure plat au monde ?",
+        "reponses": ["poulet", "poulet basquaise"]
+    },
+    {
+        "id": 40,
+        "categorie": "Jeux Vidéo",
+        "question": "Quel est le nom du héros dans The Legend of Zelda ?",
+        "reponses": ["pas zelda", "link"]
+    },
+    {
+        "id": 41,
+        "categorie": "Jeux Vidéo",
+        "question": "Quel est la monnaie dans The Legend of Zelda ?",
+        "reponses": ["rubis"]
+    },
+    {
+        "id": 42,
+        "categorie" : "Animé",
+        "question" : "Dans Attack on Titan (Shingeki no Kyojin) quel est la couleur de l'écharpe de Mikasa ?",
+        "reponses" : ["rouge"]
+    },
+    {
+        "id": 43,
+        "categorie" : "Jeux Vidéo",
+        "question" : "Comment s'appelle le boss de fin dans Minecraft ?",
+        "reponses" : ["ender dragon", "dragon de l'ender", "dragon de l'end"]
+    },
+    {
+        "id": 44,
+        "categorie" : "Jeux Vidéo",
+        "question" : "Quel est le nom du jeu de course sur l'univers de Mario",
+        "reponses" : ["mario kart"]
+    },
+    {
+        "id": 45,
+        "categorie" : "Empire du Poulet",
+        "question" : "Comment s'appelait l'Empire lors de la guerre des Poulattes",
+        "reponses" : ["l'empire des patates", "empire patates", "empire des patates", "empire patate"]
+    },
+    {
+        "id": 46,
+        "categorie" : "Délire",
+        "question" : "Qui est Draxy ?",
+        "reponses" : ["un pd", "un bg", "pd", "bg", "bordel"]
+    },
+    {
+        "id": 47,
+        "categorie" : "Dessin Animé",
+        "question" : "Quel est le nom de la première princesse Disney ?",
+        "reponses" : ["blanche neige", "blanche-neige", "blanche fesse"]
+    },
+    {
+        "id": 48,
+        "categorie" : "Dessin Animé",
+        "question" : "Comment s'appelle la fille de la petite sirène ?",
+        "reponses" : ["melody", "mélodie", "melodie"]
+    },
+    {
+        "id": 49,
+        "categorie" : "Empire du Poulet",
+        "question" : "Comment s'appelle le bot développé par Romar1 spécialement pour l'Empire ?",
+        "reponses" : ["poulerpg", "poulerpd"]
+    },
+    {
+        "id": 50,
+        "categorie" : "Empire du Poulet",
+        "question" : "A quand est prévue la sortie de PouleRPG en version Alpha en Septembre 2023 ?",
+        "reponses" : ["automne 2023"]
+    },
+    {
+        "id": 51,
+        "categorie" : "Empire du Poulet",
+        "question" : "A quand est prévue la sortie de PouleRPG en version Bêta en Septembre 2023 ?",
+        "reponses" : ["hiver 2024"]
+    },
+    {
+        "id": 52,
+        "categorie" : "Empire du Poulet",
+        "question" : "A quand est prévue la sortie de PouleRPG en version Finale en Septembre 2023 ?",
+        "reponses" : ["2026"]
+    },
+    {
+        "id": 53,
+        "categorie" : "Délire",
+        "question" : "Quel est le pseudonyme de DraxyDow précédant GaexDow",
+        "reponses" : ["shadowblue4"]
+    },
+    {
+        "id": 54,
+        "categorie" : "Empire du Poulet",
+        "question" : "Comment s'appelait le salon #médias avant ?",
+        "reponses" : ["merde", "merdes"]
+    },
+    {
+        "id": 55,
+        "categorie" : "Film",
+        "question" : "Quel est le titre du film Avatar 2 réalisé par James Cameron ?",
+        "reponses" : ["la voie de l'eau", "voie de l'eau", "avatar 2 la voie de l'eau", "avatar 2 : la voie de l'eau", "way of water", "the way of water"]
+    },
+    {
+        "id": 56,
+        "categorie" : "Film",
+        "question" : "Dans Hunger Games combien de district entourent le Capitole ?",
+        "reponses" : ["13", "treize"]
+    },
+    {
+        "id": 57,
+        "categorie" : "Film",
+        "question" : "Dans Hunger Games quel est le nom du personnage principal ?",
+        "reponses" : ["katniss everdeen", "everdeen", "katniss"]
+    },
+    {
+        "id": 58,
+        "categorie" : "Film",
+        "question" : "Dans Hunger Games à quel édition des Hunger Games participe Katniss pour la première fois ?",
+        "reponses" : ["74", "soixante-quatorze", "74e", "74 ème", "soixante quatorze"]
+    },
+    {
+        "id": 59,
+        "categorie" : "Jeux Vidéo",
+        "question" : "Dans The Legend of Zelda Twilight Princess comment s'appelle la princesse du crépuscule ?",
+        "reponses" : ["midona", "midna"]
+    },
+    {
+        "id": 60,
+        "categorie" : "Délire",
+        "question" : "Quelle faction pète les couilles à sa pute à être trop chiant ?",
+        "reponses" : ["alpha"]
+    }
+]

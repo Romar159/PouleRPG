@@ -1,0 +1,14 @@
+[
+    {
+        "id" : 0,
+        "name" : "Ouaaaais hehe la mission",
+        "rarete" : 30000,
+        "condition" : "/",
+        "description" : "En mission tu fais quoi woula",
+        "reactions" : ["🔓", "😴"],
+        "commands" : [
+            ["Msg(RIP y'a pas d'event pour les missions)"],
+            ["Msg(RIP y'a pas d'event pour les missions)"]
+        ]
+    }
+]

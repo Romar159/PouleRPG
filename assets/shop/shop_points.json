@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "name": "Point de puissance",
+        "description": "Utilisez ces points pour améliorer votre puissance de bataille, ou transformez les en xp avec la commande p<convertPoints",
+        "price": 25,
+        "action": "client.editPoint(client, message.member, Number(quantité), `puissance`);"
+    },
+    {
+        "id": 2,
+        "name": "Point de richesse",
+        "description": "Utilisez ces points pour exposer votre richesse à tous. La richesse est souvent un atout majeur dans de nombreuses circonstances.",
+        "price": 250,
+        "action": "client.editPoint(client, message.member, Number(quantité), `richesse`);"
+    }
+]

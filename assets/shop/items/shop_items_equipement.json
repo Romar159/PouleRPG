@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "name": "Casque Draconique Evolution",
+        "description" : "C'est trop classe pour la téci même ta daronne suit pas",
+        "price": 50,
+        "action": "message.channel.send(`Ajout de l'item effectué (c fo)`);"
+    },
+    {
+        "id": 2,
+        "name": "Pantalon en cactus",
+        "description" : "Oui ?",
+        "price": 25,
+        "action": "message.channel.send(`Ajout de l'item effectué (c fo)`);"
+    },
+    {
+        "id": 3,
+        "name": "Machine à laver portative",
+        "description" : "Resistance +50000000",
+        "price": 50000,
+        "action": "message.channel.send(`Ajout de l'item effectué (c fo)`);"
+    }
+]

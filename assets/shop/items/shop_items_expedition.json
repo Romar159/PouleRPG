@@ -1,0 +1,25 @@
+[
+    {
+        "id": 1,
+        "name": "truc trop bg en expé",
+        "description" : "truc",
+        "price": 50,
+        "action": "message.channel.send(`Ajout de l'item effectué (c fo)`);"
+    },
+    {
+        "id": 2,
+        "name": "truc MEGA trop bg en expé2",
+        "description" : "truc bg qui aide",
+        "price": 25,
+        "action": "message.channel.send(`Ajout de l'item effectué (c fo)`);"
+
+    },
+    {
+        "id": 3,
+        "name": "Machin à chier de l'éxpé",
+        "description" : "Ce truc c'est vraiment de la merde",
+        "price": 50000,
+        "action": "message.channel.send(`Ajout de l'item effectué (c fo)`);"
+
+    }
+]
