@@ -364,5 +364,11 @@
         "categorie" : "Délire",
         "question" : "Quelle faction pète les couilles à sa pute à être trop chiant ?",
         "reponses" : ["alpha"]
+    },
+    {
+        "id": 61,
+        "categorie" : "Délire",
+        "question" : "Qui est la cochonne ?",
+        "reponses" : ["zheo", "zheonixx", "zézé", "zeze"]
     }
 ]

@@ -1,3 +1,4 @@
+const { Events } = require("discord.js");
 const {readdirSync} = require("fs");
 
 const loadCommands = (client, dir = "./commands/") => {
@@ -20,9 +21,11 @@ const loadEvents = (client, dir = "./events/") => {
             const evt = require(`../${dir}/${dirs}/${event}`);
             const evtName = event.split(".")[0];
             if(evtName === "messageCreate") {
-                client.on(evtName, evt.bind(null, client));
+                //client.on(evtName, evt.bind(null, client));
+                client.on(Events.MessageCreate, evt.bind(null, client));
             } else if(evtName == "ready") {
-                client.once(evtName, evt.bind(null, client));
+                //client.once(evtName, evt.bind(null, client));
+                client.once(Events.ClientReady, evt.bind(null, client))
             } else {
                 client.on(evtName, evt.bind(null, client));
             }

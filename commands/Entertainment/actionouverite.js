@@ -3,7 +3,7 @@ const { ButtonStyle, EmbedBuilder } = require("discord.js");
 const levenshtein = require('js-levenshtein');
 
 
-module.exports.run = async (client, message, args, settings, dbUser, command, mentionnedUser, user, arg0, arg1) => {
+module.exports.run = async (client, message, args, settings, dbUser, command, mentionnedUser, user, player, arg0, arg1) => {
     
     
     client.logCommandExecution(message, this);

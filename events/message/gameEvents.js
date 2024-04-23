@@ -42,9 +42,9 @@ module.exports = async (client, message, args, settings) => {
         // Ajoutez d'autres actions au besoin
     };
 
-    let general_events_rarity = [60, 115, 100, 80, 75, 41, 6969];
+    let general_events_rarity = [60, 115, 100, 80, 75, 41, 6969, 69];
     let cachot_events_rarity = [50];
-    let mission_events_rarity = [30000];
+    let mission_events_rarity = [30000, 67];
     let working_events_rarity = [60];
     let expedition_events_rarity = [150];
     let conspiring_events_rarity = [10];
@@ -54,6 +54,9 @@ module.exports = async (client, message, args, settings) => {
     var array_ran = [];
 
     const dbUser = await client.getUser(message.member);
+    if(dbUser.faction != "NULL") {
+        const faction = await client.getFaction(dbUser.faction);
+    }
 
     const currentDate = new Date();
 

@@ -4,6 +4,8 @@ const {PREFIX} = require('../../config');
 const fs = require("fs");
 
 module.exports = async (client, interaction) => {
+
+    
     
     // if(interaction.isCommand()) {
     //     const cmd = client.commands.get(interaction.commandName);
@@ -18,6 +20,13 @@ module.exports = async (client, interaction) => {
 
     //     cmd.runSlash(client, interaction);
     // }
+
+    /*if(interaction.type === InteractionType.ApplicationCommand) {
+        interaction.reply("Cmd")
+        interaction.target
+        client.emit("messageCreate", client, interaction);
+    }*/
+    
 
     if (interaction.type === InteractionType.ModalSubmit) {
         const feedback_json_file = "./assets/feedbacks.json";

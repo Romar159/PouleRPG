@@ -10,5 +10,18 @@
             ["Msg(RIP y'a pas d'event pour les missions)"],
             ["Msg(RIP y'a pas d'event pour les missions)"]
         ]
-    }
+    },
+    {
+        "id": 1,
+        "name" : "Reconstruction du village",
+        "rarete" : 67,
+        "condition" : "if(faction.en_guerre == true) return true;",
+        "description" : "Après une défaite peu plaisante de votre faction, vous devez reconstruire un village, de quoi allez-vous vous occuper ?\n💧 Le puit.\n🏠 Une maison.\n⛪ L'église de Dieu Poulet.",
+        "reactions" : ["💧", "🏠", "⛪"],
+        "commands" : [
+          ["Msg(L'eau est une ressource primordiale, vous enlevez les débrits autour du puit, rattachez les cordes, et faites en sorte de pouvoir de nouveau récupérer de l'eau. +5 forme, +2 travail.)", "SetPoint(forme § 5)", "SetPoint(travail § 2)"],
+          ["Msg(Vivre dehors, ou voir des gens vivre à l'extérieur est l'une des choses qui vous déplait le plus. Un petit peu de bois pour la charpente, des pierres bien placées, le tout pour vivre au chaud. +5 moral, +2 travail.)", "SetPoint(moral § 5)", "SetPoint(travail § 2)"],
+          ["Msg(La protection de Dieu Poulet est ce qui nous permet de persévérer. Avec l'aide de plusieurs camarades vous taillez la pierre, et réparez les trous pour permettre à ce bel édifice de vous protéger. +5 piété, +2 travail.)", "SetPoint(piete § 5)", "SetPoint(travail § 2)"]
+        ]
+      }
 ]

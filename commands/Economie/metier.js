@@ -156,6 +156,10 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 await i.editReply({ embeds:[], content:`Vous ne pouvez pas démissioner du métier de **${mt.name}** car il est relatif à votre place au gouvernement de votre faction.`, components: [] });
                 client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ${mt.name} démission refusé. Membre du gouvernement`, "err");
                 return;
+            } else if(dbUser.metier == 0) {
+                await i.editReply({ embeds:[], content:`Vous ne pouvez pas démissioner vous êtes déjà au chômage...`, components: [] });
+                client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ${mt.name} démission refusé. Chômeur`, "err");
+                return;
             } else {
                 await i.editReply({ embeds:[], content:`Vous avez démissioné du métier de **${mt.name}**.`, components: [] });
                 return await client.updateUser(message.member, {metier: 0}) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - ${mt.name} démissioné`, "err");

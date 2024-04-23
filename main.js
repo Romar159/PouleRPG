@@ -16,6 +16,29 @@ loadGlobalVariables(client);
 
 client.mongoose.init();
 
+
+const diagnosticsChannel = require('diagnostics_channel');
+diagnosticsChannel.channel('undici:request:create').subscribe(({ request }) => {
+  /*console.log('origin', request.origin)
+  console.log('completed', request.completed)
+  console.log('method', request.method)
+  console.log('path', request.path)
+  console.log('headers') // array of strings, e.g: ['foo', 'bar']
+  request.addHeader('hello', 'world')
+  console.log('headers', request.headers) // e.g. ['foo', 'bar', 'hello', 'world']
+  */
+  console.log("===========================\n## API REQUEST ##");
+  console.log("---------------------------");
+  console.log('method', request.method)
+  console.log('path', request.path)
+  console.log("===========================\n");
+
+})
+
+client.rest.on("rateLimited", rate => {
+    console.log("LIMITATION: " + rate)
+})
+
 /*
 setInterval(async () => {
     // vérifie les points d'amitiés de chaque faction : Si au dessus de 0 enlever 10 points (à équilibrer) Si en dessous de 0 : Ajouter 10
