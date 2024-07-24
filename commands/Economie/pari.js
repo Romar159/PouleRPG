@@ -16,7 +16,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     const dailyCD = 7200000; 
     
     const lastDaily = await dbUser.cooldown_pari;
-    if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) < 0) { //cooldown pas encore passé.
+    if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
         const cdTime = dailyCD - (Date.now() - lastDaily);
         message.reply(`Il n'y a plus de combats sur lesquels parier ! Attendez encore **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes, il devrait y en avoir de nouveau. :hourglass:`);
         client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - wait cooldown : ${Math.floor(cdTime / (1000*60*60) % 24)}:${Math.floor(cdTime / (1000*60) % 60)}:${Math.floor(cdTime / (1000) % 60)} | lastdaily=${lastDaily} | dailycd=${dailyCD} | Date: ${Date.now()}`);
@@ -57,13 +57,13 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             } */
            var quantity_pts_richesse = 0;
             if(client.randomInt(0, 8) >= 7) {
-                message.channel.send("DEBUG FIRST")
+                //message.channel.send("DEBUG FIRST")
                 quantity_pts_richesse = 1;
                 if(client.randomInt(0, 7) >= 6) {
-                    message.channel.send("DEBUG SECOND")
+                    //message.channel.send("DEBUG SECOND")
                     quantity_pts_richesse = 2;
                     if(client.randomInt(0, 6) >= 5) {
-                        message.channel.send("DEBUG THIRD")
+                        //message.channel.send("DEBUG THIRD")
                         quantity_pts_richesse = 3;
                     }
                 }
