@@ -20,7 +20,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
         
 
-        if(dbUser.in_jail == 'true' || dbUser.state_mission == true || dbUser.state_entrainement == true || dbUser.state_expedition == true) {
+        if(dbUser.in_jail == 'true'/* || dbUser.state_mission == true || dbUser.state_entrainement == true || dbUser.state_expedition == true*/) {
             infos_travail = `Vous ne pouvez **pas** travailler.`;
         }
     }
@@ -35,7 +35,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
         
 
-        if(dbUser.in_jail == 'true' || dbUser.state_travail == true || dbUser.state_entrainement == true || dbUser.state_expedition == true) {
+        if(dbUser.in_jail == 'true'/*  || dbUser.state_travail == true || dbUser.state_entrainement == true || dbUser.state_expedition == true*/) {
             infos_mission = `Vous ne pouvez **pas** partir en mission.`;
         }
     }
@@ -91,7 +91,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     } else { 
         infos_entrainement = `Vous **pouvez** vous entrainer.`;
 
-        if(dbUser.in_jail == 'true' || dbUser.state_mission == true || dbUser.state_travail == true || dbUser.state_expedition == true) {
+        if(dbUser.in_jail == 'true'/*  || dbUser.state_mission == true || dbUser.state_travail == true || dbUser.state_expedition == true*/) {
             infos_entrainement = `Vous ne pouvez **pas** vous entrainer.`;
         }
     }
@@ -105,7 +105,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     } else { 
         infos_expedition = `Vous **pouvez** partir en expédition.`;
 
-        if(dbUser.in_jail == 'true' || dbUser.state_mission == true || dbUser.state_travail == true || dbUser.state_entrainement == true) {
+        if(dbUser.in_jail == 'true'/*  || dbUser.state_mission == true || dbUser.state_travail == true || dbUser.state_entrainement == true*/) {
             infos_expedition = `Vous ne pouvez **pas** partir en expédition.`;
         }
     }
@@ -118,6 +118,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     if(dbUser.in_jail == 'true') {
         var factions = ['epsilon', 'daïros', 'lyomah', 'alpha'];
         var item_processed = 0;
+        var bug = true;
         factions.forEach(async e => {
             item_processed++;
 
@@ -125,10 +126,15 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             faction.cachot.forEach(element => {
                 if(message.member == message.guild.members.cache.get(element)) {
                     infos_prison = `Vous **êtes** en prison dans les geôles de **${e}**`; 
+                    bug = false;
                 }
             }) 
 
             if(item_processed == e.length - 1) {
+                if(bug == true) {
+                    console.log("[ERROR] : Ce joueur n'est dans le cachot de personne mais possède l'état en prison !!");
+                    infos_prison = `Vous **êtes** en prison mais dans les geôles de personne. Veuillez contacter le développeur ou un administrateur.`; 
+                }
                 finality();
             }
         })

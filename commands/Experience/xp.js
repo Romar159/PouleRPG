@@ -17,7 +17,11 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                 const usr = await client.getUser(member);
                 const needxp_usr = Math.round((1000 * parseInt(usr1.level)) / Math.sqrt(parseInt(usr1.level)) * 1.5);
                 embed.setAuthor({name: `Experience de ${member.user.username}`, iconURL: member.user.displayAvatarURL()});
-                embed.setDescription(`:bar_chart: Niveau : **${usr.level}**\n\n:test_tube: XP : **${usr.experience}/${needxp_usr}**`);
+                if(usr.level == 200) {
+                    embed.setDescription(`:bar_chart: Niveau : **${usr.level}**\n\n:test_tube: XP : **${usr.experience}**`);
+                } else {
+                    embed.setDescription(`:bar_chart: Niveau : **${usr.level}**\n\n:test_tube: XP : **${usr.experience}/${needxp_usr}**`);
+                }
                 message.channel.send({embeds:[embed]});
             }
         } catch(e) {
@@ -33,7 +37,11 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     } else {
         const needxp_dbuser = Math.round((1000 * parseInt(dbUser.level)) / Math.sqrt(parseInt(dbUser.level)) * 1.5);
         embed.setAuthor({name: `Votre experience`, iconURL: message.author.displayAvatarURL()});
-        embed.setDescription(`:bar_chart: Niveau :** ${dbUser.level}**\n\n:test_tube: XP : **${dbUser.experience}/${needxp_dbuser}**`);
+        if(dbUser.level == 200) {
+            embed.setDescription(`:bar_chart: Niveau :** ${dbUser.level}**\n\n:test_tube: XP : **${dbUser.experience}**`);
+        } else {
+            embed.setDescription(`:bar_chart: Niveau :** ${dbUser.level}**\n\n:test_tube: XP : **${dbUser.experience}/${needxp_dbuser}**`);
+        }
         message.channel.send({embeds:[embed]});
     }
 };

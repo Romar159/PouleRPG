@@ -82,8 +82,11 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
         let salaire = parseInt(args[0]) * mt.salaire;
         console.log(salaire);
-        let random = client.randomFloat(0.6, 1.4);
-        let points_travail = parseInt(parseInt(args[0]) * random);
+
+        //let random = client.randomFloat(0.6, 1.4); //ancienne formule pré 1.1.0
+        let random = client.randomFloat(0.8, 1.2); //nouvelle formule 1.1.0
+        //let points_travail = parseInt(parseInt(args[0]) * random); //ancienne formule pré 1.1.0
+        let points_travail = parseInt(parseInt(args[0]) * random); //nouvelle formule 1.1.0
 
         client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - SALAIRE=${salaire} | RANDOM=${random} | POINTS_TRAVAIL=${points_travail} | HEURE_TRAVAIL=${dbUser.heure_travail}`);
 

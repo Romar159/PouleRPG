@@ -27,7 +27,7 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
     const xp_defaite = dbUser.level;
     const xp_egalite = dbUser.level;
     const xp_win = (dbUser.level * 2);
-    const or_win = 3; 
+    let or_win = 3; 
 
     //const weapon_name = ["la dague", "le glaive", "la lance", "l'arbalète", "la claymore"];
 
@@ -79,12 +79,21 @@ module.exports.run = async (client, message, args, settings, dbUser, command) =>
         || user_weapon == 5 && bot_weapon == 4 || user_weapon == 5 && bot_weapon == 2) {*/ // Gagner
         if(userWeapon.fort[0] == bot_weapon.id || userWeapon.fort[1] == bot_weapon.id) {
             //victoire
-			if(client.randomInt(1, 5) == 5) {
+			/*if(client.randomInt(1, 5) == 5) {
 				embed.setDescription(`Vous utilisez **${userWeapon.arene_name}** et prenez l'avantage alors que votre adversaire utilise **${bot_weapon.arene_name}** !\nVous **gagnez**, **+${xp_win}xp** et **+${or_win} poyn :coin:**.`);
 				await client.setOr(client, message.member, or_win, message);
 			} else {
 				embed.setDescription(`Vous utilisez **${userWeapon.arene_name}** et prenez l'avantage alors que votre adversaire utilise **${bot_weapon.arene_name}** !\nVous **gagnez**, **+${xp_win}xp**.`);
-			}
+			}*/
+            let calcul_or = (client.randomInt(0, 10) + (Math.min(dbUser.prestige / 1000, 2)));
+            //message.channel.send("data: " + calcul_or);
+            if(calcul_or >= 9.75) {
+                or_win = client.randomInt(1, 4);
+                embed.setDescription(`Vous utilisez **${userWeapon.arene_name}** et prenez l'avantage alors que votre adversaire utilise **${bot_weapon.arene_name}** !\nVous **gagnez**, **+${xp_win}xp** et **+${or_win} poyn :coin:**.`);
+                await client.setOr(client, message.member, or_win, message);
+            } else {
+                embed.setDescription(`Vous utilisez **${userWeapon.arene_name}** et prenez l'avantage alors que votre adversaire utilise **${bot_weapon.arene_name}** !\nVous **gagnez**, **+${xp_win}xp**.`);
+            }
 			
             embed.setColor('3F992D');
 			message.channel.send({embeds:[embed]});
