@@ -1,7 +1,11 @@
 const {Collection,  ChannelType, PermissionsBitField} = require('discord.js');
 const {PREFIX} = require('../../config');
+const Player = require('../../util/objects/Player');
 
 module.exports = async (client, message) => {
+
+    if(message.author.bot) return;
+    //message.channel.send("Discord API Call");
 
     if(message.author.id == "F211911771433205760") {
         let phrases = ["CHEH :)", "T'es PD ! :)", "Olala Draxy parle :)", "T'es beau :)", "Je suis un fanboy de toi !", "Je peux avoir un autographe stppppp ?"];
@@ -70,7 +74,7 @@ module.exports = async (client, message) => {
 
     if(!message.author.bot) {
         if(dbUser.faction != "NULL" || dbUser.faction != undefined) {
-            if(message.content.startsWith(PREFIX)) { // ? DraxyNote : Ici, soit on garde le prefix comme déclencheur de l'event, ou bien on remplace ça part le salon #bots
+            if(message.content.toLowerCase().startsWith(PREFIX)) { // ? DraxyNote : Ici, soit on garde le prefix comme déclencheur de l'event, ou bien on remplace ça part le salon #bots
                 client.emit("gameEvents", message);
             }
         }
@@ -79,8 +83,8 @@ module.exports = async (client, message) => {
 
     //if (message.channel.type === "dm") return client.emit("directMessage", message);
     
-    if (!message.content.startsWith(PREFIX) && !message.author.bot) return client.emit("commandWithoutPrefix", message); //!
-    if (!message.content.startsWith(PREFIX) || message.author.bot) return;
+    if (!message.content.toLowerCase().startsWith(PREFIX) && !message.author.bot) return client.emit("commandWithoutPrefix", message); //!
+    if (!message.content.toLowerCase().startsWith(PREFIX) || message.author.bot) return;
 
     
     const args = message.content.slice(PREFIX.length).split(/ +/);
@@ -119,9 +123,10 @@ module.exports = async (client, message) => {
         }
     }
 
-
     tStamps.set(message.author.id, timeNow);
     setTimeout(() => tStamps.delete(message.author.id), cdAmount);
 
-    command.run(client, message, args, settings, dbUser, command, mentionnedUser, user);
+    const player = new Player(message.member, dbUser);
+
+    command.run(client, message, args, settings, dbUser, command, mentionnedUser, user, player);
 }

@@ -189,19 +189,6 @@
       },
       {
         "id": 15,
-        "name" : "Sommeil tumultueux",
-        "rarete" : 80,
-        "condition" : "/",
-        "description" : "Alors que vous essayez de vous endormir, votre voisin a décidé de faire une petite fête sans vous prévenir du bruit, malheureusement il vous empêche de vous reposer depuis maintenant 30 minutes...\n🗣 Vous lui criez dessus pour qu'il fasse moins de bruit.\n🙇♂️ Vous allez lui parler pour lui demander de faire moins de bruit.\n👂 Vous ne bougez pas, et attendez patiemment que le sommeil arrive.",
-        "reactions" : ["🗣", "🙇♂️", "👂"],
-        "commands" : [
-          ["Msg(Vous ouvrez la fenêtre et videz vos poumons sur cet énergumène. Depuis, le son a baissé, et vous pouvez enfin vous endormir paisiblement. Mais, vous ne savez pas quelles seront les représailles... +1 redoutabilité, +3 travail, -3 piété, -1 prestige.)", "SetPoint(redoutabilite § 1)", "SetPoint(travail § 3)", "SetPoint(piete § -3)", "SetPoint(prestige § -1)"],
-          ["Msg(En allant voir votre voisin, celui-ci vous remarque facilement. En lui expliquant la situation, celui-ci comprend tout à fait et s'excuse de la gêne. Vous pouvez enfin dormir sur vos deux oreilles ! +2 travail, +2 moral.)", "SetPoint(travail § 2)", "SetPoint(moral § 2)"],
-          ["Msg(Malgré votre bonté, étant donné que le voisin ne sait pas que vous essayez de dormir, celui-ci a fait la fête jusqu'à pas d'heure. Vous savez que la journée qui suit sera rude, mais vous vous réconciliez en vous disant que le voisin s'est bien amusé. +6 piété, -2 forme, -1 moral.)", "SetPoint(piete § 6)", "SetPoint(forme § -2)", "SetPoint(moral § -1)"]
-        ]
-      },
-      {
-        "id": 16,
         "name" : "L'eau du puit",
         "rarete" : 75,
         "condition" : "/",

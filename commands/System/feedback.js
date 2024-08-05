@@ -1,6 +1,8 @@
 const { ActionRowBuilder, Events, ModalBuilder, TextInputBuilder, TextInputStyle, SlashCommandBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, StringSelectMenuBuilder, PermissionFlagsBits } = require('discord.js');
 //let data = require("../../assets/feedbacks.json")
-const fs = require('fs')
+const fs = require('fs');
+delete require.cache[require.resolve("../../assets/feedbacks.json")];
+
 
 
 
@@ -137,8 +139,23 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         //*CONSULTATION DES SUGGESTIONS. Uniquement ADMIN
 
         if(message.member.permissions.has(PermissionFlagsBits.Administrator)) {
-            let data = require("../../assets/feedbacks.json"); //TODO:!BUG Ici on a un bug connu, il recharge mal le fichier, PouleRPG doit s'update/redémarrer pour recharger les infos
+            let data = require("../../assets/feedbacks.json"); 
+            //TODO:!BUG Ici on a un bug connu, il recharge mal le fichier, PouleRPG doit s'update/redémarrer pour recharger les infos
+            //*C'est un ENFER !!!! J'ai beau delete le cache ça marche pas, donc pour l'instant NIQUE, ça ira dans une future update de toute façon c'est que pour les admins ça.
             
+            /*let data;
+
+            try {
+                // Lire le fichier JSON directement à chaque fois
+                const rawData = fs.readFileSync("./assets/feedbacks.json", 'utf-8');
+                data = JSON.parse(rawData);
+            } catch (err) {
+                console.error("Erreur lors de la lecture du fichier feedbacks.json :", err);
+                return;
+            }*/
+
+            
+
             let index = 0;
             let last_index = data.length - 1;
 
@@ -217,6 +234,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         } else {
             message.channel.send("Vous n'êtes pas Administrateur, vous ne pouvez pas consulter les commentaires");
         }
+
     }
     
 }
