@@ -173,5 +173,44 @@
         "commands" : [
           [ "Msg(t)" ]
         ]
+      },
+      {
+        "id": 14,
+        "name" : "Le repas indécis",
+        "rarete" : 69,
+        "condition" : "/",
+        "description" : "En cette douce soirée claire, vous hésitez sur où et quoi dîner. Qu'allez-vous faire ?\n🍳 Vous cuisinez un petit plat maison.\n🍴 Vous allez au restaurant du coin.\n💨 Vous prenez la première chose qui vous vient sous la main.",
+        "reactions" : ["🍳", "🍴", "💨"],
+        "commands" : [
+          ["Msg(Malgré que vous ne soyez peut-être pas chef étoilé, vous vous faites un petit plaisir en cuisinant pour vous. Et vous en êtes fier ! +2 travail, +2 moral, +50 XP.)", "SetPoint(travail § 2)", "SetPoint(moral § 2)", "SetXP(50)"],
+          ["Msg(En allant dans le restaurant de votre quartier, vous voyez quelques connaissances qui vous font signe de les joindre. C'est bon de passez un bon moment entre copains ! Tellement, que vous ne voyez pas augmenter la note... +2 piété, +5 moral, -7 poyn.)", "SetPoint(piete § 2)", "SetPoint(moral § 5)", "SetPoyn(-7)"],
+          ["Msg(Pas le temps de réfléchir, il vous reste bien des restes, et vous vous en contentez pleinement, mieux vaut ne pas trop se dépenser aujourd'hui et rester au calme ! +6 forme.)", "SetPoint(forme § 6)"]
+        ]
+      },
+      {
+        "id": 15,
+        "name" : "Sommeil tumultueux",
+        "rarete" : 80,
+        "condition" : "/",
+        "description" : "Alors que vous essayez de vous endormir, votre voisin a décidé de faire une petite fête sans vous prévenir du bruit, malheureusement il vous empêche de vous reposer depuis maintenant 30 minutes...\n🗣 Vous lui criez dessus pour qu'il fasse moins de bruit.\n🙇♂️ Vous allez lui parler pour lui demander de faire moins de bruit.\n👂 Vous ne bougez pas, et attendez patiemment que le sommeil arrive.",
+        "reactions" : ["🗣", "🙇♂️", "👂"],
+        "commands" : [
+          ["Msg(Vous ouvrez la fenêtre et videz vos poumons sur cet énergumène. Depuis, le son a baissé, et vous pouvez enfin vous endormir paisiblement. Mais, vous ne savez pas quelles seront les représailles... +1 redoutabilité, +3 travail, -3 piété, -1 prestige.)", "SetPoint(redoutabilite § 1)", "SetPoint(travail § 3)", "SetPoint(piete § -3)", "SetPoint(prestige § -1)"],
+          ["Msg(En allant voir votre voisin, celui-ci vous remarque facilement. En lui expliquant la situation, celui-ci comprend tout à fait et s'excuse de la gêne. Vous pouvez enfin dormir sur vos deux oreilles ! +2 travail, +2 moral.)", "SetPoint(travail § 2)", "SetPoint(moral § 2)"],
+          ["Msg(Malgré votre bonté, étant donné que le voisin ne sait pas que vous essayez de dormir, celui-ci a fait la fête jusqu'à pas d'heure. Vous savez que la journée qui suit sera rude, mais vous vous réconciliez en vous disant que le voisin s'est bien amusé. +6 piété, -2 forme, -1 moral.)", "SetPoint(piete § 6)", "SetPoint(forme § -2)", "SetPoint(moral § -1)"]
+        ]
+      },
+      {
+        "id": 16,
+        "name" : "L'eau du puit",
+        "rarete" : 75,
+        "condition" : "/",
+        "description" : "Vous allez chercher de l'eau du puit pour vos besognes, mais une question vous trotte dans la tête, combien est-ce que vous en prenez ?\n💧 Le strict minimum.\n🪣 Une quantité moyenne.\n🌊 Bien plus qu'à l'accoutumé.",
+        "reactions" : ["💧", "🪣", "🌊"],
+        "commands" : [
+          ["Msg(Mieux vaut en laisser pour le reste du village, et de toute manière, vous sentez que vous n'aurez pas besoin de beaucoup d'eau aujourd'hui. +2 piété, +1 travail.)", "SetPoint(piete § 2)", "SetPoint(travail § 1)"],
+          ["Msg(Pourquoi réfléchir, vous prenez la quantité de d'habitude, comme cela, vous êtes sûr d'avoir suffisament d'eau pour vos besoins. +2 forme, +1 travail.)", "SetPoint(forme § 2)", "SetPoint(travail § 1)"],
+          ["Msg(Pour une fois, vous avez bien le droit à plus d'eau, vous êtes sûr de pouvoir bien profiter aujourd'hui ! +2 moral, +1 travail.)", "SetPoint(moral § 2)", "SetPoint(travail § 1)"]
+        ]
       }
 ]

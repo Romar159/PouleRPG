@@ -8,8 +8,10 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     const dailyCD = 36000000;
     
     const lastDaily = await dbUser.cooldown_tacty;
-    if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
-        const cdTime = dailyCD - (Date.now() - lastDaily);
+    //if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
+    if(lastDaily > Date.now()) {
+        //const cdTime = dailyCD - (Date.now() - lastDaily);
+        const cdTime = lastDaily - Date.now(); 
         message.reply(`Il n'y a plus aucun SDF dans le coin, attendez encore **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes, il devrait y en avoir de nouveau. :dash:`);
         client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - wait cooldown : ${Math.floor(cdTime / (1000*60*60) % 24)}:${Math.floor(cdTime / (1000*60) % 60)}:${Math.floor(cdTime / (1000) % 60)} | lastdaily=${lastDaily} | dailycd=${dailyCD} | Date: ${Date.now()}`);
 
@@ -58,20 +60,26 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
             // TODO: POST BETA: Ajouter un point d'amitié avec la faction de l'utilisateur cible (voir cahier des charges. #idées-bonnes).
         } */
 
-        let randomPiete = client.randomInt(4, 5);
+        let randomPiete = client.randomInt(1, 3);
+        let randomMoral = client.randomInt(2, 4);
     
         const m = message.channel.send("Vous recherchez un SDF ...").then(async msg => {
-            if(member_ran == message.member) {
-                msg.edit(`:coin: Vous avez jeté un sou à ce SDF de **${member_ran.displayName}**`);
+            if(member_ran == message.member) { //soit même
+                randomMoral = client.randomInt(4, 7);
+                await client.editPoint(client, message.member, randomMoral, "moral");
+                msg.edit(`:coin: Vous êtes tellement SDF que vous vous jetez un sou à vous même ? Soit, +${randomMoral} points de moral !`);
             } else {
                 await client.editPoint(client, message.member, randomPiete, "piete");
-                msg.edit(`:coin: Vous avez jeté un sou à ce SDF de **${member_ran.displayName}** et vous gagnez donc ${randomPiete} points de piété pour cette bonne action.`); // \nDebug: executed in ${msg.createdTimestamp - message.createdTimestamp}ms
+                await client.editPoint(client, message.member, randomMoral, "moral");
+
+                msg.edit(`:coin: Vous avez jeté un sou à ce SDF de **${member_ran.displayName}** et vous gagnez donc ${randomPiete} points de piété pour cette bonne action ainsi que ${randomMoral} points de moral.`); // \nDebug: executed in ${msg.createdTimestamp - message.createdTimestamp}ms
             }
         });
 
         await client.setOr(client, member_ran, 1, message);
         await client.setOr(client, message.member, -1, message);
-        client.updateUser(message.member, {cooldown_tacty: Date.now()});
+        let randomHour = client.randomInt(4, 6) * 60 * 60 * 1000;
+        client.updateUser(message.member, {cooldown_tacty: Date.now() + randomHour});
 
         client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - pièce jetée de ${message.author.tag} (${message.author.id}) à ${member_ran.user.tag} (${member_ran.user.id})`);
 
@@ -86,11 +94,11 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
 module.exports.help = {
     name: "jetteunepieceatonsdf",
-    aliases: ['tactysdf', "eupatsdf", "jupatsdf", "tossacointoyousdf", "envoieunepieceatonsdf"],
+    aliases: ['tactysdf', "eupatsdf", "jupatsdf", "tossacointoyousdf", "envoieunepieceatonsdf", "sdf"],
     category: "economie",
     desription: "Envoie une de vos pièces à un utilisateur aléatoire, vous permettant de gagner de la piété",
     usage: "",
-    cooldown: 1,
+    cooldown: 5,
     permissions: false,
     args: false
 };

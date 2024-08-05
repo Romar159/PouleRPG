@@ -16,12 +16,18 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         let poulets = parseInt(dbUser.poulets);
         poulets++;
         settings.poulet++;
-        await client.updateGuild(message.guild, {poulet: settings.poulet});
+
+        const newGuild = await client.getGuild(message.guild);
+        embed.setDescription(`:chicken: **${newGuild.poulet + 1}** :chicken:`); 
+
+        //await client.updateGuild(message.guild, {poulet: settings.poulet});
+        await client.updateGuild(message.guild, { $inc: {poulet: 1}});
         await client.updateUser(message.author, {poulets: poulets});
         await client.getGuild(message.guild);
 
         embed.setAuthor({name: `Nombre de poulets`, iconURL: client.user.displayAvatarURL()});
-        embed.setDescription(`:chicken: **${settings.poulet}** :chicken:`); 
+       
+        
 
         if(dbUser.poulets + 1 == 500) {
             const list_badges = require('../../assets/rpg/badges.json');

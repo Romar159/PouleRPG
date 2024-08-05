@@ -1,7 +1,7 @@
 module.exports.run = async (client, message, args, settings, dbUser) => {
     const json_armes = require('../../assets/rpg/armes.json');
     if(!args[0]) {
-        return message.channel.send(`**Options modifiables**\n\n**[ArmeFavorite]** : Votre arme favorite que vous utilisez partout : \nActuel : **${json_armes[dbUser.armeFavorite].name}** \noptions : ${json_armes[0].name};${json_armes[1].name};${json_armes[2].name};${json_armes[3].name};${json_armes[4].name}`);
+        return message.channel.send(`**Options modifiables**\n\n**[ArmeFavorite]** : Votre arme favorite que vous utilisez partout : \nValeur Actuelle : **${json_armes[dbUser.armeFavorite].name}** \nChoix disponibles : ${json_armes[0].name} ; ${json_armes[1].name} ; ${json_armes[2].name} ; ${json_armes[3].name} ; ${json_armes[4].name}`);
     }
 
     else if(args[0].toLowerCase() == 'armefavorite') {
@@ -19,9 +19,9 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
 module.exports.help = {
     name: "préférences",
-    aliases: ['preferences', 'pref'],
+    aliases: ['preferences', 'pref', 'préf'],
     category: "system",
-    desription: "Modifie vos préférences RPG.",
+    desription: "Modifie vos préférences RPG. \nExemple: `p<préférences ArmeFavorite bouclier`",
     usage: '<[option] [choix]>',
     cooldown: 3, 
     permissions: false,

@@ -2,13 +2,13 @@
     {
         "id" : 0,
         "name" : "Le Poulet sauvage",
-        "rarete" : 15,
+        "rarete" : 150,
         "condition" : "/",
         "description" : "Lors de votre expédition, vous rencontrez un poulet, que faites-vous ? \n\n⚔️ : Vous le tuez.\n🙏 : Vous vous agenouillez et priez le Dieu Poulet pour son bien.",
         "reactions" : ["⚔️", "🙏"],
         "commands": [
             ["Msg(Dieu Poulet est très déçu de vous ! -10 piété, +1 redoutabilité)", "SetPoint(piete § -10)", "SetPoint(redoutabilite § 1)"],
-            ["Msg(Dieu Poulet est content ! +10 piété)", "SetPoint(piete § 10)"]
+            ["Msg(Dieu Poulet est content ! +3 piété)", "SetPoint(piete § 3)"]
           ]
     }
 ]

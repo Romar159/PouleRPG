@@ -80,20 +80,37 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     if(dbUser.faction == "NULL")
         embedPts.setColor('5E6366');
 
-    embedPts.addFields({name:`:crown: **Prestige**`, value: `${dbUser.prestige}`, inline:true})
-    .addFields({name:`:pray: **Piété**`, value: `${dbUser.piete}`, inline:true})
-    .addFields({name:'** **', value:'** **'})
+    // embedPts.addFields({name:`:crown: **Prestige**`, value: `${dbUser.prestige}`, inline:true})
+    // .addFields({name:`:pray: **Piété**`, value: `${dbUser.piete}`, inline:true})
+    // .addFields({name:'** **', value:'** **'})
 
-    .addFields({name:`:gem: **Richesse**`, value:`${dbUser.richesse}`, inline:true})
-    .addFields({name:`:dart: **Redoutabilité**`, value:`${dbUser.redoutabilite}`, inline:true})
-    .addFields({name:'** **', value:'** **'})
+    // .addFields({name:`:gem: **Richesse**`, value:`${dbUser.richesse}`, inline:true})
+    // .addFields({name:`:dart: **Redoutabilité**`, value:`${dbUser.redoutabilite}`, inline:true})
+    // .addFields({name:'** **', value:'** **'})
 
-    .addFields({name:`:muscle: **Forme**`, value:`${dbUser.forme}`, inline:true})
-    .addFields({name:`:sunflower: **Moral**`, value:`${dbUser.moral}`, inline:true})
-    .addFields({name:'** **', value:'** **'})
+    // .addFields({name:`:muscle: **Forme**`, value:`${dbUser.forme}`, inline:true})
+    // .addFields({name:`:sunflower: **Moral**`, value:`${dbUser.moral}`, inline:true})
+    // .addFields({name:'** **', value:'** **'})
 
-    .addFields({name:`:pick: **Travail**`, value:`${dbUser.travail}`, inline:true})
-    .addFields({name:`:brain: **Savoir**`, value:`${dbUser.savoir}`, inline:true})
+    // .addFields({name:`:pick: **Travail**`, value:`${dbUser.travail}`, inline:true})
+    // .addFields({name:`:brain: **Savoir**`, value:`${dbUser.savoir}`, inline:true})
+
+    const getEmoji = (value, positiveEmoji, negativeEmoji) => value >= 0 ? positiveEmoji : negativeEmoji;
+
+    embedPts.addFields({ name: `${getEmoji(dbUser.prestige, ':crown:', ':roll_of_paper:')} **Prestige**`, value: `${dbUser.prestige}`, inline: true })
+        .addFields({ name: `${getEmoji(dbUser.piete, ':pray:', ':knife:')} **Piété**`, value: `${dbUser.piete}`, inline: true })
+        .addFields({ name: '** **', value: '** **' })
+
+        .addFields({ name: `${getEmoji(dbUser.richesse, ':gem:', ':money_with_wings:')} **Richesse**`, value: `${dbUser.richesse}`, inline: true })
+        .addFields({ name: `${getEmoji(dbUser.redoutabilite, ':dart:', ':face_with_hand_over_mouth:')} **Redoutabilité**`, value: `${dbUser.redoutabilite}`, inline: true })
+        .addFields({ name: '** **', value: '** **' })
+
+        .addFields({ name: `${getEmoji(dbUser.forme, ':muscle:', ':hamburger:')} **Forme**`, value: `${dbUser.forme}`, inline: true })
+        .addFields({ name: `${getEmoji(dbUser.moral, ':sunflower:', ':anger_right:')} **Moral**`, value: `${dbUser.moral}`, inline: true })
+        .addFields({ name: '** **', value: '** **' })
+
+        .addFields({ name: `${getEmoji(dbUser.travail, ':pick:', ':cup_with_straw:')} **Travail**`, value: `${dbUser.travail}`, inline: true })
+        .addFields({ name: `${getEmoji(dbUser.savoir, ':brain:', ':question:')} **Savoir**`, value: `${dbUser.savoir}`, inline: true });
 
     //--
     //affichage

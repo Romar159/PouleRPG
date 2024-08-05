@@ -7,7 +7,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
     if(isNaN(args[0])) return message.reply("Veuillez entrer une valeur numérique.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Valeur Invalide. MESSAGEE=${message.content}.`, "err"); 
     let x = parseInt(args[0]);
     let o = 0;
-    let prestige = "";
+    //let prestige = "";
     let richesse = "";
 
     if(x > dbUser.or) return message.reply("Vous n'avez pas assez de poyn.") & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - quantité de poyn trop faible. NECESSAIRE=${x} | ACTUEL=${dbUser.or} MESSAGE=${message.content}`, "err");
@@ -32,38 +32,52 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         if(client.randomFloat(0, y) <= 1) {
             y = Math.log(x * client.randomFloat(0.95, 1.25));
 
-            if(client.randomFloat(0, y) <= 1) {
-                o = (x * 1.5) * client.randomFloat(1, 1.1);
-                if(client.randomInt(0, 3) == 0) {
-                    await client.editPoint(client, message.member, 10, "prestige");
-                    prestige = "ainsi que 10 points de **prestige** ";
-                    console.log("prestige up");
-                } 
-                if(client.randomInt(0, 8) == 0) {
-                    await client.editPoint(client, message.member, 2, "richesse");
-                    richesse = "et 2 points de **richesse**";
-                    console.log("richesse up");
-                }
+            // if(client.randomFloat(0, y) <= 1) {
+            //     o = (x * 1.5) * client.randomFloat(1, 1.1);
+            //     /*if(client.randomInt(0, 3) == 0) {
+            //         await client.editPoint(client, message.member, 10, "prestige");
+            //         prestige = "ainsi que 10 points de **prestige** ";
+            //         console.log("prestige up");
+            //     }*/ 
+            //     if(client.randomInt(0, 8) == 0) {
+            //         await client.editPoint(client, message.member, 2, "richesse");
+            //         richesse = "et 2 points de **richesse**";
+            //         console.log("richesse up");
+            //     }
 
-                await client.setOr(client, message.member, Math.round(o), message);
-                return message.channel.send(`Bravo ! Vous avez parié juste ! Vous gagnez ${Math.round(o)} poyn :coin: ${prestige}${richesse}`);
-            }
+            //     await client.setOr(client, message.member, Math.round(o), message);
+            //     return message.channel.send(`Bravo ! Vous avez parié juste ! Vous gagnez ${Math.round(o)} poyn :coin: ${prestige}${richesse}`);
+            // }
 
             o = (x * 1.1) * client.randomFloat(1, 1.1);
-            if(client.randomInt(0, 3) == 0) { 
+            /*if(client.randomInt(0, 3) == 0) { 
                 await client.editPoint(client, message.member, 3, "prestige");
                 prestige = "ainsi que 3 points de **prestige** ";
                 console.log("prestige down");
-            } 
-            if(client.randomInt(0, 7) == 0) {
-                await client.editPoint(client, message.member, 1, "richesse");
-                richesse = "et 1 point de **richesse**";
-                console.log("richesse down");
+            } */
+           var quantity_pts_richesse = 0;
+            if(client.randomInt(0, 8) >= 7) {
+                //message.channel.send("DEBUG FIRST")
+                quantity_pts_richesse = 1;
+                if(client.randomInt(0, 7) >= 6) {
+                    //message.channel.send("DEBUG SECOND")
+                    quantity_pts_richesse = 2;
+                    if(client.randomInt(0, 6) >= 5) {
+                        //message.channel.send("DEBUG THIRD")
+                        quantity_pts_richesse = 3;
+                    }
+                }
 
+                await client.editPoint(client, message.member, quantity_pts_richesse, "richesse");
+                richesse = "et "+quantity_pts_richesse+" point de **richesse**";
+                if(quantity_pts_richesse>1) richesse = "et "+quantity_pts_richesse+" points de **richesse**"; //conjugaison
+                console.log("richesse +" + quantity_pts_richesse);
             }
+
+            
             
             await client.setOr(client, message.member, Math.round(o), message);
-            return message.channel.send(`Bravo ! Vous avez parié juste ! Vous gagnez ${Math.round(o)} poyn :coin: ${prestige}${richesse}`) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Pari réussi.`);
+            return message.channel.send(`Bravo ! Vous avez parié juste ! Vous gagnez ${Math.round(o)} poyn :coin: ${richesse}`) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Pari réussi.`);
         }
         return message.channel.send(`Vous avez perdu votre pari ! -${x} poyn :coin:`) & client.writeLog(`Commande ${this.help.name} : ${message.author.tag} (${message.author.id}) - Pari perdu. -${x} poyn.`);
         

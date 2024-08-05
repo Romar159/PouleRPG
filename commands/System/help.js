@@ -1,4 +1,4 @@
-const {EmbedBuilder} = require("discord.js");
+const {EmbedBuilder, PermissionsBitField} = require("discord.js");
 const {PREFIX} = require("../../config");
 const {readdirSync} = require("fs");
 const categoryList = readdirSync('./commands');
@@ -47,10 +47,13 @@ module.exports.run = (client, message, args) => {
             } 
             
             if(categoryName != "NULL") {
-                embed.addFields([{
-                 name: `${categoryName}`,
-                 value: `\`${client.commands.filter(cat => cat.help.category === category.toLowerCase()).map(cmd => cmd.help.name).join('` • `')}\``
-                }]);
+                if(!message.member.permissions.has(PermissionsBitField.Flags.Administrator) && categoryName == ":hammer: Administrateur") {
+                } else {
+                    embed.addFields([{
+                        name: `${categoryName}`,
+                        value: `\`${client.commands.filter(cat => cat.help.category === category.toLowerCase()).map(cmd => cmd.help.name).join('` • `')}\``
+                       }]);
+                }
             }
         };
         return message.channel.send({ embeds: [embed] });
