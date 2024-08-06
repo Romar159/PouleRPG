@@ -107,7 +107,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
             if (minDistance <= strictThreshold) {
                 localisation = closestMatch;
-                message.reply(`T'écris n'importe comment mais okay c'est parti pour ${lient.upperCaseFirstChar(localisation)} ! <:EP_trop_classe:711231715225501776>`);
+                message.reply(`T'écris n'importe comment mais okay c'est parti pour ${client.upperCaseFirstChar(localisation)} ! <:EP_trop_classe:711231715225501776>`);
             } else if (minDistance <= maxDistance) {
                 return message.reply(`Je crois que tu voulais dire ${closestMatch}, mais comme je suis pas sûr, réessaie !`);
             } else {
