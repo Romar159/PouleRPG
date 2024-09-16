@@ -10,10 +10,76 @@ const fs = require("fs");
 const User = require('../../util/objects/User');
 const levenshtein = require('js-levenshtein');
 
+const Player = require('../../util/objects/Player');
+
+
 
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
+    //const ExpeditionEngine = require('../../util/commands_modules/expedition_modules/expedition_engine'); // Importer notre moteur de jeu
+    //let currentGame = null;
+    
+
+    return;
+
+    //ceci presente tous les getters d'un Player. (venu de la DB)
+    const player = new Player(message.member, dbUser);
+    message.channel.send(`Player Profile Getters :
+        getAreneStreak : ${await player.getAreneStreak()}
+        getArmeFavorite : ${await player.getArmeFavorite()}
+        getBadgesPossedes : ${await player.getBadgesPossedes()}
+        getCooldownActivity : ${await player.getCooldownActivity()}
+        getCooldownArene : ${await player.getCooldownArene()}
+        getCooldownEnnemi : ${await player.getCooldownEnnemi()}
+        getCooldownEntrainement : ${await player.getCooldownEntrainement()}
+        getCooldownExpedition : ${await player.getCooldownExpedition()}
+        getCooldownMetier : ${await player.getCooldownMetier()}
+        getCooldownMission : ${await player.getCooldownMission()}
+        getCooldownPari : ${await player.getCooldownPari()}
+        getCooldownPray : ${await player.getCooldownPray()}
+        getCooldownTacty : ${await player.getCooldownTacty()}
+        getDaily : ${await player.getDaily()}
+        getEndettement : ${await player.getEndettement()}
+        getExpeditionDuration : ${await player.getExpeditionDuration()}
+        getExperience : ${await player.getExperience()}
+        getFaction : ${await player.getFaction()}
+        getForme : ${await player.getForme()}
+        getFoundEasterEggs : ${await player.getFoundEasterEggs()}
+        
+`)
+message.channel.send(`
+getGuildID : ${await player.getGuildID()}
+        getGuildName : ${await player.getGuildName()}
+        getHeureEntrainement : ${await player.getHeureEntrainement()}
+        getHeureTravail : ${await player.getHeureTravail()}
+        getLevel : ${await player.getLevel()}
+        getLevelMee6 : ${await player.getLevelMee6()}
+        getLocalisationExpedition : ${await player.getLocalisationExpedition()}
+        getMaxBank : ${await player.getMaxBank()}
+        getMetier : ${await player.getMetier()}
+        getMoral : ${await player.getMoral()}
+        getOr : ${await player.getOr()}
+        getOrExpedition : ${await player.getOrExpedition()}
+        getPiete : ${await player.getPiete()}
+        getPoulets : ${await player.getPoulets()}
+        getPrestige : ${await player.getPrestige()}
+        getRanMaxEnnemi : ${await player.getRanMaxEnnemi()}
+        getRanMinEnnemi : ${await player.getRanMinEnnemi()}
+        getRedoutabilite : ${await player.getRedoutabilite()}
+        getRichesse : ${await player.getRichesse()}
+        getSavoir : ${await player.getSavoir()}
+        getStateEntrainement : ${await player.getStateEntrainement()}
+        getStateExpedition : ${await player.getStateExpedition()}
+        getStateMission : ${await player.getStateMission()}
+        getStateTravail : ${await player.getStateTravail()}
+        getTitrePolitique : ${await player.getTitrePolitique()}
+        getTraining : ${await player.getTraining()}
+        getTravail : ${await player.getTravail()}
+        getUserID : ${await player.getUserID()}
+        getUsername : ${await player.getUsername()}
+        getWinsQuiz : ${await player.getWinsQuiz()}
+`)
 
 return;
 
