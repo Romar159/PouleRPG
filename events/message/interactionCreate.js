@@ -3,7 +3,10 @@ const {PREFIX} = require('../../config');
 
 const fs = require("fs");
 
+
 module.exports = async (client, interaction) => {
+
+    
     
     // if(interaction.isCommand()) {
     //     const cmd = client.commands.get(interaction.commandName);
@@ -19,12 +22,20 @@ module.exports = async (client, interaction) => {
     //     cmd.runSlash(client, interaction);
     // }
 
+    /*if(interaction.type === InteractionType.ApplicationCommand) {
+        interaction.reply("Cmd")
+        interaction.target
+        client.emit("messageCreate", client, interaction);
+    }*/
+    
+
     if (interaction.type === InteractionType.ModalSubmit) {
         const feedback_json_file = "./assets/feedbacks.json";
 
         if (interaction.customId === 'myModal_idee' + interaction.user.id) {
             const response = interaction.fields.getTextInputValue('feedbackInput');
             interaction.reply(`Votre commentaire a bien été enregistré ! Il sera consulté rapidement.`);
+            interaction.guild.channels.cache.get("415945640942501888").send(`[FEEDBACK] Nouvelle **idée** proposée par ${interaction.user.username} (${interaction.user.id})`);
 
             const new_feedback = {
                 "author": interaction.user.username + "(" + interaction.user.id + ")",
@@ -62,6 +73,8 @@ module.exports = async (client, interaction) => {
         if (interaction.customId === 'myModal_bug' + interaction.user.id) {
             const response = interaction.fields.getTextInputValue('feedbackInput');
             interaction.reply(`Votre commentaire a bien été enregistré ! Il sera consulté rapidement.`);
+            interaction.guild.channels.cache.get("415945640942501888").send(`[FEEDBACK] Nouveau **bug** reporté par ${interaction.user.username} (${interaction.user.id})`);
+
 
             const new_feedback = {
                 author: interaction.user.username + "(" + interaction.user.id + ")",
@@ -99,6 +112,8 @@ module.exports = async (client, interaction) => {
             const subject = interaction.fields.getTextInputValue('subjectInput');
             const response = interaction.fields.getTextInputValue('feedbackInput');
             interaction.reply(`Votre commentaire a bien été enregistré ! Il sera consulté rapidement.`);
+            interaction.guild.channels.cache.get("415945640942501888").send(`[FEEDBACK] Nouveau **commentaire** par ${interaction.user.username} (${interaction.user.id})`);
+
 
             const new_feedback = {
                 author: interaction.user.username + "(" + interaction.user.id + ")",

@@ -8,12 +8,49 @@ const casusb = require("../../assets/guerre/casusbelli.json");
 const fs = require("fs");
 
 const User = require('../../util/objects/User');
+const levenshtein = require('js-levenshtein');
 
 
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
 
+return;
+
+//test levenstein pour les factions en expédition
+let localisation;
+
+if (!args[1]) {
+    localisation = dbUser.faction;
+} else {
+    localisation = args[1].toLowerCase();
+    
+    const factions = ["epsilon", "daïros", "lyomah", "alpha"];
+    let closestMatch = null;
+    let minDistance = Infinity;
+    const strictThreshold = 2; // Seuil strict pour une correspondance acceptable
+    const maxDistance = 5; // Seuil maximum au-delà duquel on considère que c'est "trop éloigné"
+
+    factions.forEach(faction => {
+        const distance = levenshtein(localisation, faction);
+        if (distance < minDistance) {
+            minDistance = distance;
+            message.channel.send("[DEBUG] distance lev: " + distance)
+            closestMatch = faction;
+        }
+    });
+
+    if (minDistance <= strictThreshold) {
+        localisation = closestMatch;
+        message.channel.send(`Localisation choisie : ${localisation}`);
+    } else if (minDistance <= maxDistance) {
+        message.channel.send(`L'entrée est trop éloignée, mais elle pourrait correspondre à : ${closestMatch}`);
+    } else {
+        message.channel.send(`L'entrée est trop éloignée et ne correspond à aucune faction. Aucune action n'a été prise.`);
+        localisation = dbUser.faction; // Optionnel, si tu veux revenir à la faction par défaut
+    }
+}
+//message.channel.send(`Localisation choisie : ${localisation}`);
 
 
 

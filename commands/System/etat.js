@@ -51,11 +51,13 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
     }
 
-    dailyCD = 36000000;
 
     lastDaily = await dbUser.cooldown_tacty;
-    if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
-        cdTime = dailyCD - (Date.now() - lastDaily);
+    //if(lastDaily !== null && dailyCD - (Date.now() - lastDaily) > 0) { //cooldown pas encore passé.
+    if(lastDaily !== null && lastDaily > Date.now()) {
+        //cdTime = dailyCD - (Date.now() - lastDaily);
+        cdTime = lastDaily - Date.now(); 
+        
         infos_tacty = `Vous ne pouvez **pas** jeter de pièce à un SDF avant encore **${Math.floor(cdTime / (1000*60*60) % 24)}** heures, **${Math.floor(cdTime / (1000*60) % 60)}** minutes et **${Math.floor(cdTime / (1000) % 60)}** secondes.`;
     } else { 
         infos_tacty = `Vous **pouvez** jeter un sous à un **SDF**.`

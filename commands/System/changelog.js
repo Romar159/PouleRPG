@@ -9,35 +9,15 @@ module.exports.run = (client, message, args) => {
 	    .setColor('1ABC9C')
 	    .setAuthor({name: "Changelog", iconURL:client.user.displayAvatarURL()})
 	    .setDescription(`**Version :** ${VERSION}
-            
-            > **Commande p<jetteunepieceatonsdf**
-            • Ajout d'un alias "sdf"
-            • Cooldown réduit
-            • Nouveaux gains : points de moral
-
-            > **Commande p<arène**
-            • Nouvel équilibrage pour le gain d'or
-
-            > **Commande p<travail**
-            • Nouvel équilibrage pour le gain de points de travail
-
-            > **Commande p<pari**
-            • Nouvel équilibrage pour le gain de points de richesse
-            • Il n'est plus possible de gagner des points de prestige
-
-            > **Equilibrage Expérience**
-            • Le niveau maximal passe à 200 au lieu de 9 223 372 036 854 775 807 !
-            • Message lors du passage de niveau et améliorations graphiques diverses
 
             > **Bug Fix**
-            • Le p<état n'affiche plus que l'on ne peut faire aucune autre activité que celle que l'on vient de terminer
-            • Le p<poulet prend maintenant en compte tous les poulets même spammés
+            • Le second choix sur l'event "sommeil tumultueux" peut maintenant être selectionné 
+            • Le temps restant avant de jeter une pièce à un sdf à nouveau correspond maintenant correctement entre le p<état et le p<sdf
 
             > **Améliorations diverses**
-            • Nouveaux easter-eggs :)
-            • Patch et nerf sur certains events
-            • le p<préférences est à présent un peu plus compréhensible
-            • Les points négatifs ont maintenant un emote spécial
+            • PouleRPG supporte à présent le préfix majuscule et minuscule.
+            • Amélioration techniques du p<commentaire, vos commentaires seront maintenant plus facilement traités par les administrateurs.
+            • Les erreurs de frappes sont maintenant traités lors du choix de la faction du p<expédition
         
         `)
 

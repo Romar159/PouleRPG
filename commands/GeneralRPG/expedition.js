@@ -1,4 +1,5 @@
 const {EmbedBuilder, Message} = require('discord.js')
+const levenshtein = require('js-levenshtein');
 
 module.exports.run = async (client, message, args, settings, dbUser) => {
 
@@ -63,7 +64,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
         if(or_apporter > dbUser.or) return message.reply("vous n'avez pas assez de poyn.");
         //if(!args[1]) return message.reply("vous devez sélectionner le pays")
 
-        let localisation;
+        /*let localisation;
 
         if(!args[1]) {
             localisation = dbUser.faction;
@@ -79,7 +80,42 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
                     }
                 }
             }
+        }*/
+
+            
+        let localisation;
+
+        if (!args[1]) {
+            localisation = dbUser.faction;
+        } else {
+            localisation = args[1].toLowerCase();
+            
+            const factions = ["epsilon", "daïros", "lyomah", "alpha"];
+            let closestMatch = null;
+            let minDistance = Infinity;
+            const strictThreshold = 2; // Seuil strict pour une correspondance acceptable
+            const maxDistance = 5; // Seuil maximum au-delà duquel on considère que c'est "trop éloigné"
+
+            factions.forEach(faction => {
+                const distance = levenshtein(localisation, faction);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    //message.channel.send("[DEBUG] distance lev: " + distance)
+                    closestMatch = faction;
+                }
+            });
+
+            if (minDistance <= strictThreshold) {
+                localisation = closestMatch;
+                message.reply(`T'écris n'importe comment mais okay c'est parti pour ${client.upperCaseFirstChar(localisation)} ! <:EP_trop_classe:711231715225501776>`);
+            } else if (minDistance <= maxDistance) {
+                return message.reply(`Je crois que tu voulais dire ${closestMatch}, mais comme je suis pas sûr, réessaie !`);
+            } else {
+                return message.reply(`J'ai rien compris où tu voulais aller faire ton expédition, réessaie ! ~~t'écris n'importe comment...~~`);
+                //localisation = dbUser.faction; // Optionnel, si on veut revenir à la faction par défaut
+            }
         }
+
         
         await client.setOr(client, message.member, - or_apporter, message);
         await client.updateUser(message.member, {expedition_duration: expedition_duration, or_expedition: or_apporter});
@@ -264,7 +300,7 @@ module.exports.run = async (client, message, args, settings, dbUser) => {
 
 module.exports.help = {
     name: "expédition",
-    aliases: ['e', 'expedition'],
+    aliases: ['e', 'expedition', 'expe', 'expé'],
     category: "generalrpg",
     desription: "Partez en expédition pour gagner richesses, expériences et items. Sélectionnez le nombre de poyn à emmener avec vous, et choisissez si vous le souhaitez un autre territoire que le vôtre pour gagner plus... mais attention aux représailles.",
     usage: '<poyn> [localisation:epsilon/daïros/lyomah/alpha]',
